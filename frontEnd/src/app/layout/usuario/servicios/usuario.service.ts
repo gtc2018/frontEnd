@@ -1,0 +1,27 @@
+import { UsuarioModel } from './../../../model/usuario/usuario.model';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
+
+
+@Injectable()
+export class UsuarioService {
+ 
+  userList: UsuarioModel[];
+
+  constructor(private Http: HttpClient) { }
+
+  //SERVICIO CONSULTAR TODOS LOS USUARIOS 
+  public getUsuarios(): Observable<UsuarioModel[]>{
+    return this.Http.get<UsuarioModel[]>("http://localhost:8080/getAllUsuarios");
+
+   
+  }
+
+  
+
+  
+ 
+
+}
