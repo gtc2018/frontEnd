@@ -12,11 +12,11 @@ export class CrearUsuarioService {
 
   /**
    * Metodo de validaciones del formulario Usuarios.
-   * @param usuario 
+   * @param usuario
    */
   public validate(usuario: UsuarioModel): boolean {
     let isValid = true;
-    
+
     if(!usuario.apellidos){
        isValid = false;
     }
@@ -32,13 +32,15 @@ export class CrearUsuarioService {
     if(!usuario.password){
        isValid = false;
     }
-    
+
     return isValid;
   }
 
   public saveOrUpdate(usuario: UsuarioModel): Observable<RestResponse> {
 
-    return this.http.post<RestResponse>("http://localhost:8080/usuarioSaveOrUpdate", JSON.stringify(usuario));
+    console.log(usuario);
+
+    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateUsuario", JSON.stringify(usuario));
 
 
   }

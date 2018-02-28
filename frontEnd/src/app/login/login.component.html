@@ -1,27 +1,47 @@
 <div class="login-page" [@routerTransition]>
     <div class="row justify-content-md-center">
-        <div class="col-md-4">
-            <img src="assets/images/logo.jpg" width="300px" class="user-avatar" />
+        <div class="col-md-4 card">
+            <img src="assets/images/logo.jpg" width="100%" height="auto" class="user-avatar img-fluid" />
             <div>
-                <h6></h6>  
+                <h1 class="login-name"><b>CDA</b></h1>
             </div>
-            <form role="form">
+
+            <form #loginForm="ngForm" (ngSubmit)="validateUsuario(loginForm)" class="">
+                <!--ALERT MENSAJES -->
+                <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                    {{message}}
+                    <button aria-label="Close" class="close" type="button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong></strong>
+                </div>
+                <!--FIN ALERT MENSAJES -->
                 <div class="form-content">
-                    <div class="form-group">
-                        <input type="text" ng-model="name" class="form-control input-underline input-lg" id="" placeholder="Email" required>
+                    <div class="form-group input-group">
+                        <i class="fa fa-user fa-lg
+                         form-control-feedback"
+                         style="z-index:99999;padding-top: 15px"></i>
+
+                        <input type="text"  class="form-control input-underline input-lg" name="email"  ngModel placeholder="Email"
+                            required>
                     </div>
 
-                    <div class="form-group">
-                        <input type="password" class="form-control input-underline input-lg" id="" placeholder="Password" required>
+                    <div class="form-group input-group">
+                        <i class="fa fa-lock fa-lg
+                         form-control-feedback"
+                         style="z-index:99999;padding-top: 15px"></i>
+                        <input type="password" class="form-control input-underline input-lg" name="password" ngModel placeholder="Password"
+                            required>
+
                     </div>
                 </div>
                 <div class="form-group">
-                    <input class="btn rounded-btn" type="submit" value="Aceptar" >
+                    <input class="btn btn-outline-primary btn-lg btn-sc" type="submit" value="Aceptar">
                     <!--<a class="btn rounded-btn" [routerLink]="['/dashboard']">Aceptar</a> -->
-                   <!-- <a class="btn rounded-btn" [routerLink]="['/signup']">Aceptar</a> -->
+                    <!-- <a class="btn rounded-btn" [routerLink]="['/signup']">Aceptar</a> -->
                 </div>
-               <!-- <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()"> Log in </a>
-                
+                <!-- <a class="btn rounded-btn" [routerLink]="['/dashboard']" (click)="onLoggedin()"> Log in </a>
+
                 <a class="btn rounded-btn" [routerLink]="['/signup']">Register</a> -->
             </form>
         </div>

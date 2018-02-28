@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { AuthService } from '../../../shared/guard/auth.service';
 
 @Component({
     selector: 'app-header',
@@ -10,7 +11,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
 
-    constructor(private translate: TranslateService, public router: Router) {
+    constructor(private translate: TranslateService,
+         public router: Router,
+        private login:AuthService) {
 
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
@@ -28,19 +31,24 @@ export class HeaderComponent implements OnInit {
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+
+    }
 
     isToggled(): boolean {
+        console.log("cerrado");
         const dom: Element = document.querySelector('body');
         return dom.classList.contains(this.pushRightClass);
     }
 
     toggleSidebar() {
+        console.log("abierto");
         const dom: any = document.querySelector('body');
         dom.classList.toggle(this.pushRightClass);
     }
 
     rltAndLtr() {
+        console.log("otro");
         const dom: any = document.querySelector('body');
         dom.classList.toggle('rtl');
     }

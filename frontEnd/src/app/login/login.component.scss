@@ -9,11 +9,11 @@ $topnav-background-color: #fff;
     right: 0;
     bottom: 0;
     overflow: auto;
-    background: $topnav-background-color;
+    background: aliceblue;
     text-align: center;
     color: #1E90FF; /*Color texto imagen.*/
     padding: 3em;
-   
+
     .col-lg-4 {
         padding: 0;
     }
@@ -24,7 +24,7 @@ $topnav-background-color: #fff;
         line-height: 1.3333333;
         border-radius: 0;
     }
-    
+
     .input-underline {
         background: 0 0;
         border: none;
@@ -37,7 +37,7 @@ $topnav-background-color: #fff;
         border-bottom: 2px solid #DC143C;
         box-shadow: none;
     }
-    
+
     .rounded-btn {
         -webkit-border-radius: 50px;
         border-radius: 50px;
@@ -97,4 +97,46 @@ $topnav-background-color: #fff;
         border: 0px solid #fff;
         padding: 10px 0;
     }
+
+    .card{
+
+         padding: 40px;
+
+    }
+
+    .btn-sc{
+
+        border-radius: 100px;
+
+    }
+
+    .form-control-feedback {
+        position: absolute;
+        padding: 10px;
+        pointer-events: none;
+      }
+
+      .form-control {
+        padding-left: 30px!important;
+      }
+
+      .login-name{
+
+        font-family: serif;
+        font-style: italic;
+        font-size: 40px;
+      }
+
+    // input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    //     background-color: red(250, 255, 189);
+    //     background-image: none;
+    //     color: rgb(0, 0, 0);
+    // }
+
+    //Background loging
+    // .divForm{
+    //     background: rgba(76, 135, 175, 0.192) !important;
+    // }
+
+
 }

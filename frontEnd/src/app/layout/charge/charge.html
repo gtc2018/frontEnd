@@ -1,0 +1,141 @@
+
+<div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+    <app-page-header [heading]="'Cargos'" [icon]="'fa-table'"></app-page-header>
+
+              <form>
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                    <label class="col-form-label">*Codigo del cargo</label>
+                    <input type="text" class="form-control" placeholder="Codigo del cargo">
+                  </div>
+
+                  <div class=" col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                    <label class="col-form-label">*Nombre del cargo</label>
+                    <input type="text" class="form-control" placeholder="Nombre del cargo">
+                  </div>
+
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                    <label class=" col-form-label ">*Rol</label>
+                    <select class="form-control">
+                      <option>Administrador</option>
+                      <option>Auxiliar</option>
+                      <option>Analista</option>
+                    </select>
+                  </div>
+
+                </div>
+
+                      <br>
+                      <br>
+
+                      <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                          <input style="margin-right:10px"
+                          type="submit"
+                          class="btn btn-success"
+                          value="Guardar"/>
+
+                           <input style="margin-left:10px"
+                           type="button"
+                           class="btn btn-danger"
+                           value="Limpiar" />
+
+                      </div>
+
+              </form>
+
+                              <br>
+
+                <div class="card mb-3">
+                        <div class="card-header">
+                                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                    <label class=" col-form-label"
+                                    style="padding-right:10px">Buscar por</label>
+                                    <select class="form-control">
+                                            <option></option>
+                                            <option>Nombre o razon social</option>
+                                            <option>Tipo documento</option>
+                                            <option>#Documento</option>
+                                          </select>
+                                </div>
+                                </div>
+
+                                <div class="col-auto ">
+                                    <div class="input-group">
+                                            <div class="input-group-addon ">
+                                                    <span class="fa fa-search"></span>
+                                                  </div>
+                                    <input type="text" class="form-control" placeholder="Search">
+
+                                </div>
+                                </div>
+
+
+                               </div>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Codigo Cargo</th>
+                                    <th>Nombre Cargo</th>
+                                    <th>Rol</th>
+                                    <th>Activo</th>
+                                    <th>Editar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>J000021</td>
+                                    <td>Analista de Desarrollo</td>
+                                    <td>Desarrollador</td>
+                                    <td>
+                                    <input type="checkbox">
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-pencil"
+                                        aria-hidden="true"
+                                        title="Editar">
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>J000043</td>
+                                    <td>Lider de Calidad</td>
+                                    <td>Gerencia QA</td>
+                                    <td>
+                                    <input type="checkbox" checked>
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-pencil"
+                                        aria-hidden="true"
+                                        title="Editar">
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                             <button
+                             class="btn btn-primary" >
+                             <span style="padding-right:5px" class="fa fa-chevron-left">
+                                </span>Volver
+
+                             </button>
+
+                        </div>
+    </div>
+</div>
+</div>
+

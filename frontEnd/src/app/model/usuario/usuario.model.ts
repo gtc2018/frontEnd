@@ -1,4 +1,4 @@
-import { ParentEntity } from './parentEntity.model';
+import { ParentEntity } from '../parentEntity.model';
 
 export class UsuarioModel extends ParentEntity{
 

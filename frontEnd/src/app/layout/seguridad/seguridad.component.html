@@ -1,0 +1,232 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Seguridad'" [icon]="'fa-edit'"></app-page-header>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <form role="form">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <fieldset class="form-group">
+                            <div class="center">
+                                <label>SEGURIDAD</label>
+                            </div>
+                            <form class="form-inline">
+                                <div class="form-group">
+                                    <label for="exampleInputName2">*Nombre del Rol :</label>
+                                    <!--
+                                    <input type="text" class="form-control" id="exampleInputName2">
+                                    -->
+                                    <div _ngcontent-c7="" class="form-group input-group">
+                                        <input _ngcontent-c7="" class="form-control" type="text">
+
+                                        <span _ngcontent-c7="" class="input-group-btn" style="padding-left:20px">
+                                            <button _ngcontent-c7="" class="btn btn-primary" type="button">
+                                                <i class="fa fa-plus-square" aria-hidden="true"></i>
+
+                                            </button>
+                                        </span>
+
+                                    </div>
+                                </div>
+
+                            </form>
+                            <!--
+                            <div _ngcontent-c7="" class="form-group input-group">
+                                <input _ngcontent-c7="" class="form-control" type="text">
+
+                                <span _ngcontent-c7="" class="input-group-btn">
+                                    <button _ngcontent-c7="" class="btn btn-secondary" type="button">
+                                        <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                    </button>
+                                </span>
+                            </div>-->
+
+                        </fieldset>
+                    </div>
+
+
+
+                </div>
+
+                <div class="card mb-3">
+
+                    <!--     <div class="card-header">Hoverable rows</div> -->
+                    <table class="card-body table table-hover text-center ">
+
+
+                        <thead class="ng-tns-c7-2">
+                            <tr class="ng-tns-c7-2">
+                                <th class="ng-tns-c7-2">Nombre de Rol</th>
+                                <th class="ng-tns-c7-2">Seguridad</th>
+                                <th class="ng-tns-c7-2">Registro de Actividades</th>
+                                <th class="ng-tns-c7-2">Reportes</th>
+                                <th class="ng-tns-c7-2">Empleados</th>
+                                <th class="ng-tns-c7-2">Clientes</th>
+                                <th class="ng-tns-c7-2">Registro Bugs</th>
+                                <th class="ng-tns-c7-2">Proyecto</th>
+                                <th class="ng-tns-c7-2">Cotizaciones</th>
+                                <th class="ng-tns-c7-2">Parametros</th>
+                                <th class="ng-tns-c7-2">Usuarios</th>
+
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let sec of security">
+
+                                <td>
+                                    <span [innerHTML]="sec.nombre"></span>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.security">
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.recact"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.report"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.employe"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.client"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.recbug"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.project"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.quotation"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.param"/>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox"
+                                    [checked]="sec.user"/>
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- <div class="card mb-3">
+
+                <!--     <div class="card-header">Hoverable rows</div>
+                    <table class="card-body table table-hover  text-center ">
+
+                        <thead class="ng-tns-c7-2">
+                            <tr class="ng-tns-c7-2">
+                                <th class="ng-tns-c7-2">Nombre de Rol</th>
+                                <th class="ng-tns-c7-2">Seguridad</th>
+                                <th class="ng-tns-c7-2">Registro de Actividades</th>
+                                <th class="ng-tns-c7-2">Reportes</th>
+                                <th class="ng-tns-c7-2">Empleados</th>
+                                <th class="ng-tns-c7-2">Clientes</th>
+                                <th class="ng-tns-c7-2">Registro Bugs</th>
+                                <th class="ng-tns-c7-2">Proyecto</th>
+                                <th class="ng-tns-c7-2">Cotizaciones</th>
+                                <th class="ng-tns-c7-2">Parametros</th>
+                                <th class="ng-tns-c7-2">Usuarios</th>
+                                <
+
+                            </tr>
+                        </thead>
+                        <tbody class="ng-tns-c7-2">
+                            <tr class="ng-tns-c7-2 ">
+
+                                 <th class="ng-tns-c7-2" scope="row">Administrador</th>
+
+                               <td class="ng-tns-c7-2 "><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                               <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+
+
+
+                            </tr>
+                            <tr class="ng-tns-c7-2">
+
+                                    <th class="ng-tns-c7-2" scope="row">Analista</th>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                    <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+
+
+                            </tr>
+                            <tr class="ng-tns-c7-2">
+
+                                <th class="ng-tns-c7-2" scope="row">Lider</th>
+                                <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" checked/></td>
+                                <td class="ng-tns-c7-2"><input type="checkbox" ></td>
+
+                                </tr>
+
+                        </tbody>
+                    </table>
+                </div> -->
+
+                <div class="center">
+                    <button type="reset" class="btn btn-primary">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver</button>
+
+                </div>
+
+
+
+            </form>
+
+        </div>
+
+    </div>
+    <!-- /.row -->
+</div>

@@ -1,0 +1,135 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Encuesta'" [icon]="'fa-edit'"></app-page-header>
+    <div class="row">
+        <div class="col-lg-12">
+
+            <form role="form">
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <fieldset class="form-group">
+                            <div class="center">
+                                <label>ENCUESTA</label>
+                            </div>
+
+                            <label class="form-horizontal" style="padding-left:20px">*Proyecto :</label>
+                            <label class="form-horizontal" style="padding-left:235px">Preguntas :</label>
+
+                            <form class="form-inline">
+
+                                <div class="form-group" style="padding-left:20px">
+                                    <label for="disabledSelect"></label>
+                                    <select id="disabledSelect" class="form-control">
+                                        <option>Disabled select</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="padding-left:150px">
+                                    <label class="sr-only" for="exampleInputEmail3">Email address</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail3">
+
+
+                                    <span _ngcontent-c7="" class="input-group-btn" style="padding-left:20px">
+                                        <button _ngcontent-c7="" class="btn btn-primary" type="button">
+                                            <i class="fa fa-plus-square" aria-hidden="true"></i>
+
+                                        </button>
+                                    </span>
+
+
+                                </div>
+
+                            </form>
+
+                        </fieldset>
+                    </div>
+
+                </div>
+
+
+
+                <div _ngcontent-c7="" class="card mb-3">
+
+                    <!--     <div _ngcontent-c7="" class="card-header">Hoverable rows</div> -->
+                    <table _ngcontent-c7="" class="card-body table table-striped table table-bordered text-center ">
+
+
+                        <thead _ngcontent-c7="" class="ng-tns-c7-2">
+                            <tr _ngcontent-c7="" class="ng-tns-c7-2">
+
+                                <th _ngcontent-c7="" class="ng-tns-c7-2">Preguntas</th>
+                                <th _ngcontent-c7="" class="ng-tns-c7-2">Muy por debajo del promedio</th>
+                                <th _ngcontent-c7="" class="ng-tns-c7-2">Debajo del promedio</th>
+                                <th _ngcontent-c7="" class="ng-tns-c7-2">Promedio</th>
+                                <th _ngcontent-c7="" class="ng-tns-c7-2">Encima del promedio</th>
+                                <th _ngcontent-c7="" class="ng-tns-c7-2">Muy por encima del promedio</th>
+                                <th _ngcontent-c7="" class="ng-tns-c7-2">Observacion</th>
+                                <th _ngcontent-c7="" class="ng-tns-c7-2"></th>
+
+                            </tr>
+
+                        </thead>
+                        <tbody>
+
+                            <tr *ngFor="let sec of security">
+
+                                <td>
+                                    <span [innerHTML]="sec.nombre"></span>
+                                </td>
+
+                                <td>
+                                    <input type="checkbox" [checked]="sec.security">
+                                </td>
+
+                                <td>
+                                    <input type="checkbox" [checked]="sec.recact" />
+                                </td>
+
+                                <td>
+                                    <input type="checkbox" [checked]="sec.report" />
+                                </td>
+
+                                <td>
+                                    <input type="checkbox" [checked]="sec.employe" />
+                                </td>
+
+                                <td>
+                                    <input type="checkbox" [checked]="sec.client" />
+                                </td>
+
+                                <td>
+
+                                </td>
+
+                                <td>
+                                        <i class="fa fa-minus-square" aria-hidden="true"></i>
+                                </td>
+
+
+
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+
+                <div class="center">
+
+                    <button type="reset" class="btn btn-primary">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver</button>
+                    <button type="button" class="btn btn-primary">Guardar</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

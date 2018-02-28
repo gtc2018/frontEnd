@@ -1,0 +1,414 @@
+<br>
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+<h2 class=" page-header">
+        Crear Cotización
+</h2>
+
+</div>
+<div class="btn-group center-sc row col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3"
+       >
+
+                <button class="btn btn-outline-success btn-md"
+                placement="top"
+                ngbTooltip="Exportar en Excel"
+                 > <i class="fa fa-file-excel-o"></i>
+                 Excel </button>
+
+                <button class="btn btn-outline-danger btn-md"
+                placement="top"
+                ngbTooltip="Exportar en PDF">
+                         PDF
+                         <i class="fa fa-file-pdf-o"></i> </button>
+
+
+        </div><br>
+    </div>
+<hr>
+
+
+
+<form>
+
+
+
+<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-group row">
+                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Cliente</label>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <select #selectCl
+                 name="quotation.select"
+                 class="form-control">
+                 <option value=undefined disabled selected>Seleccione un cliente</option>
+                </select>
+                </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="form-group row">
+                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Proyecto</label>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <select #selectPr
+                     name="quotation.project"
+                     class="form-control">
+                     <option value=undefined disabled selected>Seleccione un proyecto</option>
+                    </select>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="form-group row ">
+                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Valor Hora</label>
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 input-group">
+                    <span class="input-group-addon">
+                            <i class="fa fa-usd" aria-hidden="true"></i>
+                    </span>
+                    <input type="text"
+                    name="quotation.valueHour"
+                    class="form-control" >
+                    </div>
+                    </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="form-group row">
+                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Sistemas</label>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <button class="btn btn-primary" (click)="system()">Seleccionar</button>
+                        <tag-input [ngModel]="systemItem"
+                         name="systemItem"
+                         placeholder="undefined"
+                         secondaryPlaceholder="undefined"
+                         [removable]="false"
+                         disable="true"
+                         [hideForm]="true"
+                         [identifyBy]="'id'"
+                         [displayBy]="'name'"> </tag-input>
+                    </div>
+                    </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="form-group row">
+                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Herramientas</label>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <button class="btn btn-primary" (click)="tools()">Seleccionar</button>
+                         <tag-input [ngModel]="toolItem"
+                         name="toolItem"
+                         placeholder="undefined"
+                         secondaryPlaceholder="undefined"
+                         [removable]="false"
+                         disable="true"
+                         [ripple]="false"
+                         [hideForm]="true"
+                         [identifyBy]="'id'"
+                         [displayBy]="'name'"> </tag-input>
+                    </div>
+                    </div>
+            </div>
+
+    </div>
+
+
+
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
+         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+            <div class="form-group row">
+                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Código Requerimiento</label>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text"
+                    name="quotation.coderqm"
+                    class="form-control">
+                </div>
+
+            </div>
+
+         </div>
+
+         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group row">
+                        <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">Descripcion Requerimiento</label>
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                            <textarea name="quotation.description"
+                            class="form-control">
+
+                            </textarea>
+                        </div>
+
+                    </div>
+         </div>
+
+         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group row">
+                        <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Recursos Asignados</label>
+                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                            <input type="number"
+                            class="form-control">
+                        </div>
+
+                    </div>
+         </div>
+
+         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-group row">
+                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Estado cotización</label>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <select #selectEc
+                 name="quotation.state"
+                 class="form-control">
+                 <option value=undefined disabled selected>Seleccione un estado</option>
+                </select>
+                </div>
+                </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-group row">
+                <label class=" col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">Fecha Solicitud</label>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 ">
+                    <div class="input-group">
+                  <input class="form-control"
+                   placeholder="yyyy-mm-dd"
+                      name="dp" [(ngModel)]="modelDateSol"
+                       ngbDatepicker
+                        #d="ngbDatepicker"
+                        (ngModelChange)="ajustModel()">
+
+                  <div class="input-group-addon" (click)="d.toggle()" >
+                      <span class="fa fa-calendar"></span>
+                  </div>
+                </div>
+              </div>
+        </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-group row">
+                <label class=" col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">Fecha Entrega</label>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 ">
+                    <div class="input-group">
+                  <input class="form-control"
+                   placeholder="yyyy-mm-dd"
+                      name="dp" [(ngModel)]="modelDateEnt"
+                       ngbDatepicker
+                        #d="ngbDatepicker"
+                        (ngModelChange)="ajustModel()">
+
+                  <div class="input-group-addon" (click)="d.toggle()" >
+                      <span class="fa fa-calendar"></span>
+                  </div>
+                </div>
+              </div>
+        </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-group row">
+                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Alcance Solicitud</label>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                <select #selectAl
+                 name="quotation.project"
+                 class="form-control">
+                 <option value=undefined disabled selected>Seleccione un alcance</option>
+                 <option value="Crítico">Crítico</option>
+                 <option value="Medio">Medio</option>
+                 <option value="Alto">Alto</option>
+                </select>
+                </div>
+                </div>
+        </div>
+
+    </div>
+
+
+
+    <br><br>
+
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+            <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                    <div class="btn btn-info hand"
+                     (click)="detail()">
+                         <i class="fa fa-plus"
+                         aria-hidden="true">
+                         </i>
+                         &nbsp; Crear nuevo
+                    </div>
+                    </div>
+
+                    <table class="table table-hover table-striped">
+                            <thead>
+                            <tr>
+                                <th>Proceso</th>
+                                <th>Componente</th>
+                                <th>Descripción</th>
+                                <th>H.Analisis</th>
+                                <th>H.Diseño</th>
+                                <th>H.Pruebas</th>
+                                <th>H.Documentación</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let q of quotation">
+                                <td>
+                                    <span [innerHTML]="q.process" ></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="q.component" ></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="q.description" ></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="q.analysis" ></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="q.design" ></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="q.test" ></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="q.documentation" ></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="q.total" ></span>
+                                </td>
+                                <td>
+                                        <a class="btn btn-default" >
+                                                <i (click)="upload()"
+                                                 class="fa fa-pencil-square-o fa-lg hand"
+                                                 aria-hidden="true"
+                                                 title="Editar" >
+                                                 </i>
+                                        </a>
+                                        <a class="btn btn-default">
+                                                  <i (click)="delete()"
+                                                  class="fa fa-trash-o fa-lg hand"
+                                                  aria-hidden="true"
+                                                  title="Eliminar">
+                                                  </i>
+                                        </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Horas por fase</td>
+                                <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        10
+                                    </td>
+                                    <td>
+                                        12
+                                    </td>
+                                    <td>
+                                        52
+                                    </td>
+                                    <td>
+                                        19
+                                    </td>
+                                    <td>
+                                        148
+                                    </td>
+                                    <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+        <br><br>
+
+        </div>
+
+
+        <div class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-6 col-md-6 offset-lg-6 col-lg-6" >
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group row">
+                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Horas totales RQM</label>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <input type="number"
+                            class="form-control">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group row">
+                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Valor Total RQM</label>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 input-group">
+                                <span class="input-group-addon">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                </span>
+                            <input type="number"
+                            class="form-control">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group row">
+                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Fecha aproximada Entrega</label>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                            <input type="text"
+                            class="form-control">
+                        </div>
+
+                </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group row">
+                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Valor Total Acordado</label>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 input-group">
+                                <span class="input-group-addon">
+                                        <i class="fa fa-usd" aria-hidden="true"></i>
+                                </span>
+                            <input type="number"
+                            class="form-control">
+                        </div>
+
+                </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-group row">
+                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Horas acordadas</label>
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                            <input type="number"
+                            class="form-control">
+                        </div>
+
+                </div>
+                </div>
+
+                <br><br>
+            </div>
+
+
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc" >
+                    <input style="margin-right:10px"
+                    type="submit"
+                    class="btn btn-success"
+                    value="Guardar"/>
+
+                     <input style="margin-left:10px"
+                     type="reset"
+                     class="btn btn-danger"
+                     value="Limpiar" />
+                    </div>
+
+</div>
+
+</form>
+
+

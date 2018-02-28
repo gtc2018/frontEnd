@@ -1,5 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top">
-    <a class="navbar-brand" href="#">CDA </a>
+    <a class="navbar-brand"
+     href="#"
+     style="font-family:serif"><b>C</b>ONTROL <b>D</b>E <b>A</b>CTIVIDADES</a>
     <button class="navbar-toggler" type="button" (click)="toggleSidebar()">
         <!-- <span class="navbar-toggler-icon"></span> -->
         <i class="fa fa-bars text-muted" aria-hidden="true"></i>
@@ -10,7 +12,10 @@
             <input class="form-control mr-sm-2" type="text" placeholder="{{ 'Search' | translate }}" >
         </form>
         -->
+
+
         <ul class="navbar-nav ml-auto">
+                <div *ngIf="false">
             <li class="nav-item d-none d-xl-block">
                 <a
                     href="https://github.com/start-angular/SB-Admin-BS4-Angular-2/archive/master.zip"
@@ -115,12 +120,17 @@
                     </a>
                 </div>
             </li>
+        </div>
             <li class="nav-item dropdown" ngbDropdown>
-                <a href="javascript:void(0)" class="nav-link" ngbDropdownToggle>
-                    <i class="fa fa-user"></i> John Smith <b class="caret"></b>
+                <a href="javascript:void(0)"
+                 class="nav-link"
+                 style="font-family:serif"
+                  ngbDropdownToggle>
+                    <i class="fa fa-user"
+                    ></i>&nbsp;Developer<b class="caret"></b>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a class="dropdown-item" href="javascript:void(0)">
+                    <!-- <a class="dropdown-item" href="javascript:void(0)">
                         <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
                     </a>
                     <a class="dropdown-item" href="javascript:void(0)">
@@ -128,8 +138,11 @@
                     </a>
                     <a class="dropdown-item" href="javascript:void(0)">
                         <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
-                    </a>
-                    <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">
+                    </a> -->
+                    <a class="dropdown-item"
+                    [routerLink]="['/login']"
+                     (click)="onLoggedout()"
+                     style="font-family:serif">
                         <i class="fa fa-fw fa-power-off"></i> {{ 'Log Out' | translate }}
                     </a>
                 </div>

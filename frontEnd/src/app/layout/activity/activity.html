@@ -1,0 +1,397 @@
+
+<div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+    <app-page-header [heading]="'Registro de Actividades'" [icon]="'fa-table'"></app-page-header>
+
+              <form  (ngSubmit)="save()" ngNativeValidate>
+
+                <div  class="form-row">
+
+                <div class=" form-row col-xs-6 col-sm-6 col-md-6 col-lg-6">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label ">*Cliente</label>
+                                <select #selectCl
+                    [(ngModel)]="activityForm.client"
+                    (change)="setNew(selectCl.value,'clientL')"
+                    name="client"
+                    class="form-control">
+                    <option value=undefined disabled selected>Seleccione un cliente</option>
+                            <option *ngFor="let client of cL" [value]="client.id">
+                                {{client.name}}
+                            </option>
+                            </select>
+                        </div>
+
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <label class=" col-form-label ">*Proyecto</label>
+                    <select #selectPr
+                    [(ngModel)]="activityForm.project"
+                    (change)="setNew(selectPr.value,'projectL')"
+                    name="project"
+                    class="form-control">
+                    <option value=undefined disabled selected>Seleccione un proyecto</option>
+                            <option *ngFor="let project of pR" [value]="project.id">
+                                {{project.name}}
+                            </option>
+                            </select>
+                  </div>
+
+
+
+                  <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <label class="col-form-label">*ID-REQ</label>
+                    <select #selectRq
+                    [(ngModel)]="activityForm.req"
+                    (change)="setNew(selectRq.value,'reqL')"
+                    name="req"
+                    class="form-control">
+                    <option value=undefined disabled selected>Seleccione un RQ</option>
+                            <option *ngFor="let req of rQ" [value]="req.id">
+                                {{req.code}}
+                            </option>
+                    </select>
+                    <!-- <input type="text"
+                     [(ngModel)]="activityForm.req"
+                     name="req"
+                    class="form-control"
+                     placeholder="Nombre del cargo"> -->
+                  </div>
+
+
+
+                  <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <label class="col-form-label">Área</label>
+                        <input type="text"
+                        class="form-control"
+                        placeholder="QA"
+                        [(ngModel)]="activityForm.area"
+                        name="area"
+                        disabled>
+                      </div>
+
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <label class=" col-form-label ">*Fase</label>
+                    <select #selectFa
+                    [(ngModel)]="activityForm.fase"
+                    (change)="setNew(selectFa.value,'faseL')"
+                    name="fase"
+                    class="form-control">
+                    <option value=undefined disabled selected>Seleccione una fase</option>
+                            <option *ngFor="let fase of fA" [value]="fase.id">
+                                {{fase.name}}
+                            </option>
+                            </select>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <label class=" col-form-label ">*Tarea</label>
+                    <select #selectTa
+                    [(ngModel)]="activityForm.tarea"
+                    (change)="setNew(selectTa.value,'tareaL')"
+                    name="tarea"
+                    class="form-control">
+                    <option value=undefined disabled selected>Seleccione una tarea</option>
+                            <option *ngFor="let tarea of tA" [value]="tarea.id">
+                                {{tarea.name}}
+                            </option>
+                    </select>
+                  </div>
+
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                    <label class=" col-form-label ">*Hora Inicio</label>
+                    <input type="time"
+                     class="form-control"
+                      placeholder="Hora Inicio"
+                      (ngModelChange)="onHInitial(hInitial.value)"
+                      [(ngModel)]="activityForm.hourinitial"
+                      name="hourinitial"
+                      #hInitial>
+                  </div>
+
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+                    <label class=" col-form-label ">*Hora Fin</label>
+                    <input type="time"
+                     class="form-control"
+                      placeholder="Hora Fin"
+                      [disabled]="disHFinal"
+                      [(ngModel)]="activityForm.hourfin"
+                      (ngModelChange)="onHFinal(hFinal.value)"
+                      min={{limitHour}}
+                      name="hourfin"
+                      #hFinal >
+                  </div>
+
+                  <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <label class="col-form-label">*Duracion</label>
+                        <input type="text"
+                        class="form-control"
+                         placeholder="Duracion"
+                         [(ngModel)]="activityForm.duration"
+                         name="duration" disabled>
+                      </div>
+
+                </div>
+
+
+                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 ">
+
+                        <!-- <mwl-calendar-month-view
+                        [viewDate]="viewDate"
+                        [events]="events"
+                        [cellTemplate]="customTemplate">
+                      </mwl-calendar-month-view> -->
+
+                    <mwl-demo-utils-calendar-header [(view)]="view"
+                    [(viewDate)]="viewDate">
+                    </mwl-demo-utils-calendar-header>
+
+                    <ng-template #customCellTemplate
+                     let-day="day"
+                     let-locale="locale">
+                        <div class="cal-cell-top">
+                            <span class="cal-day-badge"
+                             *ngIf="day.badgeTotal > 0">{{ day.badgeTotal }}</span>
+                            <span class="cal-day-number ">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+                        </div>
+                        <!-- <small style="margin: 5px">There are {{ day.events.length }} events on this day</small> -->
+                    </ng-template>
+
+                    <div [ngSwitch]="view">
+
+                        <mwl-calendar-month-view
+                          style="cursor:pointer"
+                         *ngSwitchCase="'month'"
+                          [viewDate]="viewDate"
+                          [events]="events"
+                          [cellTemplate]="customCellTemplate"
+                          (dayClicked)="dayClicked($event.day)"
+                          [activeDayIsOpen]="activeDayIsOpen">
+                        </mwl-calendar-month-view>
+
+                        <mwl-calendar-week-view
+                         *ngSwitchCase="'week'"
+                          [viewDate]="viewDate"
+                          [events]="events">
+                        </mwl-calendar-week-view>
+
+                        <mwl-calendar-day-view
+                        *ngSwitchCase="'day'"
+                         [viewDate]="viewDate"
+                         [events]="events">
+                        </mwl-calendar-day-view>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+                <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <label class="col-form-label">*Descripcion</label>
+                        <textarea
+                        rows="6"
+                        class="form-control"
+                        placeholder="Descripcion"
+                        [(ngModel)]="activityForm.description"
+                        name="description"
+                        required>
+                        </textarea>
+                  </div>
+
+                      <br>
+                      <br>
+
+                      <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                          <input style="margin-right:10px"
+                          type="submit"
+                          class="btn btn-success"
+                          [value]="submitText"/>
+
+                           <input style="margin-left:10px"
+                           type="reset"
+                           class="btn btn-danger"
+                           value="Limpiar" />
+
+                      </div>
+
+              </form>
+
+                              <br>
+
+               <!-- <div class="card mb-3">
+                        <div class="card-header">
+                                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                    <label class=" col-form-label"
+                                    style="padding-right:10px">Buscar por</label>
+                                    <select class="form-control">
+                                            <option></option>
+                                            <option>Nombre o razon social</option>
+                                            <option>Tipo documento</option>
+                                            <option>#Documento</option>
+                                          </select>
+                                </div>
+                                </div>
+
+                                <div class="col-auto ">
+                                    <div class="input-group">
+                                            <div class="input-group-addon ">
+                                                    <span class="fa fa-search"></span>
+                                                  </div>
+                                    <input type="text" class="form-control" placeholder="Search">
+
+                                </div>
+                                </div>
+
+
+                               </div>
+                        </div>
+                         <div class="card-body table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>ID-REQ</th>
+                                    <th>Proyecto</th>
+                                    <th>Área</th>
+                                    <th>Fase</th>
+                                    <th>Tarea</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Fin</th>
+                                    <th>Duración</th>
+                                    <th>Editar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Bancoomeva</td>
+                                    <td>001</td>
+                                    <td>Libranza</td>
+                                    <td>Proyectos</td>
+                                    <td>Analisis</td>
+                                    <td>Dudas</td>
+                                    <td>14:00</td>
+                                    <td>16:30</td>
+                                    <td>2:30</td>
+                                    <td>
+                                        <span class="fa fa-pencil"
+                                        aria-hidden="true"
+                                        title="Editar">
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>-->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                    <label class=" col-form-label"
+                                    style="padding-right:10px">Buscar por</label>
+                                    <select class="form-control">
+                                            <option></option>
+                                            <option>Nombre o razon social</option>
+                                            <option>Tipo documento</option>
+                                            <option>#Documento</option>
+                                          </select>
+                                </div>
+                                </div>
+
+                                <div class="col-auto ">
+                                    <div class="input-group">
+                                            <div class="input-group-addon ">
+                                                    <span class="fa fa-search"></span>
+                                                  </div>
+                                    <input type="text" class="form-control" placeholder="Search">
+
+                                </div>
+                                </div>
+
+
+                               </div>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>ID-REQ</th>
+                                    <th>Proyecto</th>
+                                    <th>Área</th>
+                                    <th>Fase</th>
+                                    <th>Tarea</th>
+                                    <th>Hora Inicio</th>
+                                    <th>Hora Fin</th>
+                                    <th>Duración</th>
+                                    <th>Editar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let act of respective">
+                                    <td>
+                                        <span [innerHTML]="act.client" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.req" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.project" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.area" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.fase" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.tarea" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.hourinitial" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.hourfin" ></span>
+                                    </td>
+                                    <td>
+                                        <span [innerHTML]="act.duration" ></span>
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-pencil icon-table sc-span"
+                                        (click)="edit(act)"
+                                        role="button"
+                                        aria-hidden="true"
+                                        uib-tooltip="Detalles"
+                                        tooltip-placement="top"
+                                        uib-tooltip>
+                                    </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                             <button
+                             class="btn btn-primary" >
+                             <span style="padding-right:5px" class="fa fa-chevron-left">
+                                </span>Volver
+
+                             </button>
+
+                        </div> -->
+    </div>
+</div>
+</div>
+

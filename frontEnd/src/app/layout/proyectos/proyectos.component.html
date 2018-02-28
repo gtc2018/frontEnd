@@ -1,0 +1,305 @@
+<div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<div [@routerTransition]>
+    <app-page-header [heading]="'Proyectos'" [icon]="'fa-wrench'"></app-page-header>
+
+            <!--DIV BOTON NUEVO Empresa -->
+            <div style="text-align:left">
+
+                <button type="button" class="btn btn-primary mb-2" (click)="createHide()" blueColored>
+                    <span class="fa fa-plus"></span> Nuevo Proyecto
+                    <b>
+                        <span class="{{icon}}"></span>
+                    </b>
+                </button>
+
+            </div>
+            <!--FIN DIV BOTON NUEVO Empresa -->
+
+
+             <div *ngIf="visible">
+            <!--ALERT MENSAJES -->
+            <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                    {{message}}
+                    <button aria-label="Close" class="close" type="button">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <strong></strong>
+            </div>
+                <!--FIN ALERT MENSAJES -->
+            <!-- *ngIf="visible" -->
+
+            <div class="card mb-3" >
+
+                <div class="card-header">Proyecto</div>
+
+                <form (ngSubmit)="save()" >
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                            <label class="col-form-label">*Nombre del proyecto</label>
+                            <input type="text" [(ngModel)]="proyecto.nombre"
+                             name="nombre"
+                             class="form-control input-underline input-lg" id="nombreProyecto"
+                                placeholder="Nombre del Proyecto"
+                                required>
+
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                            <label class="col-form-label ">*Tipo del proyecto</label>
+                            <div class="">
+                                <select
+                                [(ngModel)]="proyecto.tipo"
+                                name="tipo"
+                                class="form-control">
+                                    <option value=undefined
+                                     disabled
+                                     selected>Seleccione un proyecto</option>
+                                     <option value="Interno">Interno</option>
+                                     <option value="Externo">Externo</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                            <label class="col-form-label ">*Subir documento</label>
+                            <div class="">
+                                <input type="file">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-row col-xs-12 col-sm-6 col-md-8 col-lg-8 ">
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                            <label class=" col-form-label ">*Empresas</label>
+                            <select #selectEn [(ngModel)]="proyecto.empresaId"
+                            (change)="setNew(selectEn.value)"
+                            name="enterprise"
+                            class="form-control">
+                                <option value=undefined disabled selected>Seleccione una empresa</option>
+                                <option *ngFor="let e of enterprises" [value]="e.empresaId">
+                                    {{e.descripcion}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                                <!-- #selectEn [(ngModel)]="proyecto.usuarioId" -->
+                                <label class=" col-form-label ">*Seleccionar Usuarios</label>
+                                <select #selectUs
+                                (change)="setNewUser(selectUs.value,i)"
+                                name="enterprise"
+                                class="form-control">
+                                    <option value=undefined selected>Seleccione un usuario</option>
+                                    <option *ngFor="let u of usuarios;let i = index" [value]="u.id">
+                                            {{u.nombres}}&nbsp;{{u.apellidos}}
+                                    </option>
+                                </select>
+
+                        </div>
+
+                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                                <label class=" col-form-label ">*Involucrados:</label>
+
+                        <table class="table table-striped table-bordered">
+                                <thead align="center">
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Proyectos</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let u of userToEnterprise; let i=index">
+
+                                        <td>
+                                            <span [innerHTML]="u.nombres"></span>
+                                            <span [innerHTML]="u.apellidos"></span>
+                                        </td>
+                                        <!-- <td align="center">
+                                            <span>
+                                                <input type="checkbox"
+                                                (change)="checkUser(u)">
+                                            </span>
+                                        </td> -->
+                                        <td align="center">
+                                            <span>211-222-554
+                                            </span>
+                                        </td>
+                                        <td align="center">
+                                            <span
+                                            style="color:red"
+                                            class="fa fa-times hand"
+                                            title="Eliminar"
+                                            (click)="deleteUserToEnterprise(u, i)">
+                                            </span>
+                                        </td>
+
+                                        <!-- <td>SPC</td>
+                                       <td>Veneco</td>
+                                       <td>02/03/2017</td>
+                                       <td><input type="checkbox"></td>
+                                   </tr>
+                                   <tr>
+                                           <td>CDA</td>
+                                           <td>Picachu</td>
+                                           <td>02/03/2017</td>
+                                           <td><input type="checkbox"></td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+                            </div>
+
+
+                    </div>
+
+                    <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                            <table class="table table-striped table-bordered">
+                                    <thead align="center">
+                                        <tr>
+                                            <th>Usuario</th>
+                                            <th>Seleccionar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let u of usuarios">
+
+                                            <td>
+                                                <span [innerHTML]="u.nombres"></span>
+                                                <span [innerHTML]="u.apellidos"></span>
+                                            </td>
+                                            <td align="center">
+                                                <span>
+                                                    <input type="checkbox"
+                                                    (change)="checkUser(u)">
+                                                </span>
+                                            </td>
+
+                                            <!-- <td>SPC</td>
+                                           <td>Veneco</td>
+                                           <td>02/03/2017</td>
+                                           <td><input type="checkbox"></td>
+                                       </tr>
+                                       <tr>
+                                               <td>CDA</td>
+                                               <td>Picachu</td>
+                                               <td>02/03/2017</td>
+                                               <td><input type="checkbox"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                            <label class=" col-form-label ">*Usuarios</label>
+                            <select [(ngModel)]="proyecto.usuarios" name="usuarios" class="form-control">
+                                <option value=undefined disabled selected>Seleccione una empresa</option>
+                                <option *ngFor="let u of usuarios" [value]="u.id">
+                                    {{u.nombres}}
+                                </option>
+                            </select>
+                        </div>
+
+
+
+                    </div> -->
+
+                </div>
+                <br>
+
+            <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <input
+                    type="submit"
+                    class="btn btn-success"
+                    value="Guardar"/>
+
+                     <!-- <input style="margin-left:10px"
+                     type="reset"
+                     class="btn btn-danger"
+                     value="Limpiar" /> -->
+
+                </div>
+
+            </form>
+            </div>
+
+            </div>
+
+            <br>
+
+        <div class="col-md-12">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <td>Nombre del proyecto</td>
+                        <td>Creado por</td>
+                        <td>Fecha creación por</td>
+                        <td>Acciones</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let p of proyectos">
+
+                        <td>
+                            <span [innerHTML]="p.nombre"></span>
+                        </td>
+                        <td>
+                            <span [innerHTML]="p.usuarioCreacion"></span>
+                        </td>
+                        <td>
+                            <span [innerHTML]="p.fechaCreacion"></span>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-default">
+                                    <i (click)="upload(p)"
+                                     class="fa fa-pencil-square-o fa-lg hand"
+                                     aria-hidden="true"
+                                     title="Editar">
+                                    </i>
+                                </a>
+                                <a class="btn btn-default">
+                                    <i (click)="delete(p)"
+                                     class="fa fa-trash-o fa-lg hand"
+                                      aria-hidden="true"
+                                      title="Eliminar">
+                                    </i>
+                                </a>
+                            </div>
+                        </td>
+
+                        <!-- <td>SPC</td>
+                       <td>Veneco</td>
+                       <td>02/03/2017</td>
+                       <td><input type="checkbox"></td>
+                   </tr>
+                   <tr>
+                           <td>CDA</td>
+                           <td>Picachu</td>
+                           <td>02/03/2017</td>
+                           <td><input type="checkbox"></td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+</div>
+        </div>
+</div>
+

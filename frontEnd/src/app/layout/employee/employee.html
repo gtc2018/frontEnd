@@ -1,0 +1,225 @@
+
+<div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+    <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header>
+
+              <form>
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                    <label class="col-form-label">*Tipo de empleado</label>
+                    <select class="form-control">
+                      <option>Interno</option>
+                      <option>Externo</option>
+                    </select>
+                  </div>
+
+                  <div class=" col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                    <label class="col-form-label">*Tipo de documento</label>
+                    <select class="form-control">
+                      <option>NIT</option>
+                      <option>CC</option>
+                      <option>CE</option>
+                    </select>
+                  </div>
+
+                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                    <label class=" col-form-label ">*# Documento</label>
+                    <input type="text" class="form-control" placeholder="# Documento">
+                  </div>
+
+                </div>
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        <label class=" col-form-label ">*Nombres</label>
+                        <input type="text" class="form-control" placeholder="Nombres">
+                      </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        <label class=" col-form-label ">*Apellidos</label>
+                        <input type="text" class="form-control" placeholder="Apellidos">
+                      </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                      <label class=" col-form-label ">Direccion</label>
+                      <input type="text" class="form-control" placeholder="Direccion">
+                    </div>
+
+                  </div>
+
+                  <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label ">Telefono</label>
+                          <input type="text" class="form-control" placeholder="Telefono">
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                                <label class=" col-form-label ">*Email</label>
+                                <input type="email" class="form-control" placeholder="Email">
+                              </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label ">*Cargo</label>
+                          <select class="form-control">
+                                <option>Analista</option>
+                                <option>Auxiliar</option>
+                                <option>Lider</option>
+                              </select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label ">*Sueldo</label>
+                          <input type="text" class="form-control" placeholder="Sueldo">
+                        </div>
+
+                    </div>
+
+                    <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <label class=" col-form-label ">Oficina</label>
+                            <select class="form-control">
+                                    <option>Ingenio 1</option>
+                                    <option>Ingenio 2</option>
+                                    <option>Bancoomeva</option>
+                                  </select>
+                          </div>
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <label class=" col-form-label ">Otros beneficios</label>
+                            <input type="text" class="form-control" placeholder="Otros beneficios">
+                          </div>
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                          <label class=" col-form-label ">*Estado</label>
+                          <select class="form-control">
+                                <option>Estado 1</option>
+                                <option>Estado 2</option>
+                                <option>Estado 3</option>
+                              </select>
+                        </div>
+
+                      </div>
+                      <br>
+                      <br>
+
+                      <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                          <input style="margin-right:10px"
+                          type="submit"
+                          class="btn btn-success"
+                          value="Guardar"/>
+
+                           <input style="margin-left:10px"
+                           type="reset"
+                           class="btn btn-danger"
+                           value="Limpiar" />
+
+                      </div>
+
+              </form>
+
+                              <br>
+
+                <div class="card mb-3">
+                        <div class="card-header">
+                                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                    <label class=" col-form-label"
+                                    style="padding-right:10px">Buscar por</label>
+                                    <select class="form-control">
+                                            <option></option>
+                                            <option>Nombre o razon social</option>
+                                            <option>Tipo documento</option>
+                                            <option>#Documento</option>
+                                          </select>
+                                </div>
+                                </div>
+
+                                <div class="col-auto ">
+                                    <div class="input-group">
+                                            <div class="input-group-addon ">
+                                                    <span class="fa fa-search"></span>
+                                                  </div>
+                                    <input type="text" class="form-control" placeholder="Search">
+
+                                </div>
+                                </div>
+
+
+                               </div>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Nombres</th>
+                                    <th>Apellidos</th>
+                                    <th>#Documento</th>
+                                    <th>Telefono</th>
+                                    <th>Email</th>
+                                    <th>Activo</th>
+                                    <th>Editar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Anggelo Jose</td>
+                                    <td>Moncada Viera</td>
+                                    <td>000339281</td>
+                                    <td>13123134</td>
+                                    <td>anggelo@gestecon.net</td>
+                                    <td>
+                                    <input type="checkbox">
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-pencil"
+                                        aria-hidden="true"
+                                        title="Editar">
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Fabian</td>
+                                    <td>Zamorano</td>
+                                    <td>00029412</td>
+                                    <td>2233145</td>
+                                    <td>Fabian@gestecon.net</td>
+                                    <td>
+                                    <input type="checkbox" checked>
+                                    </td>
+                                    <td>
+                                        <span class="fa fa-pencil"
+                                        aria-hidden="true"
+                                        title="Editar">
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                             <button
+                             class="btn btn-primary" >
+
+                             <span style="padding-right:5px"
+                             class="fa fa-chevron-left">
+                                </span>Volver
+
+                             </button>
+
+                    </div>
+    </div>
+</div>
+</div>
+
