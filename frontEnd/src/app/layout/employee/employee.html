@@ -1,145 +1,290 @@
 
 <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div [@routerTransition]>
-    <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header>
+    <!-- <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header> -->
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+            <h2 class=" page-header">
+                Empleado
+            </h2>
 
-              <form>
+        </div>
+    </div>
 
-                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <hr>
 
-                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                    <label class="col-form-label">*Tipo de empleado</label>
-                    <select class="form-control">
-                      <option>Interno</option>
-                      <option>Externo</option>
-                    </select>
-                  </div>
+    <div style="text-align:left">
 
-                  <div class=" col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                    <label class="col-form-label">*Tipo de documento</label>
-                    <select class="form-control">
-                      <option>NIT</option>
-                      <option>CC</option>
-                      <option>CE</option>
-                    </select>
-                  </div>
+        <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
+            <span class="fa fa-plus"></span> Nuevo Empleado
+            <b><span class="{{icon}}"></span></b>
+        </button>
 
-                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                    <label class=" col-form-label ">*# Documento</label>
-                    <input type="text" class="form-control" placeholder="# Documento">
-                  </div>
+    </div>
 
+    <form *ngIf="visible" >
+    <div class="card" >
+
+            <div class="card-header">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                            Empleados&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                        <!-- <input style="margin-right:12px"
+                        type="submit"
+                        class="btn-sm btn-success fa fa-floppy-o"
+                        value=""/> -->
+
+                        <button style="margin-right:12px"
+                        type="submit"
+                        placement="top"
+                        ngbTooltip="Guardar"
+                        class="btn btn-success fa fa-floppy-o fa-lg"
+                        value="">
+                        </button>
+
+                         <!-- <input style="margin-left:10px"
+                         type="reset"
+                         class="btn-sm btn-danger"
+                         value="Limpiar" /> -->
+
+
+
+
+                         <button style="margin-left:10px"
+                         type="reset"
+                         placement="top"
+                        ngbTooltip="Limpiar"
+                         class="btn btn-danger"
+                         value="">
+                         <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                        </button>
+
+                    </div>
+            </div>
+
+            <br>
+
+
+
+
+
+
+            <div class="row justify-content-around">
+
+                <!-- justify-content-around -->
+
+                <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3"
+                style="padding-bottom:10px">
+
+                        <label class="hand "
+                        ondragover="return false;"
+                        (dragenter)="handleDragEnter()"
+                         (dragleave)="handleDragLeave()"
+                        (drop)="handleDrop($event)">
+                    <div class="col-auto">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <label class="col-form-label-sm" style="padding-bottom:10px " >Subir foto:</label>
+                        </div>
+                        <img [src]="imageSrc"
+                         class="picture-marc" width="165" height="225">
+                        </div>
+                        <div class="col-auto">
+
+
+                        <input type='file'
+                         (change)="handleInputChange($event)"
+                         style="display: none;">
+
+                          </div>
+                        </label>
+<br>
                 </div>
 
-                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                        <label class=" col-form-label ">*Nombres</label>
-                        <input type="text" class="form-control" placeholder="Nombres">
-                      </div>
+           <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
-                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                        <label class=" col-form-label ">*Apellidos</label>
-                        <input type="text" class="form-control" placeholder="Apellidos">
-                      </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <label class="col-form-label-sm">*Tipo de empleado:</label>
+            <select class="form-control-sm input-underline">
+              <option>Interno</option>
+              <option>Externo</option>
+            </select>
+          </div>
 
-                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                      <label class=" col-form-label ">Direccion</label>
-                      <input type="text" class="form-control" placeholder="Direccion">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label class=" col-form-label-sm ">*Nombres:</label>
+                <input type="text" class="form-control-sm input-underline" placeholder="Nombres">
+              </div>
+
+          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+        <label class=" col-form-label-sm ">Telefono:</label>
+        <input type="text" class="form-control-sm input-underline" placeholder="Telefono">
+      </div>
+
+      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <label class=" col-form-label-sm ">Oficina:</label>
+            <select class="form-control-sm input-underline">
+                    <option>Ingenio 1</option>
+                    <option>Ingenio 2</option>
+                    <option>Bancoomeva</option>
+                  </select>
+    </div>
+
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <label class=" col-form-label-sm ">Otros beneficios:</label>
+            <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}">
+      </div>
+
+           </div>
+
+           <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <label class="col-form-label-sm">*Tipo de documento:</label>
+            <select class="form-control-sm input-underline">
+              <option>NIT</option>
+              <option>CC</option>
+              <option>CE</option>
+            </select>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <label class=" col-form-label-sm ">*Apellidos:</label>
+                <input type="text" class="form-control-sm input-underline" placeholder="Apellidos">
+              </div>
+
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label class=" col-form-label-sm ">*Celular:</label>
+                <input type="email" class="form-control-sm input-underline" placeholder="Email">
+              </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <label class=" col-form-label-sm ">*Email:</label>
+                    <input type="email" class="form-control-sm input-underline" placeholder="Email">
+            </div>
+
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <label class=" col-form-label-sm ">*Cargo:</label>
+                    <select class="form-control-sm input-underline">
+                          <option>Analista</option>
+                          <option>Auxiliar</option>
+                          <option>Lider</option>
+                        </select>
+            </div>
+
+           </div>
+
+           <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <label class=" col-form-label-sm ">*# Documento:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="# Documento">
+          </div>
+
+          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <label class=" col-form-label-sm ">Direccion:</label>
+                <input type="text" class="form-control-sm input-underline" placeholder="Direccion">
+              </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <label class=" col-form-label-sm ">Empresa:</label>
+                    <select class="form-control-sm input-underline">
+                            <option>Bancoomeva</option>
+                            <option>GTC Corporation</option>
+                            <option>Optima SA</option>
+                          </select>
+            </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                      <label class=" col-form-label-sm ">*Sueldo:</label>
+                      <input #sueldo value="{{444| currency}}" type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}">
                     </div>
 
-                  </div>
-
-                  <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
-                          <label class=" col-form-label ">Telefono</label>
-                          <input type="text" class="form-control" placeholder="Telefono">
-                        </div>
-
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
-                                <label class=" col-form-label ">*Email</label>
-                                <input type="email" class="form-control" placeholder="Email">
-                              </div>
-
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
-                          <label class=" col-form-label ">*Cargo</label>
-                          <select class="form-control">
-                                <option>Analista</option>
-                                <option>Auxiliar</option>
-                                <option>Lider</option>
-                              </select>
-                        </div>
-
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
-                          <label class=" col-form-label ">*Sueldo</label>
-                          <input type="text" class="form-control" placeholder="Sueldo">
-                        </div>
-
-                    </div>
-
-                    <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                            <label class=" col-form-label ">Oficina</label>
-                            <select class="form-control">
-                                    <option>Ingenio 1</option>
-                                    <option>Ingenio 2</option>
-                                    <option>Bancoomeva</option>
-                                  </select>
-                          </div>
-
-                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                            <label class=" col-form-label ">Otros beneficios</label>
-                            <input type="text" class="form-control" placeholder="Otros beneficios">
-                          </div>
-
-                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
-                          <label class=" col-form-label ">*Estado</label>
-                          <select class="form-control">
-                                <option>Estado 1</option>
-                                <option>Estado 2</option>
-                                <option>Estado 3</option>
-                              </select>
-                        </div>
-
-                      </div>
-                      <br>
-                      <br>
-
-                      <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 
-                          <input style="margin-right:10px"
+           </div>
+
+
+
+
+
+                      <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                      style="padding-top:14px">
+
+                          <button style="margin-right:12px"
                           type="submit"
-                          class="btn btn-success"
-                          value="Guardar"/>
+                          placement="top"
+                          ngbTooltip="Guardar"
+                          class="btn btn-success fa fa-floppy-o fa-lg"
+                          value="">
+                          </button>
 
-                           <input style="margin-left:10px"
+
+
+
+                           <button style="margin-left:10px"
                            type="reset"
+                           placement="top"
+                          ngbTooltip="Limpiar"
                            class="btn btn-danger"
-                           value="Limpiar" />
+                           value="">
+                           <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                          </button>
+
+                      </div> -->
 
                       </div>
 
-              </form>
+                      <br>
 
-                              <br>
+    </div>
 
-                <div class="card mb-3">
-                        <div class="card-header">
-                                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <hr>
+</form>
+
+                <div class="card mb-3 table-responsive">
+                        <div class="row card-header center-sc">
+
+                            <div class="col-auto" >
+                            Tabla de Empleados
+                            </div>
+
+                            <div class="btn-group col-auto pull-right "
+            style="justify-content: flex-end">
+
+
+                    <button class="btn btn-outline-success btn-md"
+                    placement="bottom"
+                    ngbTooltip="Exportar en excel"
+                     > <i class="fa fa-file-excel-o"></i>
+                      </button>
+
+                    <button class="btn btn-outline-danger btn-md"
+                    placement="bottom"
+                    ngbTooltip="Exportar en PDF">
+
+                    <i class="fa fa-file-pdf-o"></i> </button>
+
+
+            </div>
+
+
+                                <!-- <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                                 <div class="col-auto">
                                     <div class="input-group">
-                                    <label class=" col-form-label"
+                                    <label class=" col-form-label-sm"
                                     style="padding-right:10px">Buscar por</label>
-                                    <select class="form-control">
+                                    <select class="form-control-sm input-underline">
                                             <option></option>
-                                            <option>Nombre o razon social</option>
-                                            <option>Tipo documento</option>
+                                            <option>Nombres</option>
+                                            <option>Apellidos</option>
                                             <option>#Documento</option>
+                                            <option>Telefono</option>
+                                            <option>Email</option>
                                           </select>
                                 </div>
                                 </div>
@@ -149,16 +294,13 @@
                                             <div class="input-group-addon ">
                                                     <span class="fa fa-search"></span>
                                                   </div>
-                                    <input type="text" class="form-control" placeholder="Search">
+                                    <input type="text" class="form-control-sm input-underline" placeholder="Search">
 
                                 </div>
                                 </div>
-
-
-                               </div>
+                               </div> -->
                         </div>
-                        <div class="card-body table-responsive">
-                            <table class="table table-hover table-striped">
+                            <table class="table table-hover table-striped table-bordered table-sm">
                                 <thead>
                                 <tr>
                                     <th>Nombres</th>
@@ -205,21 +347,246 @@
                                 </tr>
                                 </tbody>
                             </table>
-                        </div>
                     </div>
-                    <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                             <button
-                             class="btn btn-primary" >
-
-                             <span style="padding-right:5px"
-                             class="fa fa-chevron-left">
-                                </span>Volver
-
-                             </button>
-
-                    </div>
+                    <br>
     </div>
 </div>
 </div>
+<br><br>
 
+<!-- //Primer funcionario malo -->
+
+              <!-- <form>
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+                 <!-- <div class="col-auto ">
+                    <label class="col-form-label-sm">*Tipo de empleado</label>
+                    <select class="form-control-sm input-underline">
+                      <option>Interno</option>
+                      <option>Externo</option>
+                    </select>
+                  </div>
+
+                  <div class=" col-auto ">
+                    <label class="col-form-label-sm">*Tipo de documento</label>
+                    <select class="form-control-sm input-underline">
+                      <option>NIT</option>
+                      <option>CC</option>
+                      <option>CE</option>
+                    </select>
+                  </div>
+
+                  <div class="col-auto ">
+                    <label class=" col-form-label-sm ">*# Documento</label>
+                    <input type="text" class="form-control-sm input-underline" placeholder="# Documento">
+                  </div>
+
+                </div>
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        <label class=" col-form-label-sm ">*Nombres</label>
+                        <input type="text" class="form-control-sm input-underline" placeholder="Nombres">
+                      </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        <label class=" col-form-label-sm ">*Apellidos</label>
+                        <input type="text" class="form-control-sm input-underline" placeholder="Apellidos">
+                      </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                      <label class=" col-form-label-sm ">Direccion</label>
+                      <input type="text" class="form-control-sm input-underline" placeholder="Direccion">
+                    </div>
+
+                  </div>
+
+                  <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label-sm ">Telefono</label>
+                          <input type="text" class="form-control-sm input-underline" placeholder="Telefono">
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                                <label class=" col-form-label-sm ">*Email</label>
+                                <input type="email" class="form-control-sm input-underline" placeholder="Email">
+                              </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label-sm ">*Cargo</label>
+                          <select class="form-control-sm input-underline">
+                                <option>Analista</option>
+                                <option>Auxiliar</option>
+                                <option>Lider</option>
+                              </select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label-sm ">*Sueldo</label>
+                          <input type="text" class="form-control-sm input-underline" placeholder="Sueldo">
+                        </div>
+
+                    </div>
+
+                    <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <label class=" col-form-label-sm ">Oficina</label>
+                            <select class="form-control-sm input-underline">
+                                    <option>Ingenio 1</option>
+                                    <option>Ingenio 2</option>
+                                    <option>Bancoomeva</option>
+                                  </select>
+                          </div>
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <label class=" col-form-label-sm ">Otros beneficios</label>
+                            <input type="text" class="form-control-sm input-underline" placeholder="Otros beneficios">
+                          </div>
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                          <label class=" col-form-label-sm ">*Estado</label>
+                          <select class="form-control-sm input-underline">
+                                <option>Estado 1</option>
+                                <option>Estado 2</option>
+                                <option>Estado 3</option>
+                              </select>
+                        </div>
+
+                      </div>
+
+                      <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                          <input style="margin-right:10px"
+                          type="submit"
+                          class="btn-sm btn-success"
+                          value="Guardar"/>
+
+                           <input style="margin-left:10px"
+                           type="reset"
+                           class="btn-sm btn-danger"
+                           value="Limpiar" />
+
+                      </div>
+
+              </form> -->
+
+
+
+              <!-- Segundo formulario rechazado -->
+
+                <!-- <form>
+
+                    <!-- justify-content-around -->
+
+       <!--         <div class="form-row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+      <!--        <div class="col-auto ">
+                <label class="col-form-label-sm">*Tipo de empleado:</label>
+                <select class="form-control-sm input-underline">
+                  <option>Interno</option>
+                  <option>Externo</option>
+                </select>
+              </div>
+
+              <div class=" col-auto ">
+                <label class="col-form-label-sm">*Tipo de documento:</label>
+                <select class="form-control-sm input-underline">
+                  <option>NIT</option>
+                  <option>CC</option>
+                  <option>CE</option>
+                </select>
+              </div>
+
+              <div class="col-auto ">
+                <label class=" col-form-label-sm ">*# Documento:</label>
+                <input type="text" class="form-control-sm input-underline" placeholder="# Documento">
+              </div>
+
+               </div>
+
+        <div class="form-row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+<!--          <div class=" col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+            <label class=" col-form-label-sm ">*Nombres:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Nombres">
+          </div>
+
+          <div class="  col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+            <label class=" col-form-label-sm ">*Apellidos:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Apellidos">
+          </div>
+
+          <div class=" col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+            <label class=" col-form-label-sm ">Direccion:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Direccion">
+          </div>
+
+          <div class=" col-xs-6 col-sm-6 col-md-3 col-lg-3  ">
+            <label class=" col-form-label-sm ">Telefono:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Telefono">
+          </div>
+
+        </div>
+
+        <div class="form-row justify-content-around col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+ <!--               <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">*Email</label>
+                        <input type="email" class="form-control-sm input-underline" placeholder="Email">
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">Empresa</label>
+                        <select class="form-control-sm input-underline">
+                                <option>Bancoomeva</option>
+                                <option>GTC Corporation</option>
+                                <option>Optima SA</option>
+                              </select>
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">Oficina</label>
+                        <select class="form-control-sm input-underline">
+                                <option>Ingenio 1</option>
+                                <option>Ingenio 2</option>
+                                <option>Bancoomeva</option>
+                              </select>
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">*Cargo</label>
+                        <select class="form-control-sm input-underline">
+                              <option>Analista</option>
+                              <option>Auxiliar</option>
+                              <option>Lider</option>
+                            </select>
+                </div>
+
+        </div>
+
+        <div class="form-row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+   <!--       <div class="col-auto ">
+            <label class=" col-form-label-sm ">*Sueldo</label>
+            <input #sueldo value="{{444| currency}}" type="number" class="form-control-sm input-underline salary" style="width: 45%" placeholder="{{999999999| currency}}">
+          </div>
+
+          <div class=" col-auto ">
+                <label class=" col-form-label-sm ">Otros beneficios</label>
+                <!-- <i class="fa fa-usd fa-lg
+                                 form-control-feedback"
+                                 style="z-index:99999;padding-top: 10px; color:#94959a"></i> -->
+ <!--               <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}">
+          </div>
+
+        </div> -->
+
+                <!-- <form>
+                        <file-uploader [activeColor]="'orangered'" [baseColor]="'lightgray'"></file-uploader>
+                    </form> -->

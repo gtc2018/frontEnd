@@ -1,8 +1,119 @@
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div [@routerTransition]>
-<app-page-header [heading]="'Requerimientos'" [icon]="'fa-table'"></app-page-header>
 
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+<div [@routerTransition]>
+        <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        Requerimientos
+                    </h2>
+
+                </div>
+
+                <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
+
+                        <div class="btn btn-primary hand pull-right"
+            routerLink="create"
+             (click)="creationPage()">
+                 <i class="fa fa-plus"
+                 aria-hidden="true">
+                 </i>
+                 &nbsp; Crear nuevo
+            </div>
+
+        </div>
+
+            </div>
+            <hr>
+            <br>
+
+<div class="row" >
+
+    <!-- <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+
+            <div class="btn btn-primary hand"
+            routerLink="create"
+             (click)="creationPage()">
+                 <i class="fa fa-plus"
+                 aria-hidden="true">
+                 </i>
+                 &nbsp; Crear nuevo
+            </div>
+
+    </div> -->
+
+            <!-- <div class="btn-group center-sc row col-xs-6 offset-sm-5 col-sm-4 offset-md-6 col-md-3 offset-lg-6 col-lg-3 pull-right"
+            style="padding-top:10px"> -->
+            <div class="btn-group col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right "
+            style="padding-top:10px; justify-content: flex-end">
+
+
+                    <button class="btn btn-outline-success btn-md pull-right"
+                    placement="top"
+                    ngbTooltip="Exportar en excel"
+                     > <i class="fa fa-file-excel-o"></i>
+                     Excel </button>
+
+                    <button class="btn btn-outline-danger btn-md pull-right"
+                    placement="top"
+                    ngbTooltip="Exportar en PDF">
+                             PDF
+                    <i class="fa fa-file-pdf-o"></i> </button>
+
+
+            </div>
+
+        </div>
+
+<div class="row center-sc"   >
+
+    <div class="row  col-auto "
+    style="padding-top:10px">
+
+        <div class=" col-auto ">
+
+                <select #selectCl name="quotation.select"
+                 class="form-control-sm">
+                    <option value=undefined
+                     disabled
+                      selected> Fecha Inicio DS</option>
+                </select>
+
+       </div>
+
+       <div class=" col-auto">
+
+        <input type="date">
+
+        </div>
+
+    </div>
+
+    <div class=" row  col-auto"
+    style="padding-top:10px">
+
+            <div class="  col-auto">
+
+                    <select #selectCl name="quotation.select"
+                     class="form-control-sm">
+                        <option value=undefined
+                         disabled
+                          selected> Fecha Inicio DS</option>
+                    </select>
+
+           </div>
+
+           <div class=" col-auto">
+
+            <input type="date">
+
+            </div>
+
+    </div>
+
+        </div>
+
+<br>
 
 <ng2-smart-table [settings]="settings" [source]="data" ></ng2-smart-table>
 

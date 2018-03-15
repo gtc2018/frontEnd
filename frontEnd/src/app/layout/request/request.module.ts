@@ -6,17 +6,23 @@ import { RequestComponent } from './request.component';
 import { PageHeaderModule } from '../../shared/index';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ButtonViewComponent } from '../quotation/quotation.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CreateRequestComponent } from './create-request/create-request.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [CommonModule,
          RequestRoutingModule,
           PageHeaderModule,
-          Ng2SmartTableModule],
+          Ng2SmartTableModule,
+          NgbModule,
+          FormsModule],
 
     // entryComponents: [
     //         ButtonViewComponent
     //       ],
 
-    declarations: [RequestComponent]
+    declarations: [RequestComponent,
+        CreateRequestComponent]
 })
 export class RequestModule {}

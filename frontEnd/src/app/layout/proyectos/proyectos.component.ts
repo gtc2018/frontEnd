@@ -58,6 +58,7 @@ export class ProyectosComponent implements OnInit {
 
             this.enterprise = new EnterpriseModel();
 
+
         }
 
         ngOnInit() {
@@ -314,6 +315,10 @@ export class ProyectosComponent implements OnInit {
 
         console.log(model);
     }
+
+    //Funcion para el cargador de archivos
+
+
 
 
 }

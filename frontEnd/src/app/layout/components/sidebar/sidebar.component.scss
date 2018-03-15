@@ -5,12 +5,12 @@ $topnav-background-color: #0077f7;
     z-index: 1000;
     top: 56px;
     left: 235px;
-    width: 235px;
+    width: 160px;
     margin-left: -235px;
     border: none;
     border-radius: 0;
     overflow-y: auto;
-    background-color: $topnav-background-color;
+    background:linear-gradient(-6666deg,#0007ff ,#ddd);
     bottom: 0;
     overflow-x: hidden;
     padding-bottom: 40px;
@@ -22,8 +22,8 @@ $topnav-background-color: #0077f7;
     // border-top: 1px solid rgba(255,255,255,0.3);
     .list-group {
         a.list-group-item {
-            background: $topnav-background-color;
-            border: 0;
+            background: linear-gradient(6deg,#007bff 50% ,#ddd);
+            // border: 0;
             border-radius: 0;
             color: aliceblue;
             text-decoration: none;
@@ -32,7 +32,7 @@ $topnav-background-color: #0077f7;
             }
         }
         a:hover {
-            background: darken($topnav-background-color, 5%);
+            background: linear-gradient(6deg,#0271e9 50% ,rgb(209, 209, 209));
             color: #fff;
         }
         a.router-link-active {

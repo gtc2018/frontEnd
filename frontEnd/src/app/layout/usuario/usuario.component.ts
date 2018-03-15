@@ -21,6 +21,10 @@ import { AuthService } from '../../shared/guard/auth.service';
     providers: [UsuarioService, CrearUsuarioService]
 })
 export class UsuarioComponent implements OnInit {
+
+    // Variables
+    emailRegex: RegExp;
+    messageEmail: any;
     user: any;
 
     private usuarios: Array<UsuarioModel>;
@@ -168,7 +172,7 @@ export class UsuarioComponent implements OnInit {
 
             this.usuario.usuarioCreacion=this.login.authUser.usuarioId;
             }
-        this.isValid = this.crearUsuarioService.validate(this.usuario);
+        this.isValid = this.validate(this.usuario);
 
         if (this.isValid) {
 
@@ -209,8 +213,13 @@ export class UsuarioComponent implements OnInit {
             });
 
         } else {
-            this.message = "Los campos con * son obligatorios";
-            // this.toastr.warning('Los campos con * son obligatorios!', 'Creación de Usuarios');
+        console.log(this.messageEmail);
+        if(!this.messageEmail){
+            this.message= 'Los campos con * son obligatorios!';
+        }else{
+            this.message= this.messageEmail;
+            this.messageEmail= undefined;
+        }
         }
     }
 
@@ -260,9 +269,41 @@ export class UsuarioComponent implements OnInit {
         sessionStorage.setItem('usuario', JSON.stringify(usuario));
         this.usuario = JSON.parse(sessionStorage.getItem("usuario"));
         this.visible = true;
-
         this.icon= "fa fa-caret-down";
-
     }
+
+    public validate(usuario: UsuarioModel): boolean {
+        let isValid = true;
+
+        if(!usuario.apellidos){
+           isValid = false;
+        }
+        if(!usuario.email){
+           isValid = false;
+
+            this.messageEmail = undefined;
+        }else{
+            this.emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+            if (this.emailRegex.test(usuario.email)) {
+                console.log("correcto");
+                this.messageEmail = undefined;
+              } else {
+                console.log("incorrecto");
+                this.messageEmail = "Por favor digite un formato de email válido";
+              }
+         }
+        if(!usuario.telefono){
+           isValid = false;
+        }
+        if(!usuario.rolId){
+           isValid = false;
+        }
+        if(!usuario.password){
+           isValid = false;
+        }
+
+        return isValid;
+      }
 
 }

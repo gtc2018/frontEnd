@@ -64,7 +64,7 @@ export class RequestComponent implements OnInit {
             title: 'Fecha R. E. DS'
           },
           action:{
-
+//Botones con su funcionalidad recursiva
             title:'Acciones',
             type:'custom',
             filter:false,
@@ -118,6 +118,10 @@ export class RequestComponent implements OnInit {
     constructor() {}
 
     ngOnInit() {}
+
+    creationPage():void{
+        console.log("dsads");
+    }
 
 
 }

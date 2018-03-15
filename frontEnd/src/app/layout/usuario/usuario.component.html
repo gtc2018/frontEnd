@@ -1,18 +1,37 @@
 <div [@routerTransition]>
-    <app-page-header [heading]="'Usuario'" [icon]="'fa-table'"></app-page-header>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+            <h2 class=" page-header">
+                Usuario
+            </h2>
+
+        </div>
+
+        <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
+
+                <button type="submit" class="btn btn-primary pull-right" (click)="toggleDivCreateUsers()" blueColored>
+                        <span class="fa fa-plus"></span> Nuevo usuario
+                        <b><span class="{{icon}}"></span></b>
+                    </button>
+
+</div>
+
+    </div>
+    <hr>
+
     <div class="row">
 
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--DIV BOTON NUEVO USUARIO -->
-            <div style="text-align:left">
+            <!-- <div style="text-align:left">
 
                 <button type="submit" class="btn btn-primary mb-2" (click)="toggleDivCreateUsers()" blueColored>
                     <span class="fa fa-plus"></span> Nuevo usuario
                     <b><span class="{{icon}}"></span></b>
                 </button>
 
-            </div>
+            </div> -->
             <!--FIN DIV BOTON NUEVO USUARIO -->
 
             <div *ngIf="visible" >
@@ -40,7 +59,7 @@
                                 <br>
                                 <div class="row col col">
                                     <label for="inputEmail3" class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-form-label">
-                                        <span class="required">*</span> Nombre Usuario</label>
+                                        <span class="required">*</span> Nombre</label>
                                     <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                                         <input type="text" class="form-control" name="nombres" id="nombres" [(ngModel)]="usuario.nombres" placeholder="Nombres" required>
                                     </div>
@@ -183,10 +202,10 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Usuario</th>
-                            <th>Contraseña</th>
-                            <th>Nombre del Asignado</th>
-                            <th>#Documento del Asignado</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Email</th>
+                            <th>Direccion</th>
                             <th>Activo</th>
                             <th>Editar</th>
                         </tr>

@@ -164,10 +164,6 @@ export class QuotationComponent implements OnInit {
 
   //Funciones
 
-  save():void{
-      console.log("dsads");
-  }
-
   ngOnInit() {
 
     console.log(this);

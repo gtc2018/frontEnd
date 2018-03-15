@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { AuthService } from './shared/guard/auth.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FileUploaderComponent } from './layout/employee/file-uploader.component';
 
 
 

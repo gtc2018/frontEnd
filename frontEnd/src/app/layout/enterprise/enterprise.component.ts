@@ -25,6 +25,8 @@ export class EnterpriseComponent implements OnInit {
     messageEmail: string;
     emailRegex: RegExp;
 
+    myClass:string="label";
+
     ngOnInit() {
         this.loadEnterprises();
     }
@@ -43,6 +45,18 @@ export class EnterpriseComponent implements OnInit {
                     console.log(this.login.authUser.usuarioId);
 
                 }
+
+                var focusInput = function() {
+                    this.parentElement.children[1].className = "label active";
+                    this.parentElement.children[0].className = this.parentElement.children[0].className.replace("error", "");
+                  };
+
+                  var blurInput = function() {
+                    if (this.value <= 0) {
+                      this.parentElement.children[1].className = "label";
+                      this.parentElement.children[0].className = this.parentElement.children[0].className + " error";
+                    }
+                  };
 
         }
 
@@ -307,6 +321,12 @@ export class EnterpriseComponent implements OnInit {
         // }
 
         return isValid;
+      }
+
+      change(value):void{
+          this.myClass="label active"
+
+          console.log(value);
       }
 
     //Manejo del Date //

@@ -13,7 +13,7 @@ $topnav-background-color: #fff;
     text-align: center;
     color: #1E90FF; /*Color texto imagen.*/
     padding: 3em;
-   
+
     .col-lg-4 {
         padding: 0;
     }
@@ -24,7 +24,7 @@ $topnav-background-color: #fff;
         line-height: 1.3333333;
         border-radius: 0;
     }
-    
+
     .input-underline {
         background: 0 0;
         border: none;
@@ -37,7 +37,7 @@ $topnav-background-color: #fff;
         border-bottom: 2px solid #DC143C;
         box-shadow: none;
     }
-    
+
     .rounded-btn {
         -webkit-border-radius: 50px;
         border-radius: 50px;
@@ -97,4 +97,28 @@ $topnav-background-color: #fff;
         border: 0px solid #fff;
         padding: 10px 0;
     }
+
+    // .btn-file {
+    //     position: relative;
+    //     overflow: hidden;
+    // }
+    // .btn-file input[type=file] {
+    //     position: absolute;
+    //     top: 0;
+    //     right: 0;
+    //     min-width: 100%;
+    //     min-height: 100%;
+    //     font-size: 100px;
+    //     text-align: right;
+    //     filter: alpha(opacity=0);
+    //     opacity: 0;
+    //     outline: none;
+    //     background: white;
+    //     cursor: inherit;
+    //     display: block;
+    // }
+
+
+
+
 }

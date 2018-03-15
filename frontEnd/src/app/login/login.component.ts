@@ -36,9 +36,6 @@ export class LoginComponent {
     ngOnInit() {
 
     }
-
-
-
     /**
      *
      * @param form Metodo validar login:
@@ -70,7 +67,7 @@ export class LoginComponent {
 
                 } else {
 
-                    this.message = "El usuario o contraseña no es valido.";
+                    this.message = "El usuario o contraseña inválida";
                     this.isValid = false;
 
                     return this.router.navigate(['/login']);
@@ -81,7 +78,7 @@ export class LoginComponent {
 
 
         } else {
-            this.message = "Usuario y Contraseña no deben ser vacios";
+            this.message = "Usuario y Contraseña no deben estar vacios";
         }
 
     }

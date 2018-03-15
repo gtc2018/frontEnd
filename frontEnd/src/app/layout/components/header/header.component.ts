@@ -15,6 +15,8 @@ export class HeaderComponent implements OnInit {
          public router: Router,
         private login:AuthService) {
 
+            console.log(this.login);
+
         this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);
         this.translate.setDefaultLang('en');
         const browserLang = this.translate.getBrowserLang();
