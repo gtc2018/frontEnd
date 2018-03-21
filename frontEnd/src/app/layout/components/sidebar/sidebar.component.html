@@ -1,24 +1,5 @@
 <nav class="sidebar" style="font-size: 0.85rem;" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group title">
-
-            <!-- <div class="nested-menu">
-                    <a class="list-group-item" (click)="addExpandClass('pages')">
-                        <span><i class="fa fa-plus"></i>&nbsp; {{ 'Menu' | translate }}</span>
-                    </a>
-                    <li class="nested" [class.expand]="showMenu === 'pages'">
-                        <ul class="submenu">
-                            <li>
-                                <a href="javascript:void(0)"><span>{{ 'Submenu' | translate }}</span></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)"><span>{{ 'Submenu' | translate }}</span></a>
-                            </li>
-                            <li>
-                                <a href="javascript:void(0)"><span>{{ 'Submenu' | translate }}</span></a>
-                            </li>
-                        </ul>
-                    </li>
-                </div> -->
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard "></i>&nbsp;{{ 'Dashboard' | translate }}
         </a>
@@ -28,30 +9,40 @@
         <!-- <a [routerLink]="['/charge']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-address-card"></i>&nbsp;{{ 'Cargos' | translate }}
         </a> -->
-        <a [routerLink]="['/usuarios']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a (click)="eventGroup1()" class="list-group-item hand">
+            <i class="fa fa-fw fa-cubes"></i>&nbsp;Entidades Básicas<i class="fa fa-fw {{icon}}"></i>
+        </a>
+        <div *ngIf="hideGroup1">
+        <a [routerLink]="['/usuarios']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-user-circle-o"></i>&nbsp;{{ 'Usuarios' | translate }}
         </a>
-        <a [routerLink]="['/employee']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a [routerLink]="['/employee']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-users"></i>&nbsp;{{ 'Empleados' | translate }}
         </a>
-        <a [routerLink]="['/enterprise']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a [routerLink]="['/enterprise']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-industry"></i>&nbsp;{{ 'Enterprise' | translate }}
         </a>
-        <a [routerLink]="['/activity']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        </div>
+        <a (click)="eventGroup2()"  class="list-group-item hand">
+                <i class="fa fa-fw fa-th-list"></i>&nbsp;Transacciones<i class="fa fa-fw {{iconG2}}"></i>
+            </a>
+            <div *ngIf="hideGroup2">
+        <a [routerLink]="['/activity']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-calendar-o"></i>&nbsp;{{ 'Registro de Actividades' | translate }}
         </a>
-        <a routerLink="/cotizacion" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a routerLink="/cotizacion" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-money"></i>&nbsp;{{ 'Cotizaciones' | translate }}
         </a>
-        <a [routerLink]="['/encuesta']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a [routerLink]="['/encuesta']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-wpforms"></i>&nbsp;{{ 'Encuestas' | translate }}
         </a>
-        <a [routerLink]="['/proyectos']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a [routerLink]="['/proyectos']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-map"></i>&nbsp;{{ 'Proyectos' | translate }}
         </a>
-        <a [routerLink]="['/request']" [routerLinkActive]="['router-link-active']" class="list-group-item">
+        <a [routerLink]="['/request']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
             <i class="fa fa-fw fa-object-ungroup"></i>&nbsp;{{ 'Requerimientos' | translate }}
         </a>
+    </div>
 
     </ul>
 

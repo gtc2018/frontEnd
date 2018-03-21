@@ -28,11 +28,15 @@ $topnav-background-color: #0077f7;
             color: aliceblue;
             text-decoration: none;
             .fa {
-                margin-right: 10px;
+                margin-right: 1px;
             }
         }
-        a:hover {
+        a.subitem{
             background: linear-gradient(6deg,#0271e9 50% ,rgb(209, 209, 209));
+
+        }
+        a:hover {
+            font-weight: bolder;
             color: #fff;
         }
         a.router-link-active {

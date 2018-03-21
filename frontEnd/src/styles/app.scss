@@ -95,6 +95,11 @@ input[type=number] { -moz-appearance:textfield; }
     width: 103px;
 }
 
+.input-filter{
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
 
 // .title{
 //     font-family: serif;
@@ -117,12 +122,18 @@ table{
     color:rgb(192, 192, 192);
 }
 
- table, tr, td, th {
+ .table td {
     box-shadow: 0 0 0 0.15px rgb(201, 201, 201);
+    vertical-align: middle;
 }
 
 .picture-marc{
     outline: 3px dashed #ccc;
     outline-offset: 5px;
+}
+
+.card-header {
+    color: white;
+    background: linear-gradient(6deg, #3798ff 50%, #ddd);
 }
 

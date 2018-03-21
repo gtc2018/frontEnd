@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FileUploaderComponent } from './file-uploader.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FilterPipe } from './employee.filter';
 
 @NgModule({
     imports: [CommonModule,
@@ -17,6 +18,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
         Ng2SmartTableModule,
         NgbModule,
         ],
-    declarations: [EmployeeComponent,FileUploaderComponent]
+    declarations: [EmployeeComponent,
+        FileUploaderComponent,
+        FilterPipe]
 })
 export class EmployeeModule {}

@@ -4,160 +4,147 @@ import { ButtonViewComponent } from '../quotation/quotation.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DefaultEditor } from 'ng2-smart-table';
 import {FileUploaderComponent} from './file-uploader.component';
+import { EmployeeModel } from '../../model/employee';
+import { EnterpriseModel } from '../../model/enterprise';
+import { EmployeeService } from './employee.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../../shared/guard/auth.service';
+
 
 @Component({
     selector: 'app-employee',
     templateUrl: './employee.html',
     styleUrls: ['./employee.scss'],
-    animations: [routerTransition()]
+    animations: [routerTransition()],
+    providers: [EmployeeService]
 })
 export class EmployeeComponent implements OnInit   {
-    icon: string = "fa fa-caret-left";
-    visible: boolean = false;
-    //Metodos principales
-    constructor() {
+
+    //Metodos principales---------------------
+    constructor(private employeeService: EmployeeService,
+        private router: Router,
+        private toastr: ToastrService,
+        private login:AuthService) {
+
+        this.employeeForm = new EmployeeModel();
+
+        if(this.login.authUser !== undefined){
+
+            console.log(this.login.authUser.usuarioId);
+
+        }
+
+        this.employeeForm.foto = 'assets/images/avatar.png';
+
+        this.employee = [
+
+            {id:1,
+            name:"Santiago Carrillo",
+            apellido:"Alzate Papá",
+            document:"1144078370",
+            telefono:"3754547",
+            email:"santiagoca42@gmail.com",
+            estado:'1',
+            foto:'assets/images/Scan.jpg'},
+
+            {id:2,
+            name:"Santiago Carrillo",
+            apellido:"Alzate Papá",
+            document:"1144078370",
+            telefono:"3754547",
+            email:"santiagoca42@gmail.com",
+            estado:'1',
+            foto:'assets/images/avatar.png'}
+
+        ]
+
     }
 
 
     ngOnInit() {
-        console.log(this);
     }
 
-    //Variables
+    //Variables--------------------------------------------
+
+    user: string;
+
+    messageEmail: string;
+    emailRegex: RegExp;
 
     dragging: boolean = false;
+    deleteFormHide:boolean = false;
+    stateExpand: number = 1;
+    visible: boolean = false;
+
     activeColor: string = 'green';
     baseColor: string = '#ccc';
+    icon: string = "fa fa-caret-left";
+
+    employeeForm: EmployeeModel;
+    employee= [];
+
+    filter: EmployeeModel = new EmployeeModel();
+
 
     imageSrc: string = 'assets/images/avatar.png';
 
     public input: string = '<input type="checkbox" [checked]="true" >';
 
-    settings = {
-
-        actions:false,
-        // {
-        //     columnTitle:"Acciones",
-        //     add:false,
-        //     position:'right'
-        // },
-
-    // edit: {
-    //     editButtonContent: '<a (click)="save()" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"  title="Editar" ></i></a>',
-    //     saveButtonContent: '<a class="btn btn-default"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>',
-    //     cancelButtonContent: '<i class="fa fa-times fa-lg" aria-hidden="true"></i>',
-    //   },
-
-    //   delete: {
-    //     deleteButtonContent: '<i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>',
-    //     confirmDelete: true
-    //   },
-        columns: {
-        nombres: {
-            title: 'Nombres'
-          },
-          apellidos: {
-            title: 'Apellidos'
-          },
-          document: {
-            title: '#Documento'
-          },
-          telefono: {
-            title: 'Telefono'
-          },
-          email: {
-            title: 'Email'
-          },
-          state:  {
-            title: 'Passed',
-                type: 'html',
-                valuePrepareFunction: (value) => {
-                    return `<input type="text" >`;
-                },
-            filter: {
-              type: 'checkbox',
-              config: {
-                true: '0',
-                false: '1',
-                resetText: 'clear',
-              },
-              },
-            },
-          action:{
-
-            title:'Acciones',
-            type:'custom',
-            filter:false,
-            renderComponent: ButtonViewComponent,
-        onComponentInitFunction(instance) {
-          instance.edit.subscribe(row => {
-            alert(`${row.name} edit!`)
-            console.log(row,'List');
-          });
-          instance.deleteEvent.subscribe(row => {
-            alert(`${row.name} delete!`)
-            console.log(row,'List');
-          }
-
-        );
-
-        }
-
-          }
-
-        }
-
-    }
-
-        data = [
-            {
-            nombres:'Anggelo Jose',
-            apellidos:"Moncada Viera",
-            document:"000339281",
-            telefono:"13123134",
-            email:"anggelo@gestecon.net",
-             state:1
-            },
-
-            {
-            nombres:'Fabian',
-            apellidos:"Zamorano",
-            document:"00029412",
-            telefono:"2233145",
-            email:"Fabian@gestecon.net",
-             state:0
-            },
-            {
-            nombres:'Fabian',
-            apellidos:"Zamorano",
-            document:"00029412",
-            telefono:"2233145",
-            email:"Fabian@gestecon.net",
-             state:true
-            },
-            {
-            nombres:'Fabian',
-            apellidos:"Zamorano",
-            document:"00029412",
-            telefono:"2233145",
-            email:"Fabian@gestecon.net",
-             state:"1"
-            },
-            {
-            nombres:'IVAN',
-            apellidos:"Zamorano",
-            document:"0000012",
-            telefono:"2233145",
-            email:"Fabian@gestecon.net",
-             state:"true"
-            }
-
-        ];
-
-
         // Funciones
 
+        clean(){
+
+            this.employeeForm = new EmployeeModel();
+
+            this.deleteFormHide = false;
+        }
+
+        upload(model){
+
+            console.log(model);
+
+            console.log(this.stateExpand);
+
+            if( this.stateExpand === 1 ){
+                this.visible = !this.visible;
+
+            if(this.visible === true){
+                this.icon = "fa fa-caret-down";
+
+                this.deleteFormHide = false;
+            }else{
+                this.icon= "fa fa-caret-left";
+            }
+            this.deleteFormHide = true;
+
+            this.employeeForm = model;
+            this.stateExpand = 3;
+
+            }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
+                this.employeeForm = model;
+                this.stateExpand = 3;
+                this.deleteFormHide = true;
+            }
+
+               }
+
         createHide() {
+
+            console.log(this.stateExpand);
+
+            if( this.stateExpand === 3 ){
+
+                this.employeeForm = new EmployeeModel();
+
+                this.employeeForm.foto = 'assets/images/avatar.png';
+
+                this.stateExpand = 2;
+
+                this.deleteFormHide = false;
+
+            }else if( this.stateExpand === 1 ){
+
             this.visible = !this.visible;
 
             if(this.visible === true){
@@ -169,13 +156,32 @@ export class EmployeeComponent implements OnInit   {
                 this.icon= "fa fa-caret-left";
 
             }
+
+            this.stateExpand = 2
+
+            // this.stateExpand = true;
+        }else
+        if( this.stateExpand === 2 ){
+
+            this.visible = !this.visible;
+
+            if(this.visible === true){
+
+                this.icon = "fa fa-caret-down";
+
+            }else{
+
+                this.icon= "fa fa-caret-left";
+
+            }
+            this.stateExpand = 1
         }
+
+    }
 
         handleDragEnter() {
             this.dragging = true;
         }
-
-
 
         handleDragLeave() {
             this.dragging = false;
@@ -209,7 +215,9 @@ export class EmployeeComponent implements OnInit   {
 
         _handleReaderLoaded(e) {
             var reader = e.target;
-            this.imageSrc = reader.result;
+
+            console.log(reader.result);
+            this.employeeForm.foto = reader.result;
         }
 
       };

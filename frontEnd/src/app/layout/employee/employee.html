@@ -14,6 +14,7 @@
 
     <hr>
 
+
     <div style="text-align:left">
 
         <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
@@ -27,7 +28,7 @@
     <div class="card" >
 
             <div class="card-header">
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class=" row col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                             Empleados&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -37,30 +38,65 @@
                         class="btn-sm btn-success fa fa-floppy-o"
                         value=""/> -->
 
+                        <div> <hr class="hrv2"></div>
+
+                        <div>
+
                         <button style="margin-right:12px"
                         type="submit"
                         placement="top"
                         ngbTooltip="Guardar"
-                        class="btn btn-success fa fa-floppy-o fa-lg"
+                        class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
                         value="">
                         </button>
+
+                    </div>
+
+                    <div> <hr class="hrv"></div>
+
+
 
                          <!-- <input style="margin-left:10px"
                          type="reset"
                          class="btn-sm btn-danger"
                          value="Limpiar" /> -->
 
+                     <div>
 
-
-
-                         <button style="margin-left:10px"
-                         type="reset"
+                         <button style="margin-left:10px;"
+                         (click)="clean()"
                          placement="top"
                         ngbTooltip="Limpiar"
-                         class="btn btn-danger"
+                         class="btn-sm btn-warning hand"
                          value="">
                          <img [src]="'assets/images/escoba.ico'" width="20" height="20">
                         </button>
+
+                    </div>
+
+                    <div *ngIf="deleteFormHide" style="display: -webkit-box;">
+
+                    <div> <hr class="hrv2"></div>
+
+                    <div>
+
+                            <button style="margin-right:12px"
+                            type="submit"
+                            placement="top"
+                            ngbTooltip="Eliminar"
+                            class="btn-sm btn-danger fa fa-trash-o fa-lg hand"
+                            value="">
+                            </button>
+
+                    </div>
+
+                    <div> <hr class="hrv"></div>
+
+                </div>
+
+                <div *ngIf="!deleteFormHide" > <hr class="hrv2"></div>
+
+
 
                     </div>
             </div>
@@ -79,16 +115,18 @@
                 <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3"
                 style="padding-bottom:10px">
 
-                        <label class="hand "
+                        <label class="hand"
                         ondragover="return false;"
                         (dragenter)="handleDragEnter()"
                          (dragleave)="handleDragLeave()"
-                        (drop)="handleDrop($event)">
+                        (drop)="handleDrop($event)"
+                        placement="top"
+                        ngbTooltip="Haga click para cargar o arrastre la foto">
                     <div class="col-auto">
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <label class="col-form-label-sm" style="padding-bottom:10px " >Subir foto:</label>
+                            <label class="col-form-label-sm" style="padding-bottom:10px " >Subir foto: </label>
                         </div>
-                        <img [src]="imageSrc"
+                        <img [src]="employeeForm.foto"
                          class="picture-marc" width="165" height="225">
                         </div>
                         <div class="col-auto">
@@ -116,12 +154,19 @@
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label class=" col-form-label-sm ">*Nombres:</label>
-                <input type="text" class="form-control-sm input-underline" placeholder="Nombres">
+                <input type="text" class="form-control-sm input-underline"
+                [(ngModel)]="employeeForm.name"
+                name="name"
+                 placeholder="Nombres">
               </div>
 
           <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
         <label class=" col-form-label-sm ">Telefono:</label>
-        <input type="text" class="form-control-sm input-underline" placeholder="Telefono">
+        <input type="text"
+        class="form-control-sm input-underline"
+        placeholder="Telefono"
+        [(ngModel)]="employeeForm.telefono"
+                name="telefono">
       </div>
 
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -153,7 +198,10 @@
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                 <label class=" col-form-label-sm ">*Apellidos:</label>
-                <input type="text" class="form-control-sm input-underline" placeholder="Apellidos">
+                <input type="text" class="form-control-sm input-underline" placeholder="Apellidos"
+                [(ngModel)]="employeeForm.apellido"
+                        name="apellidos"
+                >
               </div>
 
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -163,7 +211,9 @@
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <label class=" col-form-label-sm ">*Email:</label>
-                    <input type="email" class="form-control-sm input-underline" placeholder="Email">
+                    <input type="email" class="form-control-sm input-underline" placeholder="Email"
+                    [(ngModel)]="employeeForm.email"
+                            name="email">
             </div>
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -181,12 +231,16 @@
 
           <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
             <label class=" col-form-label-sm ">*# Documento:</label>
-            <input type="text" class="form-control-sm input-underline" placeholder="# Documento">
+            <input type="text" class="form-control-sm input-underline" placeholder="# Documento"
+            [(ngModel)]="employeeForm.document"
+                    name="document">
           </div>
 
           <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                 <label class=" col-form-label-sm ">Direccion:</label>
-                <input type="text" class="form-control-sm input-underline" placeholder="Direccion">
+                <input type="text" class="form-control-sm input-underline" placeholder="Direccion"
+                [(ngModel)]="employeeForm.direccion"
+                        name="direccion">
               </div>
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -202,9 +256,6 @@
                       <label class=" col-form-label-sm ">*Sueldo:</label>
                       <input #sueldo value="{{444| currency}}" type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}">
                     </div>
-
-
-
            </div>
 
 
@@ -248,25 +299,32 @@
                 <div class="card mb-3 table-responsive">
                         <div class="row card-header center-sc">
 
-                            <div class="col-auto" >
+                            <div class=" col-auto" >
                             Tabla de Empleados
-                            </div>
+                        </div>
 
-                            <div class="btn-group col-auto pull-right "
-            style="justify-content: flex-end">
+             <div class="btn-group row col-auto pull-right "
+            style="">
+            <div> <hr class="hrv1"></div>
 
+                    <div class="col-auto pull-right ">
+                         <i class="fa fa-file-excel-o fa-lg hand"
+                            placement="bottom"
+                            ngbTooltip="Exportar Excel"
+                            style="color:green"></i>
+                    </div>
 
-                    <button class="btn btn-outline-success btn-md"
+                    <div> <hr class="hrv1"></div>
+
+                    <div class="col-auto pull-right ">
+                    <i class="fa fa-file-pdf-o fa-lg hand"
                     placement="bottom"
-                    ngbTooltip="Exportar en excel"
-                     > <i class="fa fa-file-excel-o"></i>
-                      </button>
+                    ngbTooltip="Exportar PDF"
+                    style="color:red"></i>
+                    </div>
 
-                    <button class="btn btn-outline-danger btn-md"
-                    placement="bottom"
-                    ngbTooltip="Exportar en PDF">
 
-                    <i class="fa fa-file-pdf-o"></i> </button>
+                    <div> <hr class="hrv1"></div>
 
 
             </div>
@@ -309,40 +367,73 @@
                                     <th>Telefono</th>
                                     <th>Email</th>
                                     <th>Activo</th>
+                                    <th>Foto</th>
                                     <th>Editar</th>
                                 </tr>
+                                <tr>
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.name"
+                                        placeholder="Buscar por Nombre" ></th>
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.apellido"
+                                        placeholder="Buscar por Apellidos" ></th>
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.document"
+                                        placeholder="Buscar por #Documento"></th>
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.telefono"
+                                        placeholder="Buscar por Telefono"></th>
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.email"
+                                        placeholder="Buscar por Email"></th>
+                                  </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>Anggelo Jose</td>
-                                    <td>Moncada Viera</td>
-                                    <td>000339281</td>
-                                    <td>13123134</td>
-                                    <td>anggelo@gestecon.net</td>
+                                    <tr *ngFor="let e of employee| generalFilter:filter">
+                                        <td>
+                                            <span [innerHTML]="e.name" >
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span [innerHTML]="e.apellido" >
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span [innerHTML]="e.document" >
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span [innerHTML]="e.telefono" >
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span [innerHTML]="e.email" >
+                                            </span>
+                                        </td>
+                                        <td>
+                                                <input type="checkbox"
+                                                 [(ngModel)]="e.estado"
+                                                 name="aaa"
+                                                 #check
+                                                 (change)="changeState(e)">
+                                            </td>
+
+                                            <td>
+                                                    <img [src]="e.foto"
+                                                     class="" width="35" height="40">
+                                                </td>
                                     <td>
-                                    <input type="checkbox">
-                                    </td>
-                                    <td>
-                                        <span class="fa fa-pencil"
-                                        aria-hidden="true"
-                                        title="Editar">
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Fabian</td>
-                                    <td>Zamorano</td>
-                                    <td>00029412</td>
-                                    <td>2233145</td>
-                                    <td>Fabian@gestecon.net</td>
-                                    <td>
-                                    <input type="checkbox" checked>
-                                    </td>
-                                    <td>
-                                        <span class="fa fa-pencil"
-                                        aria-hidden="true"
-                                        title="Editar">
-                                        </span>
+                                        <div class="btn-group">
+                                                <a class="btn btn-default" >
+                                                <i (click)="upload(e)"
+                                                 class="fa fa-pencil-square-o fa-lg hand"
+                                                 aria-hidden="true"
+                                                 title="Editar" >
+                                                 </i>
+                                                </a>
+                                                 <a class="btn btn-default">
+                                                  <i (click)="delete(e)"
+                                                  class="fa fa-trash-o fa-lg hand"
+                                                  aria-hidden="true"
+                                                  title="Eliminar">
+                                                  </i>
+                                                  </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
