@@ -7,8 +7,8 @@ import { EnterpriseComponent } from './enterprise.component';
 import { PageHeaderModule } from './../../shared';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 import { HttpClientModule } from '@angular/common/http';
+import { FilterPipe } from '../../filters/search-table';
 
 @NgModule({
     imports: [CommonModule,
@@ -16,7 +16,8 @@ import { HttpClientModule } from '@angular/common/http';
           PageHeaderModule,
           FormsModule,
           HttpClientModule,
-          NgbModule.forRoot ()],
-    declarations: [EnterpriseComponent]
+          NgbModule],
+    declarations: [EnterpriseComponent,
+    FilterPipe]
 })
 export class EnterpriseModule {}

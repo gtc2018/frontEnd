@@ -4,7 +4,7 @@ export class EnterpriseModel extends ParentEntity{
 
   public empresaId: string;
   public descripcion: string;
-  public tipoEmpresa: string;
+  public tipoCliente: string;
   public urlCarpeta: string;
   public numeroDocumento: string;
   public tipoDocumento: string;

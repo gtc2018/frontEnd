@@ -10,6 +10,7 @@ import { EmployeeService } from './employee.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../shared/guard/auth.service';
+import swal from 'sweetalert2';
 
 
 @Component({
@@ -98,6 +99,8 @@ export class EmployeeComponent implements OnInit   {
             this.employeeForm = new EmployeeModel();
 
             this.deleteFormHide = false;
+
+            this.employeeForm.foto = 'assets/images/avatar.png';
         }
 
         upload(model){
@@ -179,6 +182,7 @@ export class EmployeeComponent implements OnInit   {
 
     }
 
+    // Para cargar la imagen
         handleDragEnter() {
             this.dragging = true;
         }
@@ -203,7 +207,11 @@ export class EmployeeComponent implements OnInit   {
         console.log(reader);
 
         if (!file.type.match(pattern)) {
-            alert('invalid format');
+            swal(
+                'Error al cargar logo',
+                'Por favor ingrese un formato válido de imagen',
+                'error'
+              );
             return;
         }
 

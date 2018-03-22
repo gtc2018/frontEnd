@@ -25,47 +25,6 @@ export class EnterpriseService {
    * Metodo de validaciones del formulario Usuarios.
    * @param enterprise
    */
-  public validate(enterprise: EnterpriseModel): boolean {
-    let isValid = true;
-
-    if(!enterprise.nombreContacto){
-       isValid = false;
-    }
-    if(!enterprise.descripcion){
-       isValid = false;
-    }
-    if(!enterprise.tipoEmpresa){
-        isValid = false;
-     }
-     if(!enterprise.tipoDocumento){
-        isValid = false;
-     }
-     if(!enterprise.email){
-
-        isValid = false;
-
-
-     }else{
-        this.emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-        if (this.emailRegex.test(enterprise.email)) {
-            console.log("correcto");
-          } else {
-            console.log("incorrecto");
-          }
-     }
-     if(!enterprise.numeroDocumento){
-        isValid = false;
-     }
-    // if(!enterprise.rolId){
-    //    isValid = false;
-    // }
-    // if(!enterprise.password){
-    //    isValid = false;
-    // }
-
-    return isValid;
-  }
 
   public saveOrUpdate(enterprise: EnterpriseModel): Observable<RestResponse> {
     console.log(enterprise);

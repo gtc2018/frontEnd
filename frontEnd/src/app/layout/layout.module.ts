@@ -27,6 +27,7 @@ import { ButtonViewComponent } from './quotation/quotation.component';
     declarations: [LayoutComponent,
          SidebarComponent,
           HeaderComponent,
-          ButtonViewComponent]
+          ButtonViewComponent
+          ]
 })
 export class LayoutModule {}

@@ -7,14 +7,14 @@
 
         </div>
 
-        <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
+        <!-- <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
 
                 <button type="submit" class="btn btn-primary pull-right" (click)="toggleDivCreateUsers()" blueColored>
                         <span class="fa fa-plus"></span> Nuevo usuario
                         <b><span class="{{icon}}"></span></b>
                     </button>
 
-</div>
+</div> -->
 
     </div>
     <hr>
@@ -24,14 +24,14 @@
 
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <!--DIV BOTON NUEVO USUARIO -->
-            <!-- <div style="text-align:left">
+            <div style="text-align:left">
 
-                <button type="submit" class="btn btn-primary mb-2" (click)="toggleDivCreateUsers()" blueColored>
+                <button type="submit" class="btn-sm btn-primary mb-2" (click)="toggleDivCreateUsers()" blueColored>
                     <span class="fa fa-plus"></span> Nuevo usuario
                     <b><span class="{{icon}}"></span></b>
                 </button>
 
-            </div> -->
+            </div>
             <!--FIN DIV BOTON NUEVO USUARIO -->
 
             <div *ngIf="visible" >
@@ -46,12 +46,120 @@
             </div>
             <!--FIN ALERT MENSAJES -->
 
+
+            <form >
             <div class="card mb-3" >
 
-                <div class="card-header">Usuarios</div>
+                    <div class="card-header">
+                            <div class=" row col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                    <form >
-                        <div class="form-group row">
+                                    Usuario&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+                                <!-- <input style="margin-right:12px"
+                                type="submit"
+                                class="btn-sm btn-success fa fa-floppy-o"
+                                value=""/> -->
+
+                                <div> <hr class="hrv2"></div>
+
+                                <div>
+
+                                <button style="margin-right:12px"
+                                type="submit"
+                                placement="top"
+                                ngbTooltip="Guardar"
+                                class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                value="">
+                                </button>
+
+                            </div>
+
+                            <div> <hr class="hrv"></div>
+
+
+
+                                 <!-- <input style="margin-left:10px"
+                                 type="reset"
+                                 class="btn-sm btn-danger"
+                                 value="Limpiar" /> -->
+
+                             <div>
+
+                                 <button style="margin-left:10px;"
+                                 (click)="clean()"
+                                 placement="top"
+                                ngbTooltip="Limpiar"
+                                 class="btn-sm btn-warning hand"
+                                 value="">
+                                 <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                                </button>
+
+                            </div>
+
+                            <div *ngIf="deleteFormHide" style="display: -webkit-box;">
+
+                            <div> <hr class="hrv2"></div>
+
+                            <div>
+
+                                    <button style="margin-right:12px"
+                                    type="submit"
+                                    placement="top"
+                                    ngbTooltip="Eliminar"
+                                    class="btn-sm btn-danger fa fa-trash-o fa-lg hand"
+                                    value="">
+                                    </button>
+
+                            </div>
+
+                            <div> <hr class="hrv"></div>
+
+                        </div>
+
+                        <div *ngIf="!deleteFormHide" > <hr class="hrv2"></div>
+
+
+
+                            </div>
+                    </div>
+
+                    <br>
+                        <div class="row justify-content-around">
+
+                                <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4">
+
+                               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <label class=" col-form-label-sm ">*Nombres:</label>
+                                                <input type="text" class="form-control-sm input-underline"
+                                                [(ngModel)]="usuario.nombre"
+                                                name="name"
+                                                 placeholder="Nombres">
+                                </div>
+
+                                </div>
+
+                                <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4">
+
+                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                                <label class=" col-form-label-sm ">*Apellidos:</label>
+                                                <input type="text" class="form-control-sm input-underline" placeholder="Apellidos"
+                                                [(ngModel)]="usuario.apellidos"
+                                                        name="apellidos">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4">
+
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <label class=" col-form-label-sm ">*Email:</label>
+                                                <input type="email" class="form-control-sm input-underline" placeholder="Email"
+                                                [(ngModel)]="usuario.email"
+                                                name="email">
+                                        </div>
+
+                                </div>
 
 
 
@@ -165,10 +273,12 @@
 
                         </div>
 
-                    </form>
+
 
 
             </div>
+
+        </form>
             </div>
 
             <div class="card mb-3">

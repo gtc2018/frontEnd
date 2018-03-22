@@ -43,6 +43,7 @@
                         <div>
 
                         <button style="margin-right:12px"
+                        (click)="save()"
                         type="submit"
                         placement="top"
                         ngbTooltip="Guardar"
@@ -102,11 +103,6 @@
             </div>
 
             <br>
-
-
-
-
-
 
             <div class="row justify-content-around">
 
@@ -200,21 +196,22 @@
                 <label class=" col-form-label-sm ">*Apellidos:</label>
                 <input type="text" class="form-control-sm input-underline" placeholder="Apellidos"
                 [(ngModel)]="employeeForm.apellido"
-                        name="apellidos"
-                >
+                        name="apellidos">
               </div>
 
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <label class=" col-form-label-sm ">*Celular:</label>
-                <input type="email" class="form-control-sm input-underline" placeholder="Email">
-              </div>
-
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <label class=" col-form-label-sm ">*Email:</label>
                     <input type="email" class="form-control-sm input-underline" placeholder="Email"
                     [(ngModel)]="employeeForm.email"
                             name="email">
             </div>
+
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label class=" col-form-label-sm ">*Celular:</label>
+                <input type="email" class="form-control-sm input-underline" placeholder="Celular">
+              </div>
+
+
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                     <label class=" col-form-label-sm ">*Cargo:</label>
@@ -296,8 +293,8 @@
     <hr>
 </form>
 
-                <div class="card mb-3 table-responsive">
-                        <div class="row card-header center-sc">
+                <div class="card mb-3 ">
+                        <div class=" card-header center-sc">
 
                             <div class=" col-auto" >
                             Tabla de Empleados
@@ -358,6 +355,7 @@
                                 </div>
                                </div> -->
                         </div>
+                        <div class="card-body table-responsive">
                             <table class="table table-hover table-striped table-bordered table-sm">
                                 <thead>
                                 <tr>
@@ -438,6 +436,7 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            </div>
                     </div>
 
                     <br>

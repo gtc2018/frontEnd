@@ -5,23 +5,25 @@
         <h1>
                 <div style="padding-bottom:0px; text-align:center" >
 
-                <img src="assets/images/logo.jpg"
+                <img src="assets/images/GrupoCoomeva.png"
                 class="img-fluid"/>
                  <!-- width="320px" height="100px" -->
 
                 </div>
         </h1>
     </header>
-    <section class="main" style="width:100%">
+    <!-- <div class="card table-responsive " style="width:50%; margin-left:25%">
+        <div class="card-header center-sc"> Ingreso al Sistema </div> -->
+    <section class="main center-sc" style="width:100%">
 
 
 
         <form class="form-1" #loginForm="ngForm" (ngSubmit)="validateUsuario(loginForm)" ngNativeValidate>
 
-                <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                <!-- <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
                         {{message}}
                         <strong></strong>
-                    </div>
+                    </div> -->
 
             <p class="field" style="padding-bottom: 4px;">
 
@@ -41,9 +43,15 @@
                     </button>
             </p>
 
+            <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                    {{message}}
+                    <strong></strong>
+                </div>
+
         </form>
 
     </section>
+<!-- </div> -->
 
 
 <!-- LOGGIN #1 -->

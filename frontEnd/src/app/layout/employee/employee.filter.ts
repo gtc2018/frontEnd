@@ -7,7 +7,7 @@ import { EmployeeModel } from '../../model/employee';
     name: 'generalFilter',
     pure: false
 })
-export class FilterPipe implements PipeTransform {
+export class FilterEmployee implements PipeTransform {
   transform(items, filter){
 
     if (!items || !filter) {

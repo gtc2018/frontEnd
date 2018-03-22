@@ -18,9 +18,16 @@ import { AuthService } from '../../shared/guard/auth.service';
 })
 export class EnterpriseComponent implements OnInit {
 
+
     //  Inicializacion de Variables---------------------
 
+    dragging: boolean;
+    stateExpand: number = 1;
+    deleteFormHide: boolean;
+
     user: any;
+
+    filter: EnterpriseModel = new EnterpriseModel();
 
     messageEmail: string;
     emailRegex: RegExp;
@@ -37,6 +44,8 @@ export class EnterpriseComponent implements OnInit {
         private login:AuthService
     ) {
             this.enterprise = new EnterpriseModel();
+
+            this.enterprise.imagenEmpresa= "assets/images/logo.png"
 
                 // this.user = JSON.parse(sessionStorage.getItem("usuario"));
 
@@ -84,9 +93,117 @@ export class EnterpriseComponent implements OnInit {
 
     //Funciones--------------------------------
 
+
+
+
+
+    deleteForm(model){
+
+        if(this.login.authUser !== undefined){
+
+            model.usuarioCreacion=this.login.authUser.usuarioId;
+            }
+
+            swal({
+                title: 'Esta seguro?',
+                text: "El registro eliminado no podrá ser recuperado",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminar'
+              }).then((result) => {
+
+                this.enterpriseService.delete(model).subscribe(res=>{
+                    // if (res.responseCode == OK) {
+                        this.loadEnterprises();
+
+                        this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
+
+                        // swal(
+                        //     'Deleted!',
+                        //     'Your file has been deleted.',
+                        //     'success'
+                        //   )
+                        this.enterprise = new EnterpriseModel();
+                        this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+
+                        this.deleteFormHide = false;
+
+                },(error)=>{  console.log(error);
+                    swal(
+                        'Error al eliminar el registro',
+                        error.error.message,
+                        'error'
+                      )
+                }
+                )
+              })
+
+    }
+
+    //Cuando se limpia el formulario
+
+    clean(){
+
+        this.enterprise = new EnterpriseModel();
+
+        this.deleteFormHide = false;
+
+        this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+    }
+
+    //Para editar
+
+    upload(model){
+
+        console.log(model);
+
+        console.log(this.stateExpand);
+
+        if( this.stateExpand === 1 ){
+            this.visible = !this.visible;
+
+        if(this.visible === true){
+            this.icon = "fa fa-caret-down";
+
+            this.deleteFormHide = false;
+        }else{
+            this.icon= "fa fa-caret-left";
+        }
+        this.deleteFormHide = true;
+
+        this.enterprise = model;
+        this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+        this.stateExpand = 3;
+
+        }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
+            this.enterprise = model;
+            this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+            this.stateExpand = 3;
+            this.deleteFormHide = true;
+        }
+
+           }
+
     //Para mostrar el crear o no
 
     createHide() {
+
+        console.log(this.stateExpand);
+
+        if( this.stateExpand === 3 ){
+
+            this.enterprise = new EnterpriseModel();
+
+            this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+
+            this.stateExpand = 2;
+
+            this.deleteFormHide = false;
+
+        }else if( this.stateExpand === 1 ){
+
         this.visible = !this.visible;
 
         if(this.visible === true){
@@ -98,7 +215,27 @@ export class EnterpriseComponent implements OnInit {
             this.icon= "fa fa-caret-left";
 
         }
+
+        this.stateExpand = 2
+
+        // this.stateExpand = true;
+    }else
+    if( this.stateExpand === 2 ){
+
+        this.visible = !this.visible;
+
+        if(this.visible === true){
+
+            this.icon = "fa fa-caret-down";
+
+        }else{
+
+            this.icon= "fa fa-caret-left";
+
+        }
+        this.stateExpand = 1
     }
+}
 
     //Para eliminar
 
@@ -143,16 +280,7 @@ export class EnterpriseComponent implements OnInit {
 
     }
 
-    //Para editar
 
-    upload(model){
-
-        this.enterprise = model;
-
-        this.visible = true;
-
-        this.icon= "fa fa-caret-down";
-    }
 
     //Manejo del Date
 
@@ -174,16 +302,19 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.isValid) {
 
-        if (this.enterprise.empresaId=== undefined){
+        // if (this.enterprise.empresaId=== undefined){
 
-            this.enterprise.empresaId="500557";
+        //     this.enterprise.empresaId="500557";
 
-        }
+        // }
+
+
 
         this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
             // if (res.responseCode == OK) {
                 this.loadEnterprises();
                 this.enterprise = new EnterpriseModel();
+                this.enterprise.imagenEmpresa = 'assets/images/logo.png';
                 this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
             // } else {
             //     this.message = res.message;
@@ -193,7 +324,7 @@ export class EnterpriseComponent implements OnInit {
         },(error)=>{
             console.log(error);
 
-                this.toastr.error("Error en la transacción");
+                this.toastr.error(error.error.message,"Error en la transacción");
             // swal(
             //     'Error',
             //     error.error.message,
@@ -251,7 +382,7 @@ export class EnterpriseComponent implements OnInit {
 
             this.isValid = false;
 
-            this.toastr.error("Error actualizar los datos");
+            this.toastr.error(error.error.message,"Error actualizar los datos");
             // swal(
             //     'Error',
             //     error.error.message,
@@ -287,7 +418,7 @@ export class EnterpriseComponent implements OnInit {
         if(!enterprise.descripcion){
            isValid = false;
         }
-        if(!enterprise.tipoEmpresa){
+        if(!enterprise.tipoCliente){
             isValid = false;
          }
          if(!enterprise.tipoDocumento){
@@ -306,6 +437,7 @@ export class EnterpriseComponent implements OnInit {
                 console.log("correcto");
                 this.messageEmail = undefined;
               } else {
+                isValid = false;
                 console.log("incorrecto");
                 this.messageEmail = "Por favor digite un formato de email válido";
               }
@@ -323,16 +455,57 @@ export class EnterpriseComponent implements OnInit {
         return isValid;
       }
 
-      change(value):void{
-          this.myClass="label active"
-
-          console.log(value);
-      }
-
     //Manejo del Date //
 
 
     //-----------------------------------
+
+
+    // Para cargar el logo
+
+    handleDragEnter() {
+        this.dragging = true;
+    }
+
+    handleDragLeave() {
+        this.dragging = false;
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        this.dragging = false;
+        this.handleInputChange(e);
+    }
+
+    handleInputChange(e){
+
+        var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    console.log(file);
+
+    var pattern = /image-*/;
+    var reader = new FileReader();
+    console.log(reader);
+
+    if (!file.type.match(pattern)) {
+        swal(
+            'Error al cargar logo',
+            'Por favor ingrese un formato válido de imagen',
+            'error'
+          );
+        return;
+    }
+
+    // this.loaded = false;
+
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+    }
+
+    _handleReaderLoaded(e) {
+        var reader = e.target;
+        console.log(reader.result);
+        this.enterprise.imagenEmpresa = reader.result;
+    }
 
 
 }

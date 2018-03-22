@@ -3,6 +3,27 @@
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard "></i>&nbsp;{{ 'Dashboard' | translate }}
         </a>
+
+        <a (click)="eventGroup2()"  class="list-group-item hand">
+                <i class="fa fa-fw fa-th-list"></i>&nbsp;Transacciones<i class="fa fa-fw {{iconG2}}"></i>
+            </a>
+            <div *ngIf="hideGroup2">
+        <a [routerLink]="['/activity']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem" style="font-size: 11px;" >
+           <i class="fa fa-fw fa-calendar-o" ></i> &nbsp;{{ 'Registro de Actividades' | translate }}
+        </a>
+        <a routerLink="/cotizacion" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
+            <i class="fa fa-fw fa-money"></i>&nbsp;{{ 'Cotizaciones' | translate }}
+        </a>
+        <a [routerLink]="['/encuesta']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
+            <i class="fa fa-fw fa-wpforms"></i>&nbsp;{{ 'Encuestas' | translate }}
+        </a>
+        <a [routerLink]="['/proyectos']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
+            <i class="fa fa-fw fa-map"></i>&nbsp;{{ 'Proyectos' | translate }}
+        </a>
+        <a [routerLink]="['/request']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
+            <i class="fa fa-fw fa-object-ungroup"></i>&nbsp;{{ 'Requerimientos' | translate }}
+        </a>
+    </div>
         <!-- <a [routerLink]="['/seguridad']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-shield"></i>&nbsp;{{ 'Seguridad' | translate }}
         </a> -->
@@ -23,26 +44,7 @@
             <i class="fa fa-fw fa-industry"></i>&nbsp;{{ 'Enterprise' | translate }}
         </a>
         </div>
-        <a (click)="eventGroup2()"  class="list-group-item hand">
-                <i class="fa fa-fw fa-th-list"></i>&nbsp;Transacciones<i class="fa fa-fw {{iconG2}}"></i>
-            </a>
-            <div *ngIf="hideGroup2">
-        <a [routerLink]="['/activity']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
-            <i class="fa fa-fw fa-calendar-o"></i>&nbsp;{{ 'Registro de Actividades' | translate }}
-        </a>
-        <a routerLink="/cotizacion" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
-            <i class="fa fa-fw fa-money"></i>&nbsp;{{ 'Cotizaciones' | translate }}
-        </a>
-        <a [routerLink]="['/encuesta']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
-            <i class="fa fa-fw fa-wpforms"></i>&nbsp;{{ 'Encuestas' | translate }}
-        </a>
-        <a [routerLink]="['/proyectos']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
-            <i class="fa fa-fw fa-map"></i>&nbsp;{{ 'Proyectos' | translate }}
-        </a>
-        <a [routerLink]="['/request']" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
-            <i class="fa fa-fw fa-object-ungroup"></i>&nbsp;{{ 'Requerimientos' | translate }}
-        </a>
-    </div>
+
 
     </ul>
 

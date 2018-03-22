@@ -5,7 +5,7 @@ $topnav-background-color: #0077f7;
     z-index: 1000;
     top: 56px;
     left: 235px;
-    width: 160px;
+    width: 182px;
     margin-left: -235px;
     border: none;
     border-radius: 0;
@@ -27,12 +27,12 @@ $topnav-background-color: #0077f7;
             border-radius: 0;
             color: aliceblue;
             text-decoration: none;
-            .fa {
-                margin-right: 1px;
-            }
+            // .fa {
+            //     margin-right: 1px;
+            // }
         }
         a.subitem{
-            background: linear-gradient(6deg,#0271e9 50% ,rgb(209, 209, 209));
+            background: linear-gradient(6deg,#0459b3 50% ,rgb(209, 209, 209));
 
         }
         a:hover {
