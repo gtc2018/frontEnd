@@ -32,8 +32,6 @@ export class EnterpriseComponent implements OnInit {
     messageEmail: string;
     emailRegex: RegExp;
 
-    myClass:string="label";
-
     ngOnInit() {
         this.loadEnterprises();
     }
@@ -54,18 +52,6 @@ export class EnterpriseComponent implements OnInit {
                     console.log(this.login.authUser.usuarioId);
 
                 }
-
-                var focusInput = function() {
-                    this.parentElement.children[1].className = "label active";
-                    this.parentElement.children[0].className = this.parentElement.children[0].className.replace("error", "");
-                  };
-
-                  var blurInput = function() {
-                    if (this.value <= 0) {
-                      this.parentElement.children[1].className = "label";
-                      this.parentElement.children[0].className = this.parentElement.children[0].className + " error";
-                    }
-                  };
 
         }
 
@@ -93,10 +79,7 @@ export class EnterpriseComponent implements OnInit {
 
     //Funciones--------------------------------
 
-
-
-
-
+//Para eliminar desde el formulario
     deleteForm(model){
 
         if(this.login.authUser !== undefined){
@@ -174,12 +157,10 @@ export class EnterpriseComponent implements OnInit {
         this.deleteFormHide = true;
 
         this.enterprise = model;
-        this.enterprise.imagenEmpresa = 'assets/images/logo.png';
         this.stateExpand = 3;
 
         }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
             this.enterprise = model;
-            this.enterprise.imagenEmpresa = 'assets/images/logo.png';
             this.stateExpand = 3;
             this.deleteFormHide = true;
         }
@@ -268,6 +249,11 @@ export class EnterpriseComponent implements OnInit {
                     //     'success'
                     //   )
 
+                    this.enterprise = new EnterpriseModel();
+                    this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+
+                    this.deleteFormHide = false;
+
             },(error)=>{  console.log(error);
                 swal(
                     'Error al eliminar el registro',
@@ -296,19 +282,9 @@ export class EnterpriseComponent implements OnInit {
             this.enterprise.usuarioCreacion=this.login.authUser.usuarioId;
         }
 
-
-
         this.isValid = this.validate(this.enterprise);
 
         if (this.isValid) {
-
-        // if (this.enterprise.empresaId=== undefined){
-
-        //     this.enterprise.empresaId="500557";
-
-        // }
-
-
 
         this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
             // if (res.responseCode == OK) {
@@ -341,7 +317,6 @@ export class EnterpriseComponent implements OnInit {
             this.messageEmail= undefined;
         }
     }
-
 
     }
 

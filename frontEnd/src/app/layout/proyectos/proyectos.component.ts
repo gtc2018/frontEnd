@@ -43,8 +43,6 @@ export class ProyectosComponent implements OnInit {
 
     icon: string= "fa fa-caret-left";
 
-
-
     //Métodos y funciones
 
     constructor(private enterpriseService: EnterpriseService,
@@ -57,7 +55,6 @@ export class ProyectosComponent implements OnInit {
             this.proyecto = new ProyectoModel();
 
             this.enterprise = new EnterpriseModel();
-
 
         }
 
@@ -184,7 +181,7 @@ export class ProyectosComponent implements OnInit {
         },(error)=>{
             console.log(error);
 
-            this.toastr.error("Error al cargar los datos");
+            this.toastr.error("Error al cargar los datos de Empresa");
             // swal(
             //     'Error',
             //     error.error.message,

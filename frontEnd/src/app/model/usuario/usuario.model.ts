@@ -17,5 +17,7 @@ export class UsuarioModel extends ParentEntity{
   public fechaModificacion: string;
   public usuarioModificacion: string;
   public imagenUsuario: string;
+  public fotoEmpleado: string;
+  public fotoEmpresa: string;
 
 }

@@ -8,13 +8,20 @@ import { UsuarioRoutingModule } from './usuario-routing.module';
 import { UsuarioComponent } from './usuario.component';
 import { PageHeaderModule } from './../../shared';
 import { BlueColorDirective } from './blue-color.directive';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
 @NgModule({
-    imports: [CommonModule, UsuarioRoutingModule, PageHeaderModule, HttpClientModule, FormsModule],
+    imports: [CommonModule,
+         UsuarioRoutingModule,
+          PageHeaderModule,
+           HttpClientModule,
+            FormsModule,
+            NgbModule],
+
     declarations: [UsuarioComponent, BlueColorDirective]
 })
 export class UsuarioModule {
-   
+
 }

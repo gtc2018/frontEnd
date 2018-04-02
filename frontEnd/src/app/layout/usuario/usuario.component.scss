@@ -16,3 +16,9 @@
 .editIcon{
     cursor: pointer;
 }
+
+.form-control-sm:disabled, .form-control-sm[readonly] {
+    background-color: #efefef;
+    opacity: 1;
+    cursor: no-drop;
+}

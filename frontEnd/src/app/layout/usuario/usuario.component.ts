@@ -3,24 +3,34 @@ import { CrearUsuarioService } from './servicios/crear-usuario.service';
 import { Router } from '@angular/router';
 import { UsuarioModel } from './../../model/usuario/usuario.model';
 
-
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { UsuarioService } from './servicios/usuario.service';
 import { OK } from '../../messages/httpstatus';
-
 import swal from 'sweetalert2'
 import { AuthService } from '../../shared/guard/auth.service';
+import { EnterpriseService } from '../enterprise/enterprise.service';
+import { EnterpriseModel } from '../../model/enterprise';
+import { ProyectosService } from '../proyectos/proyectos.service';
 
 @Component({
     selector: 'app-usuario',
     templateUrl: './usuario.component.html',
     styleUrls: ['./usuario.component.scss'],
     animations: [routerTransition()],
-    providers: [UsuarioService, CrearUsuarioService]
+    providers: [UsuarioService, CrearUsuarioService, EnterpriseService, ProyectosService]
 })
 export class UsuarioComponent implements OnInit {
+    confirm: any;
+
+    msgConfirm: string = "No concuerda con la contraseña";
+
+    hideConfirm: boolean = false;
+
+    stateExpand: number = 1;
+
+    deleteFormHide: boolean;
 
     // Variables
     emailRegex: RegExp;
@@ -31,6 +41,7 @@ export class UsuarioComponent implements OnInit {
     private usuario: UsuarioModel;
     private isValid: boolean = true;
     private message: string = "";
+    private enterprises: EnterpriseModel[];
 
 //Mostrar el crear o no
 
@@ -41,6 +52,21 @@ export class UsuarioComponent implements OnInit {
     icon: string= "fa fa-caret-left";
 
     toggleDivCreateUsers() {
+        console.log(this.stateExpand);
+
+        if( this.stateExpand === 3 ){
+
+            this.usuario = new UsuarioModel();
+
+            this.usuario.fotoEmpresa = 'assets/images/logo.png';
+            this.usuario.fotoEmpleado = 'assets/images/avatar.png';
+
+            this.stateExpand = 2;
+
+            this.deleteFormHide = false;
+
+        }else if( this.stateExpand === 1 ){
+
         this.visible = !this.visible;
 
         if(this.visible === true){
@@ -52,6 +78,27 @@ export class UsuarioComponent implements OnInit {
             this.icon= "fa fa-caret-left";
 
         }
+
+        this.stateExpand = 2
+
+        // this.stateExpand = true;
+    }else
+    if( this.stateExpand === 2 ){
+
+        this.visible = !this.visible;
+
+        if(this.visible === true){
+
+            this.icon = "fa fa-caret-down";
+
+        }else{
+
+            this.icon= "fa fa-caret-left";
+
+        }
+        this.stateExpand = 1
+    }
+
     }
 
     //DatePick
@@ -62,10 +109,9 @@ export class UsuarioComponent implements OnInit {
 
     public model: any = { date: { year: 2018, month: 10, day: 9 } };
 
-
-
-
     constructor(
+        private proyectoService: ProyectosService,
+        private enterpriseService: EnterpriseService,
         private usuarioService: UsuarioService,
         private crearUsuarioService: CrearUsuarioService,
         private router: Router,
@@ -74,6 +120,8 @@ export class UsuarioComponent implements OnInit {
     ) {
 
         this.usuario = new UsuarioModel();
+        this.usuario.fotoEmpleado = "assets/images/avatar.png";
+        this.usuario.fotoEmpresa = "assets/images/logo.png";
 
         if (sessionStorage.getItem("usuario")) {
             this.user = JSON.parse(sessionStorage.getItem("usuario"));
@@ -85,22 +133,18 @@ export class UsuarioComponent implements OnInit {
         } else {
             this.user = new UsuarioModel();
         }
-
-
         //this.usuario = new UsuarioModel();
-    }
+      }
 
     ngOnInit() {
         this.loadUsuarios();
-
+        this.loadEnterprises()
     }
 
-    //Metodo para eliminar el registro
-
-    delete(model){
+    //Para eliminar desde el formulario
+    deleteForm(model){
 
         if(this.login.authUser !== undefined){
-
             model.usuarioCreacion=this.login.authUser.usuarioId;
             }
 
@@ -126,6 +170,126 @@ export class UsuarioComponent implements OnInit {
                     //     'success'
                     //   )
 
+                    this.usuario = new UsuarioModel();
+        this.usuario.fotoEmpleado = "assets/images/avatar.png";
+        this.usuario.fotoEmpresa = "assets/images/logo.png";
+
+
+            },(error)=>{  console.log(error);
+                swal(
+                    'Error al eliminar el registro',
+                    error.error.message,
+                    'error'
+                  )
+            }
+            )
+          })
+
+    }
+
+    setNew(id: any): void {
+        console.log(id);
+
+            //  this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
+
+            //  console.log(this.filterEn[0]);
+
+            this.usuario.empresaId = id;
+
+            // this.proyectoService.getAllUsuariosByEmpresaId(id).subscribe(res => {
+
+            //     console.log(res);
+
+            //     this.usuarios = res;
+
+            // },(error)=>{
+
+            //     console.log(error);
+
+            //     this.toastr.error("Error actualizar los datos");
+
+            // });
+
+        }
+
+    //Para cargar empresass
+
+    private loadEnterprises(): void {
+        this.enterpriseService.getEnterprises().subscribe(res => {
+            this.enterprises = res;
+            console.log(this.enterprises);
+        },(error)=>{
+            console.log(error);
+
+            this.toastr.error("Error al cargar los datos de Empresa");
+            // swal(
+            //     'Error',
+            //     error.error.message,
+            //     'error'
+            //   )
+        });
+    }
+
+    comparate(model){
+
+        console.log(model);
+
+        console.log(model.password.length);
+
+        if(model.password.length === this.confirm.length){
+
+            console.log("hola");
+
+            if(model.password !== this.confirm){
+
+                console.log("holaBien");
+
+                this.hideConfirm=true;
+
+            }else{
+                this.hideConfirm=false;
+            }
+        }else{
+            this.hideConfirm=false;
+        }
+
+    }
+
+
+    //Metodo para eliminar el registro
+
+    delete(model){
+
+        if(this.login.authUser !== undefined){
+            model.usuarioCreacion=this.login.authUser.usuarioId;
+            }
+
+        swal({
+            title: 'Esta seguro?',
+            text: "El registro eliminado no podrá ser recuperado",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, eliminar'
+          }).then((result) => {
+
+            this.usuarioService.delete(model).subscribe(res=>{
+                // if (res.responseCode == OK) {
+                    this.loadUsuarios();
+
+                    this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
+
+                    // swal(
+                    //     'Deleted!',
+                    //     'Your file has been deleted.',
+                    //     'success'
+                    //   )
+                    this.usuario = new UsuarioModel();
+        this.usuario.fotoEmpleado = "assets/images/avatar.png";
+        this.usuario.fotoEmpresa = "assets/images/logo.png";
+
+
             },(error)=>{  console.log(error);
                 swal(
                     'Error al eliminar el registro',
@@ -147,8 +311,6 @@ export class UsuarioComponent implements OnInit {
             console.log(res);
 
         },(error)=>{
-
-
             // this.isValid = false;
 
             console.log(error);
@@ -159,6 +321,10 @@ export class UsuarioComponent implements OnInit {
             //     error.error.message,
             //     'error'
             //   )
+            this.usuario = new UsuarioModel();
+
+            this.usuario.fotoEmpresa = 'assets/images/logo.png';
+            this.usuario.fotoEmpleado = 'assets/images/avatar.png';
         });
 
     }
@@ -265,11 +431,35 @@ export class UsuarioComponent implements OnInit {
      * Metodo editar usuarios:
      */
 
-    public edit(usuario: UsuarioModel): void {
-        sessionStorage.setItem('usuario', JSON.stringify(usuario));
-        this.usuario = JSON.parse(sessionStorage.getItem("usuario"));
-        this.visible = true;
-        this.icon= "fa fa-caret-down";
+    public edit(model): void {
+
+        console.log(model);
+
+        this.confirm = model.password;
+
+        console.log(this.stateExpand);
+
+        if( this.stateExpand === 1 ){
+            this.visible = !this.visible;
+
+        if(this.visible === true){
+            this.icon = "fa fa-caret-down";
+
+            this.deleteFormHide = false;
+        }else{
+            this.icon= "fa fa-caret-left";
+        }
+        this.deleteFormHide = true;
+
+        this.usuario = model;
+        this.stateExpand = 3;
+
+        }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
+            this.usuario = model;
+            this.stateExpand = 3;
+            this.deleteFormHide = true;
+        }
+
     }
 
     public validate(usuario: UsuarioModel): boolean {

@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
             <h2 class=" page-header">
-                Empleado
+                <i class="fa fa-fw fa-users" style="color:blue"></i>
             </h2>
 
         </div>
@@ -25,12 +25,18 @@
     </div>
 
     <form *ngIf="visible" >
+
+            <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                    {{message}}
+                    <strong></strong>
+                </div>
+
     <div class="card" >
 
             <div class="card-header">
-                    <div class=" row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class=" row center-sc  col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                            Empleados&nbsp;&nbsp;&nbsp;&nbsp;
+                            <!-- &nbsp;&nbsp;&nbsp;&nbsp; -->
 
 
                         <!-- <input style="margin-right:12px"
@@ -142,42 +148,52 @@
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <label class="col-form-label-sm">*Tipo de empleado:</label>
-            <select class="form-control-sm input-underline">
-              <option>Interno</option>
-              <option>Externo</option>
+            <select [(ngModel)]="employeeForm.tipoEmpleado"
+            name="tipoEmpleado"
+            class="form-control-sm input-underline">
+            <option value="Interno">Interno</option>
+            <option value="Externo">Externo</option>
             </select>
           </div>
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                 <label class=" col-form-label-sm ">*Nombres:</label>
                 <input type="text" class="form-control-sm input-underline"
-                [(ngModel)]="employeeForm.name"
-                name="name"
+                [(ngModel)]="employeeForm.nombres"
+                name="nombres"
                  placeholder="Nombres">
               </div>
 
           <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-        <label class=" col-form-label-sm ">Telefono:</label>
-        <input type="text"
+        <label class=" col-form-label-sm ">Teléfono:</label>
+        <input type="number"
         class="form-control-sm input-underline"
-        placeholder="Telefono"
+        placeholder="Teléfono"
         [(ngModel)]="employeeForm.telefono"
                 name="telefono">
       </div>
 
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-            <label class=" col-form-label-sm ">Oficina:</label>
-            <select class="form-control-sm input-underline">
-                    <option>Ingenio 1</option>
-                    <option>Ingenio 2</option>
-                    <option>Bancoomeva</option>
+            <label class=" col-form-label-sm ">Ciudad:</label>
+            <select [(ngModel)]="employeeForm.ciudad"
+            name="ciudad"
+             class="form-control-sm input-underline">
+                    <option value="Cali">Cali</option>
+                    <option value="Bogota">Bogota</option>
+                    <option value="Medellin">Medellin</option>
                   </select>
     </div>
 
-    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-            <label class=" col-form-label-sm ">Otros beneficios:</label>
-            <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}">
-      </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <label class=" col-form-label-sm ">*Cargo:</label>
+            <select [(ngModel)]="employeeForm.cargoId"
+            name="cargoId"
+            class="form-control-sm input-underline">
+                  <option value="1">Analista</option>
+                  <option value="1">Auxiliar</option>
+                  <option value="1">Lider</option>
+                </select>
+    </div>
 
            </div>
 
@@ -185,18 +201,65 @@
 
           <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <label class="col-form-label-sm">*Tipo de documento:</label>
-            <select class="form-control-sm input-underline">
-              <option>NIT</option>
-              <option>CC</option>
-              <option>CE</option>
+            <select [(ngModel)]="employeeForm.tipoDocumento"
+            name="tipoDocumento"
+            class="form-control-sm input-underline">
+              <option value="NIT">NIT</option>
+              <option value="CC">CC</option>
+              <option value="CE">CE</option>
             </select>
           </div>
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                 <label class=" col-form-label-sm ">*Apellidos:</label>
                 <input type="text" class="form-control-sm input-underline" placeholder="Apellidos"
-                [(ngModel)]="employeeForm.apellido"
-                        name="apellidos">
+                [(ngModel)]="employeeForm.apellidos"
+                name="apellidos">
+              </div>
+
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <label class=" col-form-label-sm ">Celular:</label>
+                <input type="email" class="form-control-sm input-underline" placeholder="Celular"
+                [(ngModel)]="employeeForm.celular"
+                name="celular">
+              </div>
+
+              <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <label class=" col-form-label-sm ">Dirección:</label>
+                    <input type="text" class="form-control-sm input-underline" placeholder="Dirección"
+                    [(ngModel)]="employeeForm.direccion"
+                    name="direccion">
+              </div>
+
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                    <label class=" col-form-label-sm ">*Sueldo:</label>
+                    <input #sueldo
+                     type="number"
+                     class="form-control-sm input-underline salary"
+                     placeholder="{{999999999| currency}}"
+                     [(ngModel)]="employeeForm.sueldo"
+                    name="sueldo">
+            </div>
+
+           </div>
+
+           <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <label class=" col-form-label-sm ">*# Documento:</label>
+            <input type="number" class="form-control-sm input-underline" placeholder="# Documento"
+            [(ngModel)]="employeeForm.numeroDocumento"
+                    name="numeroDocumento">
+          </div>
+
+          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <label class=" col-form-label-sm ">*Sexo:</label>
+                <select [(ngModel)]="employeeForm.sexo"
+                name="sexo"
+                class="form-control-sm input-underline">
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                      </select>
               </div>
 
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -206,53 +269,27 @@
                             name="email">
             </div>
 
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <label class=" col-form-label-sm ">*Celular:</label>
-                <input type="email" class="form-control-sm input-underline" placeholder="Celular">
-              </div>
 
-
-
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <label class=" col-form-label-sm ">*Cargo:</label>
-                    <select class="form-control-sm input-underline">
-                          <option>Analista</option>
-                          <option>Auxiliar</option>
-                          <option>Lider</option>
-                        </select>
-            </div>
-
-           </div>
-
-           <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
-
-          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-            <label class=" col-form-label-sm ">*# Documento:</label>
-            <input type="text" class="form-control-sm input-underline" placeholder="# Documento"
-            [(ngModel)]="employeeForm.document"
-                    name="document">
-          </div>
-
-          <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                <label class=" col-form-label-sm ">Direccion:</label>
-                <input type="text" class="form-control-sm input-underline" placeholder="Direccion"
-                [(ngModel)]="employeeForm.direccion"
-                        name="direccion">
-              </div>
 
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <label class=" col-form-label-sm ">Empresa:</label>
-                    <select class="form-control-sm input-underline">
-                            <option>Bancoomeva</option>
-                            <option>GTC Corporation</option>
-                            <option>Optima SA</option>
+                    <label class=" col-form-label-sm ">*Empresa:</label>
+                    <select [(ngModel)]="employeeForm.clienteId"
+                    name="clienteId"
+                    class="form-control-sm input-underline">
+                            <option value="10">Bancoomeva</option>
+                            <option value="10">GTC Corporation</option>
+                            <option value="10">Optima SA</option>
                           </select>
             </div>
 
-            <div class="col-sm-12 col-md-12 col-lg-12">
-                      <label class=" col-form-label-sm ">*Sueldo:</label>
-                      <input #sueldo value="{{444| currency}}" type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}">
-                    </div>
+
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <label class=" col-form-label-sm ">Otros beneficios:</label>
+            <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}"
+            [(ngModel)]="employeeForm.otrosBeneficios"
+                            name="otrosBeneficios">
+      </div>
+
            </div>
 
 
@@ -369,11 +406,11 @@
                                     <th>Editar</th>
                                 </tr>
                                 <tr>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.name"
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.nombres"
                                         placeholder="Buscar por Nombre" ></th>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.apellido"
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.apellidos"
                                         placeholder="Buscar por Apellidos" ></th>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.document"
+                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.numeroDocumento"
                                         placeholder="Buscar por #Documento"></th>
                                     <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.telefono"
                                         placeholder="Buscar por Telefono"></th>
@@ -384,15 +421,15 @@
                                 <tbody>
                                     <tr *ngFor="let e of employee| generalFilter:filter">
                                         <td>
-                                            <span [innerHTML]="e.name" >
+                                            <span [innerHTML]="e.nombres" >
                                             </span>
                                         </td>
                                         <td>
-                                            <span [innerHTML]="e.apellido" >
+                                            <span [innerHTML]="e.apellidos" >
                                             </span>
                                         </td>
                                         <td>
-                                            <span [innerHTML]="e.document" >
+                                            <span [innerHTML]="e.numeroDocumento" >
                                             </span>
                                         </td>
                                         <td>
