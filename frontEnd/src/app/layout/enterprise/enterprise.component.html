@@ -1,15 +1,15 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-    <div [@routerTransition]>
-<div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
-            <h2 class=" page-header">
-                <i class="fa fa-fw fa-industry" style="color:blue"></i>
-            </h2>
+        <div [@routerTransition]>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        <i class="fa fa-fw fa-industry" style="color:blue"></i>
+                    </h2>
 
-        </div>
+                </div>
 
-        <!-- <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
+                <!-- <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
 
                 <button type="button" class="btn btn-primary pull-right" (click)="createHide()" blueColored>
                         <span class="fa fa-plus"></span> Nueva Empresa
@@ -18,235 +18,203 @@
 
 </div> -->
 
-<br>
-    </div>
-    <hr>
+                <br>
+            </div>
+            <hr>
 
 
-<!-- formulario para crear un nuevo -->
+            <!-- formulario para crear un nuevo -->
 
-<!--DIV BOTON NUEVO Empresa -->
-<div style="text-align:left">
+            <!--DIV BOTON NUEVO Empresa -->
+            <div *ngIf="this.crear" style="text-align:left">
 
-    <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
-        <span class="fa fa-plus"></span> Nueva Empresa
-        <b><span class="{{icon}}"></span></b>
-    </button>
+                <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
+                    <span class="fa fa-plus"></span> Nueva Empresa
+                    <b>
+                        <span class="{{icon}}"></span>
+                    </b>
+                </button>
 
-</div>
-<!--FIN DIV BOTON NUEVO Empresa -->
+            </div>
+            <!--FIN DIV BOTON NUEVO Empresa -->
 
-<div *ngIf="visible">
+            <div *ngIf="visible">
 
-<!--ALERT MENSAJES -->
-<div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
-        {{message}}
-        <strong></strong>
-    </div>
-    <!--FIN ALERT MENSAJES -->
-    <form>
-<div class="card mb-3" >
+                <!--ALERT MENSAJES -->
+                <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                    {{message}}
+                    <strong></strong>
+                </div>
+                <!--FIN ALERT MENSAJES -->
+                <form>
+                    <div class="card mb-3">
 
-        <div class="card-header">
-                <div class=" row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="card-header">
+                            <div class=" row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                        <!-- Empresas&nbsp;&nbsp;&nbsp;&nbsp; -->
+                                <!-- Empresas&nbsp;&nbsp;&nbsp;&nbsp; -->
 
 
-                    <!-- <input style="margin-right:12px"
+                                <!-- <input style="margin-right:12px"
                     type="submit"
                     class="btn-sm btn-success fa fa-floppy-o"
                     value=""/> -->
 
-                    <div> <hr class="hrv2"></div>
+                                <div>
+                                    <hr class="hrv2">
+                                </div>
 
-                    <div>
+                                <div>
 
-                    <button style="margin-right:12px"
-                    (click)="save()"
-                    type="submit"
-                    placement="top"
-                    ngbTooltip="Guardar"
-                    class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
-                    value="">
-                    </button>
+                                    <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                        value="">
+                                    </button>
 
-                </div>
+                                </div>
 
-                <div> <hr class="hrv"></div>
-
+                                <div>
+                                    <hr class="hrv">
+                                </div>
 
 
-                     <!-- <input style="margin-left:10px"
+
+                                <!-- <input style="margin-left:10px"
                      type="reset"
                      class="btn-sm btn-danger"
                      value="Limpiar" /> -->
 
-                 <div>
+                                <div>
 
-                     <button style="margin-left:10px;"
-                     (click)="clean()"
-                     placement="top"
-                    ngbTooltip="Limpiar"
-                     class="btn-sm btn-warning hand"
-                     value="">
-                     <img [src]="'assets/images/escoba.ico'" width="20" height="20">
-                    </button>
+                                    <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                        value="">
+                                        <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                                    </button>
 
-                </div>
+                                </div>
 
-                <div *ngIf="deleteFormHide" style="display: -webkit-box;">
+                                <div *ngIf="deleteFormHide" style="display: -webkit-box;">
 
-                <div> <hr class="hrv2"></div>
+                                    <div>
+                                        <hr class="hrv2">
+                                    </div>
 
-                <div>
+                                    <div>
 
-                        <button style="margin-right:12px"
-                        (click)="deleteForm(enterprise)"
-                        type="submit"
-                        placement="top"
-                        ngbTooltip="Eliminar"
-                        class="btn-sm btn-danger fa fa-trash-o fa-lg hand"
-                        value="">
-                        </button>
+                                        <button style="margin-right:12px" (click)="deleteForm(enterprise)" type="submit" placement="top" ngbTooltip="Eliminar" class="btn-sm btn-danger fa fa-trash-o fa-lg hand"
+                                            value="">
+                                        </button>
 
-                </div>
+                                    </div>
 
-                <div> <hr class="hrv"></div>
+                                    <div>
+                                        <hr class="hrv">
+                                    </div>
 
-            </div>
+                                </div>
 
-            <div *ngIf="!deleteFormHide" > <hr class="hrv2"></div>
+                                <div *ngIf="!deleteFormHide">
+                                    <hr class="hrv2">
+                                </div>
 
 
 
-                </div>
-        </div>
-
-        <br>
-
-        <div class="row justify-content-around">
-
-                <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3"
-                style="padding-bottom:10px">
-
-                        <label class="hand"
-                        ondragover="return false;"
-                        (dragenter)="handleDragEnter()"
-                         (dragleave)="handleDragLeave()"
-                        (drop)="handleDrop($event)"
-                        placement="top"
-                        ngbTooltip="Haga click para cargar o arrastre el logo"
-                        style="padding-bottom:10px">
-                    <div class="col-auto">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <label class="col-form-label-sm" style="padding-bottom:10px " >Subir logo: </label>
+                            </div>
                         </div>
-                        <img [src]="enterprise.imagenEmpresa"
-                         class="picture-marc" width="165" height="165">
-                        </div>
-                        <div class="col-auto">
+
+                        <br>
+
+                        <div class="row justify-content-around">
+
+                            <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3" style="padding-bottom:10px">
+
+                                <label class="hand" ondragover="return false;" (dragenter)="handleDragEnter()" (dragleave)="handleDragLeave()" (drop)="handleDrop($event)"
+                                    placement="top" ngbTooltip="Haga click para cargar o arrastre el logo" style="padding-bottom:10px">
+                                    <div class="col-auto">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <label class="col-form-label-sm" style="padding-bottom:10px ">Subir logo: </label>
+                                        </div>
+                                        <img [src]="enterprise.imagenEmpresa" class="picture-marc" width="165" height="165">
+                                    </div>
+                                    <div class="col-auto">
 
 
-                        <input type='file'
-                         (change)="handleInputChange($event)"
-                         style="display: none;">
+                                        <input type='file' (change)="handleInputChange($event)" style="display: none;">
 
-                          </div>
-                        </label>
-<br><br>
-                </div>
+                                    </div>
+                                </label>
+                                <br>
+                                <br>
+                            </div>
 
-                <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
-                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label class="col-form-label-sm">*Tipo de empresa:</label>
-                                <select [(ngModel)]="enterprise.tipoCliente"
-                                name="tipoCliente"
-                                class="form-control-sm input-underline">
-                                <option value="Interno">Interna</option>
-                                  <option value="Externo">Externa</option>
-                                </select>
-                    </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class="col-form-label-sm">*Tipo de empresa:</label>
+                                    <select [(ngModel)]="enterprise.tipoCliente" name="tipoCliente" class="form-control-sm input-underline">
+                                        <option value="Interno">Interna</option>
+                                        <option value="Externo">Externa</option>
+                                    </select>
+                                </div>
 
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <label class=" col-form-label-sm ">*Nombre o razon social:</label>
-                            <input type="text" class="form-control-sm input-underline"
-                            [(ngModel)]="enterprise.descripcion"
-                            name="name"
-                            placeholder="Nombre o razon social">
-                     </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class=" col-form-label-sm ">*Nombre o razon social:</label>
+                                    <input type="text" class="form-control-sm input-underline" [(ngModel)]="enterprise.descripcion" name="name" placeholder="Nombre o razon social">
+                                </div>
 
-                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                            <label class=" col-form-label-sm ">*Email:</label>
-                            <input type="email" class="form-control-sm input-underline" placeholder="Email"
-                            [(ngModel)]="enterprise.email"
-                                    name="email">
-                    </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class=" col-form-label-sm ">*Email:</label>
+                                    <input type="email" class="form-control-sm input-underline" placeholder="Email" [(ngModel)]="enterprise.email" name="email">
+                                </div>
 
 
-                </div>
+                            </div>
 
-                <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
-                               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                           <label class="col-form-label-sm">*Tipo de documento:</label>
-                                           <select class="form-control-sm input-underline"
-                                           [(ngModel)]="enterprise.tipoDocumento"
-                                           name="tipoDocumento">
-                                             <option value="NIT">NIT</option>
-                                             <option value="CC">CC</option>
-                                             <option value="CE">CE</option>
-                                           </select>
-                               </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class="col-form-label-sm">*Tipo de documento:</label>
+                                    <select class="form-control-sm input-underline" [(ngModel)]="enterprise.tipoDocumento" name="tipoDocumento">
+                                        <option value="NIT">NIT</option>
+                                        <option value="CC">CC</option>
+                                        <option value="CE">CE</option>
+                                    </select>
+                                </div>
 
-                               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <label class=" col-form-label-sm ">*Direccion:</label>
-                                    <input type="text" class="form-control-sm input-underline"
-                                    [(ngModel)]="enterprise.direccion"
-                                    name="name"
-                                    placeholder="Direccion">
-                             </div>
+                                    <input type="text" class="form-control-sm input-underline" [(ngModel)]="enterprise.direccion" name="name" placeholder="Direccion">
+                                </div>
 
-                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <label class=" col-form-label-sm ">*Nombre de Contacto:</label>
-                                    <input type="text" class="form-control-sm input-underline"
-                                    [(ngModel)]="enterprise.nombreContacto"
-                                    name="name"
-                                    placeholder="Nombre de Contacto">
-                             </div>
-                </div>
+                                    <input type="text" class="form-control-sm input-underline" [(ngModel)]="enterprise.nombreContacto" name="name" placeholder="Nombre de Contacto">
+                                </div>
+                            </div>
 
-                <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label class=" col-form-label-sm ">*#Documento:</label>
-                                <input type="number" class="form-control-sm input-underline"
-                                [(ngModel)]="enterprise.numeroDocumento"
-                                name="name"
-                                 placeholder="#Documento">
-                              </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class=" col-form-label-sm ">*#Documento:</label>
+                                    <input type="number" class="form-control-sm input-underline" [(ngModel)]="enterprise.numeroDocumento" name="name" placeholder="#Documento">
+                                </div>
 
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                <label class=" col-form-label-sm ">*Teléfono:</label>
-                                <input type="number" class="form-control-sm input-underline"
-                                [(ngModel)]="enterprise.telefono"
-                                name="name"
-                                 placeholder="Teléfono">
-                              </div>
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class=" col-form-label-sm ">*Teléfono:</label>
+                                    <input type="number" class="form-control-sm input-underline" [(ngModel)]="enterprise.telefono" name="name" placeholder="Teléfono">
+                                </div>
 
 
 
-                </div>
+                            </div>
 
 
 
 
-        </div>
+                        </div>
 
 
 
-            <!-- <div class="form-row form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- <div class="form-row form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4
               <div class="col-auto">
                 <label class="col-form-label-sm ">*Tipo de empresa</label>
@@ -345,7 +313,7 @@
                         name="nombreContacto">
                     </div> -->
 
-                    <!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        <!-- <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
                         <label class=" col-form-label ">*Email de contacto</label>
                         <input type="email" class="form-control" placeholder="Email del representante">
                       </div> -
@@ -383,7 +351,7 @@
 
                   </div> -->
 
-                  <!--  -->
+                        <!--  -->
 
                         <!-- <div class="input-group">
                             <input type="date" class="form-control" placeholder="Telefono">
@@ -391,7 +359,7 @@
                                 <span class="fa fa-calendar"></span>
                               </div> -->
 
-                              <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 
                                     <input style="margin-right:10px"
@@ -408,52 +376,51 @@
                                 </div> -->
 
 
-</div>
+                    </div>
 
-</form>
+                </form>
 
-<hr>
+                <hr>
 
-</div>
+            </div>
 
             <div class="card mb-3 table-responsive">
-                    <div class="card-header center-sc">
-                        <div class="row">
+                <div class="card-header center-sc">
+                    <div class="row">
 
-                            <div class=" col-auto" >
+                        <div class=" col-auto">
                             Tabla de Empleados
                         </div>
 
-             <div class="btn-group row col-auto pull-right "
-            style="">
-            <div> <hr class="hrv1"></div>
+                        <div class="btn-group row col-auto pull-right " style="">
+                            <div>
+                                <hr class="hrv1">
+                            </div>
 
-                    <div class="col-auto pull-right ">
-                         <i class="fa fa-file-excel-o fa-lg hand"
-                            placement="bottom"
-                            ngbTooltip="Exportar Excel"
-                            style="color:green"></i>
-                    </div>
+                            <div class="col-auto pull-right ">
+                                <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                            </div>
 
-                    <div> <hr class="hrv1"></div>
+                            <div>
+                                <hr class="hrv1">
+                            </div>
 
-                    <div class="col-auto pull-right ">
-                    <i class="fa fa-file-pdf-o fa-lg hand"
-                    placement="bottom"
-                    ngbTooltip="Exportar PDF"
-                    style="color:red"></i>
-                    </div>
+                            <div class="col-auto pull-right ">
+                                <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                            </div>
 
 
-                    <div> <hr class="hrv1"></div>
+                            <div>
+                                <hr class="hrv1">
+                            </div>
 
 
-            </div>
-            </div>
                         </div>
-                    <div class="card-body table-responsive">
-                        <table class="table table-hover table-striped table-bordered table-sm">
-                            <thead>
+                    </div>
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-hover table-striped table-bordered table-sm">
+                        <thead>
                             <tr>
                                 <th>Nombre o razon social</th>
                                 <th>Tipo documento</th>
@@ -465,53 +432,60 @@
                                 <th>Acciones</th>
                             </tr>
                             <tr>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
-                                        placeholder="Buscar por Nombre" ></th>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.tipoDocumento"
-                                        placeholder="Buscar por Apellidos" ></th>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.numeroDocumento"
-                                        placeholder="Buscar por #Documento"></th>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.telefono"
-                                        placeholder="Buscar por Telefono"></th>
-                                    <th><input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.email"
-                                        placeholder="Buscar por Email"></th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
+                                        placeholder="Buscar por Nombre">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.tipoDocumento"
+                                        placeholder="Buscar por Apellidos">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.numeroDocumento"
+                                        placeholder="Buscar por #Documento">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.telefono" placeholder="Buscar por Telefono">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.email" placeholder="Buscar por Email">
+                                </th>
                             </tr>
-                            </thead>
-                            <tbody>
+                        </thead>
+                        <tbody>
                             <tr *ngFor="let e of enterprises| generalFilter:filter">
-                                <td><span [innerHTML]="e.descripcion"></span></td>
-                                <td><span [innerHTML]="e.tipoDocumento"></span></td>
-                                <td><span [innerHTML]="e.numeroDocumento"></span></td>
-                                <td><span [innerHTML]="e.telefono"></span></td>
-                                <td><span [innerHTML]="e.email"></span></td>
                                 <td>
-                                        <img [src]="e.imagenEmpresa"
-                                         class="" width="35" height="40">
-                                    </td>
-                                <td>
-                                <input type="checkbox"
-                                 [(ngModel)]="e.estado"
-                                 name="{{e.id}}"
-                                 #check
-                                 (change)="changeState(e)">
+                                    <span [innerHTML]="e.descripcion"></span>
                                 </td>
                                 <td>
-                                        <div class="btn-group">
-                                                <a class="btn btn-default" >
-                                                <i (click)="upload(e)"
-                                                 class="fa fa-pencil-square-o fa-lg hand"
-                                                 aria-hidden="true"
-                                                 title="Editar" >
-                                                 </i>
-                                                </a>
-                                                 <a class="btn btn-default">
-                                                  <i (click)="delete(e)"
-                                                  class="fa fa-trash-o fa-lg hand"
-                                                  aria-hidden="true"
-                                                  title="Eliminar">
-                                                  </i>
-                                                  </a>
-                                        </div>
+                                    <span [innerHTML]="e.tipoDocumento"></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.numeroDocumento"></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.telefono"></span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.email"></span>
+                                </td>
+                                <td>
+                                    <img [src]="e.imagenEmpresa" class="" width="35" height="40">
+                                </td>
+                                <td >
+                                    <input *ngIf="this.editar" type="checkbox" [(ngModel)]="e.estado" name="{{e.id}}" #check (change)="changeState(e)">
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a *ngIf="this.editar" class="btn btn-default">
+                                            <i (click)="upload(e)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                            </i>
+                                        </a>
+                                        <a *ngIf="this.eliminar" class="btn btn-default">
+                                            <i (click)="delete(e)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                            </i>
+                                        </a>
+                                    </div>
                                     <!-- <span class="fa fa-pencil hand"
                                     aria-hidden="true"
                                     title="Editar"
@@ -526,12 +500,12 @@
                                     </span> -->
                                 </td>
                             </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
+            </div>
 
-                <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                          <button
                          class="btn btn-primary" >
@@ -541,7 +515,6 @@
                          </button>
 
                     </div> -->
+        </div>
+    </div>
 </div>
-</div>
-</div>
-

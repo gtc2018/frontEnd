@@ -21,7 +21,7 @@ $topnav-background-color: #0077f7;
     transition: all 0.2s ease-in-out;
     // border-top: 1px solid rgba(255,255,255,0.3);
     .list-group {
-        a.list-group-item {
+        li.list-group-item {
             background: linear-gradient(6deg,#007bff 50% ,#ddd);
             // border: 0;
             border-radius: 0;
@@ -31,15 +31,15 @@ $topnav-background-color: #0077f7;
             //     margin-right: 1px;
             // }
         }
-        a.subitem{
+        li.subitem{
             background: linear-gradient(6deg,#0459b3 50% ,rgb(209, 209, 209));
 
         }
-        a:hover {
+        li:hover {
             font-weight: bolder;
             color: #fff;
         }
-        a.router-link-active {
+        li.router-link-active {
             background: darken($topnav-background-color, 5%);
             color: #fff;
         }
