@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RestResponse } from '../../model/restResponse';
+import { PermisoModel } from '../../model/permiso.model';
 
 
 @Injectable()
@@ -38,6 +39,16 @@ export class LoginService  {
   public loginUsuario(login: LoginModel): Observable<UsuarioModel> {
     //console.log("================SERVICIO: ============= " + JSON.stringify(login));
     return this.http.post<UsuarioModel>("http://localhost:8080/loginUsuario", JSON.stringify(login));
+
+
+  }
+
+  //Sericio para cargar menú dinamicamente
+
+  public loadMenus(permiso: PermisoModel): Observable<UsuarioModel> {
+    console.log(JSON.stringify(permiso));
+    //console.log("================SERVICIO: ============= " + this.http.post<UsuarioModel>("http://localhost:8080/getMenuSession", JSON.stringify("1")));
+    return this.http.post<UsuarioModel>("http://localhost:8080/getMenuSession", JSON.stringify(permiso));
 
 
   }

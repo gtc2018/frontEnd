@@ -1,3 +1,4 @@
+import { LoginService } from './../../login/servicios/login.service';
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ButtonViewComponent } from '../quotation/quotation.component';
@@ -13,6 +14,7 @@ import { AuthService } from '../../shared/guard/auth.service';
 import swal from 'sweetalert2';
 import { EnterpriseService } from '../enterprise/enterprise.service';
 import { EnterpriseModel } from '../../model/enterprise';
+import { PermisoModel } from '../../model/permiso.model';
 
 
 @Component({
@@ -20,19 +22,32 @@ import { EnterpriseModel } from '../../model/enterprise';
     templateUrl: './employee.html',
     styleUrls: ['./employee.scss'],
     animations: [routerTransition()],
-    providers: [EmployeeService,EnterpriseService]
+    providers: [EmployeeService, LoginService,EnterpriseService]
 })
 export class EmployeeComponent implements OnInit   {
 
     enterprises: EnterpriseModel[];
     message: string;
 
+    user: any;
+    items: any;
+    menus: any;
+    private permiso: PermisoModel;
+
+    crear = false;
+    editar = false;
+    eliminar = false;
+    leer = false;
+
     //Metodos principales---------------------
     constructor(private employeeService: EmployeeService,
         private enterpriseService: EnterpriseService,
         private router: Router,
         private toastr: ToastrService,
-        private login:AuthService) {
+        private login:AuthService,
+        private menu: LoginService,
+        private session: AuthService
+    ) {
 
         this.employeeForm = new EmployeeModel();
 
@@ -70,13 +85,14 @@ export class EmployeeComponent implements OnInit   {
 
 
     ngOnInit() {
+        this.getItemsEmpresas();
         this.loadEmployee();
         this.loadEnterprises()
     }
 
     //Variables--------------------------------------------
 
-    user: string;
+
     messageEmail: string;
     activeColor: string = 'green';
     baseColor: string = '#ccc';
@@ -410,6 +426,56 @@ export class EmployeeComponent implements OnInit   {
 
     }
 
+    //
+    private getItemsEmpresas(): void {
+
+        this.permiso = new PermisoModel();
+        this.permiso.rolId = this.login.authUser.rolId;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+            console.log("======================= PERMISOS Empleados: ==============");
+
+            console.log(this.menus = res);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Empleados") {
+                    this.items = menu.item;
+                    console.log("===============ITEMS EMPRESAS:======================")
+                    console.log(this.items);
+
+                    if (this.items.crear === "1") {
+                        this.crear = true;
+                        console.log("==============CREAR: " + this.crear);
+                    }
+
+                    if (this.items.editar === "1") {
+                        this.editar = true;
+                        console.log("==============EDITAR: " + this.editar);
+                    }
+
+                    if (this.items.eliminar === "1") {
+                        this.eliminar = true;
+                        console.log("==============ELIMINAR: " + this.eliminar);
+                    }
+
+                    if (this.items.leer === "1") {
+                        this.leer = true;
+                        console.log("==============LEER: " + this.leer);
+                    }
+
+                }
+
+
+
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
+    }
+
     //Validación de campos
 
     public validate(employeeForm: EmployeeModel): boolean {
@@ -509,3 +575,5 @@ export class EmployeeComponent implements OnInit   {
         }
 
       };
+
+

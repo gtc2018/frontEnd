@@ -1,3 +1,4 @@
+import { LoginService } from './../../login/servicios/login.service';
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -8,24 +9,38 @@ import { OK } from '../../messages/httpstatus';
 import { ToastrService } from 'ngx-toastr';
 import swal from 'sweetalert2';
 import { AuthService } from '../../shared/guard/auth.service';
+import { PermisoModel } from '../../model/permiso.model';
 
 @Component({
     selector: 'app-enterprise',
     templateUrl: './enterprise.component.html',
     styleUrls: ['./enterprise.component.scss'],
     animations: [routerTransition()],
-    providers: [EnterpriseService]
+    providers: [
+        EnterpriseService,
+        LoginService
+    ]
 })
 export class EnterpriseComponent implements OnInit {
 
 
     //  Inicializacion de Variables---------------------
 
+    user: any;
+    items: any;
+    menus: any;
+    private permiso: PermisoModel;
+
+    crear = false;
+    editar = false;
+    eliminar = false;
+    leer = false;
+
     dragging: boolean;
     stateExpand: number = 1;
     deleteFormHide: boolean;
 
-    user: any;
+
 
     filter: EnterpriseModel = new EnterpriseModel();
 
@@ -34,26 +49,29 @@ export class EnterpriseComponent implements OnInit {
 
     ngOnInit() {
         this.loadEnterprises();
+        this.getItemsEmpresas();
     }
 
     constructor(private enterpriseService: EnterpriseService,
         private router: Router,
         private toastr: ToastrService,
-        private login:AuthService
+        private login: AuthService,
+        private menu: LoginService
+
     ) {
-            this.enterprise = new EnterpriseModel();
+        this.enterprise = new EnterpriseModel();
 
-            this.enterprise.imagenEmpresa= "assets/images/logo.png"
+        this.enterprise.imagenEmpresa = "assets/images/logo.png"
 
-                // this.user = JSON.parse(sessionStorage.getItem("usuario"));
+        // this.user = JSON.parse(sessionStorage.getItem("usuario"));
 
-                if(this.login.authUser !== undefined){
+        if (this.login.authUser !== undefined) {
 
-                    console.log(this.login.authUser.usuarioId);
-
-                }
+            console.log(this.login.authUser.usuarioId);
 
         }
+
+    }
 
     //Manejo del Date
 
@@ -73,19 +91,19 @@ export class EnterpriseComponent implements OnInit {
 
     //Icono del boton
 
-    icon: string= "fa fa-caret-left";
+    icon: string = "fa fa-caret-left";
 
     //Manejo del Date//
 
     //Funciones--------------------------------
 
-//Para eliminar desde el formulario
-    deleteForm(model){
+    //Para eliminar desde el formulario
+    deleteForm(model) {
 
-        if(this.login.authUser !== undefined){
+        if (this.login.authUser !== undefined) {
 
-            model.usuarioCreacion=this.login.authUser.usuarioId;
-            }
+            model.usuarioCreacion = this.login.authUser.usuarioId;
+        }
 
             swal({
                 title: 'Esta seguro?',
@@ -130,7 +148,7 @@ export class EnterpriseComponent implements OnInit {
 
     //Cuando se limpia el formulario
 
-    clean(){
+    clean() {
 
         this.enterprise = new EnterpriseModel();
 
@@ -141,34 +159,34 @@ export class EnterpriseComponent implements OnInit {
 
     //Para editar
 
-    upload(model){
+    upload(model) {
 
         console.log(model);
 
         console.log(this.stateExpand);
 
-        if( this.stateExpand === 1 ){
+        if (this.stateExpand === 1) {
             this.visible = !this.visible;
 
-        if(this.visible === true){
-            this.icon = "fa fa-caret-down";
+            if (this.visible === true) {
+                this.icon = "fa fa-caret-down";
 
-            this.deleteFormHide = false;
-        }else{
-            this.icon= "fa fa-caret-left";
-        }
-        this.deleteFormHide = true;
+                this.deleteFormHide = false;
+            } else {
+                this.icon = "fa fa-caret-left";
+            }
+            this.deleteFormHide = true;
 
-        this.enterprise = model;
-        this.stateExpand = 3;
+            this.enterprise = model;
+            this.stateExpand = 3;
 
-        }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
+        } else if (this.stateExpand === 2 || this.stateExpand === 3) {
             this.enterprise = model;
             this.stateExpand = 3;
             this.deleteFormHide = true;
         }
 
-           }
+    }
 
     //Para mostrar el crear o no
 
@@ -176,7 +194,7 @@ export class EnterpriseComponent implements OnInit {
 
         console.log(this.stateExpand);
 
-        if( this.stateExpand === 3 ){
+        if (this.stateExpand === 3) {
 
             this.enterprise = new EnterpriseModel();
 
@@ -186,48 +204,49 @@ export class EnterpriseComponent implements OnInit {
 
             this.deleteFormHide = false;
 
-        }else if( this.stateExpand === 1 ){
+        } else if (this.stateExpand === 1) {
 
-        this.visible = !this.visible;
+            this.visible = !this.visible;
 
-        if(this.visible === true){
+            if (this.visible === true) {
 
-            this.icon = "fa fa-caret-down";
+                this.icon = "fa fa-caret-down";
 
-        }else{
+            } else {
 
-            this.icon= "fa fa-caret-left";
+                this.icon = "fa fa-caret-left";
 
-        }
+            }
 
-        this.stateExpand = 2
+            this.stateExpand = 2
 
-        // this.stateExpand = true;
-    }else
-    if( this.stateExpand === 2 ){
+            // this.stateExpand = true;
+        } else
+            if (this.stateExpand === 2) {
 
-        this.visible = !this.visible;
+                this.visible = !this.visible;
 
-        if(this.visible === true){
 
-            this.icon = "fa fa-caret-down";
+                if (this.visible === true) {
 
-        }else{
+                    this.icon = "fa fa-caret-down";
 
-            this.icon= "fa fa-caret-left";
+                } else {
 
-        }
-        this.stateExpand = 1
+                    this.icon = "fa fa-caret-left";
+
+                }
+                this.stateExpand = 1
+            }
     }
-}
 
     //Para eliminar
 
-    delete(model){
+    delete(model) {
 
-        if(this.login.authUser !== undefined){
+        if (this.login.authUser !== undefined) {
 
-        model.usuarioCreacion=this.login.authUser.usuarioId;
+            model.usuarioCreacion = this.login.authUser.usuarioId;
         }
 
         swal({
@@ -238,33 +257,34 @@ export class EnterpriseComponent implements OnInit {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, eliminar'
-          }).then((result) => {
+        }).then((result) => {
 
             if (result.value) {
 
             this.enterpriseService.delete(model).subscribe(res=>{
                 // if (res.responseCode == OK) {
-                    this.loadEnterprises();
+                this.loadEnterprises();
 
-                    this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
+                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
 
-                    // swal(
-                    //     'Deleted!',
-                    //     'Your file has been deleted.',
-                    //     'success'
-                    //   )
+                // swal(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                //   )
 
-                    this.enterprise = new EnterpriseModel();
-                    this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+                this.enterprise = new EnterpriseModel();
+                this.enterprise.imagenEmpresa = 'assets/images/logo.png';
 
-                    this.deleteFormHide = false;
+                this.deleteFormHide = false;
 
-            },(error)=>{  console.log(error);
+            }, (error) => {
+                console.log(error);
                 swal(
                     'Error al eliminar el registro',
                     error.error.message,
                     'error'
-                  )
+                )
             }
             )
         }
@@ -278,55 +298,55 @@ export class EnterpriseComponent implements OnInit {
 
     newStructure(date: NgbDateStruct): Date {
         return date ? new Date(Date.UTC(date.year, date.month, date.day)) : null;
-      }
+    }
 
-      //Para guardar o actualizar
+    //Para guardar o actualizar
 
-    save():void{
+    save(): void {
 
-        if(this.login.authUser !== undefined){
-            this.enterprise.usuarioCreacion=this.login.authUser.usuarioId;
+        if (this.login.authUser !== undefined) {
+            this.enterprise.usuarioCreacion = this.login.authUser.usuarioId;
         }
 
         this.isValid = this.validate(this.enterprise);
 
         if (this.isValid) {
 
-        this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
-            // if (res.responseCode == OK) {
+            this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
+                // if (res.responseCode == OK) {
                 this.loadEnterprises();
                 this.enterprise = new EnterpriseModel();
                 this.enterprise.imagenEmpresa = 'assets/images/logo.png';
                 this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
-            // } else {
-            //     this.message = res.message;
-            //     this.isValid = false;
-            //     console.log(this.message);
-            // }
-        },(error)=>{
-            console.log(error);
+                // } else {
+                //     this.message = res.message;
+                //     this.isValid = false;
+                //     console.log(this.message);
+                // }
+            }, (error) => {
+                console.log(error);
 
-                this.toastr.error(error.error.message,"Error en la transacción");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
-        });
+                this.toastr.error(error.error.message, "Error en la transacción");
+                // swal(
+                //     'Error',
+                //     error.error.message,
+                //     'error'
+                //   )
+            });
 
-    } else {
-        console.log(this.messageEmail);
-        if(!this.messageEmail){
-            this.message= 'Los campos con * son obligatorios!';
-        }else{
-            this.message= this.messageEmail;
-            this.messageEmail= undefined;
+        } else {
+            console.log(this.messageEmail);
+            if (!this.messageEmail) {
+                this.message = 'Los campos con * son obligatorios!';
+            } else {
+                this.message = this.messageEmail;
+                this.messageEmail = undefined;
+            }
         }
-    }
 
     }
 
-    ajustModel():void{
+    ajustModel(): void {
 
         console.log(this.modelDate);
 
@@ -335,17 +355,17 @@ export class EnterpriseComponent implements OnInit {
 
     //Cambio de estado
 
-    changeState(model){
+    changeState(model) {
 
-        if(this.login.authUser !== undefined){
+        if (this.login.authUser !== undefined) {
 
-        model.usuarioCreacion=this.login.authUser.usuarioId;
+            model.usuarioCreacion = this.login.authUser.usuarioId;
 
         }
 
-        if (model.estado === true){
+        if (model.estado === true) {
             model.estado = 1;
-        }else{
+        } else {
             model.estado = 0;
         }
 
@@ -358,12 +378,12 @@ export class EnterpriseComponent implements OnInit {
             } else {
                 this.message = res.message;
             }
-        },(error)=>{
+        }, (error) => {
             console.log(error);
 
             this.isValid = false;
 
-            this.toastr.error(error.error.message,"Error actualizar los datos");
+            this.toastr.error(error.error.message, "Error actualizar los datos");
             // swal(
             //     'Error',
             //     error.error.message,
@@ -376,7 +396,7 @@ export class EnterpriseComponent implements OnInit {
         this.enterpriseService.getEnterprises().subscribe(res => {
             this.enterprises = res;
             console.log(this.enterprises);
-        },(error)=>{
+        }, (error) => {
             console.log(error);
 
             this.toastr.error("Error al cargar los datos");
@@ -388,44 +408,95 @@ export class EnterpriseComponent implements OnInit {
         });
     }
 
+
+    //
+    private getItemsEmpresas(): void {
+
+        this.permiso = new PermisoModel();
+        this.permiso.rolId = this.login.authUser.rolId;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+            console.log("======================= PERMISOS Empresas: ==============");
+
+            console.log(this.menus = res);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Clientes") {
+                    this.items = menu.item;
+                    console.log("===============ITEMS EMPRESAS:======================")
+                    console.log(this.items);
+
+                    if (this.items.crear === "1") {
+                        this.crear = true;
+                        console.log("==============CREAR: " + this.crear);
+                    }
+
+                    if (this.items.editar === "1") {
+                        this.editar = true;
+                        console.log("==============EDITAR: " + this.editar);
+                    }
+
+                    if (this.items.eliminar === "1") {
+                        this.eliminar = true;
+                        console.log("==============ELIMINAR: " + this.eliminar);
+                    }
+
+                    if (this.items.leer === "1") {
+                        this.leer = true;
+                        console.log("==============LEER: " + this.leer);
+                    }
+
+                }
+
+
+
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
+    }
+
     //Validación de campos
 
     public validate(enterprise: EnterpriseModel): boolean {
         let isValid = true;
         console.log(enterprise.nombreContacto);
-        if(!enterprise.nombreContacto){
-           isValid = false;
-        }
-        if(!enterprise.descripcion){
-           isValid = false;
-        }
-        if(!enterprise.tipoCliente){
+        if (!enterprise.nombreContacto) {
             isValid = false;
-         }
-         if(!enterprise.tipoDocumento){
+        }
+        if (!enterprise.descripcion) {
             isValid = false;
-         }
-         if(!enterprise.email){
+        }
+        if (!enterprise.tipoCliente) {
+            isValid = false;
+        }
+        if (!enterprise.tipoDocumento) {
+            isValid = false;
+        }
+        if (!enterprise.email) {
 
             isValid = false;
 
             this.messageEmail = undefined;
 
-         }else{
+        } else {
             this.emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
             if (this.emailRegex.test(enterprise.email)) {
                 console.log("correcto");
                 this.messageEmail = undefined;
-              } else {
+            } else {
                 isValid = false;
                 console.log("incorrecto");
                 this.messageEmail = "Por favor digite un formato de email válido";
-              }
-         }
-         if(!enterprise.numeroDocumento){
+            }
+        }
+        if (!enterprise.numeroDocumento) {
             isValid = false;
-         }
+        }
         // if(!enterprise.rolId){
         //    isValid = false;
         // }
@@ -434,7 +505,7 @@ export class EnterpriseComponent implements OnInit {
         // }
 
         return isValid;
-      }
+    }
 
     //Manejo del Date //
 
@@ -458,28 +529,28 @@ export class EnterpriseComponent implements OnInit {
         this.handleInputChange(e);
     }
 
-    handleInputChange(e){
+    handleInputChange(e) {
 
         var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-    console.log(file);
+        console.log(file);
 
-    var pattern = /image-*/;
-    var reader = new FileReader();
-    console.log(reader);
+        var pattern = /image-*/;
+        var reader = new FileReader();
+        console.log(reader);
 
-    if (!file.type.match(pattern)) {
-        swal(
-            'Error al cargar logo',
-            'Por favor ingrese un formato válido de imagen',
-            'error'
-          );
-        return;
-    }
+        if (!file.type.match(pattern)) {
+            swal(
+                'Error al cargar logo',
+                'Por favor ingrese un formato válido de imagen',
+                'error'
+            );
+            return;
+        }
 
-    // this.loaded = false;
+        // this.loaded = false;
 
-    reader.onload = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
+        reader.onload = this._handleReaderLoaded.bind(this);
+        reader.readAsDataURL(file);
     }
 
     _handleReaderLoaded(e) {
