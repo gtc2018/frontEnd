@@ -4,8 +4,8 @@ export class UsuarioModel extends ParentEntity{
 
   public nombres: string;
   public apellidos: string;
-  public usuarioId: string;
-  public empresaId: string;
+  public clienteId: string;
+  public empleadoId: string;
   public rolId: string;
   public email: string;
   public password: string;
@@ -19,5 +19,6 @@ export class UsuarioModel extends ParentEntity{
   public imagenUsuario: string;
   public fotoEmpleado: string;
   public fotoEmpresa: string;
+  public usuarioId: string;
 
 }

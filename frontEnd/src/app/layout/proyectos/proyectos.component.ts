@@ -20,8 +20,11 @@ import { AuthService } from '../../shared/guard/auth.service';
 })
 export class ProyectosComponent implements OnInit {
 
+    dragging: boolean;
     //Variables
     filterEn: any;
+
+    fotoDoc: string;
 
     private proyectos: ProyectoModel[];//Tabla
     private proyecto: ProyectoModel;//Form
@@ -55,6 +58,8 @@ export class ProyectosComponent implements OnInit {
             this.proyecto = new ProyectoModel();
 
             this.enterprise = new EnterpriseModel();
+
+            this.fotoDoc="assets/images/Upload.png";
 
         }
 
@@ -127,11 +132,11 @@ export class ProyectosComponent implements OnInit {
 
             this.proyecto.empresaId = id;
 
-            this.proyectoService.getAllUsuariosByEmpresaId(id).subscribe(res => {
+            this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
 
                 console.log(res);
 
-                this.usuarios = res;
+                // this.usuarios = res;
 
             },(error)=>{
 
@@ -249,11 +254,11 @@ export class ProyectosComponent implements OnInit {
 
         this.icon= "fa fa-caret-down";
 
-        this.proyectoService.getAllUsuariosByEmpresaId(model.empresaId).subscribe(res => {
+        this.proyectoService.getAllEmployeesToEmpresaId(model.empresaId).subscribe(res => {
 
             console.log(res);
 
-            this.usuarios = res;
+            // this.usuarios = res;
 
         },(error)=>{
 
@@ -313,7 +318,53 @@ export class ProyectosComponent implements OnInit {
         console.log(model);
     }
 
-    //Funcion para el cargador de archivos
+    // Para cargar el archivo
+
+    handleDragEnter() {
+        this.dragging = true;
+    }
+
+    handleDragLeave() {
+        this.dragging = false;
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        this.dragging = false;
+        this.handleInputChange(e);
+    }
+
+    handleInputChange(e){
+
+        var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    console.log(file);
+
+    var pattern = /image-*/;
+    var reader = new FileReader();
+
+    console.log(reader);
+
+    if (!file.type.match(pattern)) {
+        swal(
+            'Error al cargar logo',
+            'Por favor ingrese un formato válido de imagen',
+            'error'
+          );
+        return;
+    }
+
+    // this.loaded = false;
+
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+    }
+
+    _handleReaderLoaded(e) {
+        var reader = e.target;
+
+        console.log(reader.result);
+        this.fotoDoc = reader.result;
+    }
 
 
 

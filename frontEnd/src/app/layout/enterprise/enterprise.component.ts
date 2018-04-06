@@ -97,6 +97,8 @@ export class EnterpriseComponent implements OnInit {
                 confirmButtonText: 'Si, eliminar'
               }).then((result) => {
 
+                if (result.value) {
+
                 this.enterpriseService.delete(model).subscribe(res=>{
                     // if (res.responseCode == OK) {
                         this.loadEnterprises();
@@ -121,6 +123,7 @@ export class EnterpriseComponent implements OnInit {
                       )
                 }
                 )
+            }
               })
 
     }
@@ -237,6 +240,8 @@ export class EnterpriseComponent implements OnInit {
             confirmButtonText: 'Si, eliminar'
           }).then((result) => {
 
+            if (result.value) {
+
             this.enterpriseService.delete(model).subscribe(res=>{
                 // if (res.responseCode == OK) {
                     this.loadEnterprises();
@@ -262,6 +267,7 @@ export class EnterpriseComponent implements OnInit {
                   )
             }
             )
+        }
           })
 
     }

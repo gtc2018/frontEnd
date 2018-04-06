@@ -20,6 +20,12 @@ export class UsuarioService {
 
   }
 
+  public getRoles(): Observable<any[]>{
+
+    return this.Http.get<any[]>("http://localhost:8080/getAllRol");
+
+  }
+
   public delete(usuario: UsuarioModel): Observable<RestResponse> {
     console.log(usuario);
     return this.Http.post<RestResponse>("http://localhost:8080/deleteUsuario", JSON.stringify(usuario));

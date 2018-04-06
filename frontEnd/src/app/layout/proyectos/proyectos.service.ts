@@ -6,12 +6,13 @@ import { RestResponse } from '../../model/restResponse';
 import { ProyectoModel } from '../../model/proyectos';
 import { UsuarioModel } from '../../model/usuario/usuario.model';
 import { EnterpriseModel } from '../../model/enterprise';
+import { EmployeeModel } from '../../model/employee';
 
 
 
 @Injectable()
 export class ProyectosService {
-    usuario: UsuarioModel = new UsuarioModel;
+    employee: EmployeeModel = new EmployeeModel;
 
     // public validate(proyecto: ProyectoModel): boolean {
     //     let isValid = true;
@@ -55,15 +56,15 @@ export class ProyectosService {
 
   }
 
-  public getAllUsuariosByEmpresaId(c): Observable<UsuarioModel[]>{
+  public getAllEmployeesToEmpresaId(id): Observable<EmployeeModel[]>{
 
-    this.usuario.empresaId=c;
+    this.employee.id=id;
 
-    // console.log(c);
+     console.log(this.employee);
 
     // console.log(this.usuario);
 
-    return this.Http.post<UsuarioModel[]>("http://localhost:8080/getAllUsuariosByEmpresaId", JSON.stringify(this.usuario) );
+    return this.Http.post<EmployeeModel[]>("http://localhost:8080/getAllEmployeesToEnterprise", JSON.stringify(this.employee) );
 
   }
 

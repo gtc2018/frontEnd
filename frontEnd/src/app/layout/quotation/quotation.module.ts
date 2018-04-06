@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { QuotationRoutingModule } from './quotation-routing.module';
-import { QuotationComponent, ButtonViewComponent } from './quotation.component';
+import { QuotationComponent } from './quotation.component';
 
 import { CalendarModule } from 'angular-calendar';
 import { FormsModule } from '@angular/forms';

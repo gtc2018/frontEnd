@@ -11,6 +11,8 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../shared/guard/auth.service';
 import swal from 'sweetalert2';
+import { EnterpriseService } from '../enterprise/enterprise.service';
+import { EnterpriseModel } from '../../model/enterprise';
 
 
 @Component({
@@ -18,13 +20,16 @@ import swal from 'sweetalert2';
     templateUrl: './employee.html',
     styleUrls: ['./employee.scss'],
     animations: [routerTransition()],
-    providers: [EmployeeService]
+    providers: [EmployeeService,EnterpriseService]
 })
 export class EmployeeComponent implements OnInit   {
+
+    enterprises: EnterpriseModel[];
     message: string;
 
     //Metodos principales---------------------
     constructor(private employeeService: EmployeeService,
+        private enterpriseService: EnterpriseService,
         private router: Router,
         private toastr: ToastrService,
         private login:AuthService) {
@@ -66,6 +71,7 @@ export class EmployeeComponent implements OnInit   {
 
     ngOnInit() {
         this.loadEmployee();
+        this.loadEnterprises()
     }
 
     //Variables--------------------------------------------
@@ -109,6 +115,8 @@ export class EmployeeComponent implements OnInit   {
                     confirmButtonText: 'Si, eliminar'
                   }).then((result) => {
 
+                  if (result.value) {
+
                     this.employeeService.delete(model).subscribe(res=>{
                         // if (res.responseCode == OK) {
                             this.loadEmployee();
@@ -135,6 +143,8 @@ export class EmployeeComponent implements OnInit   {
                           )
                     }
                     )
+
+                }
                   })
         }
 
@@ -242,6 +252,23 @@ export class EmployeeComponent implements OnInit   {
 
     }
 
+    //Para cargar empresass
+
+    private loadEnterprises(): void {
+        this.enterpriseService.getEnterprises().subscribe(res => {
+            this.enterprises = res;
+            console.log(this.enterprises);
+        }, (error) => {
+            console.log(error);
+            this.toastr.error("Error al cargar los datos de Empresa");
+            // swal(
+            //     'Error',
+            //     error.error.message,
+            //     'error'
+            //   )
+        });
+    }
+
         //Para eliminar
 
         delete(model){
@@ -260,6 +287,8 @@ export class EmployeeComponent implements OnInit   {
                 cancelButtonColor: '#d33',
                 confirmButtonText: 'Si, eliminar'
               }).then((result) => {
+
+                if (result.value) {
 
                 this.employeeService.delete(model).subscribe(res=>{
                     // if (res.responseCode == OK) {
@@ -286,6 +315,7 @@ export class EmployeeComponent implements OnInit   {
                       )
                 }
                 )
+            }
               })
 
         }

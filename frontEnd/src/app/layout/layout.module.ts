@@ -11,6 +11,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ToastrModule } from 'ngx-toastr';
 import { ButtonViewComponent } from './quotation/quotation.component';
+import { FilterAll } from '../filters/search-table';
+import { UsuarioModule } from './usuario/usuario.module';
 
 @NgModule({
     imports: [
@@ -18,11 +20,12 @@ import { ButtonViewComponent } from './quotation/quotation.component';
         LayoutRoutingModule,
         TranslateModule,
         ToastrModule.forRoot(), // ToastrModule added
-        NgbDropdownModule.forRoot()
+        NgbDropdownModule.forRoot(),
+        UsuarioModule
     ],
 
     entryComponents: [
-        ButtonViewComponent
+        ButtonViewComponent,
       ],
     declarations: [LayoutComponent,
          SidebarComponent,

@@ -9,6 +9,7 @@ import { UsuarioComponent } from './usuario.component';
 import { PageHeaderModule } from './../../shared';
 import { BlueColorDirective } from './blue-color.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FilterAll } from '../../filters/search-table';
 
 
 
@@ -20,7 +21,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
             FormsModule,
             NgbModule],
 
-    declarations: [UsuarioComponent, BlueColorDirective]
+    declarations: [UsuarioComponent,
+         BlueColorDirective,
+        FilterAll]
 })
 export class UsuarioModule {
 

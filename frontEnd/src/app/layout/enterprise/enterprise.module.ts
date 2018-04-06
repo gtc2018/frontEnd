@@ -8,7 +8,7 @@ import { PageHeaderModule } from './../../shared';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http';
-import { FilterPipe } from '../../filters/search-table';
+import { FilterPipe } from './enterprise.filter';
 
 @NgModule({
     imports: [CommonModule,
@@ -17,6 +17,7 @@ import { FilterPipe } from '../../filters/search-table';
           FormsModule,
           HttpClientModule,
           NgbModule],
+
     declarations: [EnterpriseComponent,
     FilterPipe]
 })

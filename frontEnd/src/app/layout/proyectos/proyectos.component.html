@@ -54,12 +54,123 @@
             <div class="card mb-3" >
 
                 <div class="card-header">Proyecto</div>
+<br>
+                <form class="form-row" (ngSubmit)="save()" >
+                        <br>
 
-                <form (ngSubmit)="save()" >
+                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+                        <br>
+
+                        <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+                                <label class="col-form-label-sm">*Nombre del proyecto</label>
+                                <input type="text" [(ngModel)]="proyecto.nombre"
+                                 name="nombre"
+                                 class="form-control-sm input-underline" id="nombreProyecto"
+                                    placeholder="Nombre del Proyecto"
+                                    required>
+
+                        </div>
+
+                        <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+                                <label class="col-form-label-sm ">*Tipo del proyecto</label>
+                            <div class="">
+                                <select
+                                [(ngModel)]="proyecto.tipo"
+                                name="tipo"
+                                class="form-control-sm input-underline">
+                                    <option value=undefined
+                                     disabled
+                                     selected>Seleccione un proyecto</option>
+                                     <option value="Interno">Interno</option>
+                                     <option value="Externo">Externo</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                        <div class=" form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+                                <!-- <label class="col-form-label ">*Subir documento</label>
+                            <div class="">
+                                <input class="" type="file">
+                            </div> -->
+
+                            <label class="hand"
+                            ondragover="return false;"
+                            (dragenter)="handleDragEnter()"
+                             (dragleave)="handleDragLeave()"
+                            (drop)="handleDrop($event)"
+                            placement="top"
+                            ngbTooltip="Haga click para cargar o arrastre la foto">
+                                    <div class="col-auto">
+
+                                            <!-- <label class="col-form-label-sm"
+                                            style="padding-bottom:10px " >Subir documento: </label> -->
+                                            <span class="fa fa-upload picture-marc">Subir documento</span>
+                                        <!-- <img [src]="fotoDoc"
+                                        class="picture-marc" width="165" height="165"> -->
+                                    </div>
+                                        <div class="col-auto">
+
+
+                                        <input type='file'
+                                         (change)="handleInputChange($event)"
+                                         style="display: none;">
+
+                                          </div>
+                            </label>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row col-xs-12 col-sm-12 col-md-8 col-lg-8" >
+
+
+                    </div>
+
+                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+
+                            <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4" >
+
+                                    <label class=" col-form-label-sm ">*Empresas</label>
+                                    <select #selectEn [(ngModel)]="proyecto.empresaId"
+                                    (change)="setNew(selectEn.value)"
+                                    name="enterprise"
+                                    class="form-control-sm input-underline">
+                                        <option value=undefined disabled selected>Seleccione una empresa</option>
+                                        <option *ngFor="let e of enterprises" [value]="e.empresaId">
+                                            {{e.descripcion}}
+                                        </option>
+                                    </select>
+
+                            </div>
+
+                            <div class=" form-row col-xs-12 col-sm-12 col-md-8 col-lg-8 ">
+
+                                    <label class=" col-form-label-sm ">*Seleccionar Usuarios</label>
+                                <select #selectUs
+                                (change)="setNewUser(selectUs.value,i)"
+                                name="enterprise"
+                                class="form-control-sm input-underline">
+                                    <option value=undefined selected>Seleccione un usuario</option>
+                                    <option *ngFor="let u of usuarios;let i = index" [value]="u.id">
+                                            {{u.nombres}}&nbsp;{{u.apellidos}}
+                                    </option>
+                                </select>
+                                </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+
+                    </div>
 
                 <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                    <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                    <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
@@ -98,12 +209,12 @@
                             </div>
 
                         </div>
-                    </div>
+                    </div> -->
 
 
 
 
-                    <div class="form-row col-xs-12 col-sm-6 col-md-8 col-lg-8 ">
+                    <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
@@ -122,7 +233,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
                                 <!-- #selectEn [(ngModel)]="proyecto.usuarioId" -->
-                                <label class=" col-form-label ">*Seleccionar Usuarios</label>
+                        <!--          <label class=" col-form-label ">*Seleccionar Usuarios</label>
                                 <select #selectUs
                                 (change)="setNewUser(selectUs.value,i)"
                                 name="enterprise"
@@ -160,7 +271,7 @@
                                                 (change)="checkUser(u)">
                                             </span>
                                         </td> -->
-                                        <td align="center">
+                          <!--                <td align="center">
                                             <span>211-222-554
                                             </span>
                                         </td>
@@ -183,13 +294,13 @@
                                            <td>Picachu</td>
                                            <td>02/03/2017</td>
                                            <td><input type="checkbox"></td> -->
-                                    </tr>
+                          <!--            </tr>
                                 </tbody>
                             </table>
                             </div>
 
 
-                    </div>
+                    </div> -->
 
                     <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
                             <table class="table table-striped table-bordered">

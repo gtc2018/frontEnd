@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
     name: 'generalFilter',
     pure: false
 })
-export class FilterAll implements PipeTransform {
+export class FilterPipe implements PipeTransform {
   transform(items, filter){
 
     if (!items || !filter) {

@@ -13,6 +13,7 @@ import { AuthService } from '../../shared/guard/auth.service';
 import { EnterpriseService } from '../enterprise/enterprise.service';
 import { EnterpriseModel } from '../../model/enterprise';
 import { ProyectosService } from '../proyectos/proyectos.service';
+import { EmployeeModel } from '../../model/employee';
 
 @Component({
     selector: 'app-usuario',
@@ -22,82 +23,103 @@ import { ProyectosService } from '../proyectos/proyectos.service';
     providers: [UsuarioService, CrearUsuarioService, EnterpriseService, ProyectosService]
 })
 export class UsuarioComponent implements OnInit {
-    confirm: any;
+    rols: any[];
+    fotoEmpleado: string;
+    fotoEmpresa: string;
 
+    confirm: string;
     msgConfirm: string = "No concuerda con la contraseña";
 
     hideConfirm: boolean = false;
+    private isValid: boolean = true;
+    deleteFormHide: boolean;
 
     stateExpand: number = 1;
 
-    deleteFormHide: boolean;
-
     // Variables
     emailRegex: RegExp;
-    messageEmail: any;
-    user: any;
 
+    messageEmail: any;
+
+    user: UsuarioModel;
     private usuarios: Array<UsuarioModel>;
     private usuario: UsuarioModel;
-    private isValid: boolean = true;
-    private message: string = "";
-    private enterprises: EnterpriseModel[];
+    filter: UsuarioModel = new UsuarioModel;
 
-//Mostrar el crear o no
+    private message: string = "";
+
+    private enterprises: EnterpriseModel[];
+    filterEn: EnterpriseModel[];
+
+    filterEm: EmployeeModel[];
+
+    private employees: EmployeeModel[];
+
+    //Mostrar el crear o no
 
     visible = false;
 
     //Icono del boton
 
-    icon: string= "fa fa-caret-left";
+    icon: string = "fa fa-caret-left";
+
+    clean(){
+
+        this.usuario = new UsuarioModel();
+
+        this.deleteFormHide = false;
+
+        this.fotoEmpresa = 'assets/images/logo.png';
+        this.fotoEmpleado = 'assets/images/avatar.png';
+    }
 
     toggleDivCreateUsers() {
         console.log(this.stateExpand);
 
-        if( this.stateExpand === 3 ){
+        if (this.stateExpand === 3) {
 
             this.usuario = new UsuarioModel();
 
-            this.usuario.fotoEmpresa = 'assets/images/logo.png';
-            this.usuario.fotoEmpleado = 'assets/images/avatar.png';
+            this.fotoEmpresa = 'assets/images/logo.png';
+            this.fotoEmpleado = 'assets/images/avatar.png';
 
             this.stateExpand = 2;
 
             this.deleteFormHide = false;
 
-        }else if( this.stateExpand === 1 ){
+        } else if (this.stateExpand === 1) {
 
-        this.visible = !this.visible;
+            this.visible = !this.visible;
 
-        if(this.visible === true){
+            if (this.visible === true) {
 
-            this.icon = "fa fa-caret-down";
+                this.icon = "fa fa-caret-down";
 
-        }else{
+            } else {
 
-            this.icon= "fa fa-caret-left";
+                this.icon = "fa fa-caret-left";
 
-        }
+            }
 
-        this.stateExpand = 2
+            this.stateExpand = 2
 
-        // this.stateExpand = true;
-    }else
-    if( this.stateExpand === 2 ){
+            // this.stateExpand = true;
+        } else
+            if (this.stateExpand === 2) {
 
-        this.visible = !this.visible;
+                this.visible = !this.visible;
 
-        if(this.visible === true){
+                if (this.visible === true) {
 
-            this.icon = "fa fa-caret-down";
+                    this.icon = "fa fa-caret-down";
 
-        }else{
+                } else {
 
-            this.icon= "fa fa-caret-left";
+                    this.icon = "fa fa-caret-left";
 
-        }
-        this.stateExpand = 1
-    }
+                }
+                this.stateExpand = 1
+            }
 
     }
 
@@ -116,37 +138,51 @@ export class UsuarioComponent implements OnInit {
         private crearUsuarioService: CrearUsuarioService,
         private router: Router,
         private toastr: ToastrService,
-        private login:AuthService
-    ) {
+        private login: AuthService
+    )
+    {
 
         this.usuario = new UsuarioModel();
-        this.usuario.fotoEmpleado = "assets/images/avatar.png";
-        this.usuario.fotoEmpresa = "assets/images/logo.png";
+        this.fotoEmpleado = "assets/images/avatar.png";
+        this.fotoEmpresa = "assets/images/logo.png";
 
         if (sessionStorage.getItem("usuario")) {
             this.user = JSON.parse(sessionStorage.getItem("usuario"));
 
             console.log(this.user);
 
-            this.usuario.usuarioCreacion = this.user.usuarioId;
+            this.usuario.usuarioCreacion = this.user.id.toString();
 
         } else {
             this.user = new UsuarioModel();
         }
         //this.usuario = new UsuarioModel();
-      }
+    }
 
     ngOnInit() {
         this.loadUsuarios();
-        this.loadEnterprises()
+        this.loadEnterprises();
+        this.loadUsers();
     }
 
-    //Para eliminar desde el formulario
-    deleteForm(model){
+    loadUsers(){
 
-        if(this.login.authUser !== undefined){
-            model.usuarioCreacion=this.login.authUser.usuarioId;
-            }
+        this.usuarioService.getRoles().subscribe(res => {
+            console.log(res);
+
+            this.rols = res;
+
+        })
+
+    }
+
+
+    //Para eliminar desde el formulario
+    deleteForm(model) {
+
+        if (this.login.authUser !== undefined) {
+            model.usuarioModificacion = this.login.authUser.id.toString();
+        }
 
         swal({
             title: 'Esta seguro?',
@@ -156,61 +192,95 @@ export class UsuarioComponent implements OnInit {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, eliminar'
-          }).then((result) => {
+        }).then((result) => {
 
-            this.usuarioService.delete(model).subscribe(res=>{
+            if (result.value) {
+
+            this.usuarioService.delete(model).subscribe(res => {
                 // if (res.responseCode == OK) {
-                    this.loadUsuarios();
+                this.loadUsuarios();
 
-                    this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
+                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
 
-                    // swal(
-                    //     'Deleted!',
-                    //     'Your file has been deleted.',
-                    //     'success'
-                    //   )
+                // swal(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                //   )
 
-                    this.usuario = new UsuarioModel();
-        this.usuario.fotoEmpleado = "assets/images/avatar.png";
-        this.usuario.fotoEmpresa = "assets/images/logo.png";
+                this.usuario = new UsuarioModel();
+                this.fotoEmpleado = "assets/images/avatar.png";
+                this.fotoEmpresa = "assets/images/logo.png";
 
+                this.confirm=undefined;
 
-            },(error)=>{  console.log(error);
+            }, (error) => {
+                console.log(error);
                 swal(
                     'Error al eliminar el registro',
                     error.error.message,
                     'error'
-                  )
+                )
             }
             )
-          })
+        }
+        })
 
     }
 
     setNew(id: any): void {
         console.log(id);
 
-            //  this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
+        this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
 
-            //  console.log(this.filterEn[0]);
+        console.log(this.filterEn[0]);
 
-            this.usuario.empresaId = id;
+        this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
 
-            // this.proyectoService.getAllUsuariosByEmpresaId(id).subscribe(res => {
+        this.usuario.clienteId = id;
 
-            //     console.log(res);
+        this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
 
-            //     this.usuarios = res;
+            console.log(res);
 
-            // },(error)=>{
+            this.employees = res;
 
-            //     console.log(error);
+        }, (error) => {
 
-            //     this.toastr.error("Error actualizar los datos");
+            console.log(error);
 
-            // });
+            this.toastr.error("Error actualizar los datos");
 
-        }
+        });
+
+    }
+
+    setNewUser(id: any): void {
+        console.log(id);
+
+        this.filterEm = this.employees.filter(value => value.id === parseInt(id));
+
+        console.log(this.filterEm[0]);
+
+        this.fotoEmpleado = this.filterEm[0].foto;
+
+        this.usuario.email = this.filterEm[0].email;
+
+        // this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
+
+        //     console.log(res);
+
+        //     this.employees = res;
+
+        // },(error)=>{
+
+        //     console.log(error);
+
+        //     this.toastr.error("Error actualizar los datos");
+
+        // });
+
+    }
 
     //Para cargar empresass
 
@@ -218,9 +288,8 @@ export class UsuarioComponent implements OnInit {
         this.enterpriseService.getEnterprises().subscribe(res => {
             this.enterprises = res;
             console.log(this.enterprises);
-        },(error)=>{
+        }, (error) => {
             console.log(error);
-
             this.toastr.error("Error al cargar los datos de Empresa");
             // swal(
             //     'Error',
@@ -230,27 +299,25 @@ export class UsuarioComponent implements OnInit {
         });
     }
 
-    comparate(model){
+    comparate(model) {
 
         console.log(model);
 
         console.log(model.password.length);
 
-        if(model.password.length === this.confirm.length){
+        if (model.password.length <= this.confirm.length) {
 
             console.log("hola");
 
-            if(model.password !== this.confirm){
+            if (model.password !== this.confirm) {
 
-                console.log("holaBien");
+                this.hideConfirm = true;
 
-                this.hideConfirm=true;
-
-            }else{
-                this.hideConfirm=false;
+            } else {
+                this.hideConfirm = false;
             }
-        }else{
-            this.hideConfirm=false;
+        } else {
+            this.hideConfirm = false;
         }
 
     }
@@ -258,11 +325,11 @@ export class UsuarioComponent implements OnInit {
 
     //Metodo para eliminar el registro
 
-    delete(model){
+    delete(model) {
 
-        if(this.login.authUser !== undefined){
-            model.usuarioCreacion=this.login.authUser.usuarioId;
-            }
+        if (this.login.authUser !== undefined) {
+            model.usuarioModificacion = this.login.authUser.id.toString();
+        }
 
         swal({
             title: 'Esta seguro?',
@@ -272,33 +339,39 @@ export class UsuarioComponent implements OnInit {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Si, eliminar'
-          }).then((result) => {
+        }).then((result) => {
 
-            this.usuarioService.delete(model).subscribe(res=>{
+            if (result.value) {
+
+            this.usuarioService.delete(model).subscribe(res => {
                 // if (res.responseCode == OK) {
-                    this.loadUsuarios();
+                this.loadUsuarios();
 
-                    this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
+                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
 
-                    // swal(
-                    //     'Deleted!',
-                    //     'Your file has been deleted.',
-                    //     'success'
-                    //   )
-                    this.usuario = new UsuarioModel();
-        this.usuario.fotoEmpleado = "assets/images/avatar.png";
-        this.usuario.fotoEmpresa = "assets/images/logo.png";
+                // swal(
+                //     'Deleted!',
+                //     'Your file has been deleted.',
+                //     'success'
+                //   )
+                this.usuario = new UsuarioModel();
+                this.fotoEmpleado = "assets/images/avatar.png";
+                this.fotoEmpresa = "assets/images/logo.png";
 
+                this.confirm=undefined;
 
-            },(error)=>{  console.log(error);
+            }, (error) => {
+                console.log(error);
                 swal(
                     'Error al eliminar el registro',
                     error.error.message,
                     'error'
-                  )
+                )
             }
             )
-          })
+
+        }
+        })
     }
 
     /**
@@ -310,12 +383,12 @@ export class UsuarioComponent implements OnInit {
 
             console.log(res);
 
-        },(error)=>{
+        }, (error) => {
             // this.isValid = false;
 
             console.log(error);
 
-            this.toastr.error(this.message ,"Error al cargar los datos");
+            this.toastr.error(this.message, "Error al cargar los datos");
             // swal(
             //     'Error',
             //     error.error.message,
@@ -323,84 +396,96 @@ export class UsuarioComponent implements OnInit {
             //   )
             this.usuario = new UsuarioModel();
 
-            this.usuario.fotoEmpresa = 'assets/images/logo.png';
-            this.usuario.fotoEmpleado = 'assets/images/avatar.png';
+            this.fotoEmpresa = 'assets/images/logo.png';
+            this.fotoEmpleado = 'assets/images/avatar.png';
         });
-
     }
-
 
     /**
      * Metodo guardar o actualizar
      */
-    public saveOrUpdate(): void {
-        if(this.login.authUser !== undefined){
+    saveOrUpdate(): void {
 
-            this.usuario.usuarioCreacion=this.login.authUser.usuarioId;
-            }
+        console.log(this.usuario);
+        if (this.login.authUser !== undefined) {
+
+            this.usuario.usuarioCreacion = this.login.authUser.id.toString();
+
+        }
+
         this.isValid = this.validate(this.usuario);
 
         if (this.isValid) {
 
-            this.crearUsuarioService.saveOrUpdate(this.usuario).subscribe(res => {
-                // if (res.responseCode == OK) {
+
+            if (this.confirm !== this.usuario.password) {
+
+                swal("Por favor confirme bien su contraseña", "", "error");
+
+            } else {
+
+                this.crearUsuarioService.saveOrUpdate(this.usuario).subscribe(res => {
+                    // if (res.responseCode == OK) {
                     // console.log(this.router.navigate(['/usuarios']));
                     this.loadUsuarios();
                     this.usuario = new UsuarioModel();
-                     this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
-        // console.log(this.router.url);
+                    this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
 
-        //         } else {
-        //             this.message = res.message;
-        //             this.isValid = false;
-        //         }
+                    this.confirm=undefined;
 
-            },(error)=>{
-                console.log(error);
+                    // console.log(this.router.url);
 
-                if(error.error.message !== undefined){
+                    //         } else {
+                    //             this.message = res.message;
+                    //             this.isValid = false;
+                    //         }
 
-                    this.message = error.error.message;
+                }, (error) => {
+                    console.log(error);
 
-                }else{
+                    if (error.error.message !== undefined) {
 
-                    this.message = error.message;
-                }
+                        this.message = error.error.message;
 
+                    } else {
 
-                // this.isValid = false;
+                        this.message = error.message;
+                    }
+                    // this.isValid = false;
 
-                this.toastr.error(this.message ,"Error en la transacción");
-                // swal(
-                //     'Error',
-                //     error.error.message,
-                //     'error'
-                //   )
-            });
+                    this.toastr.error(this.message, "Error en la transacción");
+                    // swal(
+                    //     'Error',
+                    //     error.error.message,
+                    //     'error'
+                    //   )
+                });
+
+            }
 
         } else {
-        console.log(this.messageEmail);
-        if(!this.messageEmail){
-            this.message= 'Los campos con * son obligatorios!';
-        }else{
-            this.message= this.messageEmail;
-            this.messageEmail= undefined;
-        }
+            console.log(this.messageEmail);
+            if (!this.messageEmail) {
+                this.message = 'Los campos con * son obligatorios!';
+            } else {
+                this.message = this.messageEmail;
+                this.messageEmail = undefined;
+            }
         }
     }
 
     //Método para actualizar el estado de un usuario
 
-    changeState(model): void{
+    changeState(model): void {
 
-        if(this.login.authUser !== undefined){
+        if (this.login.authUser !== undefined) {
 
-            model.usuarioCreacion=this.login.authUser.usuarioId;
-            }
+            model.usuarioCreacion = this.login.authUser.id.toString();
+        }
 
-        if (model.estado === true){
+        if (model.estado === true) {
             model.estado = 1;
-        }else{
+        } else {
             model.estado = 0;
         }
 
@@ -413,7 +498,9 @@ export class UsuarioComponent implements OnInit {
             } else {
                 this.message = res.message;
             }
-        },(error)=>{
+
+            this.confirm=undefined;
+        }, (error) => {
             console.log(error);
 
             this.isValid = false;
@@ -439,22 +526,22 @@ export class UsuarioComponent implements OnInit {
 
         console.log(this.stateExpand);
 
-        if( this.stateExpand === 1 ){
+        if (this.stateExpand === 1) {
             this.visible = !this.visible;
 
-        if(this.visible === true){
-            this.icon = "fa fa-caret-down";
+            if (this.visible === true) {
+                this.icon = "fa fa-caret-down";
 
-            this.deleteFormHide = false;
-        }else{
-            this.icon= "fa fa-caret-left";
-        }
-        this.deleteFormHide = true;
+                this.deleteFormHide = false;
+            } else {
+                this.icon = "fa fa-caret-left";
+            }
+            this.deleteFormHide = true;
 
-        this.usuario = model;
-        this.stateExpand = 3;
+            this.usuario = model;
+            this.stateExpand = 3;
 
-        }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
+        } else if (this.stateExpand === 2 || this.stateExpand === 3) {
             this.usuario = model;
             this.stateExpand = 3;
             this.deleteFormHide = true;
@@ -465,35 +552,42 @@ export class UsuarioComponent implements OnInit {
     public validate(usuario: UsuarioModel): boolean {
         let isValid = true;
 
-        if(!usuario.apellidos){
-           isValid = false;
+        if (!usuario.clienteId) {
+            isValid = false;
         }
-        if(!usuario.email){
-           isValid = false;
+        if (!usuario.empleadoId) {
+            isValid = false;
+        }
+        if (!usuario.rolId) {
+            isValid = false;
+        }
+        if (!usuario.email) {
+            isValid = false;
+        }
 
-            this.messageEmail = undefined;
-        }else{
-            this.emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        // if (!usuario.apellidos) {
+        //     isValid = false;
+        // }
+        // if (!usuario.email) {
+        //     isValid = false;
 
-            if (this.emailRegex.test(usuario.email)) {
-                console.log("correcto");
-                this.messageEmail = undefined;
-              } else {
-                console.log("incorrecto");
-                this.messageEmail = "Por favor digite un formato de email válido";
-              }
-         }
-        if(!usuario.telefono){
-           isValid = false;
-        }
-        if(!usuario.rolId){
-           isValid = false;
-        }
-        if(!usuario.password){
-           isValid = false;
+        //     this.messageEmail = undefined;
+        // } else {
+        //     this.emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+        //     if (this.emailRegex.test(usuario.email)) {
+        //         console.log("correcto");
+        //         this.messageEmail = undefined;
+        //     } else {
+        //         console.log("incorrecto");
+        //         this.messageEmail = "Por favor digite un formato de email válido";
+        //     }
+        // }
+        if (!usuario.password) {
+            isValid = false;
         }
 
         return isValid;
-      }
+    }
 
 }
