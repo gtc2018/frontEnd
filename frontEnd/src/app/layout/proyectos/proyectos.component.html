@@ -10,7 +10,7 @@
 
             </div>
 
-            <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
+            <!-- <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
 
                     <button type="button" class="btn btn-primary pull-right" (click)="createHide()" blueColored>
                             <span class="fa fa-plus"></span> Nuevo Proyecto
@@ -19,23 +19,22 @@
                             </b>
                         </button>
 
-    </div>
+    </div> -->
 
         </div>
         <hr>
-    <br>
 
             <!--DIV BOTON NUEVO Empresa -->
-            <!-- <div style="text-align:left">
+            <div style="text-align:left">
 
-                <button type="button" class="btn btn-primary mb-2" (click)="createHide()" blueColored>
+                <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
                     <span class="fa fa-plus"></span> Nuevo Proyecto
                     <b>
                         <span class="{{icon}}"></span>
                     </b>
                 </button>
 
-            </div> -->
+            </div>
             <!--FIN DIV BOTON NUEVO Empresa -->
 
 
@@ -55,10 +54,10 @@
 
                 <div class="card-header">Proyecto</div>
 <br>
-                <form class="form-row" (ngSubmit)="save()" >
+                <form class="form-row justify-content-around" (ngSubmit)="save()" >
                         <br>
 
-                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
                         <br>
 
                         <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -74,7 +73,7 @@
 
                         <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
-                                <label class="col-form-label-sm ">*Tipo del proyecto</label>
+                            <label class="col-form-label-sm ">*Tipo del proyecto</label>
                             <div class="">
                                 <select
                                 [(ngModel)]="proyecto.tipo"
@@ -103,12 +102,12 @@
                              (dragleave)="handleDragLeave()"
                             (drop)="handleDrop($event)"
                             placement="top"
-                            ngbTooltip="Haga click para cargar o arrastre la foto">
+                            ngbTooltip="Haga click para cargar o arrastre el documento">
                                     <div class="col-auto">
 
                                             <!-- <label class="col-form-label-sm"
                                             style="padding-bottom:10px " >Subir documento: </label> -->
-                                            <span class="fa fa-upload picture-marc">Subir documento</span>
+                                            <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}" >{{nameUpload}}</span>
                                         <!-- <img [src]="fotoDoc"
                                         class="picture-marc" width="165" height="165"> -->
                                     </div>
@@ -126,22 +125,20 @@
 
                     </div>
 
-                    <div class="row col-xs-12 col-sm-12 col-md-8 col-lg-8" >
+                    <br><br>
 
-
-                    </div>
-
-                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc" >
 
                             <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4" >
 
                                     <label class=" col-form-label-sm ">*Empresas</label>
-                                    <select #selectEn [(ngModel)]="proyecto.empresaId"
+                                    <select #selectEn
+                                    [(ngModel)]="proyecto.clienteId"
                                     (change)="setNew(selectEn.value)"
                                     name="enterprise"
                                     class="form-control-sm input-underline">
                                         <option value=undefined disabled selected>Seleccione una empresa</option>
-                                        <option *ngFor="let e of enterprises" [value]="e.empresaId">
+                                        <option *ngFor="let e of enterprises" [value]="e.id">
                                             {{e.descripcion}}
                                         </option>
                                     </select>
@@ -150,13 +147,13 @@
 
                             <div class=" form-row col-xs-12 col-sm-12 col-md-8 col-lg-8 ">
 
-                                    <label class=" col-form-label-sm ">*Seleccionar Usuarios</label>
+                                    <label class=" col-form-label-sm ">Seleccionar Empleado</label>
                                 <select #selectUs
-                                (change)="setNewUser(selectUs.value,i)"
-                                name="enterprise"
+                                (change)="setNewUser(selectUs.value)"
+                                name="employee"
                                 class="form-control-sm input-underline">
-                                    <option value=undefined selected>Seleccione un usuario</option>
-                                    <option *ngFor="let u of usuarios;let i = index" [value]="u.id">
+                                    <option value=undefined selected>Seleccione un empleado</option>
+                                    <option *ngFor="let u of employees;let i = index" [value]="u.id">
                                             {{u.nombres}}&nbsp;{{u.apellidos}}
                                     </option>
                                 </select>
@@ -164,11 +161,18 @@
 
                     </div>
 
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc">
 
-                    </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
 
-                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label class=" col-form-label-sm ">Descripción</label><br>
+                                <textarea class="form-control"
+                                [(ngModel)]="proyecto.descripcion"
+                                 name="descripcion"
+                                 cols="auto"
+                                 rows="6"></textarea>
+
+                        </div>
 
                     <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
 
@@ -244,11 +248,11 @@
                                     </option>
                                 </select>
 
-                        </div>
+                        </div>-->
 
-                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 ">
 
-                                <label class=" col-form-label ">*Involucrados:</label>
+                                <label class=" col-form-label ">Involucrados</label>
 
                         <table class="table table-striped table-bordered">
                                 <thead align="center">
@@ -271,7 +275,7 @@
                                                 (change)="checkUser(u)">
                                             </span>
                                         </td> -->
-                          <!--                <td align="center">
+                                        <td align="center">
                                             <span>211-222-554
                                             </span>
                                         </td>
@@ -294,13 +298,13 @@
                                            <td>Picachu</td>
                                            <td>02/03/2017</td>
                                            <td><input type="checkbox"></td> -->
-                          <!--            </tr>
+                                   </tr>
                                 </tbody>
                             </table>
                             </div>
 
 
-                    </div> -->
+                    <!-- </div> -->
 
                     <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
                             <table class="table table-striped table-bordered">

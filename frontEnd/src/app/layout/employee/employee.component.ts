@@ -53,7 +53,7 @@ export class EmployeeComponent implements OnInit   {
 
         if(this.login.authUser !== undefined){
 
-            console.log(this.login.authUser.usuarioId);
+            console.log(this.login.authUser.email);
 
         }
 
@@ -118,7 +118,7 @@ export class EmployeeComponent implements OnInit   {
         deleteForm(model){
             if(this.login.authUser !== undefined){
 
-                model.usuarioCreacion=this.login.authUser.usuarioId;
+                model.usuarioCreacion=this.login.authUser.email;
                 }
 
                 swal({
@@ -186,7 +186,7 @@ export class EmployeeComponent implements OnInit   {
 
         if(this.login.authUser !== undefined){
 
-        model.usuarioCreacion=this.login.authUser.usuarioId;
+        model.usuarioCreacion=this.login.authUser.email;
 
         }
 
@@ -226,7 +226,7 @@ export class EmployeeComponent implements OnInit   {
         console.log(this.employeeForm);
 
         if(this.login.authUser !== undefined){
-            this.employeeForm.usuarioCreacion=this.login.authUser.usuarioId;
+            this.employeeForm.usuarioCreacion=this.login.authUser.email;
         }
 
         this.isValid = this.validate(this.employeeForm);
@@ -291,7 +291,7 @@ export class EmployeeComponent implements OnInit   {
 
             if(this.login.authUser !== undefined){
 
-            model.usuarioCreacion=this.login.authUser.usuarioId;
+            model.usuarioCreacion=this.login.authUser.email;
             }
 
             swal({

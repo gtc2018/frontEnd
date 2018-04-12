@@ -10,6 +10,7 @@ import { UsuarioService } from '../usuario/servicios/usuario.service';
 import { UsuarioModel } from '../../model/usuario/usuario.model';
 import swal from 'sweetalert2';
 import { AuthService } from '../../shared/guard/auth.service';
+import { EmployeeModel } from '../../model/employee';
 
 @Component({
     selector: 'app-proyectos',
@@ -20,6 +21,9 @@ import { AuthService } from '../../shared/guard/auth.service';
 })
 export class ProyectosComponent implements OnInit {
 
+    styleIconUpload: string = "";
+    iconUpload: string = "fa-upload";
+    nameUpload:string = "Subir Documento";
     dragging: boolean;
     //Variables
     filterEn: any;
@@ -32,7 +36,7 @@ export class ProyectosComponent implements OnInit {
     private enterprise: EnterpriseModel;
     private enterprises: EnterpriseModel[];
 
-    private usuarios: UsuarioModel[];
+    private employees: EmployeeModel[];
     private userToEnterprise= [];
 
     private isValid: boolean = true;
@@ -80,6 +84,9 @@ export class ProyectosComponent implements OnInit {
         if(!proyecto.tipo){
            isValid = false;
         }
+        if(!proyecto.clienteId){
+            isValid = false;
+         }
 
         return isValid;
       }
@@ -130,13 +137,13 @@ export class ProyectosComponent implements OnInit {
 
             //  console.log(this.filterEn[0]);
 
-            this.proyecto.empresaId = id;
+            this.proyecto.clienteId = id;
 
             this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
 
                 console.log(res);
 
-                // this.usuarios = res;
+                this.employees = res;
 
             },(error)=>{
 
@@ -154,7 +161,7 @@ export class ProyectosComponent implements OnInit {
 
             this.userToEnterprise.splice(index,1);
 
-            this.usuarios.push(model);
+            this.employees.push(model);
 
             console.log(this.userToEnterprise);
 
@@ -162,18 +169,36 @@ export class ProyectosComponent implements OnInit {
 
         //Al seleccionar un usuario
 
-        setNewUser(id: any, index:number): void {
+        setNewUser(id: string): void {
             console.log(id);
 
-             this.filterEn = this.usuarios.filter(value => value.id === parseInt(id));
+            var indexDelete;
 
-             this.usuarios.splice(index,1);
+             this.filterEn = this.employees.filter(value => value.id === parseInt(id));
 
-             console.log(this.filterEn[0]);
+             [].forEach.call(this.employees,function(data,index){
+
+                if (data.id.toString() === id){
+
+                   indexDelete = index;
+
+                }
+
+             }
+
+            )
+
+            console.log(indexDelete);
+
+            this.employees.splice(indexDelete,1);
+
+            //  console.log(this.employees);
+
+            //  console.log(this.filterEn[0]);
 
              this.userToEnterprise.push(this.filterEn[0]);
 
-             console.log(this.userToEnterprise);
+            //  console.log(this.userToEnterprise);
 
             }
 
@@ -200,7 +225,7 @@ export class ProyectosComponent implements OnInit {
     save(){
 
         if(this.login.authUser !== undefined){
-            this.proyecto.usuarioCreacion=this.login.authUser.usuarioId;
+            this.proyecto.usuarioCreacion=this.login.authUser.email;
         }
 
         console.log(this.proyecto);
@@ -245,7 +270,7 @@ export class ProyectosComponent implements OnInit {
 
         if(this.login.authUser !== undefined){
 
-            model.usuarioCreacion=this.login.authUser.usuarioId;
+            model.usuarioCreacion=this.login.authUser.email;
             }
 
         this.proyecto = model;
@@ -275,7 +300,7 @@ export class ProyectosComponent implements OnInit {
 
         if(this.login.authUser !== undefined){
 
-            model.usuarioCreacion=this.login.authUser.usuarioId;
+            model.usuarioCreacion=this.login.authUser.email;
             }
 
         swal({
@@ -339,21 +364,28 @@ export class ProyectosComponent implements OnInit {
         var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
     console.log(file);
 
-    var pattern = /image-*/;
+    var word = /word-*|excel-*|pdf-*|officedocument-*/;
+    var excel = /excel-*/;
+    var pdf = /pdf-*/;
+
     var reader = new FileReader();
 
-    console.log(reader);
+    console.log(file.type);
 
-    if (!file.type.match(pattern)) {
+    if (!file.type.match(word)) {
         swal(
-            'Error al cargar logo',
-            'Por favor ingrese un formato válido de imagen',
+            'Error al cargar el documento',
+            'Solo s epeuden cargar documentos de excel, word o pdf',
             'error'
           );
         return;
     }
 
-    // this.loaded = false;
+    this.styleIconUpload = "green";
+
+    this.iconUpload = "fa-check-circle";
+
+    this.nameUpload = file.name;
 
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);

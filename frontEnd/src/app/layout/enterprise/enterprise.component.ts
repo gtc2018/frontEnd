@@ -67,7 +67,7 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.login.authUser !== undefined) {
 
-            console.log(this.login.authUser.usuarioId);
+            console.log(this.login.authUser.email);
 
         }
 
@@ -102,7 +102,7 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.login.authUser !== undefined) {
 
-            model.usuarioCreacion = this.login.authUser.usuarioId;
+            model.usuarioCreacion = this.login.authUser.email;
         }
 
             swal({
@@ -246,7 +246,7 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.login.authUser !== undefined) {
 
-            model.usuarioCreacion = this.login.authUser.usuarioId;
+            model.usuarioCreacion = this.login.authUser.email;
         }
 
         swal({
@@ -305,7 +305,7 @@ export class EnterpriseComponent implements OnInit {
     save(): void {
 
         if (this.login.authUser !== undefined) {
-            this.enterprise.usuarioCreacion = this.login.authUser.usuarioId;
+            this.enterprise.usuarioCreacion = this.login.authUser.email;
         }
 
         this.isValid = this.validate(this.enterprise);
@@ -359,7 +359,7 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.login.authUser !== undefined) {
 
-            model.usuarioCreacion = this.login.authUser.usuarioId;
+            model.usuarioCreacion = this.login.authUser.email;
 
         }
 

@@ -21,11 +21,12 @@
                     class="nav-link"
                     style="font-family:serif"
                      ngbDropdownToggle>
+                     <!-- {{ this.login.authUser.nombres }} -->
                        <i class="fa fa-user"
-                       ></i>&nbsp;{{ this.login.authUser.nombres }} <b class="caret"></b>
+                       ></i>&nbsp;Developer <b class="caret"></b>
                    </a>
                    <div class="dropdown-menu dropdown-menu-right" style="padding:4px;min-width:0px">
-                       <a class="dropdown-item" href="javascript:void(0)">
+                       <!-- <a class="dropdown-item" href="javascript:void(0)">
                            <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
                        </a>
                        <a class="dropdown-item" href="javascript:void(0)">
@@ -33,7 +34,7 @@
                        </a>
                        <a class="dropdown-item" href="javascript:void(0)">
                            <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
-                       </a> 
+                       </a>  -->
                        <a class="dropdown-item"
                        [routerLink]="['/login']"
                         (click)="onLoggedout()"

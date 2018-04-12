@@ -3,7 +3,7 @@ import { ParentEntity } from './parentEntity.model';
 export class ProyectoModel extends ParentEntity{
 
   public proyectoId: string;
-  public empresaId: string;
+  public clienteId: string;
   public nombre: string;
   public descripcion: string;
   public tipo: string;

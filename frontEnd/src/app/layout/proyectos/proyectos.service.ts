@@ -12,7 +12,7 @@ import { EmployeeModel } from '../../model/employee';
 
 @Injectable()
 export class ProyectosService {
-    employee: EmployeeModel = new EmployeeModel;
+    enterprise: EnterpriseModel = new EnterpriseModel;
 
     // public validate(proyecto: ProyectoModel): boolean {
     //     let isValid = true;
@@ -58,14 +58,11 @@ export class ProyectosService {
 
   public getAllEmployeesToEmpresaId(id): Observable<EmployeeModel[]>{
 
-    this.employee.id=id;
+    this.enterprise.id=id;
 
-     console.log(this.employee);
+     console.log(this.enterprise);
 
-    // console.log(this.usuario);
-
-    return this.Http.post<EmployeeModel[]>("http://localhost:8080/getAllEmployeesToEnterprise", JSON.stringify(this.employee) );
-
+    return this.Http.post<EmployeeModel[]>("http://localhost:8080/getAllEmployeesToEnterprise", JSON.stringify(this.enterprise) );
   }
 
   public saveOrUpdate(proyecto: ProyectoModel): Observable<RestResponse> {

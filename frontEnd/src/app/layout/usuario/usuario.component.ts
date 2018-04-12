@@ -181,7 +181,7 @@ export class UsuarioComponent implements OnInit {
     deleteForm(model) {
 
         if (this.login.authUser !== undefined) {
-            model.usuarioModificacion = this.login.authUser.id.toString();
+            model.usuarioModificacion = this.login.authUser.email;
         }
 
         swal({
@@ -409,7 +409,7 @@ export class UsuarioComponent implements OnInit {
         console.log(this.usuario);
         if (this.login.authUser !== undefined) {
 
-            this.usuario.usuarioCreacion = this.login.authUser.id.toString();
+            this.usuario.usuarioCreacion = this.login.authUser.email;
 
         }
 
@@ -480,7 +480,7 @@ export class UsuarioComponent implements OnInit {
 
         if (this.login.authUser !== undefined) {
 
-            model.usuarioCreacion = this.login.authUser.id.toString();
+            model.usuarioCreacion = this.login.authUser.email;
         }
 
         if (model.estado === true) {
