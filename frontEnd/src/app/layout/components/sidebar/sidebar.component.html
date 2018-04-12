@@ -30,6 +30,20 @@
 
         </div>
 
+        <!--Modulo Seguridad -->
+        <li (click)="eventGroup3()" class="list-group-item hand">
+            <i class="fa fa-fw fa-cubes"></i>&nbsp; Seguridad
+            <i class="fa fa-fw {{iconG3}}"></i>
+        </li>
+
+        <!--Contenedor Seguridas -->
+        <div *ngIf="hideGroup3">
+            <li *ngFor="let menu of seguridad" [routerLink]="[menu.url]" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
+                <i class="{{ menu.icono }}"></i>&nbsp; {{ menu.descripcion | translate }}
+            </li>
+
+        </div>
+
 
     </ul>
 

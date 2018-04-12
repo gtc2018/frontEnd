@@ -27,7 +27,6 @@ export class EnterpriseComponent implements OnInit {
     //  Inicializacion de Variables---------------------
 
     user: any;
-    items: any;
     menus: any;
     private permiso: PermisoModel;
 
@@ -420,29 +419,29 @@ export class EnterpriseComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Clientes") {
-                    this.items = menu.item;
+                if (menu.menu.descripcion === "Empresas") {
+                   
                     console.log("===============ITEMS EMPRESAS:======================")
-                    console.log(this.items);
+                    console.log(menu);
 
-                    if (this.items.crear === "1") {
+                    if (menu.crear === "1") {
                         this.crear = true;
-                        console.log("==============CREAR: " + this.crear);
+                        console.log("==============******CREAR: " + menu.crear);
                     }
 
-                    if (this.items.editar === "1") {
+                    if (menu.editar === "1") {
                         this.editar = true;
-                        console.log("==============EDITAR: " + this.editar);
+                        console.log("==============EDITAR: " + menu.editar);
                     }
 
-                    if (this.items.eliminar === "1") {
+                    if (menu.eliminar === "1") {
                         this.eliminar = true;
-                        console.log("==============ELIMINAR: " + this.eliminar);
+                        console.log("==============ELIMINAR: " + menu.eliminar);
                     }
 
-                    if (this.items.leer === "1") {
+                    if (menu.leer === "1") {
                         this.leer = true;
-                        console.log("==============LEER: " + this.leer);
+                        console.log("==============LEER: " + menu.leer);
                     }
 
                 }

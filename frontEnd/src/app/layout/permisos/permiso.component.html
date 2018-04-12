@@ -1,0 +1,209 @@
+<div class="row">
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+            <!-- <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header> -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        Permiso
+                    </h2>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-lg-12">
+
+                    
+                        <!--ALERT MENSAJES -->
+                        <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                            {{message}}
+                            <strong></strong>
+                        </div>
+                        <!--FIN ALERT MENSAJES -->
+                        <form>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset class="form-group">
+                                    <form class="form-inline">
+                                        <div class="form-group">
+                                            <div _ngcontent-c7="" class="form-group input-group">
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Rol :</label>
+                                                <select id="inputState" class="form-control-sm input-underline" [(ngModel)]="permiso.rolId" name="rolId">
+                                                    <option value="" disabled>Seleccione rol</option>
+                                                    <option *ngFor="let r of roles" [value]="r.id">{{r.descripcion}}</option>
+                                                </select>
+                                            </div>
+                                            <div _ngcontent-c7="" class="form-group input-group">
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Menú :</label>
+                                                <select class="form-control-sm input-underline" [(ngModel)]="permiso.menu_id" name="menu_id">
+                                                    <option value="" disabled>Seleccione menu</option>
+                                                    <option *ngFor="let m of menus" [value]="m.id">{{m.descripcion}}</option>
+                                                </select>
+                                            </div>
+                                            <div  class="form-group input-group">
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Crear :</label>
+                                                <input  class="ng-tns-c6-1" type="checkbox" [(ngModel)]="permiso.crear" name="crear" >
+                                            </div>
+                                            <div  class="form-group input-group">
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Editar :</label>
+                                                <input  class="ng-tns-c6-1" type="checkbox" [(ngModel)]="permiso.editar" name="editar" >
+                                            </div>
+                                            <div  class="form-group input-group">
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Eliminar :</label>
+                                                <input  class="ng-tns-c6-1" type="checkbox" [(ngModel)]="permiso.eliminar" name="eliminar" >
+                                            </div>
+                                            <div  class="form-group input-group">
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Leer :</label>
+                                                <input  class="ng-tns-c6-1" type="checkbox" [(ngModel)]="permiso.leer" name="leer" >
+                                            </div>
+
+                                            <div>
+                                                <span _ngcontent-c7="" class="input-group-btn" style="padding-left:20px">
+                                                    <!--button type="submit" (click)="saveOrUpdate(selectRol.value,selectMenu.value,selectCrear.value,selectEditar.value,selectEliminar.value,selectLeer.value)" class="btn btn-lg btn-block btn-info btn-save-user">Guardar</button-->
+                                                    <button type="button" class="btn-sm btn-primary mb-2" (click)="saveOrUpdate()" >
+                                                        <span class="fa fa-plus"></span> Guardar
+                                                        <b>
+                                                            <span class="{{icon}}"></span>
+                                                        </b>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </form>
+
+                                </fieldset>
+                            </div>
+
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header center-sc">
+                                <div class="row">
+
+                                    <div class=" col-auto">
+                                        Tabla de Usuarios
+                                    </div>
+
+                                    <div class="btn-group row col-auto pull-right " style="">
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+
+                                        <div class="col-auto pull-right ">
+                                            <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                                        </div>
+
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+
+                                        <div class="col-auto pull-right ">
+                                            <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                                        </div>
+
+
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table table-hover table-striped table-bordered table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <!-- <th>Rol</th> -->
+                                            <th>Menú</th>
+                                            <th>Estado</th>
+                                            <th>Crear</th>
+                                            <th>Editar</th>
+                                            <th>lectura</th>
+                                            <th>Eliminar</th>
+                                            <th>Acciones</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let permiso of permisos">
+
+                                            <th scope="row">{{ permiso.id }}</th>
+                                            <td style="text-align: left"> {{ permiso.menu.descripcion }} </td>
+                                            <!-- <td> {{ permiso.menu.descripcion }} </td> -->
+                                            <td *ngIf="permiso.estado ==='1'">
+                                                <input (click)="update(permiso.estado)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.estado}}" name="estado"
+                                                    checked>
+                                            </td>
+                                            <td *ngIf="permiso.estado !='1'">
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.estado}}" name="estado"
+                                                    unchecked>
+                                            </td>
+                                            <td *ngIf="permiso.crear ==='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.crear}}"
+                                                    name="crear" checked>
+                                            </td>
+                                            <td *ngIf="permiso.crear !='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.crear}}"
+                                                    name="crear" unchecked>
+                                            </td>
+
+                                            <td *ngIf="permiso.editar ==='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.editar}}"
+                                                    name="editar" checked>
+                                            </td>
+                                            <td *ngIf="permiso.editar !='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.editar}}"
+                                                    name="editar" unchecked>
+                                            </td>
+
+                                            <td *ngIf="permiso.leer ==='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.leer}}"
+                                                    name="leer" checked>
+                                            </td>
+                                            <td *ngIf="permiso.leer !='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.leer}}"
+                                                    name="leer" unchecked>
+                                            </td>
+
+                                            <td *ngIf="permiso.eliminar ==='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.eliminar}}"
+                                                    name="eliminar" checked>
+                                            </td>
+                                            <td *ngIf="permiso.eliminar !='1'">
+                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.eliminar}}"
+                                                    name="eliminar" unchecked>
+                                            </td>
+
+                                            <td>
+                                                <a class="btn btn-default">
+                                                    <i (click)="update(permiso)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                                    </i>
+                                                </a>
+                                                <span>
+                                                    <i class="fa fa-trash-o" (click)="delete(permiso.id)"></i>&nbsp; </span>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="center">
+                            <button type="reset" class="btn btn-primary">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <!-- /.row -->
+        </div>
