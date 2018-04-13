@@ -25,6 +25,8 @@ import { LoginService } from './servicios/login.service';
 export class LoginComponent {
     constructor(private router: Router, private loginService: LoginService, private user: AuthService) {
 
+        console.log(localStorage);
+
 
     }
 
@@ -67,7 +69,7 @@ export class LoginComponent {
                     this.user.setUserLoggedIn();
 
                     localStorage.user = this.login.email;
-                    //localStorage.setItem('isLoggedin', 'true');
+
                     return this.router.navigate(['/dashboard']);
 
                 } else {
