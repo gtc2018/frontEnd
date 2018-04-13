@@ -52,6 +52,8 @@ export class HeaderComponent implements OnInit {
         public router: Router,
        private login:AuthService) {
 
+
+
            console.log(localStorage);
 
            console.log(this.login);
@@ -62,28 +64,24 @@ export class HeaderComponent implements OnInit {
        const browserLang = this.translate.getBrowserLang();
        this.translate.use(browserLang.match(/en|fr|ur|es|it|fa|de/) ? browserLang : 'en');
 
+
        this.router.events.subscribe(val => {
+
         if (
             val instanceof NavigationEnd &&
             window.innerWidth <= 992 &&
             this.isToggled()
+
         ) {
+            console.log("que extraño");
             this.toggleSidebar();
         }
     });
 
 
 
-
-
-
-
-
-
-
-
-
    }
+
 
 
 

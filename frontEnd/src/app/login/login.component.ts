@@ -68,7 +68,9 @@ export class LoginComponent {
                     this.user.authUser = res as UsuarioModel;
                     this.user.setUserLoggedIn();
 
-                    localStorage.user = this.login.email;
+                    localStorage.user = res.nombres;
+
+                    localStorage.rol = res.rolId;
 
                     return this.router.navigate(['/dashboard']);
 
@@ -82,7 +84,6 @@ export class LoginComponent {
                 }
 
             });
-
 
         } else {
             this.message = "Usuario y Contraseña no deben estar vacios";
