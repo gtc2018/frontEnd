@@ -1,0 +1,140 @@
+<div class="row">
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+            <!-- <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header> -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        Menú
+                    </h2>
+                </div>
+            </div>
+
+            <hr>
+
+            <div style="text-align:left">
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <form>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset class="form-group">
+                                    <div class="form-group">
+                                        <label for="exampleInputName2">*Menu :</label>
+                                        <input class="form-control-sm input-underline" type="text" name="menuId" id="menuId" [(ngModel)]="menu.descripcion">
+
+                                        <label for="exampleInputName2">*URL :</label>
+                                        <input class="form-control-sm input-underline" type="text" name="url" id="url" [(ngModel)]="menu.url">
+
+                                        <label for="exampleInputName2">*Icono :</label>
+                                        <input class="form-control-sm input-underline" type="text" name="icono" id="icono" [(ngModel)]="menu.icono">
+
+                                        <button type="button" class="btn-sm btn-primary mb-2" (click)="saveOrUpdate()" blueColored>
+                                            <span class="fa fa-plus"></span> Guardar
+                                            <b>
+                                                <span class="{{icon}}"></span>
+                                            </b>
+                                        </button>
+
+                                    </div>
+
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header center-sc">
+                                <div class="row">
+
+                                    <div class=" col-auto">
+                                        Tabla de Roles
+                                    </div>
+
+                                    <div class="btn-group row col-auto pull-right " style="">
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+
+                                        <div class="col-auto pull-right ">
+                                            <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                                        </div>
+
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+
+                                        <div class="col-auto pull-right ">
+                                            <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                                        </div>
+
+
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body table-responsive">
+                                <table class="table table-hover table-striped table-bordered table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Descripcion</th>
+                                            <th>Url</th>
+                                            <th>Icono</th>
+                                            <th>Editar</th>
+                                            <th>Eliminar</th>
+
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let menu of menus">
+                                            <th scope="row">{{menu.id}}</th>
+                                            <th style="text-align: left"> {{menu.descripcion}} </th>
+                                            <th style="text-align: left"> {{menu.url}} </th>
+                                            <th class="sidebar">
+                                                <a class="btn btn-default">
+                                                    <i style="text-align: left" class="{{menu.icono}}"> </i>
+                                                </a>
+                                            </th>
+
+
+
+                                            <th class="sidebar">
+
+                                                <a class="btn btn-default">
+                                                    <i (click)="edit(menu)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                                    </i>
+                                                </a>
+
+
+                                            </th>
+
+                                            <th class="sidebar">
+                                                <a class="btn btn-default">
+                                                    <i (click)="delete(menu.id)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                                    </i>
+                                                </a>
+
+                                            </th>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+            <!-- /.row -->
+        </div>

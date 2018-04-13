@@ -7,30 +7,22 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class AuthService {
 
-
   private isUserLoggedin;
   public  authUser: UsuarioModel;
 
- 
-  constructor() { 
+  constructor() {
     this.isUserLoggedin = false;
   }
-
 
   setUserLoggedIn(){
     //this.authUser = new UsuarioModel;
     this.isUserLoggedin = true;
     //Convierto los datos del usuario a un modelo usuario.
     this.authUser as UsuarioModel;
-   
   }
 
-
-  getUserLoggedIn(){ 
-    return this.isUserLoggedin; 
+  getUserLoggedIn(){
+    return this.isUserLoggedin;
   }
-
-
-
 
 }

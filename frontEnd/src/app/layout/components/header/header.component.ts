@@ -8,12 +8,18 @@ import { AuthService } from '../../../shared/guard/auth.service';
     templateUrl: './header.component.html',
     styleUrls: ['./header.component.scss']
 })
+
+
 export class HeaderComponent implements OnInit {
     pushRightClass: string = 'push-right';
+
+
 
     constructor(private translate: TranslateService,
          public router: Router,
         private login:AuthService) {
+
+            console.log(localStorage);
 
             console.log(this.login);
 

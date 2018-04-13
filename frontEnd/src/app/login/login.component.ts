@@ -60,8 +60,13 @@ export class LoginComponent {
                     //this.user.authUser = new UsuarioModel;
                     console.log("=========== USUARIO: ===================");
                     console.log(this.usuario = res as UsuarioModel);
+
+                    console.log(res);
+
                     this.user.authUser = res as UsuarioModel;
                     this.user.setUserLoggedIn();
+
+                    localStorage.user = this.login.email;
                     //localStorage.setItem('isLoggedin', 'true');
                     return this.router.navigate(['/dashboard']);
 

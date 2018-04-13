@@ -1,4 +1,4 @@
-<!-- <nav class="sidebar" style="font-size: 0.85rem;" [ngClass]="{sidebarPushRight: isActive}">
+ <!--<nav class="sidebar" style="font-size: 0.85rem;" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group title">
         <li routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard "></i>&nbsp;{{ 'Dashboard' | translate }}
@@ -25,6 +25,20 @@
         <!--Contenedor Entidades Basicas
         <div *ngIf="hideGroup1">
             <li *ngFor="let menu of basicas" [routerLink]="[menu.url]" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
+                <i class="{{ menu.icono }}"></i>&nbsp; {{ menu.descripcion | translate }}
+            </li>
+
+        </div>
+
+        <!--Modulo Seguridad
+        <li (click)="eventGroup3()" class="list-group-item hand">
+            <i class="fa fa-fw fa-cubes"></i>&nbsp; Seguridad
+            <i class="fa fa-fw {{iconG3}}"></i>
+        </li>
+
+        <!--Contenedor Seguridas
+        <div *ngIf="hideGroup3">
+            <li *ngFor="let menu of seguridad" [routerLink]="[menu.url]" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
                 <i class="{{ menu.icono }}"></i>&nbsp; {{ menu.descripcion | translate }}
             </li>
 
@@ -84,9 +98,7 @@
         </a>
         </div>
 
-
     </ul>
-
 
 </nav>
 

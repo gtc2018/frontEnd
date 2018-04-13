@@ -1,23 +1,23 @@
 <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-<div [@routerTransition]>
-    <!-- <app-page-header [heading]="'Proyectos'" [icon]="'fa-wrench'"></app-page-header> -->
-    <div class="row">
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
-                <h2 class=" page-header">
-                    Proyectos
-                </h2>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+            <!-- <app-page-header [heading]="'Proyectos'" [icon]="'fa-wrench'"></app-page-header> -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        Proyectos
+                    </h2>
 
-            </div>
+                </div>
 
             <!-- <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
 
                     <button type="button" class="btn btn-primary pull-right" (click)="createHide()" blueColored>
-                            <span class="fa fa-plus"></span> Nuevo Proyecto
-                            <b>
-                                <span class="{{icon}}"></span>
-                            </b>
-                        </button>
+                        <span class="fa fa-plus"></span> Nuevo Proyecto
+                        <b>
+                            <span class="{{icon}}"></span>
+                        </b>
+                    </button>
 
     </div> -->
 
@@ -38,19 +38,19 @@
             <!--FIN DIV BOTON NUEVO Empresa -->
 
 
-             <div *ngIf="visible">
-            <!--ALERT MENSAJES -->
-            <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+            <div *ngIf="visible">
+                <!--ALERT MENSAJES -->
+                <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
                     {{message}}
                     <button aria-label="Close" class="close" type="button">
                         <span aria-hidden="true">×</span>
                     </button>
                     <strong></strong>
-            </div>
+                </div>
                 <!--FIN ALERT MENSAJES -->
-            <!-- *ngIf="visible" -->
+                <!-- *ngIf="visible" -->
 
-            <div class="card mb-3" >
+                <div class="card mb-3">
 
                 <div class="card-header">Proyecto</div>
 <br>
@@ -60,18 +60,15 @@
                     <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
                         <br>
 
-                        <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
                                 <label class="col-form-label-sm">*Nombre del proyecto</label>
-                                <input type="text" [(ngModel)]="proyecto.nombre"
-                                 name="nombre"
-                                 class="form-control-sm input-underline" id="nombreProyecto"
-                                    placeholder="Nombre del Proyecto"
-                                    required>
+                                <input type="text" [(ngModel)]="proyecto.nombre" name="nombre" class="form-control-sm input-underline" id="nombreProyecto"
+                                    placeholder="Nombre del Proyecto" required>
 
-                        </div>
+                            </div>
 
-                        <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
                             <label class="col-form-label-sm ">*Tipo del proyecto</label>
                             <div class="">
@@ -87,9 +84,9 @@
                                 </select>
                             </div>
 
-                        </div>
+                            </div>
 
-                        <div class=" form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class=" form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
                                 <!-- <label class="col-form-label ">*Subir documento</label>
                             <div class="">
@@ -105,31 +102,29 @@
                             ngbTooltip="Haga click para cargar o arrastre el documento">
                                     <div class="col-auto">
 
-                                            <!-- <label class="col-form-label-sm"
+                                        <!-- <label class="col-form-label-sm"
                                             style="padding-bottom:10px " >Subir documento: </label> -->
                                             <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}" >{{nameUpload}}</span>
                                         <!-- <img [src]="fotoDoc"
                                         class="picture-marc" width="165" height="165"> -->
                                     </div>
-                                        <div class="col-auto">
+                                    <div class="col-auto">
 
 
-                                        <input type='file'
-                                         (change)="handleInputChange($event)"
-                                         style="display: none;">
+                                        <input type='file' (change)="handleInputChange($event)" style="display: none;">
 
-                                          </div>
-                            </label>
+                                    </div>
+                                </label>
+
+                            </div>
 
                         </div>
-
-                    </div>
 
                     <br><br>
 
                     <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc" >
 
-                            <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4" >
+                            <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
                                     <label class=" col-form-label-sm ">*Empresas</label>
                                     <select #selectEn
@@ -157,9 +152,9 @@
                                             {{u.nombres}}&nbsp;{{u.apellidos}}
                                     </option>
                                 </select>
-                                </div>
+                            </div>
 
-                    </div>
+                        </div>
 
                 <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc">
 
@@ -174,7 +169,7 @@
 
                         </div>
 
-                    <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                            <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
@@ -218,7 +213,7 @@
 
 
 
-                    <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                            <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
 
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
@@ -237,7 +232,7 @@
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
                                 <!-- #selectEn [(ngModel)]="proyecto.usuarioId" -->
-                        <!--          <label class=" col-form-label ">*Seleccionar Usuarios</label>
+                            <!--          <label class=" col-form-label ">*Seleccionar Usuarios</label>
                                 <select #selectUs
                                 (change)="setNewUser(selectUs.value,i)"
                                 name="enterprise"
@@ -306,7 +301,7 @@
 
                     <!-- </div> -->
 
-                    <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
+                            <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
                             <table class="table table-striped table-bordered">
                                     <thead align="center">
                                         <tr>
@@ -357,72 +352,63 @@
 
                     </div> -->
 
-                </div>
-                <br>
+                        </div>
+                        <br>
 
-            <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                    <input
-                    type="submit"
-                    class="btn btn-success"
-                    value="Guardar"/>
+                            <input type="submit" class="btn btn-success" value="Guardar" />
 
-                     <!-- <input style="margin-left:10px"
+                            <!-- <input style="margin-left:10px"
                      type="reset"
                      class="btn btn-danger"
                      value="Limpiar" /> -->
 
-                </div>
+                        </div>
 
-            </form>
-            </div>
+                    </form>
+                </div>
 
             </div>
 
             <br>
 
-        <div class="col-md-12">
-            <table class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <td>Nombre del proyecto</td>
-                        <td>Creado por</td>
-                        <td>Fecha creación por</td>
-                        <td>Acciones</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let p of proyectos">
+            <div class="col-md-12">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <td>Nombre del proyecto</td>
+                            <td>Creado por</td>
+                            <td>Fecha creación por</td>
+                            <td>Acciones</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let p of proyectos">
 
-                        <td>
-                            <span [innerHTML]="p.nombre"></span>
-                        </td>
-                        <td>
-                            <span [innerHTML]="p.usuarioCreacion"></span>
-                        </td>
-                        <td>
-                            <span [innerHTML]="p.fechaCreacion"></span>
-                        </td>
-                        <td>
-                            <div class="btn-group">
-                                <a class="btn btn-default">
-                                    <i (click)="upload(p)"
-                                     class="fa fa-pencil-square-o fa-lg hand"
-                                     aria-hidden="true"
-                                     title="Editar">
-                                    </i>
-                                </a>
-                                <a class="btn btn-default">
-                                    <i (click)="delete(p)"
-                                     class="fa fa-trash-o fa-lg hand"
-                                      aria-hidden="true"
-                                      title="Eliminar">
-                                    </i>
-                                </a>
-                            </div>
-                        </td>
+                            <td>
+                                <span [innerHTML]="p.nombre"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="p.usuarioCreacion"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="p.fechaCreacion"></span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-default">
+                                        <i (click)="upload(p)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                        </i>
+                                    </a>
+                                    <a class="btn btn-default">
+                                        <i (click)="delete(p)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                        </i>
+                                    </a>
+                                </div>
+                            </td>
 
-                        <!-- <td>SPC</td>
+                            <!-- <td>SPC</td>
                        <td>Veneco</td>
                        <td>02/03/2017</td>
                        <td><input type="checkbox"></td>
@@ -432,11 +418,10 @@
                            <td>Picachu</td>
                            <td>02/03/2017</td>
                            <td><input type="checkbox"></td> -->
-                    </tr>
-                </tbody>
-            </table>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </div>
 </div>
-        </div>
-</div>
-

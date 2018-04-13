@@ -438,7 +438,7 @@ export class EmployeeComponent implements OnInit   {
             for (let menu of this.menus) {
                 //this.items = menu.item;
                 if (menu.menu.descripcion === "Empleados") {
-                    this.items = menu.item;
+                    this.items = menu;
                     console.log("===============ITEMS EMPRESAS:======================")
                     console.log(this.items);
 
