@@ -1,3 +1,4 @@
+
 <div class="row">
     <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div [@routerTransition]>
@@ -11,19 +12,118 @@
             </div>
 
             <hr>
+<div>
 
-            <div class="row">
-                <div class="col-lg-12">
-
-                    
                         <!--ALERT MENSAJES -->
                         <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
                             {{message}}
                             <strong></strong>
                         </div>
                         <!--FIN ALERT MENSAJES -->
-                        <form>
-                        <div class="row">
+
+                        <form class="row"
+                        (ngSubmit)="saveOrUpdate()">
+
+                           <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                            <div class="col-auto" >
+                                    <label class=" col-form-label-sm ">*Rol :</label>
+                                    <select class="form-control-sm input-underline"
+                                     [(ngModel)]="permiso.rolId"
+                                     name="rolId">
+                                            <option value="" disabled>Seleccione rol</option>
+                                            <option *ngFor="let r of roles" [value]="r.id">{{r.descripcion}}</option>
+                                        </select>
+
+                            </div>
+
+                            <div class="col-auto" >
+                                <label  class=" col-form-label-sm ">*Menú :</label>
+                                                <select class="form-control-sm input-underline" [(ngModel)]="permiso.menu_id" name="menu_id">
+                                                    <option value="" disabled>Seleccione menu</option>
+                                                    <option *ngFor="let m of menus" [value]="m.id">{{m.descripcion}}</option>
+                                                </select>
+
+                            </div>
+
+                            <div class="col-auto" >
+
+                                    <label for="exampleInputName2" class=" col-form-label-sm ">
+                                            <mat-checkbox
+                                            color="primary"
+                                            [align]="end"
+                                             name="crear"
+                                             [(ngModel)]="permiso.crear">
+                                                <span > Crear</span>
+                                            </mat-checkbox>
+                                          </label>
+
+                            </div>
+
+                            <div class="col-auto" >
+
+                                    <label for="exampleInputName2" class=" col-form-label-sm ">
+                                            <mat-checkbox
+                                            [align]="end"
+                                            color="primary"
+                                             name="leer"
+                                             [(ngModel)]="permiso.leer">
+                                                <span > Leer</span>
+                                            </mat-checkbox>
+                                          </label>
+
+                            </div>
+
+                            <div class="col-auto" >
+
+                                    <label for="exampleInputName2" class=" col-form-label-sm ">
+                                            <mat-checkbox
+                                            [align]="end"
+                                            color="primary"
+                                             name="editar"
+                                             [(ngModel)]="permiso.editar">
+                                                <span > Editar</span>
+                                            </mat-checkbox>
+                                          </label>
+
+                            </div>
+
+                            <div class="col-auto" >
+
+                                    <label for="exampleInputName2" class=" col-form-label-sm ">
+                                            <mat-checkbox
+                                            [align]="end"
+                                            color="primary"
+                                             name="eliminar"
+                                             [(ngModel)]="permiso.eliminar">
+                                                <span > Eliminar</span>
+                                            </mat-checkbox>
+                                          </label>
+
+                            </div>
+
+
+
+                            <div class="col-auto" >
+
+                                    <button style="margin-right:12px"
+                                    type="submit" placement="top"
+                                    ngbTooltip="Guardar"
+                                    class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                    value="">
+                                    </button>
+
+
+                            </div>
+
+                           </div>
+
+
+                        </form>
+                        <br>
+
+
+                        <!-- <div class="row">
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
                                     <form class="form-inline">
@@ -43,8 +143,15 @@
                                                 </select>
                                             </div>
                                             <div  class="form-group input-group">
-                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Crear :</label>
-                                                <input  class="ng-tns-c6-1" type="checkbox" [(ngModel)]="permiso.crear" name="crear" >
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">
+                                                <!-- <input  class="ng-tns-c6-1" type="checkbox" [(ngModel)]="permiso.crear" name="crear" >
+                                                <mat-checkbox
+                                                [align]="end"
+                                                 name="crear"
+                                                 [(ngModel)]="permiso.crear">
+                                                    <span > Crear</span>
+                                                </mat-checkbox>
+                                              </label>
                                             </div>
                                             <div  class="form-group input-group">
                                                 <label for="exampleInputName2" class=" col-form-label-sm ">*Editar :</label>
@@ -61,7 +168,7 @@
 
                                             <div>
                                                 <span _ngcontent-c7="" class="input-group-btn" style="padding-left:20px">
-                                                    <!--button type="submit" (click)="saveOrUpdate(selectRol.value,selectMenu.value,selectCrear.value,selectEditar.value,selectEliminar.value,selectLeer.value)" class="btn btn-lg btn-block btn-info btn-save-user">Guardar</button-->
+                                                    <!--button type="submit" (click)="saveOrUpdate(selectRol.value,selectMenu.value,selectCrear.value,selectEditar.value,selectEliminar.value,selectLeer.value)" class="btn btn-lg btn-block btn-info btn-save-user">Guardar</button
                                                     <button type="button" class="btn-sm btn-primary mb-2" (click)="saveOrUpdate()" >
                                                         <span class="fa fa-plus"></span> Guardar
                                                         <b>
@@ -77,7 +184,7 @@
                                 </fieldset>
                             </div>
 
-                        </div>
+                        </div> -->
 
                         <div class="card mb-3">
                             <div class="card-header center-sc">
@@ -122,8 +229,8 @@
                                             <th>Menú</th>
                                             <th>Estado</th>
                                             <th>Crear</th>
+                                            <th>Leer</th>
                                             <th>Editar</th>
-                                            <th>lectura</th>
                                             <th>Eliminar</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -135,57 +242,114 @@
                                             <th scope="row">{{ permiso.id }}</th>
                                             <td style="text-align: left"> {{ permiso.menu.descripcion }} </td>
                                             <!-- <td> {{ permiso.menu.descripcion }} </td> -->
-                                            <td *ngIf="permiso.estado ==='1'">
+                                            <!-- <td *ngIf="permiso.estado ==='1'">
                                                 <input (click)="update(permiso.estado)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.estado}}" name="estado"
                                                     checked>
                                             </td>
                                             <td *ngIf="permiso.estado !='1'">
                                                 <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.estado}}" name="estado"
                                                     unchecked>
+                                            </td> -->
+                                            <td>
+                                                    <label class=" col-form-label-sm ">
+                                                            <mat-checkbox
+                                                            color="primary"
+                                                            name="{{permiso.estado}}"
+                                                             [(ngModel)]="permiso.estado">
+                                                            </mat-checkbox>
+                                                    </label>
                                             </td>
-                                            <td *ngIf="permiso.crear ==='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.crear}}"
+                                            <td>
+                                                    <label class=" col-form-label-sm ">
+                                                            <mat-checkbox
+                                                            color="primary"
+                                                            name="{{permiso.crear}}"
+                                                             [(ngModel)]="permiso.crear"
+                                                             (change)="changeState(permiso)">
+                                                            </mat-checkbox>
+                                                    </label>
+
+                                            </td>
+                                            <!-- <td *ngIf="permiso.crear ==='1'">
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.crear}}"
                                                     name="crear" checked>
-                                            </td>
-                                            <td *ngIf="permiso.crear !='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.crear}}"
+                                            </td>-->
+
+
+
+                                           <!-- <td *ngIf="permiso.crear !='1'">
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.crear}}"
                                                     name="crear" unchecked>
+                                            </td> -->
+                                            <td>
+                                                    <label class=" col-form-label-sm ">
+                                                            <mat-checkbox
+                                                            color="primary"
+                                                            name="{{permiso.editar}}"
+                                                             [(ngModel)]="permiso.editar"
+                                                             (change)="changeState(permiso)">
+                                                            </mat-checkbox>
+                                                    </label>
                                             </td>
 
-                                            <td *ngIf="permiso.editar ==='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.editar}}"
+                                            <!-- <td *ngIf="permiso.editar ==='1'">
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.editar}}"
                                                     name="editar" checked>
                                             </td>
                                             <td *ngIf="permiso.editar !='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.editar}}"
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.editar}}"
                                                     name="editar" unchecked>
+                                            </td> -->
+
+                                            <td>
+                                                    <label class=" col-form-label-sm ">
+                                                            <mat-checkbox
+                                                            color="primary"
+                                                            name="{{permiso.leer}}"
+                                                             [(ngModel)]="permiso.leer"
+                                                             (change)="changeState(permiso)">
+                                                            </mat-checkbox>
+                                                    </label>
                                             </td>
 
-                                            <td *ngIf="permiso.leer ==='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.leer}}"
+                                            <!-- <td *ngIf="permiso.leer ==='1'">
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.leer}}"
                                                     name="leer" checked>
                                             </td>
                                             <td *ngIf="permiso.leer !='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.leer}}"
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.leer}}"
                                                     name="leer" unchecked>
+                                            </td> -->
+
+                                            <td>
+                                                    <label class=" col-form-label-sm ">
+                                                            <mat-checkbox
+                                                            color="primary"
+                                                            name="{{permiso.eliminar}}"
+                                                             [(ngModel)]="permiso.eliminar"
+                                                             (change)="changeState(permiso)">
+                                                            </mat-checkbox>
+                                                    </label>
                                             </td>
 
-                                            <td *ngIf="permiso.eliminar ==='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.eliminar}}"
+                                            <!-- <td *ngIf="permiso.eliminar ==='1'">
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.eliminar}}"
                                                     name="eliminar" checked>
                                             </td>
                                             <td *ngIf="permiso.eliminar !='1'">
-                                                <input _ngcontent-c6="" (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.eliminar}}"
+                                                <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.eliminar}}"
                                                     name="eliminar" unchecked>
-                                            </td>
+                                            </td> -->
 
                                             <td>
-                                                <a class="btn btn-default">
+                                                <!-- <a class="btn btn-default">
                                                     <i (click)="update(permiso)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
                                                     </i>
-                                                </a>
+                                                </a> -->
                                                 <span>
-                                                    <i class="fa fa-trash-o" (click)="delete(permiso.id)"></i>&nbsp; </span>
+                                                    <i class="fa fa-trash-o fa-lg hand"
+                                                    title="Borrar"
+                                                     (click)="delete(permiso.id)"></i>&nbsp; </span>
                                             </td>
 
                                         </tr>
@@ -200,10 +364,11 @@
 
                         </div>
 
-                    </form>
 
-                </div>
-
-            </div>
             <!-- /.row -->
         </div>
+        </div>
+        </div>
+        </div>
+
+

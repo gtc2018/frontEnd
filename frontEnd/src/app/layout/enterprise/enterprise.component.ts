@@ -412,7 +412,8 @@ export class EnterpriseComponent implements OnInit {
     private getItemsEmpresas(): void {
 
         this.permiso = new PermisoModel();
-        this.permiso.rolId = this.login.authUser.rolId;
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
         this.menu.loadMenus(this.permiso).subscribe(res => {
             console.log("======================= PERMISOS Empresas: ==============");
 
@@ -420,7 +421,7 @@ export class EnterpriseComponent implements OnInit {
             for (let menu of this.menus) {
                 //this.items = menu.item;
                 if (menu.menu.descripcion === "Empresas") {
-                   
+
                     console.log("===============ITEMS EMPRESAS:======================")
                     console.log(menu);
 

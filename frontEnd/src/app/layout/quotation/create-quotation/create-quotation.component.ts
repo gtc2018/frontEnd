@@ -101,7 +101,8 @@ export class CreateQuotationComponent implements OnInit {
     //Variables
 
     systemInit: { id: number; name: string; value: boolean; }[];
-    toolInit: { id: number; name: string; value: boolean; }[];
+    // toolInit: { id: number; name: string; value: boolean; }[];
+    toolInit=[];
 
     modelDateDS;
     modelDateSol;
@@ -208,8 +209,8 @@ private getDismissReason(reason: any): string {
 constructor(private modalService: NgbModal) {
 
     this.toolInit= [
-        {id:1,name:"Angular",value:false},
-        {id:2, name:"ReactJs", value:true}
+        {id:1,name:"Angular",value:1},
+        {id:2, name:"ReactJs", value:"1"}
     ]
 
     this.systemInit=[

@@ -71,6 +71,12 @@ export class ProyectosService {
 
   }
 
+  public saveOrUpdateUserToEnterprise(userToEnterprise: any[]): Observable<RestResponse> {
+    console.log(userToEnterprise);
+    return this.Http.post<RestResponse>("http://localhost:8080/AsociarProyecto/saveOrUpdateAsociarProyecto", JSON.stringify(userToEnterprise));
+
+  }
+
   public delete(proyecto: ProyectoModel): Observable<RestResponse> {
     console.log(proyecto);
     return this.Http.post<RestResponse>("http://localhost:8080/deleteProyecto", JSON.stringify(proyecto));

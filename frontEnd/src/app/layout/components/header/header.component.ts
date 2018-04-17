@@ -11,6 +11,7 @@ import { AuthService } from '../../../shared/guard/auth.service';
 
 
 export class HeaderComponent implements OnInit {
+    userName: string;
     pushRightClass: string = 'push-right';
 
     ngOnInit() {
@@ -52,11 +53,9 @@ export class HeaderComponent implements OnInit {
         public router: Router,
        private login:AuthService) {
 
-
-
            console.log(localStorage);
 
-           console.log(this.login);
+           this.userName = localStorage.user;
 
 
        this.translate.addLangs(['en', 'fr', 'ur', 'es', 'it', 'fa', 'de']);

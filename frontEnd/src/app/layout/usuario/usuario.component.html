@@ -25,7 +25,10 @@
             <!--DIV BOTON NUEVO USUARIO -->
             <div style="text-align:left">
 
-                <button type="submit" class="btn-sm btn-primary mb-2" (click)="toggleDivCreateUsers()" blueColored>
+                <button type="submit"
+                class="btn-sm btn-primary mb-2"
+                (click)="toggleDivCreateUsers()"
+                blueColored>
                     <span class="fa fa-plus"></span> Nuevo usuario
                     <b>
                         <span class="{{icon}}"></span>
@@ -471,7 +474,6 @@
                         </div>
                     </div>
                     </div>
-                    </div>
                     <div class="card-body table-responsive">
                 <table class="table table-hover table-striped table-bordered table-sm">
                     <thead>
@@ -514,11 +516,18 @@
                             </td>
                             <td>{{usuario.email}}</td>
                             <td>
-                                <input type="checkbox"
+                                <!-- <input type="checkbox"
                                  [(ngModel)]="usuario.estado"
                                  name="{{usuario.id}}"
                                  #check
+                                 (change)="changeState(usuario)"> -->
+
+                                 <mat-checkbox
+                                 name="{{usuario.id}}"
+                                 [(ngModel)]="usuario.estado"
                                  (change)="changeState(usuario)">
+                                 </mat-checkbox>
+
                             </td>
                             <td class="sidebar">
                                     <div class="btn-group">
@@ -539,6 +548,8 @@
 
                         </tbody>
                     </table>
+
+                </div>
                 </div>
             </div>
 

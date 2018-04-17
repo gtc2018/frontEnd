@@ -168,3 +168,76 @@ table{
     // width:          1px;
 }
 
+button{
+    cursor: pointer;
+}
+
+input[type=submit] {
+
+    cursor: pointer;
+
+}
+
+.subcard-header {
+    width: fit-content;
+    /* color: white; */
+    /* background: linear-gradient(6deg, #3798ff 50%, #ddd); */
+    padding: 0 0.4rem;
+    margin-bottom: 0;
+    /* background-color: rgba(0, 0, 0, 0.03); */
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    border-right: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.subcard {
+    // margin: 0 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: $card-bg;
+    background-clip: border-box;
+    border: $card-border-width solid $card-border-color;
+    // @include border-radius($card-border-radius);
+
+    .title{
+    font-family: monospace;
+    font-size: 15px;
+    color: burlywood;
+    }
+
+    > hr {
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    > .list-group:first-child {
+      .list-group-item:first-child {
+        @include border-top-radius($card-border-radius);
+      }
+    }
+
+    > .list-group:last-child {
+      .list-group-item:last-child {
+        @include border-bottom-radius($card-border-radius);
+      }
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -5px;
+        margin-left: -5px;
+
+        > .col,
+        > [class*="col-"] {
+           padding: 6px;
+          padding-right: 10px;
+          padding-left: 10px;
+        }
+      }
+  }
+
+
+

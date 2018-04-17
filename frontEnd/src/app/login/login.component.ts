@@ -27,7 +27,6 @@ export class LoginComponent {
 
         console.log(localStorage);
 
-
     }
 
     private login: LoginModel;
@@ -71,6 +70,8 @@ export class LoginComponent {
                     localStorage.user = res.nombres;
 
                     localStorage.rol = res.rolId;
+
+                    localStorage.email = res.email;
 
                     return this.router.navigate(['/dashboard']);
 

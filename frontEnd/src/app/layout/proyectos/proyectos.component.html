@@ -10,7 +10,7 @@
 
                 </div>
 
-            <!-- <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
+                <!-- <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
 
                     <button type="button" class="btn btn-primary pull-right" (click)="createHide()" blueColored>
                         <span class="fa fa-plus"></span> Nuevo Proyecto
@@ -21,8 +21,8 @@
 
     </div> -->
 
-        </div>
-        <hr>
+            </div>
+            <hr>
 
             <!--DIV BOTON NUEVO Empresa -->
             <div style="text-align:left">
@@ -50,337 +50,353 @@
                 <!--FIN ALERT MENSAJES -->
                 <!-- *ngIf="visible" -->
 
-                <div class="card mb-3">
+                <div class="card">
 
-                <div class="card-header">Proyecto</div>
-<br>
-                <form class="form-row justify-content-around" (ngSubmit)="save()" >
-                        <br>
+                        <div class="card-header">
+                                <div class="row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
-                        <br>
+                                    <!-- Usuario&nbsp;&nbsp;&nbsp;&nbsp; -->
 
-                            <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
-                                <label class="col-form-label-sm">*Nombre del proyecto</label>
-                                <input type="text" [(ngModel)]="proyecto.nombre" name="nombre" class="form-control-sm input-underline" id="nombreProyecto"
-                                    placeholder="Nombre del Proyecto" required>
+                                    <!-- <input style="margin-right:12px"
+                                    type="submit"
+                                    class="btn-sm btn-success fa fa-floppy-o"
+                                    value=""/> -->
 
+                                    <!-- <div>
+                                        <hr class="hrv2">
+                                    </div> -->
+
+                                    <div>
+
+                                        <button style="margin-right:12px"
+                                         (click)="save()"
+                                          type="submit"
+                                           placement="top"
+                                            ngbTooltip="Guardar"
+                                            class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                            value="">
+                                        </button>
+
+                                    </div>
+
+                                    <!-- <div>
+                                        <hr class="hrv">
+                                    </div> -->
+
+
+
+                                    <!-- <input style="margin-left:10px"
+                                     type="reset"
+                                     class="btn-sm btn-danger"
+                                     value="Limpiar" /> -->
+
+                                    <!-- <div>
+
+                                        <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                            value="">
+                                            <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                                        </button>
+
+                                    </div> -->
+
+                                    <!-- <div *ngIf="deleteFormHide" style="display: -webkit-box;">
+
+                                        <div>
+                                            <hr class="hrv2">
+                                        </div>
+
+                                        <div>
+
+                                            <button style="margin-right:12px" (click)="deleteForm(usuario)" type="submit" placement="top" ngbTooltip="Eliminar" class="btn-sm btn-danger fa fa-trash-o fa-lg hand"
+                                                value="">
+                                            </button>
+
+                                        </div>
+
+                                        <div>
+                                            <hr class="hrv">
+                                        </div>
+
+                                    </div> -->
+
+                                    <!-- <div *ngIf="!deleteFormHide">
+                                        <hr class="hrv2">
+                                    </div> -->
+
+
+
+                                </div>
                             </div>
+                            <!-- justify-content-start -->
+                    <form class="form-row  " (ngSubmit)="save()">
 
-                            <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " style="padding-top: 0px; padding-right: 0px ">
+                            <div class="subcard col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
-                            <label class="col-form-label-sm ">*Tipo del proyecto</label>
-                            <div class="">
-                                <select
-                                [(ngModel)]="proyecto.tipo"
-                                name="tipo"
-                                class="form-control-sm input-underline">
-                                    <option value=undefined
-                                     disabled
-                                     selected>Seleccione un proyecto</option>
-                                     <option value="Interno">Interno</option>
-                                     <option value="Externo">Externo</option>
-                                </select>
-                            </div>
+                                <div class="subcard-header title">Datos del proyecto</div>
 
-                            </div>
+                                <div class="form-row">
 
-                            <div class=" form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                                <!-- <label class="col-form-label ">*Subir documento</label>
-                            <div class="">
-                                <input class="" type="file">
-                            </div> -->
+                                        <label class="col-form-label-sm">*Nombre del proyecto</label>
+                                        <input type="text" [(ngModel)]="proyecto.nombre" name="nombre" class="form-control-sm input-underline" placeholder="Nombre del Proyecto"
+                                            required>
 
-                            <label class="hand"
-                            ondragover="return false;"
-                            (dragenter)="handleDragEnter()"
-                             (dragleave)="handleDragLeave()"
-                            (drop)="handleDrop($event)"
-                            placement="top"
-                            ngbTooltip="Haga click para cargar o arrastre el documento">
-                                    <div class="col-auto">
+                                    </div>
 
-                                        <!-- <label class="col-form-label-sm"
+                                    <div class=" input-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                        <label class="col-form-label-sm ">*Tipo del proyecto</label>
+                                        <div class="">
+                                            <select [(ngModel)]="proyecto.tipo" name="tipo" class="form-control-sm input-underline">
+                                                <option value="Interno">Interno</option>
+                                                <option value="Externo">Externo</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                        <label class="col-form-label-sm ">Archivo</label>
+                                        <label class="hand" ondragover="return false;" (dragenter)="handleDragEnter()" (dragleave)="handleDragLeave()" (drop)="handleDrop($event)"
+                                            placement="top" ngbTooltip="Haga click para cargar o arrastre el documento">
+                                            <div class="col-auto">
+
+                                                <!-- <label class="col-form-label-sm"
                                             style="padding-bottom:10px " >Subir documento: </label> -->
-                                            <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}" >{{nameUpload}}</span>
-                                        <!-- <img [src]="fotoDoc"
+                                                <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}">{{nameUpload}}</span>
+                                                <!-- <img [src]="fotoDoc"
                                         class="picture-marc" width="165" height="165"> -->
+                                            </div>
+                                            <div class="col-auto">
+
+
+                                                <input type='file' (change)="handleInputChange($event)" style="display: none;">
+
+                                            </div>
+                                        </label>
+
                                     </div>
+
+                                    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                        <label class=" col-form-label-sm ">Descripción</label>
+                                        <textarea class="form-control" [(ngModel)]="proyecto.descripcion" name="descripcion" cols="auto" rows="6"></textarea>
+
+                                    </div>
+
+                                </div>
+                                <br>
+                            </div>
+
+                            <div class="subcard col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+                                <div class="subcard-header title">Datos de la empresa</div>
+
+                                <div class="form-row">
+
                                     <div class="col-auto">
 
-
-                                        <input type='file' (change)="handleInputChange($event)" style="display: none;">
+                                        <label class=" col-form-label-sm ">*Empresa</label>
+                                        <select #selectEn [(ngModel)]="proyecto.clienteId" (change)="setNew(selectEn.value)" name="enterprise" class="form-control-sm input-underline">
+                                            <option value=undefined disabled selected>Seleccione una empresa</option>
+                                            <option *ngFor="let e of enterprises" [value]="e.id">
+                                                {{e.descripcion}}
+                                            </option>
+                                        </select>
 
                                     </div>
-                                </label>
 
+                                    <div *ngIf="fotoEmpresa !==undefined" class="col-auto" style="top: -12px;">
+                                            <label>
+                                                    <div class="col-auto">
+                                                        <img [src]="fotoEmpresa" class="picture-marc" width="60" height="60">
+                                                    </div>
+                                                    <div class="col-auto">
+
+
+                                                        <input type='file' (change)="handleInputChange($event)" style="display: none;" disabled>
+
+                                                    </div>
+                                                </label>
+
+                                        </div>
+
+                                    <div class="col-auto">
+
+                                        <label class=" col-form-label-sm ">Seleccionar Empleados</label>
+                                        <select #selectUs
+                                        (change)="setNewUser(selectUs.value)"
+                                        name="employee"
+                                        class="form-control-sm input-underline">
+                                            <option value=undefined selected>Seleccione un empleado</option>
+                                            <option *ngFor="let u of employees;let i = index" [value]="u.id">
+                                                {{u.nombres}}&nbsp;{{u.apellidos}}
+                                            </option>
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                                        <label class=" col-form-label-sm ">Involucrados</label>
+
+                                        <table class="table table-striped table-sm table-bordered">
+                                            <thead align="center">
+                                                <tr>
+                                                    <th>Empleado</th>
+                                                    <th>Proyectos</th>
+                                                    <th>Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let u of userToEnterprise; let i=index">
+
+                                                    <td>
+                                                            <label *ngIf="u.foto !== null" class="" placement="top" ngbTooltip="">
+                                                                        <img [src]="u.foto" class="" width="35" height="45">
+                                                                    <div class="col-auto">
+
+
+                                                                        <input type='file' (change)="handleInputChange($event)" style="display: none;" disabled>
+
+                                                                    </div>
+                                                                </label>
+
+                                                        <span [innerHTML]="u.nombres"></span>
+                                                        <span [innerHTML]="u.apellidos"></span>
+                                                    </td>
+                                                    <!-- <td align="center">
+                                                                <span>
+                                                                    <input type="checkbox"
+                                                                    (change)="checkUser(u)">
+                                                                </span>
+                                                            </td> -->
+                                                    <td align="center">
+                                                        <span>211-222-554
+                                                        </span>
+                                                    </td>
+                                                    <td align="center">
+                                                        <span style="color:red" class="fa fa-times hand" title="Eliminar" (click)="deleteUserToEnterprise(u, i)">
+                                                        </span>
+                                                    </td>
+
+                                                    <!-- <td>SPC</td>
+                                                           <td>Veneco</td>
+                                                           <td>02/03/2017</td>
+                                                           <td><input type="checkbox"></td>
+                                                       </tr>
+                                                       <tr>
+                                                               <td>CDA</td>
+                                                               <td>Picachu</td>
+                                                               <td>02/03/2017</td>
+                                                               <td><input type="checkbox"></td> -->
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+
+                                </div>
+                                <br>
                             </div>
 
                         </div>
 
-                    <br><br>
-
-                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc" >
+                        <!-- <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
                             <div class="form-row col-xs-12 col-sm-12 col-md-4 col-lg-4">
 
-                                    <label class=" col-form-label-sm ">*Empresas</label>
-                                    <select #selectEn
-                                    [(ngModel)]="proyecto.clienteId"
-                                    (change)="setNew(selectEn.value)"
-                                    name="enterprise"
-                                    class="form-control-sm input-underline">
-                                        <option value=undefined disabled selected>Seleccione una empresa</option>
-                                        <option *ngFor="let e of enterprises" [value]="e.id">
-                                            {{e.descripcion}}
-                                        </option>
-                                    </select>
+                                <label class=" col-form-label-sm ">*Empresas</label>
+                                <select #selectEn [(ngModel)]="proyecto.clienteId" (change)="setNew(selectEn.value)" name="enterprise" class="form-control-sm input-underline">
+                                    <option value=undefined disabled selected>Seleccione una empresa</option>
+                                    <option *ngFor="let e of enterprises" [value]="e.id">
+                                        {{e.descripcion}}
+                                    </option>
+                                </select>
 
                             </div>
 
                             <div class=" form-row col-xs-12 col-sm-12 col-md-8 col-lg-8 ">
 
-                                    <label class=" col-form-label-sm ">Seleccionar Empleado</label>
-                                <select #selectUs
-                                (change)="setNewUser(selectUs.value)"
-                                name="employee"
-                                class="form-control-sm input-underline">
+                                <label class=" col-form-label-sm ">Seleccionar Empleado</label>
+                                <select #selectUs (change)="setNewUser(selectUs.value)" name="employee" class="form-control-sm input-underline">
                                     <option value=undefined selected>Seleccione un empleado</option>
                                     <option *ngFor="let u of employees;let i = index" [value]="u.id">
-                                            {{u.nombres}}&nbsp;{{u.apellidos}}
+                                        {{u.nombres}}&nbsp;{{u.apellidos}}
                                     </option>
                                 </select>
                             </div>
 
-                        </div>
-
-                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc">
-
-                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
-
-                                <label class=" col-form-label-sm ">Descripción</label><br>
-                                <textarea class="form-control"
-                                [(ngModel)]="proyecto.descripcion"
-                                 name="descripcion"
-                                 cols="auto"
-                                 rows="6"></textarea>
-
-                        </div>
-
-                            <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-
-                            <label class="col-form-label">*Nombre del proyecto</label>
-                            <input type="text" [(ngModel)]="proyecto.nombre"
-                             name="nombre"
-                             class="form-control input-underline input-lg" id="nombreProyecto"
-                                placeholder="Nombre del Proyecto"
-                                required>
-
-                        </div>
-
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-
-                            <label class="col-form-label ">*Tipo del proyecto</label>
-                            <div class="">
-                                <select
-                                [(ngModel)]="proyecto.tipo"
-                                name="tipo"
-                                class="form-control">
-                                    <option value=undefined
-                                     disabled
-                                     selected>Seleccione un proyecto</option>
-                                     <option value="Interno">Interno</option>
-                                     <option value="Externo">Externo</option>
-                                </select>
-                            </div>
-
-                        </div>
-
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-
-                            <label class="col-form-label ">*Subir documento</label>
-                            <div class="">
-                                <input class="" type="file">
-                            </div>
-
-                        </div>
-                    </div> -->
+                        </div> -->
 
 
-
-
-                            <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-
-                            <label class=" col-form-label ">*Empresas</label>
-                            <select #selectEn [(ngModel)]="proyecto.empresaId"
-                            (change)="setNew(selectEn.value)"
-                            name="enterprise"
-                            class="form-control">
-                                <option value=undefined disabled selected>Seleccione una empresa</option>
-                                <option *ngFor="let e of enterprises" [value]="e.empresaId">
-                                    {{e.descripcion}}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-
-                                <!-- #selectEn [(ngModel)]="proyecto.usuarioId" -->
-                            <!--          <label class=" col-form-label ">*Seleccionar Usuarios</label>
-                                <select #selectUs
-                                (change)="setNewUser(selectUs.value,i)"
-                                name="enterprise"
-                                class="form-control">
-                                    <option value=undefined selected>Seleccione un usuario</option>
-                                    <option *ngFor="let u of usuarios;let i = index" [value]="u.id">
-                                            {{u.nombres}}&nbsp;{{u.apellidos}}
-                                    </option>
-                                </select>
-
-                        </div>-->
-
-                         <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 ">
-
-                                <label class=" col-form-label ">Involucrados</label>
-
-                        <table class="table table-striped table-bordered">
-                                <thead align="center">
-                                    <tr>
-                                        <th>Usuario</th>
-                                        <th>Proyectos</th>
-                                        <th>Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let u of userToEnterprise; let i=index">
-
-                                        <td>
-                                            <span [innerHTML]="u.nombres"></span>
-                                            <span [innerHTML]="u.apellidos"></span>
-                                        </td>
-                                        <!-- <td align="center">
-                                            <span>
-                                                <input type="checkbox"
-                                                (change)="checkUser(u)">
-                                            </span>
-                                        </td> -->
-                                        <td align="center">
-                                            <span>211-222-554
-                                            </span>
-                                        </td>
-                                        <td align="center">
-                                            <span
-                                            style="color:red"
-                                            class="fa fa-times hand"
-                                            title="Eliminar"
-                                            (click)="deleteUserToEnterprise(u, i)">
-                                            </span>
-                                        </td>
-
-                                        <!-- <td>SPC</td>
-                                       <td>Veneco</td>
-                                       <td>02/03/2017</td>
-                                       <td><input type="checkbox"></td>
-                                   </tr>
-                                   <tr>
-                                           <td>CDA</td>
-                                           <td>Picachu</td>
-                                           <td>02/03/2017</td>
-                                           <td><input type="checkbox"></td> -->
-                                   </tr>
-                                </tbody>
-                            </table>
-                            </div>
-
-
-                    <!-- </div> -->
-
-                            <!-- <div class="form-row col-xs-12 col-sm-6 col-md-4 col-lg-4 ">
-                            <table class="table table-striped table-bordered">
-                                    <thead align="center">
-                                        <tr>
-                                            <th>Usuario</th>
-                                            <th>Seleccionar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let u of usuarios">
-
-                                            <td>
-                                                <span [innerHTML]="u.nombres"></span>
-                                                <span [innerHTML]="u.apellidos"></span>
-                                            </td>
-                                            <td align="center">
-                                                <span>
-                                                    <input type="checkbox"
-                                                    (change)="checkUser(u)">
-                                                </span>
-                                            </td>
-
-                                            <!-- <td>SPC</td>
-                                           <td>Veneco</td>
-                                           <td>02/03/2017</td>
-                                           <td><input type="checkbox"></td>
-                                       </tr>
-                                       <tr>
-                                               <td>CDA</td>
-                                               <td>Picachu</td>
-                                               <td>02/03/2017</td>
-                                               <td><input type="checkbox"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                        <!-- <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-
-                            <label class=" col-form-label ">*Usuarios</label>
-                            <select [(ngModel)]="proyecto.usuarios" name="usuarios" class="form-control">
-                                <option value=undefined disabled selected>Seleccione una empresa</option>
-                                <option *ngFor="let u of usuarios" [value]="u.id">
-                                    {{u.nombres}}
-                                </option>
-                            </select>
-                        </div>
-
-
-
-                    </div> -->
-
-                        </div>
                         <br>
 
-                        <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                             <input type="submit" class="btn btn-success" value="Guardar" />
 
                             <!-- <input style="margin-left:10px"
                      type="reset"
                      class="btn btn-danger"
-                     value="Limpiar" /> -->
+                     value="Limpiar" />
 
-                        </div>
+                        </div> -->
 
                     </form>
                 </div>
 
-            </div>
-
             <br>
 
-            <div class="col-md-12">
-                <table class="table table-striped table-bordered">
+            </div>
+
+
+            <div class="card mb-3">
+                <div class="card-header center-sc">
+                    <div class="row">
+
+                        <div class=" col-auto">
+                            Tabla de Proyectos
+                        </div>
+
+                        <div class="btn-group row col-auto pull-right " style="">
+                            <div>
+                                <hr class="hrv1">
+                            </div>
+
+                            <div class="col-auto pull-right ">
+                                <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                            </div>
+
+                            <div>
+                                <hr class="hrv1">
+                            </div>
+
+                            <div class="col-auto pull-right ">
+                                <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                            </div>
+
+
+                            <div>
+                                <hr class="hrv1">
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            <div class="card-body table-responsive">
+                <table class="table table-hover table-striped table-bordered table-sm">
                     <thead>
                         <tr>
-                            <td>Nombre del proyecto</td>
-                            <td>Creado por</td>
-                            <td>Fecha creación por</td>
-                            <td>Acciones</td>
+                            <th>Nombre del proyecto</th>
+                            <th>Creado por</th>
+                            <th>Fecha creación por</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -421,6 +437,8 @@
                         </tr>
                     </tbody>
                 </table>
+
+            </div>
             </div>
         </div>
     </div>

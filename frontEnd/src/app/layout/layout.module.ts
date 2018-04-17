@@ -21,7 +21,7 @@ import { FilterAll } from '../filters/search-table';
         TranslateModule,
         ToastrModule.forRoot(), // ToastrModule added
         NgbDropdownModule.forRoot()
-        
+
     ],
 
     entryComponents: [

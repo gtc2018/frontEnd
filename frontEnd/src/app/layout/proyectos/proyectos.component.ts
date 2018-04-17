@@ -21,14 +21,27 @@ import { EmployeeModel } from '../../model/employee';
 })
 export class ProyectosComponent implements OnInit {
 
+    fotoEmpresa: any;
     styleIconUpload: string = "";
     iconUpload: string = "fa-upload";
     nameUpload:string = "Subir Documento";
     dragging: boolean;
     //Variables
-    filterEn: any;
+    filterEn: any[];
 
     fotoDoc: string;
+
+    // Para mostrar el maestro detalle de proyecto
+    updateForm : boolean = false;
+
+    /**
+     * Manejo del formulario en la misma pantalla de la tabla
+     * 1:Formulario contraido
+     * 2:Expandido para crear
+     * 3:Expandido para editar
+     */
+
+    stateExpand: number = 1;
 
     private proyectos: ProyectoModel[];//Tabla
     private proyecto: ProyectoModel;//Form
@@ -68,7 +81,6 @@ export class ProyectosComponent implements OnInit {
         }
 
         ngOnInit() {
-
             this.loadProyectos();
             this.loadEnterprises();
         }
@@ -94,17 +106,49 @@ export class ProyectosComponent implements OnInit {
         //Mostrar el crear o nno
 
         createHide() {
-            this.visible = !this.visible;
+            if (this.stateExpand === 3) {
 
-            if(this.visible === true){
+                this.proyecto = new ProyectoModel();
 
-                this.icon = "fa fa-caret-down";
+                this.fotoEmpresa = undefined;
 
-            }else{
+                this.stateExpand = 2;
 
-                this.icon= "fa fa-caret-left";
+                // this.deleteFormHide = false;
 
-            }
+            } else if (this.stateExpand === 1) {
+
+                this.visible = !this.visible;
+
+                if (this.visible === true) {
+
+                    this.icon = "fa fa-caret-down";
+
+                } else {
+
+                    this.icon = "fa fa-caret-left";
+
+                }
+
+                this.stateExpand = 2
+
+                // this.stateExpand = true;
+            } else
+                if (this.stateExpand === 2) {
+
+                    this.visible = !this.visible;
+
+                    if (this.visible === true) {
+
+                        this.icon = "fa fa-caret-down";
+
+                    } else {
+
+                        this.icon = "fa fa-caret-left";
+
+                    }
+                    this.stateExpand = 1
+                }
         }
 
         //Para cargar proyectos
@@ -133,9 +177,9 @@ export class ProyectosComponent implements OnInit {
     setNew(id: any): void {
         console.log(id);
 
-            //  this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
+              var filterEn = this.enterprises.filter(value => value.id === parseInt(id));
 
-            //  console.log(this.filterEn[0]);
+            this.fotoEmpresa = filterEn[0].imagenEmpresa;
 
             this.proyecto.clienteId = id;
 
@@ -174,7 +218,7 @@ export class ProyectosComponent implements OnInit {
 
             var indexDelete;
 
-             this.filterEn = this.employees.filter(value => value.id === parseInt(id));
+             var filterEn = this.employees.filter(value => value.id === parseInt(id));
 
              [].forEach.call(this.employees,function(data,index){
 
@@ -196,7 +240,7 @@ export class ProyectosComponent implements OnInit {
 
             //  console.log(this.filterEn[0]);
 
-             this.userToEnterprise.push(this.filterEn[0]);
+             this.userToEnterprise.push(filterEn[0]);
 
             //  console.log(this.userToEnterprise);
 
@@ -225,7 +269,7 @@ export class ProyectosComponent implements OnInit {
     save(){
 
         if(this.login.authUser !== undefined){
-            this.proyecto.usuarioCreacion=this.login.authUser.email;
+            this.proyecto.usuarioCreacion=localStorage.email;
         }
 
         console.log(this.proyecto);
@@ -268,30 +312,32 @@ export class ProyectosComponent implements OnInit {
 
     upload(model):void{
 
-        if(this.login.authUser !== undefined){
+        console.log(model);
 
-            model.usuarioCreacion=this.login.authUser.email;
+        console.log(this.stateExpand);
+
+        if (this.stateExpand === 1) {
+            this.visible = !this.visible;
+
+            if (this.visible === true) {
+                this.icon = "fa fa-caret-down";
+
+                // this.deleteFormHide = false;
+            } else {
+                this.icon = "fa fa-caret-left";
             }
+            // this.deleteFormHide = true;
 
-        this.proyecto = model;
+            this.proyecto = model;
+            this.stateExpand = 3;
+            this.updateForm = true;
 
-        this.visible = true;
-
-        this.icon= "fa fa-caret-down";
-
-        this.proyectoService.getAllEmployeesToEmpresaId(model.empresaId).subscribe(res => {
-
-            console.log(res);
-
-            // this.usuarios = res;
-
-        },(error)=>{
-
-            console.log(error);
-
-            this.toastr.error("Error actualizar los datos");
-
-        });
+        } else if (this.stateExpand === 2 || this.stateExpand === 3) {
+            this.proyecto = model;
+            this.stateExpand = 3;
+            this.updateForm = true;
+            // this.deleteFormHide = true;
+        }
 
     }
 

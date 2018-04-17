@@ -10,6 +10,7 @@ import { PageHeaderModule } from './../../shared';
 import { BlueColorDirective } from './blue-color.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterAll } from '../../filters/search-table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 
 
@@ -19,7 +20,8 @@ import { FilterAll } from '../../filters/search-table';
           PageHeaderModule,
            HttpClientModule,
             FormsModule,
-            NgbModule],
+            NgbModule,
+            MatCheckboxModule],
 
     declarations: [UsuarioComponent,
          BlueColorDirective,

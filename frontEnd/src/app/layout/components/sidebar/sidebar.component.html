@@ -1,28 +1,28 @@
- <!--<nav class="sidebar" style="font-size: 0.85rem;" [ngClass]="{sidebarPushRight: isActive}">
+ <nav class="sidebar hand" style="font-size: 0.85rem;" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group title">
         <li routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard "></i>&nbsp;{{ 'Dashboard' | translate }}
         </li>
-        <!--Modulo Transacciones
+        <!--Modulo Transacciones-->
         <li (click)="eventGroup2()" class="list-group-item hand">
             <i class="fa fa-fw fa-th-list"></i>&nbsp;Transacciones
             <i class="fa fa-fw {{iconG2}}"></i>
         </li>
 
-        <!--Contenedor Transacciones
+        <!--Contenedor Transacciones-->
         <div *ngIf="hideGroup2">
             <li *ngFor="let menu of transacciones" [routerLink]="[menu.url]" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
                 <i class="{{ menu.icono }}"></i>&nbsp; {{ menu.descripcion | translate }}
             </li>
         </div>
 
-        <!--Modulo Entidades Basicas
+        <!--Modulo Entidades Basicas-->
         <li (click)="eventGroup1()" class="list-group-item hand">
             <i class="fa fa-fw fa-cubes"></i>&nbsp;Entidades Básicas
             <i class="fa fa-fw {{icon}}"></i>
         </li>
 
-        <!--Contenedor Entidades Basicas
+        <!--Contenedor Entidades Basicas-->
         <div *ngIf="hideGroup1">
             <li *ngFor="let menu of basicas" [routerLink]="[menu.url]" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
                 <i class="{{ menu.icono }}"></i>&nbsp; {{ menu.descripcion | translate }}
@@ -30,13 +30,13 @@
 
         </div>
 
-        <!--Modulo Seguridad
+        <!--Modulo Seguridad-->
         <li (click)="eventGroup3()" class="list-group-item hand">
             <i class="fa fa-fw fa-cubes"></i>&nbsp; Seguridad
             <i class="fa fa-fw {{iconG3}}"></i>
         </li>
 
-        <!--Contenedor Seguridas
+        <!--Contenedor Seguridas-->
         <div *ngIf="hideGroup3">
             <li *ngFor="let menu of seguridad" [routerLink]="[menu.url]" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
                 <i class="{{ menu.icono }}"></i>&nbsp; {{ menu.descripcion | translate }}
@@ -48,9 +48,9 @@
     </ul>
 
 
-</nav> -->
+</nav>
 
-<nav class="sidebar" style="font-size: 0.85rem;" [ngClass]="{sidebarPushRight: isActive}">
+<!-- <nav class="sidebar" style="font-size: 0.85rem;" [ngClass]="{sidebarPushRight: isActive}">
     <ul class="list-group title">
         <a routerLink="/dashboard" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-dashboard "></i>&nbsp;{{ 'Dashboard' | translate }}
@@ -82,7 +82,7 @@
         </a> -->
         <!-- <a [routerLink]="['/charge']" [routerLinkActive]="['router-link-active']" class="list-group-item">
             <i class="fa fa-fw fa-address-card"></i>&nbsp;{{ 'Cargos' | translate }}
-        </a> -->
+        </a>
         <a (click)="eventGroup1()" class="list-group-item hand">
             <i class="fa fa-fw fa-cubes"></i>&nbsp;Entidades Básicas<i class="fa fa-fw {{icon}}"></i>
         </a>
@@ -100,7 +100,7 @@
 
     </ul>
 
-</nav>
+</nav> -->
 
 <!--CAmbio-->
 

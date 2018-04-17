@@ -47,7 +47,6 @@ export class PermisoComponent implements OnInit {
     permisos: any;
     menus: any;
 
-
     toggleDivCreatePermisos() {
         this.visible = !this.visible;
     }
@@ -64,9 +63,67 @@ export class PermisoComponent implements OnInit {
         private menulog: LoginService,
         private menup: LoginService
     ) {
-
         this.permiso = new PermisoModel();
+
+        this.permiso.crear = 0;
     }
+     /**
+      * Metodo para actualizar un registro de permisos
+      */
+     changeState(model){
+
+         model.menu_id = model.menu.id;
+
+        if (model.crear) {
+            model.crear = 1;
+
+        } else {
+            model.crear = 0;
+        }
+
+        if (model.editar) {
+            model.editar = 1;
+
+        } else {
+            model.editar = 0;
+        }
+
+        if (model.leer) {
+            model.leer = 1;
+
+        } else {
+            model.leer = 0;
+        }
+
+        if (model.eliminar) {
+            model.eliminar = 1;
+
+        } else {
+            model.eliminar = 0;
+        }
+
+        console.log(model);
+
+            this.crearPermisoService.saveOrUpdate(model).subscribe(res => {
+
+                    this.loadPermisos();
+
+                    this.toastr.success('Registro actualizado exitosamente!');
+
+            }, (error)=>{
+
+                console.log(error);
+
+                this.loadPermisos();
+
+                swal(
+                    'Error al eliminar el registro',
+                    error.error.message,
+                    'error'
+                  )
+            }
+        );
+     }
 
 
     /**
@@ -75,13 +132,8 @@ export class PermisoComponent implements OnInit {
 
     private loadPermisos(): void {
         this.permisoService.getPermisos().subscribe(res => {
+            console.log(res);
             this.permisos = res;
-            console.log("================PEMISOS VICTOR==========================");
-            this.permisos = res;
-
-            for (let menu of this.permisos) {
-                console.log(menu);
-            }
 
         });
     }
@@ -114,31 +166,31 @@ export class PermisoComponent implements OnInit {
      */
     public saveOrUpdate(): void {
         if (this.permiso.crear) {
-            this.permiso.crear = "1";
+            this.permiso.crear = 1;
 
         } else {
-            this.permiso.crear = "0";
+            this.permiso.crear = 0;
         }
 
         if (this.permiso.editar) {
-            this.permiso.editar = "1";
+            this.permiso.editar = 1;
 
         } else {
-            this.permiso.editar = "0";
+            this.permiso.editar = 0;
         }
 
         if (this.permiso.leer) {
-            this.permiso.leer = "1";
+            this.permiso.leer = 1;
 
         } else {
-            this.permiso.leer = "0";
+            this.permiso.leer = 0;
         }
 
         if (this.permiso.eliminar) {
-            this.permiso.eliminar = "1";
+            this.permiso.eliminar = 1;
 
         } else {
-            this.permiso.eliminar = "0";
+            this.permiso.eliminar = 0;
         }
 
         console.log(this.permiso);
@@ -153,16 +205,18 @@ export class PermisoComponent implements OnInit {
                     this.loadPermisos();
                     //this.menup.loadMenus(this.permiso);
 
+                    this.permiso = new PermisoModel();
+
+                    this.toastr.success('Registro guardado exitosamente!');
+
                 } else {
                     this.message = res.message;
                     this.isValid = false;
-                    this.loadPermisos();
                 }
 
             });
 
         } else {
-            this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Roles');
             this.message = "Los campos con * son obligatorios.";
         }
 
@@ -171,11 +225,12 @@ export class PermisoComponent implements OnInit {
     /**
      * Metodo actualizar permisos:
      */
-    public update(permiso: RolModel): void {
-        sessionStorage.setItem('permiso', JSON.stringify(permiso));
-        this.permiso = JSON.parse(sessionStorage.getItem("permiso"));
-        this.visible = true;
-       
+    public update(permiso): void {
+        // sessionStorage.setItem('permiso', JSON.stringify(permiso));
+        // this.permiso = JSON.parse(sessionStorage.getItem("permiso"));
+        this.permiso = permiso;
+        // this.visible = true;
+
     }
 
     /**
@@ -259,8 +314,8 @@ export class PermisoComponent implements OnInit {
         }).then((result) => {
 
             if (result.value) {
-              
-                this.permiso.usuarioModificacion = this.login.authUser.email.toString();
+
+                this.permiso.usuarioModificacion = localStorage.user;
             console.log(this.permiso.id);
 
 
@@ -273,8 +328,8 @@ export class PermisoComponent implements OnInit {
                 console.log(error);
 
             });
-                
-                
+
+
             }
         })
 
@@ -322,21 +377,21 @@ export class PermisoComponent implements OnInit {
             this.menulog.loadMenus(this.permiso).subscribe(res => {
                 this.permisos = res
                 console.log("======================= PERMISOS PERMISOS: ==============");
-                
+
                 /*
                 for (let menu of this.menus) {
                     if (menu.menu.descripcion === "Permisos") {
                         console.log("===============ITEMS EMPRESAS:======================")
                         console.log(menu);
-    
+
                     }
-    
-                } 
+
+                }
             }, (error) => {
                 console.log(error);
-    
+
             });
-    
+
         } */
 
     ngOnInit() {
@@ -346,4 +401,4 @@ export class PermisoComponent implements OnInit {
         //this.getItemsPermisos();
     }
 
-} 
+}

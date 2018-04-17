@@ -430,7 +430,8 @@ export class EmployeeComponent implements OnInit   {
     private getItemsEmpresas(): void {
 
         this.permiso = new PermisoModel();
-        this.permiso.rolId = this.login.authUser.rolId;
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
         this.menu.loadMenus(this.permiso).subscribe(res => {
             console.log("======================= PERMISOS Empleados: ==============");
 

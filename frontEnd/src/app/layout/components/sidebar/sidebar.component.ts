@@ -94,7 +94,8 @@ export class SidebarComponent implements OnInit {
     //Metodo para cargar el menu dinamicamente:
     private getMenus(): void {
         this.permiso = new PermisoModel();
-        this.permiso.rolId = this.session.authUser.rolId;
+        // this.session.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
         this.menu.loadMenus(this.permiso).subscribe(res => {
             //console.log(" ============MENUS=============== ");
             this.response = res;
@@ -122,8 +123,8 @@ export class SidebarComponent implements OnInit {
                     console.log(this.basicas);
 
                 }
-                
-                
+
+
 
                 if ((menu.menu.grupo === "11") && (menu.menu.parent === "1")) {
                     console.log(" ============Seguridad:=============== ");
@@ -131,7 +132,7 @@ export class SidebarComponent implements OnInit {
                     console.log(this.seguridad);
 
                 }
-                
+
 
             }
 
