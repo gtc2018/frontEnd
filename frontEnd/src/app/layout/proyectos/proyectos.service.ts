@@ -1,5 +1,5 @@
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { RestResponse } from '../../model/restResponse';
@@ -47,7 +47,9 @@ export class ProyectosService {
 
   proyectosList: ProyectoModel[];
 
-  constructor(private Http: HttpClient) { }
+  private headers = new HttpHeaders({'Content-Type': 'application/json'});
+  constructor(private Http: HttpClient) {
+  }
 
   //SERVICIO CONSULTAR TODOS LOS proyectos
   public getProyectos(): Observable<ProyectoModel[]>{
@@ -71,17 +73,13 @@ export class ProyectosService {
 
   }
 
-  public saveOrUpdateUserToEnterprise(userToEnterprise: any[]): Observable<RestResponse> {
-    console.log(userToEnterprise);
-    return this.Http.post<RestResponse>("http://localhost:8080/AsociarProyecto/saveOrUpdateAsociarProyecto", JSON.stringify(userToEnterprise));
-
-  }
-
   public delete(proyecto: ProyectoModel): Observable<RestResponse> {
     console.log(proyecto);
     return this.Http.post<RestResponse>("http://localhost:8080/deleteProyecto", JSON.stringify(proyecto));
 
   }
+
+
 
 
 

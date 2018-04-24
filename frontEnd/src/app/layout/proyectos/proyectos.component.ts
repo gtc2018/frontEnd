@@ -11,28 +11,40 @@ import { UsuarioModel } from '../../model/usuario/usuario.model';
 import swal from 'sweetalert2';
 import { AuthService } from '../../shared/guard/auth.service';
 import { EmployeeModel } from '../../model/employee';
+import { AsociarProyectoService } from './asociarProyecto.service';
+import { EmployeeToProject } from '../../model/employeeToProject';
 
 @Component({
     selector: 'app-proyectos',
     templateUrl: './proyectos.component.html',
     styleUrls: ['./proyectos.component.scss'],
     animations: [routerTransition()],
-    providers: [ProyectosService, EnterpriseService, UsuarioService]
+    providers: [ProyectosService, EnterpriseService, UsuarioService, AsociarProyectoService]
 })
 export class ProyectosComponent implements OnInit {
 
-    fotoEmpresa: any;
+    //Variables
+
+    fotoEmpresa: string;
+    fotoDoc: string;
+
+
+    private message: string = "";
+    icon: string= "fa fa-caret-left";
+
+    //Propiedades del upload
     styleIconUpload: string = "";
     iconUpload: string = "fa-upload";
     nameUpload:string = "Subir Documento";
-    dragging: boolean;
-    //Variables
-    filterEn: any[];
-
-    fotoDoc: string;
 
     // Para mostrar el maestro detalle de proyecto
     updateForm : boolean = false;
+    //Mostrar el crear o no
+    visible:boolean = false;
+
+    private isValid: boolean = true;
+
+    filterEn: any[];
 
     /**
      * Manejo del formulario en la misma pantalla de la tabla
@@ -40,8 +52,8 @@ export class ProyectosComponent implements OnInit {
      * 2:Expandido para crear
      * 3:Expandido para editar
      */
-
     stateExpand: number = 1;
+
 
     private proyectos: ProyectoModel[];//Tabla
     private proyecto: ProyectoModel;//Form
@@ -50,23 +62,16 @@ export class ProyectosComponent implements OnInit {
     private enterprises: EnterpriseModel[];
 
     private employees: EmployeeModel[];
-    private userToEnterprise= [];
 
-    private isValid: boolean = true;
-    private message: string = "";
+    private employeeToProject: EmployeeToProject;
+    private employeesToProject= [];
 
-    //Mostrar el crear o no
-
-    visible = false;
-
-    //Icono del boton
-
-    icon: string= "fa fa-caret-left";
 
     //Métodos y funciones
 
     constructor(private enterpriseService: EnterpriseService,
         private proyectoService: ProyectosService,
+        private asociarProyectoService: AsociarProyectoService,
         private usuarioService: UsuarioService,
         private router: Router,
         private toastr: ToastrService,
@@ -77,6 +82,8 @@ export class ProyectosComponent implements OnInit {
             this.enterprise = new EnterpriseModel();
 
             this.fotoDoc="assets/images/Upload.png";
+
+             this.employeeToProject = new EmployeeToProject();
 
         }
 
@@ -114,6 +121,10 @@ export class ProyectosComponent implements OnInit {
 
                 this.stateExpand = 2;
 
+                this.employeesToProject= [];
+
+                this.updateForm = false;
+
                 // this.deleteFormHide = false;
 
             } else if (this.stateExpand === 1) {
@@ -132,6 +143,10 @@ export class ProyectosComponent implements OnInit {
 
                 this.stateExpand = 2
 
+                this.employeesToProject= [];
+
+                this.updateForm = false;
+
                 // this.stateExpand = true;
             } else
                 if (this.stateExpand === 2) {
@@ -148,6 +163,10 @@ export class ProyectosComponent implements OnInit {
 
                     }
                     this.stateExpand = 1
+
+                    this.updateForm = false;
+
+                    this.employeesToProject= [];
                 }
         }
 
@@ -201,13 +220,13 @@ export class ProyectosComponent implements OnInit {
 
         //Elminar un usuario asociado a la empresa
 
-        deleteUserToEnterprise(model, index){
+        deleteEmployeeToEnterprise(model, index){
 
-            this.userToEnterprise.splice(index,1);
+            this.employeesToProject.splice(index,1);
 
             this.employees.push(model);
 
-            console.log(this.userToEnterprise);
+            console.log(this.employeesToProject);
 
         }
 
@@ -218,7 +237,9 @@ export class ProyectosComponent implements OnInit {
 
             var indexDelete;
 
-             var filterEn = this.employees.filter(value => value.id === parseInt(id));
+            var modelToPush;
+
+             var filter = this.employees.filter(value => value.id === parseInt(id));
 
              [].forEach.call(this.employees,function(data,index){
 
@@ -232,21 +253,20 @@ export class ProyectosComponent implements OnInit {
 
             )
 
-            console.log(indexDelete);
+            this.employeeToProject.nombreEmpleado = filter[0].nombres;
+
+            this.employeeToProject.apellidoEmpleado = filter[0].apellidos;
+
+            this.employeeToProject.fotoEmpleado = filter[0].foto;
 
             this.employees.splice(indexDelete,1);
 
-            //  console.log(this.employees);
+             this.employeesToProject.push(this.employeeToProject);
 
-            //  console.log(this.filterEn[0]);
-
-             this.userToEnterprise.push(filterEn[0]);
-
-            //  console.log(this.userToEnterprise);
-
+             this.employeeToProject = new EmployeeToProject();
             }
 
-        //PAra cargar empresas
+        //Para cargar empresas
 
     private loadEnterprises(): void {
         this.enterpriseService.getEnterprises().subscribe(res => {
@@ -268,49 +288,124 @@ export class ProyectosComponent implements OnInit {
 
     save(){
 
-        if(this.login.authUser !== undefined){
-            this.proyecto.usuarioCreacion=localStorage.email;
-        }
-
         console.log(this.proyecto);
 
-        this.isValid = this.validate(this.proyecto);
+        console.log(this.employeesToProject);
 
-        if (this.isValid) {
 
-        this.proyectoService.saveOrUpdate(this.proyecto).subscribe(res => {
-            // if (res.responseCode == OK) {
-                console.log(res);
-                this.loadProyectos();
 
-                this.proyecto = new ProyectoModel();
+        this.asociarProyectoService.saveOrUpdateEmployeesToProject(this.proyecto.id,this.employeesToProject).subscribe(res => {
+                    // if (res.responseCode == OK) {
+                        console.log(res);
+                        this.loadProyectos();
 
-                this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
-            // } else {
-            //     this.message = res.message;
-            //     this.isValid = false;
-            //     console.log(this.message);
-            // }
+                        this.proyecto = new ProyectoModel();
+
+                        this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
+
+                        this.updateForm = false;
+                    // } else {
+                    //     this.message = res.message;
+                    //     this.isValid = false;
+                    //     console.log(this.message);
+                    // }
+                },(error)=>{
+                    console.log(error);
+
+                        this.toastr.error(error.error.message, "Error al guardar los empleados asociados al proyecto");
+
+                });
+
+    //     if(this.login.authUser !== undefined){
+    //         this.proyecto.usuarioCreacion=localStorage.email;
+    //     }
+
+    //     console.log(this.proyecto);
+
+    //     this.isValid = this.validate(this.proyecto);
+
+    //     if (this.isValid) {
+
+    //     this.proyectoService.saveOrUpdate(this.proyecto).subscribe(res => {
+    //         // if (res.responseCode == OK) {
+    //             console.log(res);
+    //             this.loadProyectos();
+
+    //             this.proyecto = new ProyectoModel();
+
+    //             this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
+    //         // } else {
+    //         //     this.message = res.message;
+    //         //     this.isValid = false;
+    //         //     console.log(this.message);
+    //         // }
+    //     },(error)=>{
+    //         console.log(error);
+
+    //             this.toastr.error(error.error.message, "Error en la transacción");
+    //         // swal(
+    //         //     'Error',
+    //         //     error.error.message,
+    //         //     'error'
+    //         //   )
+    //     });
+
+    // } else {
+    //     this.message = "Los campos con * son obligatorios";
+    // }
+
+    }
+
+    //Editar (Pasa la información de la tabla al formulario)
+
+    edit(model):void{
+
+        var filterEn = this.enterprises.filter(value => value.id === parseInt(model.clienteId));
+
+        var imagen = filterEn[0].imagenEmpresa;
+
+        this.proyectoService.getAllEmployeesToEmpresaId(model.clienteId).subscribe(res => {
+
+            console.log(res);
+
+            this.employees = res;
+
+            this.asociarProyectoService.getAllForProject(model.id).subscribe((response)=>{
+
+                this.employeesToProject = response;
+
+                console.log(this.employeesToProject);
+
+                for(let em of this.employees){
+
+                    console.log(em.id);
+
+                    for(let emTp of this.employeesToProject){
+
+                        console.log(emTp.empleadoId);
+
+                        if (em.id.toString() === emTp.empleadoId){
+
+                            // delete em;
+
+
+                        }
+
+                    }
+
+                }
+
+            },(error)=>{
+                console.log(error);
+            });
+
         },(error)=>{
+
             console.log(error);
 
-                this.toastr.error(error.error.message, "Error en la transacción");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
+            this.toastr.error("Error actualizar los datos");
+
         });
-
-    } else {
-        this.message = "Los campos con * son obligatorios";
-    }
-
-    }
-
-    //Editar
-
-    upload(model):void{
 
         console.log(model);
 
@@ -331,11 +426,14 @@ export class ProyectosComponent implements OnInit {
             this.proyecto = model;
             this.stateExpand = 3;
             this.updateForm = true;
+            this.setNew(model.clienteId);
 
         } else if (this.stateExpand === 2 || this.stateExpand === 3) {
             this.proyecto = model;
             this.stateExpand = 3;
             this.updateForm = true;
+            this.fotoEmpresa = imagen;
+            this.setNew(model.clienteId);
             // this.deleteFormHide = true;
         }
 
@@ -389,59 +487,17 @@ export class ProyectosComponent implements OnInit {
         console.log(model);
     }
 
-    // Para cargar el archivo
+    loadEmployeesToProject(id){
 
-    handleDragEnter() {
-        this.dragging = true;
-    }
+        this.asociarProyectoService.getAllForProject(id).subscribe((response)=>{
 
-    handleDragLeave() {
-        this.dragging = false;
-    }
+            this.employeesToProject = response;
 
-    handleDrop(e) {
-        e.preventDefault();
-        this.dragging = false;
-        this.handleInputChange(e);
-    }
+            console.log(this.employeesToProject);
 
-    handleInputChange(e){
-
-        var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-    console.log(file);
-
-    var word = /word-*|excel-*|pdf-*|officedocument-*/;
-    var excel = /excel-*/;
-    var pdf = /pdf-*/;
-
-    var reader = new FileReader();
-
-    console.log(file.type);
-
-    if (!file.type.match(word)) {
-        swal(
-            'Error al cargar el documento',
-            'Solo s epeuden cargar documentos de excel, word o pdf',
-            'error'
-          );
-        return;
-    }
-
-    this.styleIconUpload = "green";
-
-    this.iconUpload = "fa-check-circle";
-
-    this.nameUpload = file.name;
-
-    reader.onload = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
-    }
-
-    _handleReaderLoaded(e) {
-        var reader = e.target;
-
-        console.log(reader.result);
-        this.fotoDoc = reader.result;
+        },(error)=>{
+            console.log(error);
+        });
     }
 
 

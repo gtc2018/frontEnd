@@ -225,7 +225,7 @@
 
                                         </div>
 
-                                    <div class="col-auto">
+                                    <div *ngIf="updateForm"  class="col-auto">
 
                                         <label class=" col-form-label-sm ">Seleccionar Empleados</label>
                                         <select #selectUs
@@ -240,7 +240,7 @@
 
                                     </div>
 
-                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                    <div *ngIf="updateForm" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
 
                                         <label class=" col-form-label-sm ">Involucrados</label>
 
@@ -253,11 +253,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let u of userToEnterprise; let i=index">
+                                                <tr *ngFor="let u of employeesToProject; let i=index">
 
                                                     <td>
                                                             <label *ngIf="u.foto !== null" class="" placement="top" ngbTooltip="">
-                                                                        <img [src]="u.foto" class="" width="35" height="45">
+                                                                        <img [src]="u.fotoEmpleado" class="" width="35" height="45">
                                                                     <div class="col-auto">
 
 
@@ -266,8 +266,8 @@
                                                                     </div>
                                                                 </label>
 
-                                                        <span [innerHTML]="u.nombres"></span>
-                                                        <span [innerHTML]="u.apellidos"></span>
+                                                        <span [innerHTML]="u.nombreEmpleado"></span>
+                                                        <span [innerHTML]="u.apellidoEmpleado"></span>
                                                     </td>
                                                     <!-- <td align="center">
                                                                 <span>
@@ -280,7 +280,7 @@
                                                         </span>
                                                     </td>
                                                     <td align="center">
-                                                        <span style="color:red" class="fa fa-times hand" title="Eliminar" (click)="deleteUserToEnterprise(u, i)">
+                                                        <span style="color:red" class="fa fa-times hand" title="Eliminar" (click)="deleteEmployeeToEnterprise(u, i)">
                                                         </span>
                                                     </td>
 
@@ -414,11 +414,16 @@
                             <td>
                                 <div class="btn-group">
                                     <a class="btn btn-default">
-                                        <i (click)="upload(p)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                        <i (click)="edit(p)"
+                                        class="fa fa-pencil-square-o fa-lg hand"
+                                        aria-hidden="true"
+                                        title="Editar">
                                         </i>
                                     </a>
                                     <a class="btn btn-default">
-                                        <i (click)="delete(p)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                        <i (click)="delete(p)"
+                                        class="fa fa-trash-o fa-lg hand"
+                                        aria-hidden="true" title="Eliminar">
                                         </i>
                                     </a>
                                 </div>
