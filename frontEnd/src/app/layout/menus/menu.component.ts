@@ -29,6 +29,8 @@ export class MenuComponent implements OnInit {
     private isValid: boolean = true;
     private message: string = "";
 
+    grupos: any ="";
+
     visible = false;
 
     toggleDivCreateMenus() {
@@ -56,6 +58,7 @@ export class MenuComponent implements OnInit {
     private loadMenus(): void {
         this.menuService.getMenus().subscribe(res => {
             this.menus = res;
+            
         });
     }
 
@@ -156,6 +159,8 @@ export class MenuComponent implements OnInit {
     private getRolById(c): void {
         this.menuService.getMenuById(c).subscribe(res => {
             this.menu = res;
+            
+            
         });
     }
 

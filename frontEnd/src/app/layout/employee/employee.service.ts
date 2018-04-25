@@ -18,11 +18,20 @@ export class EmployeeService {
     return this.http.get<EmployeeModel[]>("http://localhost:8080/getAllEmpleados")
 
   }
-
+  /*
   public saveOrUpdate(employee: EmployeeModel): Observable<RestResponse> {
     console.log(employee);
-    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateEmpleado", JSON.stringify(employee));
+    return this.http.post<RestResponse>("http://localhost:8080/empleado/create", JSON.stringify(employee));
   }
+  */
+
+ public saveOrUpdate(employee: EmployeeModel): Observable<RestResponse> {
+  //console.log("======================EMPLEADO============================");
+  //console.log(employee.imagen);
+  const url = '';
+  return this.http.post<RestResponse>("http://localhost:8080/empleado/create", employee);
+}
+
 
   public delete(employee: EmployeeModel): Observable<RestResponse> {
     console.log(employee);

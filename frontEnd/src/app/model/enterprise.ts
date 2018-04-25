@@ -13,10 +13,11 @@ export class EnterpriseModel extends ParentEntity{
   public telefono: string;
   public estado: number;
   public direccion: string;
-  public imagenEnterprise: string;
+  public imagen: string;
   public fechaCreacion: string;
   public usuarioCreacion: string;
   public usuarioModificacion: string;
   public imagenEmpresa: string;
+
 
 }

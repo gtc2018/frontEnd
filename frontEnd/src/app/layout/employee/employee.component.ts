@@ -28,6 +28,8 @@ export class EmployeeComponent implements OnInit   {
 
     enterprises: EnterpriseModel[];
     message: string;
+    imagenTemp: string ="";
+    file: File = null;
 
     user: any;
     items: any;
@@ -198,6 +200,8 @@ export class EmployeeComponent implements OnInit   {
 
         console.log(model);
 
+            this.employeeForm.foto = this.file.name;
+        
         this.employeeService.saveOrUpdate(model).subscribe(res => {
             if (res.responseCode == OK) {
                 this.loadEmployee();
@@ -237,6 +241,8 @@ export class EmployeeComponent implements OnInit   {
 
         delete this.employeeForm.celular;
 
+        this.employeeForm.foto = this.file.name;
+           
         this.employeeService.saveOrUpdate(this.employeeForm).subscribe(res => {
             // if (res.responseCode == OK) {
                 this.loadEmployee();
@@ -440,33 +446,25 @@ export class EmployeeComponent implements OnInit   {
                 //this.items = menu.item;
                 if (menu.menu.descripcion === "Empleados") {
                     this.items = menu;
-                    console.log("===============ITEMS EMPRESAS:======================")
                     console.log(this.items);
 
-                    if (this.items.crear === "1") {
+                    if (this.items.crear === 1) {
                         this.crear = true;
-                        console.log("==============CREAR: " + this.crear);
                     }
 
-                    if (this.items.editar === "1") {
+                    if (this.items.editar === 1) {
                         this.editar = true;
-                        console.log("==============EDITAR: " + this.editar);
                     }
 
-                    if (this.items.eliminar === "1") {
+                    if (this.items.eliminar === 1) {
                         this.eliminar = true;
-                        console.log("==============ELIMINAR: " + this.eliminar);
                     }
 
-                    if (this.items.leer === "1") {
+                    if (this.items.leer === 1) {
                         this.leer = true;
-                        console.log("==============LEER: " + this.leer);
                     }
 
                 }
-
-
-
 
             }
 
@@ -544,7 +542,7 @@ export class EmployeeComponent implements OnInit   {
         }
 
         handleInputChange(e){
-
+            this.file = <File>e.target.files[0];
             var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
         console.log(file);
 
@@ -573,6 +571,8 @@ export class EmployeeComponent implements OnInit   {
 
             console.log(reader.result);
             this.employeeForm.foto = reader.result;
+            this.imagenTemp =  reader.result;
+            this.employeeForm.imagen = this.imagenTemp.split(/,(.+)/)[1];
         }
 
       };

@@ -5,16 +5,12 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
                     <h2 class=" page-header">
-                        <i class="fa fa-fw fa-users" style="color:blue"></i>
+                        <i class="fa fa-fw fa-users" style="color:blue">Empleados</i>
                     </h2>
 
                 </div>
             </div>
-
-            <hr>
-
-
-            <div *ngIf="this.crear" style="text-align:left">
+            <div *ngIf="this.crear" style="text-align:right">
 
                 <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
                     <span class="fa fa-plus"></span> Nuevo Empleado
@@ -24,6 +20,11 @@
                 </button>
 
             </div>
+
+            <hr>
+
+
+            
 
             <form *ngIf="visible">
 

@@ -29,6 +29,14 @@
                                         <label for="exampleInputName2">*URL :</label>
                                         <input class="form-control-sm input-underline" type="text" name="url" id="url" [(ngModel)]="menu.url">
 
+
+                                        <label class=" col-form-label-sm ">*Grupo :</label>
+                                        <select class="form-control-sm input-underline" [(ngModel)]="menu.grupo" name="grupo">
+                                            <option value="" disabled>Seleccione Grupo:</option>
+                                            <!-- <option *ngFor="menu" [value]="">{{}}</option> -->
+                                        </select>
+
+
                                         <label for="exampleInputName2">*Icono :</label>
                                         <input class="form-control-sm input-underline" type="text" name="icono" id="icono" [(ngModel)]="menu.icono">
 

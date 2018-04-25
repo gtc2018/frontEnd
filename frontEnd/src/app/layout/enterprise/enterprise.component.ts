@@ -28,7 +28,9 @@ export class EnterpriseComponent implements OnInit {
 
     user: any;
     menus: any;
+    imageTem: string;
     private permiso: PermisoModel;
+    file: File = null;
 
     crear = false;
     editar = false;
@@ -311,6 +313,7 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.isValid) {
 
+            this.enterprise.imagenEmpresa = this.file.name;
             this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
                 // if (res.responseCode == OK) {
                 this.loadEnterprises();
@@ -425,24 +428,20 @@ export class EnterpriseComponent implements OnInit {
                     console.log("===============ITEMS EMPRESAS:======================")
                     console.log(menu);
 
-                    if (menu.crear === "1") {
+                    if (menu.crear === 1) {
                         this.crear = true;
-                        console.log("==============******CREAR: " + menu.crear);
                     }
 
-                    if (menu.editar === "1") {
+                    if (menu.editar === 1) {
                         this.editar = true;
-                        console.log("==============EDITAR: " + menu.editar);
                     }
 
-                    if (menu.eliminar === "1") {
+                    if (menu.eliminar === 1) {
                         this.eliminar = true;
-                        console.log("==============ELIMINAR: " + menu.eliminar);
                     }
 
-                    if (menu.leer === "1") {
+                    if (menu.leer === 1) {
                         this.leer = true;
-                        console.log("==============LEER: " + menu.leer);
                     }
 
                 }
@@ -530,7 +529,7 @@ export class EnterpriseComponent implements OnInit {
     }
 
     handleInputChange(e) {
-
+        this.file = <File>e.target.files[0];
         var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
         console.log(file);
 
@@ -555,8 +554,10 @@ export class EnterpriseComponent implements OnInit {
 
     _handleReaderLoaded(e) {
         var reader = e.target;
-        console.log(reader.result);
         this.enterprise.imagenEmpresa = reader.result;
+        this.imageTem = reader.result;
+        this.enterprise.imagen = this.imageTem.split(/,(.+)/)[1];
+        console.log(this.enterprise.imagen);
     }
 
 

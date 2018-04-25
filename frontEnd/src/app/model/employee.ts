@@ -38,4 +38,6 @@ export class EmployeeModel extends ParentEntity{
 
   public celular: string;
 
+  public imagen: string;
+
 }
