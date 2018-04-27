@@ -28,7 +28,8 @@ const routes: Routes = [
             { path: 'seguridad', loadChildren: './seguridad/seguridad.module#SeguridadModule' },
             { path: 'proyectos', loadChildren: './proyectos/proyectos.module#ProyectosModule' },
             { path: 'request', loadChildren: './request/request.module#RequestModule' },
-            { path: 'encuesta', loadChildren: './encuesta/encuesta.module#EncuestaModule' }
+            { path: 'encuesta', loadChildren: './encuesta/encuesta.module#EncuestaModule' },
+            { path: 'empleadosExternos', loadChildren: './externalEmployee/externalEmployee.module#ExternalEmployeeModule' }
         ]
     }
 ];

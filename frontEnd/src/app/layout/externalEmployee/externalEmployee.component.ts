@@ -369,34 +369,35 @@ export class ExternalEmployeeComponent implements OnInit   {
     private getItemsEmpresas(): void {
 
         this.permiso = new PermisoModel();
-        this.permiso.rolId = this.login.authUser.rolId;
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
         this.menu.loadMenus(this.permiso).subscribe(res => {
-            console.log("======================= PERMISOS Empleados: ==============");
+            console.log("======================= PERMISOS Empleados Externos: ==============");
             console.log(this.menus = res);
 
             for (let menu of this.menus) {
                     //this.items = menu.item;
                 if (menu.menu.descripcion === "Empleados") {
-                    this.items = menu.item;
+                    this.items = menu;
                     console.log("===============ITEMS EMPRESAS:======================")
                     console.log(this.items);
 
-                    if (this.items.crear === "1") {
+                    if (this.items.crear === 1) {
                         this.crear = true;
                         console.log("==============CREAR: " + this.crear);
                     }
 
-                    if (this.items.editar === "1") {
+                    if (this.items.editar === 1) {
                         this.editar = true;
                         console.log("==============EDITAR: " + this.editar);
                     }
 
-                    if (this.items.eliminar === "1") {
+                    if (this.items.eliminar === 1) {
                         this.eliminar = true;
                         console.log("==============ELIMINAR: " + this.eliminar);
                     }
 
-                    if (this.items.leer === "1") {
+                    if (this.items.leer === 1) {
                         this.leer = true;
                         console.log("==============LEER: " + this.leer);
                     }
