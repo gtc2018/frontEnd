@@ -1,0 +1,619 @@
+<div class="row">
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+            <!-- <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header> -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        <i class="fa fa-fw fa-users" style="color:blue"></i>
+                    </h2>
+
+                </div>
+            </div>
+
+            <hr>
+
+
+            <div *ngIf="this.crear" style="text-align:left">
+
+                <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
+                    <span class="fa fa-plus"></span> Nuevo Empleado
+                    <b>
+                        <span class="{{icon}}"></span>
+                    </b>
+                </button>
+
+            </div>
+
+            <form *ngIf="visible">
+
+                <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                    {{message}}
+                    <strong></strong>
+                </div>
+
+                <div class="card">
+
+                    <div class="card-header">
+                        <div class=" row center-sc  col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                            <!-- &nbsp;&nbsp;&nbsp;&nbsp; -->
+
+
+                            <!-- <input style="margin-right:12px"
+                        type="submit"
+                        class="btn-sm btn-success fa fa-floppy-o"
+                        value=""/> -->
+
+                            <div>
+                                <hr class="hrv2">
+                            </div>
+
+                            <div>
+
+                                <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                    value="">
+                                </button>
+
+                            </div>
+
+                            <div>
+                                <hr class="hrv">
+                            </div>
+
+
+
+                            <!-- <input style="margin-left:10px"
+                         type="reset"
+                         class="btn-sm btn-danger"
+                         value="Limpiar" /> -->
+
+                            <div>
+
+                                <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                    value="">
+                                    <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                                </button>
+
+                            </div>
+
+                            <div *ngIf="deleteFormHide" style="display: -webkit-box;">
+
+                                <div>
+                                    <hr class="hrv2">
+                                </div>
+
+                                <div>
+
+                                    <button style="margin-right:12px"
+                                    (click)="delete(externalEmployeeForm)"
+                                    type="submit"
+                                    placement="top"
+                                    ngbTooltip="Eliminar"
+                                    class="btn-sm btn-danger fa fa-trash-o fa-lg hand"
+                                    value="">
+                                    </button>
+
+                            </div>
+
+                                <div>
+                                    <hr class="hrv">
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="!deleteFormHide">
+                                <hr class="hrv2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <div class="row justify-content-around">
+
+                        <!-- justify-content-around -->
+
+                        
+
+
+                        <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <label class="col-form-label-sm">*Tipo de documento:</label>
+                                    <br>
+                                    <select [(ngModel)]="externalEmployeeForm.tipoDocumento" name="tipoDocumento" class="form-control-sm input-underline">
+                                        <option value="NIT">NIT</option>
+                                        <option value="CC">CC</option>
+                                        <option value="CE">CE</option>
+                                    </select>
+                            </div>
+
+                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                    <label class=" col-form-label-sm ">*# Documento:</label>
+                                    <input type="number" class="form-control-sm input-underline" placeholder="# Documento" [(ngModel)]="externalEmployeeForm.numeroDocumento"
+                                        name="numeroDocumento">
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class=" col-form-label-sm ">*Nombre(s):</label>
+                                        <input type="text" class="form-control-sm input-underline" [(ngModel)]="externalEmployeeForm.nombres" name="nombres" placeholder="Nombres">
+                            </div>
+                        </div>
+                        <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">*Apellido(s):</label>
+                                <input type="text" class="form-control-sm input-underline" placeholder="Apellidos" [(ngModel)]="externalEmployeeForm.apellidos" name="apellidos">
+                            </div>
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <label class=" col-form-label-sm ">*Email:</label>
+                                <br>
+                               <input type="email" class="form-control-sm input-underline" placeholder="Email" [(ngModel)]="externalEmployeeForm.email" name="email">
+                            </div>    
+                               
+                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">Dirección:</label>
+                                <input type="text" class="form-control-sm input-underline" placeholder="Dirección" [(ngModel)]="externalEmployeeForm.direccion" name="direccion">
+                            </div>
+                        </div>
+                        <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3"> 
+                                    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <label class=" col-form-label-sm ">Teléfono:</label>
+                                        <input type="number" class="form-control-sm input-underline" placeholder="Teléfono" [(ngModel)]="externalEmployeeForm.telefono" name="telefono">
+                                    </div>
+                                    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                            <label class=" col-form-label-sm ">Extensión:</label>
+                                            <input type="number" class="form-control-sm input-underline" placeholder="Extensión" [(ngModel)]="externalEmployeeForm.extension" name="extension">
+                                    </div>
+                                    
+                                    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <label class=" col-form-label-sm ">Sexo:</label>
+                                        <select [(ngModel)]="externalEmployeeForm.sexo" name="sexo" class="form-control-sm input-underline">
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Femenino</option>
+                                        </select>
+                                    </div>
+                        </div>
+                        <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3">                                    
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <label class=" col-form-label-sm ">*Empresa</label>
+                                        <select #selectEn [(ngModel)]="externalEmployeeForm.clienteId"
+                                        (change)="setNew(selectEn.value)"
+                                        name="enterprise"
+                                        class="form-control-sm input-underline">
+                                            <option *ngFor="let e of enterprises" [value]="e.id">
+                                                {{e.descripcion}}
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <label class=" col-form-label-sm ">*Cargo:</label>
+                                        <select [(ngModel)]="externalEmployeeForm.cargoId" name="cargoId" class="form-control-sm input-underline">
+                                            <option value="1">Analista</option>
+                                            <option value="1">Auxiliar</option>
+                                            <option value="1">Lider</option>
+                                        </select>
+                                    </div>
+                        </div>
+
+                        <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
+                      style="padding-top:14px">
+
+                          <button style="margin-right:12px"
+                          type="submit"
+                          placement="top"
+                          ngbTooltip="Guardar"
+                          class="btn btn-success fa fa-floppy-o fa-lg"
+                          value="">
+                          </button>
+
+
+
+
+                           <button style="margin-left:10px"
+                           type="reset"
+                           placement="top"
+                          ngbTooltip="Limpiar"
+                           class="btn btn-danger"
+                           value="">
+                           <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                          </button>
+
+                      </div> -->
+
+                    </div>
+
+                    <br>
+
+                </div>
+
+                <hr>
+            </form>
+
+            <div class="card mb-3 ">
+                <div class=" card-header center-sc">
+
+                    <div class=" col-auto">
+                        Tabla de Empleados
+                    </div>
+
+                    <div class="btn-group row col-auto pull-right " style="">
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+                        <div class="col-auto pull-right ">
+                            <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                        </div>
+
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+                        <div class="col-auto pull-right ">
+                            <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                        </div>
+
+
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                    <label class=" col-form-label-sm"
+                                    style="padding-right:10px">Buscar por</label>
+                                    <select class="form-control-sm input-underline">
+                                            <option></option>
+                                            <option>Nombres</option>
+                                            <option>Apellidos</option>
+                                            <option>#Documento</option>
+                                            <option>Telefono</option>
+                                            <option>Email</option>
+                                          </select>
+                                </div>
+                                </div>
+
+                                <div class="col-auto ">
+                                    <div class="input-group">
+                                            <div class="input-group-addon ">
+                                                    <span class="fa fa-search"></span>
+                                                  </div>
+                                    <input type="text" class="form-control-sm input-underline" placeholder="Search">
+
+                                </div>
+                                </div>
+                               </div> -->
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-hover table-striped table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>#Documento</th>
+                                <th>Telefono</th>
+                                <th>Email</th>
+                                <th>Activo</th>
+                                <th>Acciones</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.nombres" placeholder="Buscar por Nombre">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.apellidos" placeholder="Buscar por Apellidos">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.numeroDocumento"
+                                        placeholder="Buscar por #Documento">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.telefono" placeholder="Buscar por Telefono">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.email" placeholder="Buscar por Email">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr *ngFor="let e of externalEmployee| generalFilter:filter">
+                                <td>
+                                    <span [innerHTML]="e.nombres">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.apellidos">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.numeroDocumento">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.telefono">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.email">
+                                    </span>
+                                </td>
+                               <!-- <td>
+                                    <input *ngIf="this.editar" type="checkbox" [(ngModel)]="e.estado" name="aaa" #check (change)="changeState(e)">
+                                </td>-->
+                                <td>
+                                    <input type="checkbox"
+                                     [(ngModel)]="e.estado"
+                                     name="{{e.id}}"
+                                     #check
+                                     (change)="changeState(e)">
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a *ngIf="true" class="btn btn-default">
+                                            <i (click)="upload(e)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                            </i>
+                                        </a>
+                                        <a *ngIf="this.eliminar" class="btn btn-default">
+                                            <i (click)="delete(e)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br>
+        </div>
+    </div>
+</div>
+<br>
+<br>
+
+<!-- //Primer funcionario malo -->
+
+<!-- <form>
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+<!-- <div class="col-auto ">
+                    <label class="col-form-label-sm">*Tipo de empleado</label>
+                    <select class="form-control-sm input-underline">
+                      <option>Interno</option>
+                      <option>Externo</option>
+                    </select>
+                  </div>
+
+                  <div class=" col-auto ">
+                    <label class="col-form-label-sm">*Tipo de documento</label>
+                    <select class="form-control-sm input-underline">
+                      <option>NIT</option>
+                      <option>CC</option>
+                      <option>CE</option>
+                    </select>
+                  </div>
+
+                  <div class="col-auto ">
+                    <label class=" col-form-label-sm ">*# Documento</label>
+                    <input type="text" class="form-control-sm input-underline" placeholder="# Documento">
+                  </div>
+
+                </div>
+
+                <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        <label class=" col-form-label-sm ">*Nombres</label>
+                        <input type="text" class="form-control-sm input-underline" placeholder="Nombres">
+                      </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                        <label class=" col-form-label-sm ">*Apellidos</label>
+                        <input type="text" class="form-control-sm input-underline" placeholder="Apellidos">
+                      </div>
+
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                      <label class=" col-form-label-sm ">Direccion</label>
+                      <input type="text" class="form-control-sm input-underline" placeholder="Direccion">
+                    </div>
+
+                  </div>
+
+                  <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                      <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label-sm ">Telefono</label>
+                          <input type="text" class="form-control-sm input-underline" placeholder="Telefono">
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                                <label class=" col-form-label-sm ">*Email</label>
+                                <input type="email" class="form-control-sm input-underline" placeholder="Email">
+                              </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label-sm ">*Cargo</label>
+                          <select class="form-control-sm input-underline">
+                                <option>Analista</option>
+                                <option>Auxiliar</option>
+                                <option>Lider</option>
+                              </select>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 ">
+                          <label class=" col-form-label-sm ">*Sueldo</label>
+                          <input type="text" class="form-control-sm input-underline" placeholder="Sueldo">
+                        </div>
+
+                    </div>
+
+                    <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <label class=" col-form-label-sm ">Oficina</label>
+                            <select class="form-control-sm input-underline">
+                                    <option>Ingenio 1</option>
+                                    <option>Ingenio 2</option>
+                                    <option>Bancoomeva</option>
+                                  </select>
+                          </div>
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                            <label class=" col-form-label-sm ">Otros beneficios</label>
+                            <input type="text" class="form-control-sm input-underline" placeholder="Otros beneficios">
+                          </div>
+
+                        <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 ">
+                          <label class=" col-form-label-sm ">*Estado</label>
+                          <select class="form-control-sm input-underline">
+                                <option>Estado 1</option>
+                                <option>Estado 2</option>
+                                <option>Estado 3</option>
+                              </select>
+                        </div>
+
+                      </div>
+
+                      <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+                          <input style="margin-right:10px"
+                          type="submit"
+                          class="btn-sm btn-success"
+                          value="Guardar"/>
+
+                           <input style="margin-left:10px"
+                           type="reset"
+                           class="btn-sm btn-danger"
+                           value="Limpiar" />
+
+                      </div>
+
+              </form> -->
+
+
+
+<!-- Segundo formulario rechazado -->
+
+<!-- <form>
+
+                    <!-- justify-content-around -->
+
+<!--         <div class="form-row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+<!--        <div class="col-auto ">
+                <label class="col-form-label-sm">*Tipo de empleado:</label>
+                <select class="form-control-sm input-underline">
+                  <option>Interno</option>
+                  <option>Externo</option>
+                </select>
+              </div>
+
+              <div class=" col-auto ">
+                <label class="col-form-label-sm">*Tipo de documento:</label>
+                <select class="form-control-sm input-underline">
+                  <option>NIT</option>
+                  <option>CC</option>
+                  <option>CE</option>
+                </select>
+              </div>
+
+              <div class="col-auto ">
+                <label class=" col-form-label-sm ">*# Documento:</label>
+                <input type="text" class="form-control-sm input-underline" placeholder="# Documento">
+              </div>
+
+               </div>
+
+        <div class="form-row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+<!--          <div class=" col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+            <label class=" col-form-label-sm ">*Nombres:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Nombres">
+          </div>
+
+          <div class="  col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+            <label class=" col-form-label-sm ">*Apellidos:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Apellidos">
+          </div>
+
+          <div class=" col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+            <label class=" col-form-label-sm ">Direccion:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Direccion">
+          </div>
+
+          <div class=" col-xs-6 col-sm-6 col-md-3 col-lg-3  ">
+            <label class=" col-form-label-sm ">Telefono:</label>
+            <input type="text" class="form-control-sm input-underline" placeholder="Telefono">
+          </div>
+
+        </div>
+
+        <div class="form-row justify-content-around col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+<!--               <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">*Email</label>
+                        <input type="email" class="form-control-sm input-underline" placeholder="Email">
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">Empresa</label>
+                        <select class="form-control-sm input-underline">
+                                <option>Bancoomeva</option>
+                                <option>GTC Corporation</option>
+                                <option>Optima SA</option>
+                              </select>
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">Oficina</label>
+                        <select class="form-control-sm input-underline">
+                                <option>Ingenio 1</option>
+                                <option>Ingenio 2</option>
+                                <option>Bancoomeva</option>
+                              </select>
+                </div>
+
+                <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 ">
+                        <label class=" col-form-label-sm ">*Cargo</label>
+                        <select class="form-control-sm input-underline">
+                              <option>Analista</option>
+                              <option>Auxiliar</option>
+                              <option>Lider</option>
+                            </select>
+                </div>
+
+        </div>
+
+        <div class="form-row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <!-- col-xs-12 col-sm-4 col-md-4 col-lg-4 -->
+<!--       <div class="col-auto ">
+            <label class=" col-form-label-sm ">*Sueldo</label>
+            <input #sueldo value="{{444| currency}}" type="number" class="form-control-sm input-underline salary" style="width: 45%" placeholder="{{999999999| currency}}">
+          </div>
+
+          <div class=" col-auto ">
+                <label class=" col-form-label-sm ">Otros beneficios</label>
+                <!-- <i class="fa fa-usd fa-lg
+                                 form-control-feedback"
+                                 style="z-index:99999;padding-top: 10px; color:#94959a"></i> -->
+<!--               <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}">
+          </div>
+
+        </div> -->
+
+<!-- <form>
+                        <file-uploader [activeColor]="'orangered'" [baseColor]="'lightgray'"></file-uploader>
+                    </form> -->
