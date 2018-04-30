@@ -33,7 +33,7 @@
                                         <label class=" col-form-label-sm ">*Grupo :</label>
                                         <select class="form-control-sm input-underline" [(ngModel)]="menu.grupo" name="grupo">
                                             <option value="" disabled>Seleccione Grupo:</option>
-                                            <!-- <option *ngFor="menu" [value]="">{{}}</option> -->
+                                            <option *ngFor="let grupo of grupos"  [value]="grupo.grupo">{{grupo.descripcion}}</option> 
                                         </select>
 
 

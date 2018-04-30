@@ -200,8 +200,10 @@ export class EmployeeComponent implements OnInit   {
 
         console.log(model);
 
+
+        if(this.file !==null && this.file.name !==null){
             this.employeeForm.foto = this.file.name;
-        
+        }
         this.employeeService.saveOrUpdate(model).subscribe(res => {
             if (res.responseCode == OK) {
                 this.loadEmployee();
@@ -209,6 +211,7 @@ export class EmployeeComponent implements OnInit   {
             } else {
                 this.message = res.message;
             }
+            
         },(error)=>{
             console.log(error);
 
