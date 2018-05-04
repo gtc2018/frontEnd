@@ -313,6 +313,8 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.isValid) {
 
+            
+
             this.enterprise.imagenEmpresa = this.file.name;
             this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
                 // if (res.responseCode == OK) {

@@ -22,7 +22,7 @@ export class ExternalEmployeeService {
 
   public saveOrUpdate(employee: ExternalEmployeeModel): Observable<RestResponse> {
     console.log(employee);
-    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateEmpleadoExterno", JSON.stringify(employee));
+    return this.http.post<RestResponse>("http://localhost:8080/empleadoExterno/create", employee);
   }
 
   public delete(employee: ExternalEmployeeModel): Observable<RestResponse> {

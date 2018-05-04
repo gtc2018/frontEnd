@@ -30,4 +30,8 @@ export class ExternalEmployeeModel extends ParentEntity{
 
   public usuarioCreacion: string;
 
+  public fotoEmpleado: string;
+
+  public imagen: string;
+
 }
