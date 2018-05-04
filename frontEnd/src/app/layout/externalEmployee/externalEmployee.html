@@ -365,11 +365,17 @@
                                     <input *ngIf="this.editar" type="checkbox" [(ngModel)]="e.estado" name="aaa" #check (change)="changeState(e)">
                                 </td>-->
                                 <td>
-                                    <input type="checkbox"
+                                    <!--<input type="checkbox"
                                      [(ngModel)]="e.estado"
                                      name="{{e.id}}"
                                      #check
-                                     (change)="changeState(e)">
+                                     (change)="changeState(e)">-->
+
+                                    <mat-checkbox
+                                    name="{{e.id}}"
+                                    [(ngModel)]="e.estado"
+                                    (change)="changeState(e)">
+                                    </mat-checkbox>
                                 </td>
                                 <td>
                                     <div class="btn-group">
