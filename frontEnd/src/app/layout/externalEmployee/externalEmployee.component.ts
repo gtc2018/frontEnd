@@ -33,6 +33,7 @@ export class ExternalEmployeeComponent implements OnInit   {
     baseColor: string = '#ccc';
     icon: string = "fa fa-caret-left";
     imageSrc: string = 'assets/images/avatar.png';
+    imagenTemp: string ="";
     message: string;
 
     user: any;
@@ -56,8 +57,9 @@ export class ExternalEmployeeComponent implements OnInit   {
     externalEmployee= [];
     filter: ExternalEmployeeModel = new ExternalEmployeeModel();
     private enterprises: EnterpriseModel[];
-
     private permiso: PermisoModel;
+
+    file: File = null;
     
 
     
@@ -81,14 +83,14 @@ export class ExternalEmployeeComponent implements OnInit   {
 
         }
 
-        //this.externalEmployeeForm.foto = 'assets/images/avatar.png';
+        this.externalEmployeeForm.fotoEmpleado = 'assets/images/avatar.png';
     }
 
 
     //Metodo inicializador
     ngOnInit() {
         this.loadEmployee();
-        this.getItemsEmpresas();
+        this.getItemsEmpleadosExternos();
         this.loadEnterprises();
     }
     
@@ -180,7 +182,9 @@ export class ExternalEmployeeComponent implements OnInit   {
     //Metodo Save: Guarda datos del empleado externo en la BD
     save():void{
 
+
         console.log(this.externalEmployeeForm);
+
 
         if(this.login.authUser !== undefined){
             this.externalEmployeeForm.usuarioCreacion=this.login.authUser.usuarioId;
@@ -190,11 +194,18 @@ export class ExternalEmployeeComponent implements OnInit   {
 
         if (this.isValid) {
 
+            
+            
+            if(this.file !==null && this.file.name !==null){
+                this.externalEmployeeForm.fotoEmpleado = this.file.name;
+                }
+
             this.employeeService.saveOrUpdate(this.externalEmployeeForm).subscribe(res => {
                 
             // if (res.responseCode == OK) {
             this.loadEmployee(); //actualiza los datos que se visualizan en la tabla donde se muestran todos los empleados
             this.externalEmployeeForm = new ExternalEmployeeModel();
+            this.externalEmployeeForm.fotoEmpleado = 'assets/images/logo.png';
             this.toastr.success('Transacción satisfactoria', 'Gestión de Empleados');
 
         },(error)=>{ //Controlando posible error
@@ -250,7 +261,7 @@ export class ExternalEmployeeComponent implements OnInit   {
 
             
                     this.externalEmployeeForm = new ExternalEmployeeModel();
-                    //this.employeeForm.foto = 'assets/images/avatar.png';
+                    this.externalEmployeeForm.fotoEmpleado = 'assets/images/avatar.png';
 
                     this.deleteFormHide= false;
 
@@ -275,7 +286,7 @@ export class ExternalEmployeeComponent implements OnInit   {
 
         this.deleteFormHide = false;
 
-        //this.employeeForm.foto = 'assets/images/avatar.png';
+        this.externalEmployeeForm.fotoEmpleado = 'assets/images/avatar.png';
     }
 
 
@@ -323,7 +334,7 @@ export class ExternalEmployeeComponent implements OnInit   {
         if( this.stateExpand === 3 ){
 
             this.externalEmployeeForm = new ExternalEmployeeModel();
-            //this.externalEmployeeForm.foto = 'assets/images/avatar.png';
+            this.externalEmployeeForm.fotoEmpleado = 'assets/images/avatar.png';
             this.stateExpand = 2;
             this.deleteFormHide = false;
 
@@ -366,7 +377,7 @@ export class ExternalEmployeeComponent implements OnInit   {
 
 
     //Metodo getItemsEmpresas: Maneja los permisos de los items sobre el modulo de empleados externos
-    private getItemsEmpresas(): void {
+    private getItemsEmpleadosExternos(): void {
 
         this.permiso = new PermisoModel();
         // this.login.authUser.rolId;
@@ -465,6 +476,55 @@ export class ExternalEmployeeComponent implements OnInit   {
       }
     
 
-};
+      // Para cargar la imagen
+      handleDragEnter() {
+        this.dragging = true;
+    }
+
+    handleDragLeave() {
+        this.dragging = false;
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        this.dragging = false;
+        this.handleInputChange(e);
+    }
+
+    handleInputChange(e){
+        this.file = <File>e.target.files[0];
+        var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+    console.log(file.name);
+
+    var pattern = /image-*/;
+    var reader = new FileReader();
+
+    console.log(reader);
+
+    if (!file.type.match(pattern)) {
+        swal(
+            'Error al cargar logo',
+            'Por favor ingrese un formato válido de imagen',
+            'error'
+          );
+        return;
+    }
+
+    // this.loaded = false;
+
+    reader.onload = this._handleReaderLoaded.bind(this);
+    reader.readAsDataURL(file);
+    }
+
+    _handleReaderLoaded(e) {
+        var reader = e.target;
+
+        console.log(reader.result);
+        this.externalEmployeeForm.fotoEmpleado = reader.result;
+        this.imagenTemp =  reader.result;
+        this.externalEmployeeForm.imagen = this.imagenTemp.split(/,(.+)/)[1];
+    }
+
+  };
 
       
