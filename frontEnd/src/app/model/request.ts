@@ -14,7 +14,7 @@ export class request extends ParentEntity{
 
     public version: string;
 
-    public estado: string;
+    public estado: number;
 
     public fase: string;
 
