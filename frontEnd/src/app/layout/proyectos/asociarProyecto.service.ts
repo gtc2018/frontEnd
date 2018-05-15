@@ -36,14 +36,14 @@ export class AsociarProyectoService {
 
   public saveOrUpdateEmployeesToProject(id, model: any[]): Observable<RestResponse> {
 
-    console.log(model,id);
+    // console.log(model,id);
 
     this.employeesToProject= [];
 
     for(var i=0;i<model.length;i++){
 
-        console.log(i);
-        console.log(model[i].id);
+        // console.log(i);
+        // console.log(model[i].id);
 
 this.employeeToProject = new EmployeeToProject();
 
