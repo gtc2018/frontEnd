@@ -27,7 +27,7 @@ const routes: Routes = [
             { path: 'components', loadChildren: './bs-component/bs-component.module#BsComponentModule' },
             { path: 'seguridad', loadChildren: './seguridad/seguridad.module#SeguridadModule' },
             { path: 'proyectos', loadChildren: './proyectos/proyectos.module#ProyectosModule' },
-            { path: 'request', loadChildren: './request/request.module#RequestModule' },
+            { path: 'requerimientos', loadChildren: './request/request.module#RequestModule' },
             { path: 'encuesta', loadChildren: './encuesta/encuesta.module#EncuestaModule' },
             { path: 'empleadosExternos', loadChildren: './externalEmployee/externalEmployee.module#ExternalEmployeeModule' }
         ]
