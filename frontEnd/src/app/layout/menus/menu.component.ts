@@ -29,7 +29,8 @@ export class MenuComponent implements OnInit {
     private isValid: boolean = true;
     private message: string = "";
 
-    grupos: any ="";
+    grupos = [];
+    contador: number = 0;
 
     visible = false;
 
@@ -58,6 +59,17 @@ export class MenuComponent implements OnInit {
     private loadMenus(): void {
         this.menuService.getMenus().subscribe(res => {
             this.menus = res;
+            if (this.menus != null) {
+               
+                for (let menu of this.menus) {
+                    this.contador = this.contador + 1;
+                    if (menu.parent === "0") {
+                        this.grupos.push(menu);
+                        //console.log(this.grupos);
+                    }
+                }
+
+            }
             
         });
     }
@@ -146,11 +158,11 @@ export class MenuComponent implements OnInit {
     /**
      * Metodo editar permisos:
      */
-    public edit(menu): void {
-        if (menu.id != null) {
-
-
-        }
+    public edit(menu: MenusModel): void {
+        sessionStorage.setItem('menu', JSON.stringify(menu));
+        this.menu = JSON.parse(sessionStorage.getItem("menu"));
+        //this.visible = true;
+       
     }
 
     /**

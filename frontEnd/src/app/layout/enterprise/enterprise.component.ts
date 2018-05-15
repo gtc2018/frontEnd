@@ -313,7 +313,9 @@ export class EnterpriseComponent implements OnInit {
 
         if (this.isValid) {
 
+            if(this.file !==null && this.file.name !==null){
             this.enterprise.imagenEmpresa = this.file.name;
+            }
             this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
                 // if (res.responseCode == OK) {
                 this.loadEnterprises();
