@@ -3,16 +3,18 @@ import { FaseModel } from './../../../model/fase';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { tap, catchError } from 'rxjs/operators';
 
 
 
 @Injectable()
 export class FaseService {
  
-  
+  FaseList: FaseModel[];
+  fase: FaseModel;
 
   constructor(private Http: HttpClient) {
-     // this.fase = new FaseModel();
+      this.fase = new FaseModel();
    }
 
   //SERVICIO CONSULTAR TODOS LOS MENUS 

@@ -29,7 +29,11 @@ const routes: Routes = [
             { path: 'proyectos', loadChildren: './proyectos/proyectos.module#ProyectosModule' },
             { path: 'requerimientos', loadChildren: './request/request.module#RequestModule' },
             { path: 'encuesta', loadChildren: './encuesta/encuesta.module#EncuestaModule' },
-            { path: 'empleadosExternos', loadChildren: './externalEmployee/externalEmployee.module#ExternalEmployeeModule' }
+            { path: 'empleadosExternos', loadChildren: './externalEmployee/externalEmployee.module#ExternalEmployeeModule' },
+            { path: 'areas', loadChildren: './areas/area.module#AreaModule' },
+            { path: 'cargos', loadChildren: './cargos/cargo.module#CargoModule' },
+            { path: 'porcentajePorFases', loadChildren: './porcentajePorFase/porcentajePorFase.module#PorcentajePorFaseModule' },
+            { path: 'fases', loadChildren: './fases/fase.module#FaseModule' }
         ]
     }
 ];
