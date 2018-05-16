@@ -1,0 +1,172 @@
+<!-- Autor: Victor Tovar    Modificado por: Anggelo Moncada -->
+<!-- Fecha de Creacion: ?   Fecha de modificacion: 24/04/2018 -->
+
+<div class="row"> <!-- Encabezado -->
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        <i class="fa fa-address-card" style="color:blue"></i> Cargo
+                    </h2>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-lg-12"> 
+
+                    <!--ALERT MENSAJES -->
+                    <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                        {{message}}
+                        <strong></strong>
+                    </div>
+                    <!--FIN ALERT MENSAJES -->
+
+                    <form>
+        
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <fieldset class="form-group">
+                                    <form class="form-inline" ngf>
+                                        <div class="form-group">                                    
+                                          
+                                            <div _ngcontent-c7="" class="form-group input-group"> 
+                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Empresa :</label>
+                                                <select id="inputState" class="form-control-sm input-underline col-8" [(ngModel)]="cargoForm.clienteId" name="enterprise">
+                                                    <option value="" disabled>Seleccione cliente</option>
+                                                    <option *ngFor="let e of enterprises" [value]="e.id">{{e.descripcion}}</option>
+                                                </select>                                                     
+                                            </div>
+
+                                            <div _ngcontent-c7="" class="form-group input-group">
+                                                <label class=" col-form-label-sm ">*Nombre del cargo :</label>  
+                                                <input type="text" class="form-control-sm input-underline col-6" name="nombre" id="nombre" placeholder="Nombre" [(ngModel)]="cargoForm.descripcion" required >                                    
+                                            </div>
+
+                                            <div>
+                                                <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                                    value="">
+                                                </button>
+                                            </div>
+                            
+                                            <div *ngIf="visible" >
+                                                <hr class="hrv2">
+                                            </div>
+                          
+                                            <div *ngIf="visible" style="text-align:left">
+                                                <div>
+                                                <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                                        value="">
+                                                        <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div> 
+                                    </form>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header center-sc">
+                                <div class="row" >
+
+                                    <div class=" col-auto">
+                                        Tabla de Cargos
+                                    </div>
+    
+                                    <div class="btn-group row col-auto pull-right ">
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+
+                                        <div class="col-auto pull-right ">
+                                            <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                                        </div>
+    
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+        
+                                        <div class="col-auto pull-right ">
+                                            <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                                        </div>
+    
+                                        <div>
+                                            <hr class="hrv1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>    
+
+                            <div class="card-body table-responsive">
+                                <table class="table table-hover table-striped table-bordered table-sm">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Empresa</th>      
+                                            <th>Nombre de Área</th>  
+                                            <th>Acciones</th>                                
+                                        </tr>
+                                        <tr>
+                                            
+                                            <th>
+                                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.cliente.descripcion"
+                                                    placeholder="Buscar por Empresa">
+                                            </th>
+                                            <th>
+                                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
+                                                    placeholder="Buscar por Cargo">
+                                            </th>
+                                        </tr>
+                                    </thead>                        
+
+                                    <tbody>
+                                            <tr *ngFor="let c of cargo| generalFilter:filter">
+    
+                                                <td style="text-align: left">
+                                                    <span [innerHTML]="c.cliente.descripcion"></span>
+                                                </td>
+                                                
+                                                <td style="text-align: left">
+                                                    <span [innerHTML]="c.descripcion"></span>
+                                                </td>
+    
+                                                <td>
+                                                <div class="btn-group">
+                                                    <a class="btn btn-default" >
+                                                    <i (click)="upload(c)"
+                                                        class="fa fa-pencil-square-o fa-lg hand"
+                                                        aria-hidden="true"
+                                                        title="Editar" >
+                                                    </i>
+                                                    </a>
+                                                    <a class="btn btn-default">
+                                                    <i (click)="delete(c.id)"
+                                                        class="fa fa-trash-o fa-lg hand"
+                                                        aria-hidden="true"
+                                                        title="Eliminar">
+                                                    </i>
+                                                    </a>
+                                                </div>
+                                            </td>                                
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>    
+                        </div>
+
+                        <div class="center">
+                            <button type="reset" class="btn btn-primary">
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver</button>
+                        </div>
+
+                    </form>
+                </div>    
+            </div>  
+        </div>
+    </div>
+</div>

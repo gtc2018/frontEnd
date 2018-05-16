@@ -11,6 +11,16 @@ import swal from 'sweetalert2';
 import { AuthService } from '../../shared/guard/auth.service';
 import { PermisoModel } from '../../model/permiso.model';
 
+import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalQComponent } from './modal-q/modal-q.component';
+import { SystemComponent } from './modal-q/template/system/system';
+import { ToolComponent } from './modal-q/template/tool/tool';
+import { CreateDetailComponent } from './modal-q/template/create-detail/create-detail';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TagInputModule } from 'ngx-chips';
+import { PorcentajePorFaseModel } from '../../model/porcentajePorFase.model';
+
 @Component({
     selector: 'app-enterprise',
     templateUrl: './enterprise.component.html',
@@ -40,6 +50,7 @@ export class EnterpriseComponent implements OnInit {
     dragging: boolean;
     stateExpand: number = 1;
     deleteFormHide: boolean;
+    public empresaId: Number;
 
 
 
@@ -48,12 +59,27 @@ export class EnterpriseComponent implements OnInit {
     messageEmail: string;
     emailRegex: RegExp;
 
+    systemInit: { id: number; name: string; value: boolean; }[];
+    toolInit: { id: number; name: string; value: boolean; }[];
+
+    modelDateDS;
+    modelDateSol;
+    modelDateEnt;
+
+    closeResult: string;
+
+    systemItem= [];
+
+
+    toolItem= [];
+
     ngOnInit() {
         this.loadEnterprises();
         this.getItemsEmpresas();
     }
 
     constructor(private enterpriseService: EnterpriseService,
+        private modalService: NgbModal,
         private router: Router,
         private toastr: ToastrService,
         private login: AuthService,
@@ -65,6 +91,39 @@ export class EnterpriseComponent implements OnInit {
         this.enterprise.imagenEmpresa = "assets/images/logo.png"
 
         // this.user = JSON.parse(sessionStorage.getItem("usuario"));
+
+        this.toolInit= [
+            {id:1,name:"Angular",value:false},
+            {id:2, name:"ReactJs", value:true}
+        ]
+    
+        this.systemInit=[
+            {id:1, name:"As400",value:false},
+            {id:2,name:"Mac", value:true},
+            {id:3,name:"Windows", value:true}
+        ]
+
+        //Para agregarlos al xchips
+    
+        for (let r of this.systemInit){
+    
+            if (r.value === true){
+    
+                this.systemItem.push(r);
+    
+            }
+    
+        }
+    
+        for (let r of this.toolInit){
+    
+            if (r.value === true){
+    
+                this.toolItem.push(r);
+    
+            }
+    
+        }
 
         if (this.login.authUser !== undefined) {
 
@@ -86,9 +145,13 @@ export class EnterpriseComponent implements OnInit {
     private isValid: boolean = true;
     private message: string = "";
 
+    public empresa : EnterpriseModel;
+
     //Mostrar el crear o no
 
     visible = false;
+
+    modal = false;
 
     //Icono del boton
 
@@ -156,11 +219,15 @@ export class EnterpriseComponent implements OnInit {
         this.deleteFormHide = false;
 
         this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+
+        this.modal = false;
     }
 
     //Para editar
 
     upload(model) {
+
+        this.empresa = model;
 
         console.log(model);
 
@@ -186,6 +253,8 @@ export class EnterpriseComponent implements OnInit {
             this.stateExpand = 3;
             this.deleteFormHide = true;
         }
+
+        this.modal = true;
 
     }
 
@@ -239,6 +308,22 @@ export class EnterpriseComponent implements OnInit {
                 }
                 this.stateExpand = 1
             }
+    }
+
+    // Mostrar el modal o no
+    createPorcentaje() {
+
+        const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
+        modalRef.componentInstance.title = 'Crear Porcentaje por Fase';
+        // modalRef.componentInstance.seleccionados = 'las herramientas';
+        modalRef.componentInstance.template = `create-detail`;
+        modalRef.componentInstance.empresaId = this.empresa.id;
+
+
+       this.empresaId = parseFloat(this.empresa.empresaId);
+       console.log(this.empresaId);
+
+        
     }
 
     //Para eliminar
@@ -562,5 +647,83 @@ export class EnterpriseComponent implements OnInit {
         console.log(this.enterprise.imagen);
     }
 
+    system() {
+        const modalRef = this.modalService.open(ModalQComponent);
+        modalRef.componentInstance.title = 'Sistemas';
+        modalRef.componentInstance.seleccionados = 'los sistemas';
+        modalRef.componentInstance.template = `system`;
+    
+        console.log(this.systemItem);
+    
+        let instance = modalRef.componentInstance;
+    
+        instance.array =  this.systemInit;
+    
+        modalRef.result.then( (result) => {
+    
+            this.systemItem=[];
+    
+            for (let r of result){
+    
+                if (r.value === true){
+    
+                    this.systemItem.push(r);
+    
+                }
+    
+            }
+    
+          }, (reason) => {
+    
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            console.log("dissmissed");
+    
+          });
+    
+      }
+    
+      tools() {
+        const modalRef = this.modalService.open(ModalQComponent);
+        modalRef.componentInstance.title = 'Herramientas';
+        modalRef.componentInstance.seleccionados = 'las herramientas';
+        modalRef.componentInstance.template = `tool`;
+    
+        let instance = modalRef.componentInstance;
+    
+        instance.array =  this.toolInit;
+    
+        modalRef.result.then( (result) => {
+    
+            this.toolItem=[];
+    
+            for (let r of result){
+    
+                if (r.value === true){
+    
+                    this.toolItem.push(r);
+    
+                }
+    
+            }
+    
+            }, (reason) => {
+    
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.log("dissmissed");
+    
+    
+             });
+    
+      }
+    
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return  `with: ${reason}`;
+        }
+    }
 
 }
