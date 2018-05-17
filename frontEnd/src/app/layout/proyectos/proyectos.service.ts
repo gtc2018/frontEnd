@@ -78,9 +78,5 @@ export class ProyectosService {
     return this.Http.post<RestResponse>("http://localhost:8080/deleteProyecto", JSON.stringify(proyecto));
 
   }
-
-
-
-
-
+  
 }
