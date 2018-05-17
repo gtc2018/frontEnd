@@ -34,30 +34,28 @@ export class AsociarProyectoService {
 
 }
 
-  public saveOrUpdateEmployeesToProject(id, model: any[]): Observable<RestResponse> {
+  public saveOrUpdateEmployeesToProject(model: EmployeeToProject[]): Observable<RestResponse> {
 
     // console.log(model,id);
 
-    this.employeesToProject= [];
+//     this.employeesToProject= [];
 
-    for(var i=0;i<model.length;i++){
+//     for(var i=0;i<model.length;i++){
 
-        // console.log(i);
-        // console.log(model[i].id);
+//         // console.log(i);
+//         // console.log(model[i].id);
 
-this.employeeToProject = new EmployeeToProject();
+// this.employeeToProject = new EmployeeToProject();
 
-        this.employeeToProject.proyectoId = id;
-        this.employeeToProject.empleadoId = model[i].id;
+//         this.employeeToProject.proyectoId = id;
+//         this.employeeToProject.empleadoId = model[i].id;
 
-        this.employeesToProject.push(this.employeeToProject);
-    };
-
-    console.log(this.employeesToProject);
+//         this.employeesToProject.push(this.employeeToProject);
+//     };
 
     return this.Http.post<RestResponse>(
         "http://localhost:8080/AsociarProyecto/saveOrUpdateAsociarProyecto",
-        this.employeesToProject, {headers: this.headers}
+        model, {headers: this.headers,params:{projectId:model[0].proyectoId}}
         );
   }
 

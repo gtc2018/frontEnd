@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { ProyectoModel } from '../../model/proyectos';
-import { ProyectosService } from './proyectos.service'
+import { ProyectosService } from './proyectos.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { EnterpriseService } from '../enterprise/enterprise.service';
@@ -27,7 +27,6 @@ export class ProyectosComponent implements OnInit {
 
     fotoEmpresa: string;
     fotoDoc: string;
-
 
     private message: string = "";
     icon: string = "fa fa-caret-left";
@@ -93,6 +92,8 @@ export class ProyectosComponent implements OnInit {
         this.loadProyectos();
         this.loadEnterprises();
     }
+
+    //Método para gestionar el formato de la fecha
 
     //Obligatoriedad de campos
 
@@ -350,6 +351,10 @@ export class ProyectosComponent implements OnInit {
 
         this.employeeToProject.fotoEmpleado = filter[0].foto;
 
+        this.employeeToProject.empleadoId = filter[0].id.toString();
+
+        this.employeeToProject.proyectoId = this.proyecto.id.toString();
+
         this.employees.splice(indexDelete, 1);
 
         this.employeesToProject.push(this.employeeToProject);
@@ -377,15 +382,37 @@ export class ProyectosComponent implements OnInit {
 
     //Para guardar
 
+    
+
     save() {
 
         console.log(this.proyecto);
 
         console.log(this.employeesToProject);
 
+        
+        //Si involucró a empleados en la transacción
+          if (this.employeesToProject.length !== 0){
 
+            for(let emPr of this.employeesToProject){
 
-        this.asociarProyectoService.saveOrUpdateEmployeesToProject(this.proyecto.id, this.employeesToProject).subscribe(res => {
+                if(emPr.id === undefined){
+
+                    emPr.usuarioCreacion = localStorage.email;
+                    var a = Date();
+                    // emPr.fechaCreacion = DateFormato.
+
+                }else{
+
+                    emPr.usuarioModificacion = localStorage.email;
+                    emPr.fechaModificacion = Date();
+
+                }
+            }
+
+            console.log(this.employeesToProject);
+
+        this.asociarProyectoService.saveOrUpdateEmployeesToProject(this.employeesToProject).subscribe(res => {
             // if (res.responseCode == OK) {
             console.log(res);
             this.loadProyectos();
@@ -395,19 +422,16 @@ export class ProyectosComponent implements OnInit {
             this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
 
             this.updateForm = false;
-            // } else {
-            //     this.message = res.message;
-            //     this.isValid = false;
-            //     console.log(this.message);
-            // }
+
         }, (error) => {
             console.log(error);
 
             this.toastr.error(error.error.message, "Error al guardar los empleados asociados al proyecto");
 
         });
+    }
 
-        //     if(this.login.authUser !== undefined){
+        //     if(localStorage.email undefined){
         //         this.proyecto.usuarioCreacion=localStorage.email;
         //     }
 
@@ -490,9 +514,9 @@ export class ProyectosComponent implements OnInit {
     //Eliminar
     delete(model) {
 
-        if (this.login.authUser !== undefined) {
+        if (localStorage.email !== undefined) {
 
-            model.usuarioCreacion = this.login.authUser.email;
+            model.usuarioCreacion = localStorage.email;
         }
 
         swal({
