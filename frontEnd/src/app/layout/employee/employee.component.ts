@@ -368,7 +368,7 @@ export class EmployeeComponent implements OnInit   {
             this.employeeForm.foto = 'assets/images/avatar.png';
         }
 
-    // se filtran los empleados segun la empresa seleccionada
+    // se filtran los cargos y areas segun la empresa seleccionada
     filterChargeAndAreaToEnterprise(id: any): void{
 
         /*if(this.identificador === 0){
@@ -381,9 +381,11 @@ export class EmployeeComponent implements OnInit   {
 
         }*/
    
+        console.log(id);
+
         this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
 
-        this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
+        //this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
 
         this.employeeForm.clienteId = id;
 
