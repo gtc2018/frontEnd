@@ -49,7 +49,7 @@ export class AreaService {
   
     this.enterprise.id = id;
   
-    return this.Http.post<AreaModel[]>("http://localhost:8080/getAllChargeToEnterprise", JSON.stringify(this.enterprise));      
+    return this.Http.post<AreaModel[]>("http://localhost:8080/getAllAreasToEnterprise", JSON.stringify(this.enterprise));      
   }
 
 }
