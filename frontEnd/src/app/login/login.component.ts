@@ -67,12 +67,12 @@ export class LoginComponent {
                     this.user.authUser = res as UsuarioModel;
                     this.user.setUserLoggedIn();
 
-                    localStorage.user = res.nombres;
+                    localStorage.user = res.empleado.nombres;
 
-                    localStorage.rol = "1";
+                    localStorage.rol = res.rolId;
                     // res.rolId;
 
-                    localStorage.email = res.email;
+                    localStorage.email = res.empleado.email;
 
                     return this.router.navigate(['/dashboard']);
 
