@@ -14,13 +14,14 @@ import { EnterpriseService } from '../enterprise/enterprise.service';
 import { EnterpriseModel } from '../../model/enterprise';
 import { ProyectosService } from '../proyectos/proyectos.service';
 import { EmployeeModel } from '../../model/employee';
+import { EmployeeService } from '../employee/employee.service';
 
 @Component({
     selector: 'app-usuario',
     templateUrl: './usuario.component.html',
     styleUrls: ['./usuario.component.scss'],
     animations: [routerTransition()],
-    providers: [UsuarioService, CrearUsuarioService, EnterpriseService, ProyectosService]
+    providers: [UsuarioService, CrearUsuarioService, EnterpriseService, EmployeeService, ProyectosService]
 })
 export class UsuarioComponent implements OnInit {
     rols: any[];
@@ -36,10 +37,22 @@ export class UsuarioComponent implements OnInit {
 
     stateExpand: number = 1;
 
+    employeeEnterprise: EmployeeModel;
+    employee: EmployeeModel[];
+
+    numeroEm: number;
+
+    EnterpriseEmployee: EnterpriseModel;
+
     // Variables
     emailRegex: RegExp;
 
     messageEmail: any;
+
+    readonly: boolean = false;
+    primary: boolean = true;
+    empresa: String;
+    identificador: Number = 0;
 
     user: UsuarioModel;
     private usuarios: Array<UsuarioModel>;
@@ -54,6 +67,7 @@ export class UsuarioComponent implements OnInit {
     filterEm: EmployeeModel[];
 
     private employees: EmployeeModel[];
+    private resEmployee: EmployeeModel[];
 
     //Mostrar el crear o no
 
@@ -67,10 +81,15 @@ export class UsuarioComponent implements OnInit {
 
         this.usuario = new UsuarioModel();
 
+        this.confirm = "";
+        this.readonly = false;
+        this.primary = true;
+
         this.deleteFormHide = false;
 
         this.fotoEmpresa = 'assets/images/logo.png';
         this.fotoEmpleado = 'assets/images/avatar.png';
+        this.identificador = 0;
     }
 
     toggleDivCreateUsers() {
@@ -134,6 +153,7 @@ export class UsuarioComponent implements OnInit {
     constructor(
         private proyectoService: ProyectosService,
         private enterpriseService: EnterpriseService,
+        private employeeService: EmployeeService,
         private usuarioService: UsuarioService,
         private crearUsuarioService: CrearUsuarioService,
         private router: Router,
@@ -163,6 +183,7 @@ export class UsuarioComponent implements OnInit {
         this.loadUsuarios();
         this.loadEnterprises();
         this.loadUsers();
+        this.loadEmployee();
     }
 
     loadUsers(){
@@ -228,60 +249,6 @@ export class UsuarioComponent implements OnInit {
 
     }
 
-    setNew(id: any): void {
-        console.log(id);
-
-        this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
-
-        console.log(this.filterEn[0]);
-
-        this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
-
-        this.usuario.clienteId = id;
-
-        this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
-
-            console.log(res);
-
-            this.employees = res;
-
-        }, (error) => {
-
-            console.log(error);
-
-            this.toastr.error("Error actualizar los datos");
-
-        });
-
-    }
-
-    setNewUser(id: any): void {
-        console.log(id);
-
-        this.filterEm = this.employees.filter(value => value.id === parseInt(id));
-
-        console.log(this.filterEm[0]);
-
-        this.fotoEmpleado = this.filterEm[0].foto;
-
-        this.usuario.email = this.filterEm[0].email;
-
-        // this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
-
-        //     console.log(res);
-
-        //     this.employees = res;
-
-        // },(error)=>{
-
-        //     console.log(error);
-
-        //     this.toastr.error("Error actualizar los datos");
-
-        // });
-
-    }
-
     //Para cargar empresass
 
     private loadEnterprises(): void {
@@ -297,6 +264,74 @@ export class UsuarioComponent implements OnInit {
             //     'error'
             //   )
         });
+    }
+
+    //Carga los empleados
+    private loadEmployee(): void {
+        this.employeeService.getAll().subscribe(res => {
+            this.employees = res;
+            this.resEmployee = res;
+        },(error)=>{
+            console.log(error);
+
+            this.toastr.error("Error al cargar los datos");
+            // swal(
+            //     'Error',
+            //     error.error.message,
+            //     'error'
+            //   )
+        });
+    }
+
+    // se filtran los empleados segun la empresa seleccionada
+    filtroEmpleado(id: any): void{
+
+        if(this.identificador === 0){
+
+            this.usuario = new UsuarioModel();
+
+        this.confirm = "";
+
+        this.fotoEmpleado = 'assets/images/avatar.png';
+
+        }
+   
+        this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
+
+        console.log(this.filterEn);
+
+        this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
+
+        this.usuario.clienteId = id;
+
+        this.employeeService.getEmployeeForEnterprise(id).subscribe(res => {   
+      
+            this.employees = res;
+
+            console.log(this.employee);
+            
+      
+          },(error)=>{
+          console.log(error);
+          
+      
+            this.toastr.error("Error al cargar los datos");
+          });
+
+       }
+
+       // se usa todos los tados del empleado seleccionado
+    datosEmpleado(id: any): void{
+        
+   
+        this.filterEm = this.employees.filter(value => value.id === parseInt(id));
+
+        console.log(this.filterEm);
+
+        this.fotoEmpleado = this.filterEm[0].foto;
+
+        this.usuario.email = this.filterEm[0].email;
+
     }
 
     comparate(model) {
@@ -463,6 +498,8 @@ export class UsuarioComponent implements OnInit {
 
             }
 
+            this.clean();
+
         } else {
             console.log(this.messageEmail);
             if (!this.messageEmail) {
@@ -532,6 +569,22 @@ export class UsuarioComponent implements OnInit {
             if (this.visible === true) {
                 this.icon = "fa fa-caret-down";
 
+            this.usuario = model;
+            this.usuario.clienteId = this.usuario.empleado.cliente.id;
+            this.usuario.empleadoId = this.usuario.empleado.id;
+            this.usuario.rolId = this.usuario.rol.id;
+            this.fotoEmpleado = this.usuario.empleado.foto;
+            this.fotoEmpresa = this.usuario.empleado.cliente.imagenEmpresa;
+            this.empresa = this.usuario.empleado.cliente.descripcion;
+            
+            this.readonly = true;
+            this.primary = false;
+            this.identificador = 1;
+
+            this.filtroEmpleado(this.usuario.clienteId);
+
+            //this.employees = this.resEmployee;
+
                 this.deleteFormHide = false;
             } else {
                 this.icon = "fa fa-caret-left";
@@ -543,8 +596,22 @@ export class UsuarioComponent implements OnInit {
 
         } else if (this.stateExpand === 2 || this.stateExpand === 3) {
             this.usuario = model;
+            this.usuario.clienteId = this.usuario.empleado.cliente.id;
+            this.usuario.empleadoId = this.usuario.empleado.id;
+            this.usuario.rolId = this.usuario.rol.id;
+            this.fotoEmpleado = this.usuario.empleado.foto;
+            this.fotoEmpresa = this.usuario.empleado.cliente.imagenEmpresa;
+            this.empresa = this.usuario.empleado.cliente.descripcion;
             this.stateExpand = 3;
+            this.readonly = true;
+            this.primary = false;
+            this.identificador = 1
+            
+            this.filtroEmpleado(this.usuario.clienteId);
+            //this.employees = this.resEmployee;
             this.deleteFormHide = true;
+
+            
         }
 
     }

@@ -115,11 +115,30 @@
 
                         <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3" style="padding-bottom:10px">
 
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                            <label>
+                                <div class="col-auto">
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <label class="col-form-label-sm" style="padding-bottom:10px ">Logo Empresa: </label>
+                                        </div>
+                                            <img [src]="fotoEmpresa" class="picture-marc" width="165" height="165">
+                                        </div>
+                                    <div class="col-auto">
+    
+    
+                                    <input type='file' (change)="handleInputChange($event)" style="display: none;" disabled>
+
+                                </div>
+                            </label>
+                        </div>
+                            
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                             <label class="hand" ondragover="return false;" (dragenter)="handleDragEnter()" (dragleave)="handleDragLeave()" (drop)="handleDrop($event)"
                                 placement="top" ngbTooltip="Haga click para cargar o arrastre la foto">
                                 <div class="col-auto">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                                        <label class="col-form-label-sm" style="padding-bottom:10px ">Subir foto: </label>
+                                        <label class="col-form-label-sm" style="padding-bottom:10px ">Subir foto del empleado: </label>
                                     </div>
                                     <img [src]="employeeForm.foto" class="picture-marc" width="165" height="225">
                                 </div>
@@ -130,12 +149,24 @@
 
                                 </div>
                             </label>
-                            <br>
+                        </div>
+
                         </div>
 
 
                         <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">*Empresa</label>
+                                <select #selectEn [(ngModel)]="employeeForm.clienteId"
+                                    name="enterprise"
+                                    class="form-control-sm input-underline">
+                                        <option *ngFor="let e of enterprises" [value]="e.id">
+                                            {{e.descripcion}}
+                                        </option>
+                                </select>
+                            </div>
+                                    
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class="col-form-label-sm">*Tipo de empleado:</label>
                                 <select [(ngModel)]="employeeForm.tipoEmpleado" name="tipoEmpleado" class="form-control-sm input-underline">
@@ -163,21 +194,25 @@
                                 </select>
                             </div>
 
-                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class=" col-form-label-sm ">*Cargo:</label>
-                                <select [(ngModel)]="employeeForm.cargoId" name="cargoId" class="form-control-sm input-underline">
-                                    <option value="1">Analista</option>
-                                    <option value="1">Auxiliar</option>
-                                    <option value="1">Lider</option>
-                                </select>
-                            </div>
-
                         </div>
 
                         <div class="form-row center-sc col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">*Area</label>
+                                <br>
+                                <select #selectEn [(ngModel)]="employeeForm.areaId"
+                                    name="area"
+                                    class="form-control-sm input-underline">
+                                        <option *ngFor="let a of areas" [value]="a.id">
+                                            {{a.descripcion}}
+                                        </option>
+                                </select>
+                            </div>
+
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class="col-form-label-sm">*Tipo de documento:</label>
+                                <br>
                                 <select [(ngModel)]="employeeForm.tipoDocumento" name="tipoDocumento" class="form-control-sm input-underline">
                                     <option value="NIT">NIT</option>
                                     <option value="CC">CC</option>
@@ -200,15 +235,21 @@
                                 <input type="text" class="form-control-sm input-underline" placeholder="Dirección" [(ngModel)]="employeeForm.direccion" name="direccion">
                             </div>
 
-                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                <label class=" col-form-label-sm ">*Sueldo:</label>
-                                <input #sueldo type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}" [(ngModel)]="employeeForm.sueldo"
-                                    name="sueldo">
-                            </div>
-
                         </div>
 
                         <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
+
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">*Cargo</label>
+                                <br>
+                                <select #selectEn [(ngModel)]="employeeForm.cargoId"
+                                    name="cargo"
+                                    class="form-control-sm input-underline">
+                                        <option *ngFor="let c of cargos" [value]="c.id">
+                                            {{c.descripcion}}
+                                        </option>
+                                </select>
+                            </div>
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">*# Documento:</label>
@@ -218,6 +259,7 @@
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">*Sexo:</label>
+                                <br>
                                 <select [(ngModel)]="employeeForm.sexo" name="sexo" class="form-control-sm input-underline">
                                     <option value="M">Masculino</option>
                                     <option value="F">Femenino</option>
@@ -229,30 +271,18 @@
                                 <input type="email" class="form-control-sm input-underline" placeholder="Email" [(ngModel)]="employeeForm.email" name="email">
                             </div>
 
-
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                <label class=" col-form-label-sm ">*Empresa</label>
-                <select #selectEn [(ngModel)]="employeeForm.clienteId"
-                name="enterprise"
-                class="form-control-sm input-underline">
-                    <option *ngFor="let e of enterprises" [value]="e.id">
-                        {{e.descripcion}}
-                    </option>
-                </select>
-            </div>
-
-
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">Otros beneficios:</label>
                                 <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}" [(ngModel)]="employeeForm.otrosBeneficios"
                                     name="otrosBeneficios">
                             </div>
 
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <label class=" col-form-label-sm ">*Sueldo:</label>
+                                    <input #sueldo type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}" [(ngModel)]="employeeForm.sueldo"
+                                        name="sueldo">
+                                </div>
                         </div>
-
-
-
-
 
                         <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
                       style="padding-top:14px">

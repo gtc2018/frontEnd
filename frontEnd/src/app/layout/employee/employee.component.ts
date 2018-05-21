@@ -15,6 +15,10 @@ import swal from 'sweetalert2';
 import { EnterpriseService } from '../enterprise/enterprise.service';
 import { EnterpriseModel } from '../../model/enterprise';
 import { PermisoModel } from '../../model/permiso.model';
+import { AreaModel } from '../../model/area.model';
+import { AreaService } from '../areas/servicios/area.service';
+import { CargoService } from '../cargos/servicios/cargo.service';
+import { CargoModel } from '../../model/cargo.model';
 
 
 @Component({
@@ -22,11 +26,13 @@ import { PermisoModel } from '../../model/permiso.model';
     templateUrl: './employee.html',
     styleUrls: ['./employee.scss'],
     animations: [routerTransition()],
-    providers: [EmployeeService, LoginService,EnterpriseService]
+    providers: [EmployeeService, LoginService, AreaService, CargoService, EnterpriseService]
 })
 export class EmployeeComponent implements OnInit   {
 
     enterprises: EnterpriseModel[];
+    areas: AreaModel[];
+    cargos: CargoModel[];
     message: string;
     imagenTemp: string ="";
     file: File = null;
@@ -44,6 +50,8 @@ export class EmployeeComponent implements OnInit   {
     //Metodos principales---------------------
     constructor(private employeeService: EmployeeService,
         private enterpriseService: EnterpriseService,
+        private areaService: AreaService,
+        private cargoService: CargoService,
         private router: Router,
         private toastr: ToastrService,
         private login:AuthService,
@@ -61,35 +69,15 @@ export class EmployeeComponent implements OnInit   {
 
         this.employeeForm.foto = 'assets/images/avatar.png';
 
-        // this.employee = [
-
-        //     {id:1,
-        //     name:"Santiago Carrillo",
-        //     apellido:"Alzate Papá",
-        //     document:"1144078370",
-        //     telefono:"3754547",
-        //     email:"santiagoca42@gmail.com",
-        //     estado:'1',
-        //     foto:'assets/images/Scan.jpg'},
-
-        //     {id:2,
-        //     name:"Santiago Carrillo",
-        //     apellido:"Alzate Papá",
-        //     document:"1144078370",
-        //     telefono:"3754547",
-        //     email:"santiagoca42@gmail.com",
-        //     estado:'1',
-        //     foto:'assets/images/avatar.png'}
-
-        // ]
-
     }
 
 
     ngOnInit() {
         this.getItemsEmpresas();
         this.loadEmployee();
-        this.loadEnterprises()
+        this.loadEnterprises();
+        this.loadAreas();
+        this.loadCargos();
     }
 
     //Variables--------------------------------------------
@@ -100,6 +88,7 @@ export class EmployeeComponent implements OnInit   {
     baseColor: string = '#ccc';
     icon: string = "fa fa-caret-left";
     imageSrc: string = 'assets/images/avatar.png';
+    fotoEmpresa: string = 'assets/images/avatar.png';
 
     stateExpand: number = 1;
 
@@ -113,6 +102,7 @@ export class EmployeeComponent implements OnInit   {
     employee= [];
 
     filter: EmployeeModel = new EmployeeModel();
+    filterEn: EnterpriseModel[];
     private isValid: boolean = true;
 
         // Funciones---------------------------------------------------------------
@@ -294,6 +284,30 @@ export class EmployeeComponent implements OnInit   {
         });
     }
 
+    //Para cargar areas
+
+    private loadAreas(): void {
+        this.areaService.getAreas().subscribe(res => {
+            this.areas = res;
+
+        }, (error) => {
+            console.log(error);
+            this.toastr.error("Error al cargar los datos de Empresa");
+        });
+    }
+
+    //Para cargar cargos
+
+    private loadCargos(): void {
+        this.cargoService.getCargos().subscribe(res => {
+            this.cargos = res;
+
+        }, (error) => {
+            console.log(error);
+            this.toastr.error("Error al cargar los datos de Empresa");
+        });
+    }
+
         //Para eliminar
 
         delete(model){
@@ -353,6 +367,49 @@ export class EmployeeComponent implements OnInit   {
 
             this.employeeForm.foto = 'assets/images/avatar.png';
         }
+
+    // se filtran los empleados segun la empresa seleccionada
+    filterChargeAndAreaToEnterprise(id: any): void{
+
+        /*if(this.identificador === 0){
+
+            this.usuario = new UsuarioModel();
+
+        this.confirm = "";
+
+        this.fotoEmpleado = 'assets/images/avatar.png';
+
+        }*/
+   
+        this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
+
+        this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
+
+        this.employeeForm.clienteId = id;
+
+        this.cargoService.getChargeToEnterprise(id).subscribe(res => {   
+      
+            this.cargos = res;
+      
+          },(error)=>{
+          console.log(error);
+          
+      
+            this.toastr.error("Error al cargar los datos");
+          });
+
+        this.areaService.getAreaToEnterprise(id).subscribe(res => {   
+      
+            this.areas = res;
+      
+          },(error)=>{
+          console.log(error);
+          
+      
+            this.toastr.error("Error al cargar los datos");
+          });  
+
+       }
 
         upload(model){
 
