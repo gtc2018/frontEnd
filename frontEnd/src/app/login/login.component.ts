@@ -69,7 +69,8 @@ export class LoginComponent {
 
                     localStorage.user = res.nombres;
 
-                    localStorage.rol = res.rolId;
+                    localStorage.rol = "1";
+                    // res.rolId;
 
                     localStorage.email = res.email;
 
