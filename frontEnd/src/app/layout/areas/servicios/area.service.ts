@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Options } from 'selenium-webdriver/chrome';
 import { HttpParams } from '@angular/common/http/src/params';
+import { EnterpriseModel } from '../../../model/enterprise';
 
 
 
@@ -12,9 +13,11 @@ export class AreaService {
  
   userList: AreaModel[];
   area: AreaModel;
+  enterprise: EnterpriseModel;
 
   constructor(private Http: HttpClient) { 
     this.area = new AreaModel();
+    this.enterprise = new EnterpriseModel();
   } 
 
   //SERVICIO CONSULTAR TODOS LOS ROLES 
@@ -37,6 +40,16 @@ export class AreaService {
   public deleteArea(area){    
     this.area = area;
     return this.Http.post<AreaModel>("http://localhost:8080/deleteArea", JSON.stringify(this.area));   
+  }
+
+  // SERVICIO CONSULTAR AREAS POR ID DE EMPRESA
+  public getAreaToEnterprise(id): Observable<AreaModel[]>{
+
+    console.log(id);
+  
+    this.enterprise.id = id;
+  
+    return this.Http.post<AreaModel[]>("http://localhost:8080/getAllChargeToEnterprise", JSON.stringify(this.enterprise));      
   }
 
 }

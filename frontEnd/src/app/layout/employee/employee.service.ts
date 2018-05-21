@@ -4,13 +4,22 @@ import { Observable } from 'rxjs/Observable';
 import { EmployeeModel } from '../../model/employee';
 import { tap, catchError } from 'rxjs/operators';
 import { RestResponse } from '../../model/restResponse';
+import { EnterpriseModel } from '../../model/enterprise';
+import { CargoModel } from '../../model/cargo.model';
 
 
 
 @Injectable()
 export class EmployeeService {
 
-  constructor(private http: HttpClient) { }
+  EmployeeList: EmployeeModel[];
+  employee: EmployeeModel;
+  enterprise: EnterpriseModel;
+
+
+  constructor(private http: HttpClient) {
+    this.enterprise = new EnterpriseModel();
+   }
 
   //SERVICIO CONSULTAR TODOS LOS USUARIOS
   public getAll(): Observable<EmployeeModel[]>{
@@ -24,6 +33,15 @@ export class EmployeeService {
     return this.http.post<RestResponse>("http://localhost:8080/empleado/create", JSON.stringify(employee));
   }
   */
+
+ public getEmployeeForEnterprise(id): Observable<EmployeeModel[]>{
+
+  console.log(id);
+
+  this.enterprise.id = id;
+
+  return this.http.post<EmployeeModel[]>("http://localhost:8080/getAllEmployeesToEnterprise", JSON.stringify(this.enterprise));      
+}
 
  public saveOrUpdate(employee: EmployeeModel): Observable<RestResponse> {
   //console.log("======================EMPLEADO============================");

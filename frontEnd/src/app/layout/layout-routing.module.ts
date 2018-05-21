@@ -33,7 +33,11 @@ const routes: Routes = [
             { path: 'areas', loadChildren: './areas/area.module#AreaModule' },
             { path: 'cargos', loadChildren: './cargos/cargo.module#CargoModule' },
             { path: 'porcentajePorFases', loadChildren: './porcentajePorFase/porcentajePorFase.module#PorcentajePorFaseModule' },
-            { path: 'fases', loadChildren: './fases/fase.module#FaseModule' }
+            { path: 'fases', loadChildren: './fases/fase.module#FaseModule' },
+            { path: 'alcances', loadChildren: './alcances/alcance.module#AlcanceModule' },
+            { path: 'estados', loadChildren: './estados/estado.module#EstadoModule' },
+            { path: 'herramientas', loadChildren: './herramientas/herramienta.module#HerramientaModule' },
+            { path: 'sistemas', loadChildren: './sistemas/sistema.module#SistemaModule' }
         ]
     }
 ];
