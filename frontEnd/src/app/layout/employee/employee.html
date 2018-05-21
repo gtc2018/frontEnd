@@ -161,6 +161,7 @@
                                 <select #selectEm [(ngModel)]="employeeForm.clienteId"
                                     name="enterprise" (change)="filterChargeAndAreaToEnterprise(selectEm.value)"
                                     class="form-control-sm input-underline">
+                                    <option value=undefined selected>Seleccione una empresa</option>
                                         <option *ngFor="let e of enterprises" [value]="e.id">
                                             {{e.descripcion}}
                                         </option>
@@ -204,6 +205,7 @@
                                 <select #selectEn [(ngModel)]="employeeForm.areaId"
                                     name="area"
                                     class="form-control-sm input-underline">
+                                    <option value=undefined selected>Seleccione un area</option>
                                         <option *ngFor="let a of areas" [value]="a.id">
                                             {{a.descripcion}}
                                         </option>
@@ -240,15 +242,14 @@
                         <div class="form-row col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class=" col-form-label-sm ">*Cargo</label>
-                                <br>
-                                <select #selectEn [(ngModel)]="employeeForm.cargoId"
-                                    name="cargo"
-                                    class="form-control-sm input-underline">
+                                    <label class=" col-form-label-sm ">*Cargos</label>
+                                    <br>
+                                    <select [(ngModel)]="employeeForm.cargoId" name="employee" class="form-control-sm input-underline">
+                                        <option value=undefined selected>Seleccione un cargo</option>
                                         <option *ngFor="let c of cargos" [value]="c.id">
                                             {{c.descripcion}}
                                         </option>
-                                </select>
+                                    </select>
                             </div>
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">

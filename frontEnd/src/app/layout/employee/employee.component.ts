@@ -88,7 +88,7 @@ export class EmployeeComponent implements OnInit   {
     baseColor: string = '#ccc';
     icon: string = "fa fa-caret-left";
     imageSrc: string = 'assets/images/avatar.png';
-    fotoEmpresa: string = 'assets/images/avatar.png';
+    fotoEmpresa: string = 'assets/images/logo.png';
 
     stateExpand: number = 1;
 
@@ -366,6 +366,7 @@ export class EmployeeComponent implements OnInit   {
             this.deleteFormHide = false;
 
             this.employeeForm.foto = 'assets/images/avatar.png';
+            this.fotoEmpresa = 'assets/images/logo.png';
         }
 
     // se filtran los cargos y areas segun la empresa seleccionada
@@ -385,7 +386,9 @@ export class EmployeeComponent implements OnInit   {
 
         this.filterEn = this.enterprises.filter(value => value.id === parseInt(id));
 
-        //this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
+        console.log(this.filterEn);
+
+        this.fotoEmpresa = this.filterEn[0].imagenEmpresa;
 
         this.employeeForm.clienteId = id;
 
@@ -394,9 +397,7 @@ export class EmployeeComponent implements OnInit   {
             this.cargos = res;
       
           },(error)=>{
-          console.log(error);
           
-      
             this.toastr.error("Error al cargar los datos");
           });
 
@@ -405,7 +406,6 @@ export class EmployeeComponent implements OnInit   {
             this.areas = res;
       
           },(error)=>{
-          console.log(error);
           
       
             this.toastr.error("Error al cargar los datos");
