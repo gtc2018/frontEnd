@@ -34,7 +34,7 @@ export class AsociarProyectoService {
 
 }
 
-  public saveOrUpdateEmployeesToProject(model: EmployeeToProject[]): Observable<RestResponse> {
+  public saveOrUpdateEmployeesToProject(proyectoId, model: EmployeeToProject[]): Observable<RestResponse> {
 
     // console.log(model,id);
 
@@ -52,13 +52,12 @@ export class AsociarProyectoService {
 
 //         this.employeesToProject.push(this.employeeToProject);
 //     };
-
     return this.Http.post<RestResponse>(
         "http://localhost:8080/AsociarProyecto/saveOrUpdateAsociarProyecto",
-        model, {headers: this.headers,params:{projectId:model[0].proyectoId}}
+        model, {headers: this.headers,params:{projectId:proyectoId}}
         );
+  
   }
-
 
 
 }

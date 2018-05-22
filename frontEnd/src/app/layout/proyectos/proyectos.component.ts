@@ -95,6 +95,18 @@ export class ProyectosComponent implements OnInit {
 
     //Método para gestionar el formato de la fecha
 
+    formatDate(date:Date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        // var ampm = hours >= 12 ? 'pm' : 'am';
+        // hours = hours % 12;
+        // hours = hours ? hours : 12; // the hour '0' should be '12'
+        // minutes = minutes < 10 ? '0'+minutes : minutes;
+        // var strTime = hours + ':' + minutes + ' ' + ampm;
+        var strTime = hours + ':' + minutes
+        return date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "  " + strTime;
+      }
+
     //Obligatoriedad de campos
 
     public validate(proyecto: ProyectoModel): boolean {
@@ -389,35 +401,33 @@ export class ProyectosComponent implements OnInit {
         console.log(this.proyecto);
 
         console.log(this.employeesToProject);
-
         
         //Si involucró a empleados en la transacción
-          if (this.employeesToProject.length !== 0){
+          if (this.stateExpand === 3){
 
             for(let emPr of this.employeesToProject){
 
                 if(emPr.id === undefined){
 
                     emPr.usuarioCreacion = localStorage.email;
-                    var a = Date();
-                    // emPr.fechaCreacion = DateFormato.
+                    emPr.fechaCreacion = this.formatDate(new Date());
 
                 }else{
 
                     emPr.usuarioModificacion = localStorage.email;
-                    emPr.fechaModificacion = Date();
+                    emPr.fechaModificacion = this.formatDate(new Date());
 
                 }
             }
 
             console.log(this.employeesToProject);
 
-        this.asociarProyectoService.saveOrUpdateEmployeesToProject(this.employeesToProject).subscribe(res => {
+        this.asociarProyectoService.saveOrUpdateEmployeesToProject(this.proyecto.id, this.employeesToProject).subscribe(res => {
             // if (res.responseCode == OK) {
             console.log(res);
-            this.loadProyectos();
+            // this.loadProyectos();
 
-            this.proyecto = new ProyectoModel();
+            // this.proyecto = new ProyectoModel();
 
             this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
 
@@ -431,43 +441,41 @@ export class ProyectosComponent implements OnInit {
         });
     }
 
-        //     if(localStorage.email undefined){
-        //         this.proyecto.usuarioCreacion=localStorage.email;
-        //     }
+            if(localStorage.email ===undefined){
+                this.proyecto.usuarioCreacion=localStorage.email;
+            }
 
-        //     console.log(this.proyecto);
+            this.isValid = this.validate(this.proyecto);
 
-        //     this.isValid = this.validate(this.proyecto);
+            if (this.isValid) {
 
-        //     if (this.isValid) {
+            this.proyectoService.saveOrUpdate(this.proyecto).subscribe(res => {
+                // if (res.responseCode == OK) {
+                    console.log(res);
+                    this.loadProyectos();
 
-        //     this.proyectoService.saveOrUpdate(this.proyecto).subscribe(res => {
-        //         // if (res.responseCode == OK) {
-        //             console.log(res);
-        //             this.loadProyectos();
+                    this.proyecto = new ProyectoModel();
 
-        //             this.proyecto = new ProyectoModel();
+                    this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
+                // } else {
+                //     this.message = res.message;
+                //     this.isValid = false;
+                //     console.log(this.message);
+                // }
+            },(error)=>{
+                console.log(error);
 
-        //             this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
-        //         // } else {
-        //         //     this.message = res.message;
-        //         //     this.isValid = false;
-        //         //     console.log(this.message);
-        //         // }
-        //     },(error)=>{
-        //         console.log(error);
+                    this.toastr.error(error.error.message, "Error en la transacción");
+                // swal(
+                //     'Error',
+                //     error.error.message,
+                //     'error'
+                //   )
+            });
 
-        //             this.toastr.error(error.error.message, "Error en la transacción");
-        //         // swal(
-        //         //     'Error',
-        //         //     error.error.message,
-        //         //     'error'
-        //         //   )
-        //     });
-
-        // } else {
-        //     this.message = "Los campos con * son obligatorios";
-        // }
+        } else {
+            this.message = "Los campos con * son obligatorios";
+        }
 
     }
 
@@ -475,9 +483,15 @@ export class ProyectosComponent implements OnInit {
 
     edit(model): void {
 
-        var filterEn = this.enterprises.filter(value => value.id === parseInt(model.clienteId));
+        console.log(model);
 
-        var imagen = filterEn[0].imagenEmpresa;
+        // var filterEn = this.enterprises.filter(value => value.id === parseInt(model.cliente.id));
+
+        // console.log(filterEn);
+
+        // var imagen = filterEn[0].imagenEmpresa;
+        
+        var imagen = model.cliente.imagenEmpresa;
 
         console.log(model);
 
@@ -498,14 +512,14 @@ export class ProyectosComponent implements OnInit {
             this.proyecto = model;
             this.stateExpand = 3;
             this.updateForm = true;
-            this.setNew(model.clienteId);
+            this.setNew(model.cliente.id);
 
         } else if (this.stateExpand === 2 || this.stateExpand === 3) {
             this.proyecto = model;
             this.stateExpand = 3;
             this.updateForm = true;
             this.fotoEmpresa = imagen;
-            this.setNew(model.clienteId);
+            this.setNew(model.cliente.id);
             // this.deleteFormHide = true;
         }
 
