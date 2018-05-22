@@ -94,18 +94,15 @@
                     <textarea
                     name="descripcion"
                     [(ngModel)]="requestForm.descripcion"
-                    rows="4"
+                    rows="3"
                     class="form-control"
                     placeholder="Descripcion"
                     required
-                    style="width:85%">
+                    style="width:85%"
+                    maxlength="100">
                     </textarea>
               </div>
-              <br>
-              
-            
-              <br>
-              
+              <br>              
               
               <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                     <div class="form-group row">
@@ -116,7 +113,8 @@
                         [(ngModel)]="requestForm.version"
                         type="text" 
                         class="form-control-sm input-underline" 
-                        style="width:70%">
+                        style="width:70%"
+                        maxlength="15">
                     </div>
                     </div>
               </div>
@@ -144,7 +142,8 @@
                      [(ngModel)]="requestForm.faseId"
                      name="faseRQM"
                      class="form-control-sm input-underline"
-                     style="width:70%">
+                     style="width:70%"
+                     >
                         <option *ngFor="let f of fases" [value]="f.id">
                                 {{f.descripcion}}
                         </option>
@@ -161,7 +160,8 @@
                         [(ngModel)]="requestForm.centroCosto"
                         type="text" 
                         class="form-control-sm input-underline" 
-                        style="width:70%">
+                        style="width:70%"
+                        maxlength="10">
                 </div>
                 </div>
               </div>
@@ -174,7 +174,8 @@
                                     [(ngModel)]="requestForm.numeroCasoPrueba"
                                     type="number" 
                                     class="form-control-sm input-underline" 
-                                    style="width:70%">
+                                    style="width:70%"
+                                    maxlength="10">
                         </div>
                         </div>
                 </div>
@@ -183,22 +184,13 @@
                         <label class="col-form-label-sm " style="width:24%">Adjuntos RQM</label>
                         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                                 <label class="hand" ondragover="return false;" (dragenter)="handleDragEnter()" (dragleave)="handleDragLeave()" (drop)="handleDrop($event)"
-                                placement="top" ngbTooltip="Haga click para cargar o arrastre el documento" style="width:62%">
-                                <div class="col-auto">
-
-                                        <!-- <label class="col-form-label-sm"
-                                style="padding-bottom:10px " >Subir documento: </label> -->
-                                        <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}">{{nameUpload}}</span>
-                                        <!-- <img [src]="fotoDoc"
-                                class="picture-marc" width="165" height="165"> -->
-                                </div>
-                                <!-- <div class="col-auto">
-
-
-                                        <input type='file' (change)="handleInputChange($event)" style="display: none;">
-
-                                </div>-->
-                                
+                                placement="top" ngbTooltip="Haga click para cargar el documento" style="width:62%">
+                                        <div class="col-auto">
+                                                <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}">{{nameUpload}}</span>
+                                        </div>
+                                        <div class="col-auto">
+                                                <input type='file' (change)="handleInputChange($event)" style="display: none;" [(ngModel)]="requestForm.archivo" name="archivo">
+                                        </div>
                                 </label>
                         </div>
                 </div>
@@ -221,24 +213,25 @@
                     [(ngModel)]="requestForm.gestorTecnico"
                     type="text" 
                     class="form-control-sm input-underline" 
-                    style="width:70%">
+                    style="width:70%"
+                    maxlength="100">
                 </div>
                 </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                 <div class="form-group row">
-                <label class=" col-form-label-sm " style="width:25%">Email</label>
+                <label class=" col-form-label-sm " style="width:25%">Email G.Técnico</label>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <input
-                    name = "email"
-                    [(ngModel)]="requestForm.email"
+                    name = "emailTecnico"
+                    [(ngModel)]="requestForm.emailTecnico"
                     type="text" 
                     class="form-control-sm input-underline" 
-                    style="width:70%">
+                    style="width:70%"
+                    maxlength="45">
                 </div>
                 </div>
           </div>
-          <br>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                 <div class="form-group row">
                 <label class=" col-form-label-sm " style="width:25%">Gestor Proyectos</label>
@@ -248,19 +241,22 @@
                     [(ngModel)]="requestForm.gestorProyecto"
                     type="text" 
                     class="form-control-sm input-underline" 
-                    style="width:70%">
+                    style="width:70%"
+                    maxlength="100">
                 </div>
                 </div>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                 <div class="form-group row">
-                <label class=" col-form-label-sm " style="width:25%">Email</label>
+                <label class=" col-form-label-sm " style="width:25%">Email G.Proyecto</label>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                 <input 
-                    
+                    name = "emailProyecto"
+                    [(ngModel)]="requestForm.emailProyecto"
                     type="text" 
                     class="form-control-sm input-underline" 
-                    style="width:70%">
+                    style="width:70%"
+                    maxlength="45">
                 </div>
                 </div>
           </div>
@@ -343,7 +339,9 @@
                                 [(ngModel)]="requestForm.numeroHallazgoBloqueante"
                                 type="number" 
                                 class="form-control-sm input-underline" 
-                                style="width:70%">
+                                style="width:70%"
+                                maxlength="10"
+                                (change)="totalHallazgos()" >
                         </div>
                         </div>
                 </div>
@@ -356,7 +354,9 @@
                                 [(ngModel)]="requestForm.numeroHallazgoFuncional"
                                 type="number" 
                                 class="form-control-sm input-underline" 
-                                style="width:70%">
+                                style="width:70%"
+                                maxlength="10"
+                                (change)="totalHallazgos()" >
                         </div>
                         </div>
                 </div>
@@ -369,7 +369,9 @@
                                 [(ngModel)]="requestForm.numeroHallazgoPresentacion"
                                 type="number" 
                                 class="form-control-sm input-underline" 
-                                style="width:70%">
+                                style="width:70%"
+                                maxlength="10"
+                                (change)="totalHallazgos()" >
                         </div>
                         </div>
                 </div>
@@ -379,9 +381,9 @@
                                 class=" col-form-label-sm " style="width:55%">Número total de hallazgos reportados (Incluye todos los reportados)</label>
                         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                         <input 
-                                
+                                value = {{totalHallazgo}}  
                                 type="number" 
-                                class="form-control-sm input-underline" style="width:70%">
+                                class="form-control-sm input-underline" style="width:70%" readonly>
                         </div>
                         </div>
                 </div>

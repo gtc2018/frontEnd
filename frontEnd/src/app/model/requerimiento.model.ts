@@ -20,23 +20,23 @@ export class RequerimientoModel extends ParentEntity{
   public estado:EstadoModel;
 
   public numeroCasoPrueba: Number;
-  public numeroHallazgoBloqueante: Number;
-  public numeroHallazgoFuncional: Number;
-  public numeroHallazgoPresentacion: Number;
+  public numeroHallazgoBloqueante: number;
+  public numeroHallazgoFuncional: number;
+  public numeroHallazgoPresentacion: number;
 
-  public descripcion: String;
-  public version: String;
-  public centroCosto: String;
-  public observacion: String;
-  public gestorTecnico: String;
-  public gestorProyecto: String;
-  public fechaInicio: String;
-  public fechaPlaneadaEntrega: String;
-  public fechaEntrega: String;
-  public emailTecnico: String;
-  public emailProyecto: String;
-  public fechaCreacion: String;
-  public usuarioCreacion: String;
-  public fechaModificacion: String;
-  public usuarioModificacion: String; 
+  public descripcion: string;
+  public version: string;
+  public centroCosto: string;
+  public archivo: string;
+  public gestorTecnico: string;
+  public gestorProyecto: string;
+  public fechaInicio: string;
+  public fechaPlaneadaEntrega: string;
+  public fechaEntrega: string;
+  public emailTecnico: string;
+  public emailProyecto: string;
+  public fechaCreacion: string;
+  public usuarioCreacion: string;
+  public fechaModificacion: string;
+  public usuarioModificacion: string; 
 }

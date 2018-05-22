@@ -49,8 +49,13 @@ export class CreateRequestComponent implements OnInit {
     styleIconUpload: string = "";
     iconUpload: string = "fa-upload";
     nameUpload: string = "Subir Documento";
+    private codigoRQM: String;
+    private totalHallazgo: number;
+    emailRegex: RegExp;
 
+    dragging: boolean = false;
 
+    file: File = null;
     
     filterPr: ProyectoModel[];
     private isValid: boolean = true;
@@ -62,7 +67,7 @@ export class CreateRequestComponent implements OnInit {
     private proyectos: ProyectoModel[];
     private proyectos2: ProyectoModel[];
     private proyecto: ProyectoModel;
-    private codigoRQM: String;
+    
     private cotizacion: CotizacionModel[];
     private cotizaciones: CotizacionModel[];
     
@@ -87,6 +92,16 @@ export class CreateRequestComponent implements OnInit {
         console.log(this.login.authUser.usuarioId); 
 
     }
+
+        this.requestForm.numeroHallazgoBloqueante=0;
+    
+        this.requestForm.numeroHallazgoFuncional=0;
+    
+        this.requestForm.numeroHallazgoPresentacion=0;
+
+        this.totalHallazgo = 0;
+
+        //this.file.name="";
 
   }
 
@@ -236,26 +251,20 @@ private loadEstados(): void {
         
       console.log(this.requestForm);
 
+      
+
 
       if(this.login.authUser !== undefined){
           this.requestForm.usuarioCreacion=this.login.authUser.usuarioId;
       }
 
       this.isValid = this.validate(this.requestForm);
-      //this.isValidFechas = this.asignarFechas();
+      this.formatoFechas();
+      this.isValidFechas = this.validarFechas();
 
-      //this.requestForm.fechaInicio=this.newStructure(this.requestForm.fechaInicio);
-      //this.requestForm.fechaEntrega=this.newStructure(this.requestForm.fechaEntrega).toString();
-      //this.requestForm.fechaInicio=new Date(this.requestForm.fechaInicio).toString;
-     
 
-      //console.log("Fechaaaaaaaaaaaaaaaaaaaaa");
-      //console.log(this.requestForm.fechaInicio)
-      //console.log(this.requestForm.fechaInicio['year']);
-      //console.log(this.requestForm.fechaInicio['month']);
-      //console.log(this.requestForm.fechaInicio['day']);
-      //this.requestForm.fechaInicio = this.requestForm.fechaInicio['year']+"-"+this.requestForm.fechaInicio['month']+"-"+this.requestForm.fechaInicio['day']+" 00:00:00"
-      this.requestForm.fechaInicio = this.formatoFecha(this.requestForm.fechaInicio);
+
+      
       
       if (this.isValid && this.isValidFechas) {
 
@@ -263,6 +272,10 @@ private loadEstados(): void {
               
           this.requestForm = new RequerimientoModel();
           this.codigoRQM="";
+          this.requestForm.numeroHallazgoBloqueante=0;    
+          this.requestForm.numeroHallazgoFuncional=0;
+          this.requestForm.numeroHallazgoPresentacion=0;
+          this.totalHallazgo=0;
           
           this.toastr.success('Transacción satisfactoria', 'Gestión de Requerimientos');
 
@@ -277,7 +290,7 @@ private loadEstados(): void {
       } else {
             
             if (!this.isValidFechas){
-                this.message= this.message + 'por favor revise las fechas';
+                this.message= this.message + ' por favor revise las fechas';
                 
             }else{
                 console.log(this.messageEmail);
@@ -295,60 +308,162 @@ private loadEstados(): void {
 
 
   public validate(requestForm: RequerimientoModel): boolean {
-    let isValid = true;
+    
     if(!requestForm.clienteId){
-        isValid = false;
-        console.log("cliente");
+        return false;
      }
      if(!requestForm.proyectoId){
-        isValid = false;
-        console.log("proyecto");
+        return false;
      }
      if(!requestForm.descripcion){
-        isValid = false;
-        console.log("descripcion");
+        return false;
      }
      if(!requestForm.cotizacionId){
-        isValid = false;
-        console.log("cotizacion");
+        return false;
      }
      if(!requestForm.version){
-        isValid = false;
-        console.log("version");
+        return false;
      }
      if(!requestForm.centroCosto){
-        isValid = false;
-        console.log("centro costo");
+        return false;
      }
      if(!requestForm.faseId){
-        isValid = false;
-        console.log("fase");
+        return false;
      }
      if(!requestForm.estadoId){
-        isValid = false;
-        console.log("estado");
+        return false;
      }
+     
+     this.emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+    if(requestForm.emailProyecto){
+        if (this.emailRegex.test(requestForm.emailProyecto)) {
+            console.log("correcto");
+            this.messageEmail = undefined;
+        } else {
+            
+            console.log("incorrecto");
+            this.messageEmail = "Por favor digite un formato de email válido para el gestor del proyecto";
+            return false;
+        }
+    }
+
+    if(requestForm.emailTecnico){
+        if (this.emailRegex.test(requestForm.emailTecnico)) {
+            console.log("correcto");
+            this.messageEmail = undefined;
+        } else {
+                
+            console.log("incorrecto");
+            this.messageEmail = "Por favor digite un formato de email válido para el gestor técnico";
+            return false;
+      }
+    } 
     
-    return isValid;
+    return true;
   }
 
-  public asignarFechas():boolean{
+  public validarFechas():boolean{
     let isValidFechas=true;
     
         if((this.requestForm.fechaInicio > this.requestForm.fechaPlaneadaEntrega) || (this.requestForm.fechaInicio > this.requestForm.fechaEntrega)){
             
             isValidFechas =  false;
 
-            this.message= 'recuerde que la fecha de inicio no puede ser mayor a las otras dos fechas';
+            this.message= 'recuerde que la fecha de inicio no puede ser mayor a las fecha planeacion y real de entrega';
             
         }
+       
     return isValidFechas
   }
 
-  formatoFecha(fecha): String {
+public formatoFecha(fecha): string {
     let fechaString ="";
     fechaString = fecha['year']+"-"+fecha['month']+"-"+fecha['day']+" 00:00:00"
     return fechaString;
 }
+
+public formatoFechas(){
+    if(this.requestForm.fechaInicio){
+        this.requestForm.fechaInicio=this.formatoFecha(this.requestForm.fechaInicio);
+     }
+     if(this.requestForm.fechaEntrega){
+        this.requestForm.fechaEntrega=this.formatoFecha(this.requestForm.fechaEntrega);
+     }
+     if(this.requestForm.fechaPlaneadaEntrega){
+        this.requestForm.fechaPlaneadaEntrega=this.formatoFecha(this.requestForm.fechaPlaneadaEntrega);
+     }
+}
+
+public totalHallazgos(){
+
+    if(!this.requestForm.numeroHallazgoBloqueante){
+        this.requestForm.numeroHallazgoBloqueante=0;
+    } 
+    
+    if(!this.requestForm.numeroHallazgoFuncional){
+        this.requestForm.numeroHallazgoFuncional=0;
+    } 
+
+    if(!this.requestForm.numeroHallazgoPresentacion){
+        this.requestForm.numeroHallazgoPresentacion=0;
+    } 
+    
+
+    this.totalHallazgo = this.requestForm.numeroHallazgoBloqueante + this.requestForm.numeroHallazgoFuncional + this.requestForm.numeroHallazgoPresentacion;
+}
+
+
+
+handleDragEnter() {
+    this.dragging = true;
+}
+
+handleDragLeave() {
+    this.dragging = false;
+}
+
+handleDrop(e) {
+    e.preventDefault();
+    this.dragging = false;
+    this.handleInputChange(e);
+}
+
+handleInputChange(e){
+    this.file = <File>e.target.files[0];
+    var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
+console.log(file.name);
+    this.nameUpload=file.name;
+
+var pattern = /word-*|excel-*|pdf-*|officedocument-*/;
+var reader = new FileReader();
+
+console.log(reader);
+
+if (!file.type.match(pattern)) {
+    swal(
+        'Error al cargar logo',
+        'Por favor ingrese un formato válido para documentos como word, excel, pdf, officedocument',
+        'error'
+      );
+    return;
+}
+
+// this.loaded = false;
+
+reader.onload = this._handleReaderLoaded.bind(this);
+reader.readAsDataURL(file);
+}
+
+_handleReaderLoaded(e) {
+    var reader = e.target;
+
+    console.log(reader.result);
+    //this.externalEmployeeForm.fotoEmpleado = reader.result;
+    //this.imagenTemp =  reader.result;
+    //this.externalEmployeeForm.imagen = this.imagenTemp.split(/,(.+)/)[1];
+}
+
+
 
 }
