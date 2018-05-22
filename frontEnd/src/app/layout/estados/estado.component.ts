@@ -105,7 +105,11 @@ export class EstadoComponent implements OnInit {
     save():void{
 
         if(this.login.authUser !== undefined){
-            this.estadoForm.usuarioCreacion = this.login.authUser.email.toString();
+            if(this.estadoForm.id === null){
+                this.estadoForm.usuarioCreacion = this.login.authUser.email.toString();
+            }else{
+                this.estadoForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
         }
 
         this.isValid = this.validate(this.estadoForm);

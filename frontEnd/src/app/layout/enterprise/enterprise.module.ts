@@ -22,6 +22,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagInputModule } from 'ngx-chips';
 
+
 @NgModule({
     imports: [CommonModule,
         EnterpriseRoutingModule,

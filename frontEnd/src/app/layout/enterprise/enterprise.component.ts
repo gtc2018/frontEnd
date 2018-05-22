@@ -391,7 +391,12 @@ export class EnterpriseComponent implements OnInit {
     save(): void {
 
         if (this.login.authUser !== undefined) {
-            this.enterprise.usuarioCreacion = this.login.authUser.email;
+            if(this.enterprise.id === null){
+                this.enterprise.usuarioCreacion = this.login.authUser.email;
+            }else {
+                this.enterprise.usuarioModificacion = this.login.authUser.email;
+            }
+            
         }
 
         this.isValid = this.validate(this.enterprise);

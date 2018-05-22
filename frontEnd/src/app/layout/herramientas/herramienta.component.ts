@@ -106,7 +106,11 @@ export class HerramientaComponent implements OnInit {
         console.log(this.login.authUser);
 
         if(this.login.authUser !== undefined){
-            this.herramientaForm.usuarioCreacion = this.login.authUser.email.toString();
+            if(this.herramientaForm.id === null){
+                this.herramientaForm.usuarioCreacion = this.login.authUser.email.toString();
+            }else{
+                this.herramientaForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
         }
 
         this.isValid = this.validate(this.herramientaForm);

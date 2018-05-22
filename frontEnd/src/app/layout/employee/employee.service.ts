@@ -47,7 +47,7 @@ export class EmployeeService {
   //console.log("======================EMPLEADO============================");
   //console.log(employee.imagen);
   const url = '';
-  return this.http.post<RestResponse>("http://localhost:8080/empleado/create", employee);
+  return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateEmpleado", employee);
 }
 
 

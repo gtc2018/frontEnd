@@ -9,6 +9,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { FileUploaderComponent } from './file-uploader.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FilterEmployee } from './employee.filter';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
     imports: [CommonModule,
@@ -17,7 +18,8 @@ import { FilterEmployee } from './employee.filter';
         FormsModule,
         Ng2SmartTableModule,
         NgbModule,
-        ],
+        MatCheckboxModule],
+        
     declarations: [EmployeeComponent,
         FileUploaderComponent,
         FilterEmployee]

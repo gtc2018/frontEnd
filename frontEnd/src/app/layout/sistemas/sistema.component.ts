@@ -103,7 +103,11 @@ export class SistemaComponent implements OnInit {
     save():void{
 
         if(this.login.authUser !== undefined){
-            this.sistemaForm.usuarioCreacion = this.login.authUser.email.toString();
+            if(this.sistemaForm.id === null){
+                this.sistemaForm.usuarioCreacion = this.login.authUser.email.toString();
+            }else{
+                this.sistemaForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
         }
 
         this.isValid = this.validate(this.sistemaForm);

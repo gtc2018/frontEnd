@@ -80,6 +80,7 @@ export class UsuarioComponent implements OnInit {
     clean(){
 
         this.usuario = new UsuarioModel();
+        this.employees = null;
 
         this.confirm = "";
         this.readonly = false;
@@ -444,7 +445,11 @@ export class UsuarioComponent implements OnInit {
         console.log(this.usuario);
         if (this.login.authUser !== undefined) {
 
-            this.usuario.usuarioCreacion = this.login.authUser.email;
+            if(this.usuario.id === null){
+                this.usuario.usuarioCreacion = this.login.authUser.email;
+            }else{
+                this.usuario.usuarioModificacion = this.login.authUser.email;
+            }
 
         }
 

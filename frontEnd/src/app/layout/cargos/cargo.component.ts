@@ -129,7 +129,15 @@ export class CargoComponent implements OnInit {
         console.log(this.login.authUser);
 
         if(this.login.authUser !== undefined){
-            this.cargoForm.usuarioCreacion = this.login.authUser.email.toString();
+            if(this.cargoForm.id === null){
+
+                this.cargoForm.usuarioCreacion = this.login.authUser.email.toString();
+
+            }else{
+
+                this.cargoForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
+            
         }
 
         console.log(this.cargoForm);

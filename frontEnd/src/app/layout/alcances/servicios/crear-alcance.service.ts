@@ -28,7 +28,7 @@ export class CrearAlcanceService {
 
   public saveOrUpdate(alcance: AlcanceModel): Observable<RestResponse> {
 
-    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateCargo", JSON.stringify(alcance));
+    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateAlcance", JSON.stringify(alcance));
 
   }
 

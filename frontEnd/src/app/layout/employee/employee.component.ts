@@ -89,8 +89,10 @@ export class EmployeeComponent implements OnInit   {
     icon: string = "fa fa-caret-left";
     imageSrc: string = 'assets/images/avatar.png';
     fotoEmpresa: string = 'assets/images/logo.png';
+    fotoEmpleado: string = 'assets/images/avatar.png';
 
     stateExpand: number = 1;
+    identificador: number = 0;
 
     emailRegex: RegExp;
 
@@ -174,7 +176,7 @@ export class EmployeeComponent implements OnInit   {
 
         //Cambio de estado
 
-    changeState(model){
+    /*changeState(model){
 
         if(this.login.authUser !== undefined){
 
@@ -214,7 +216,7 @@ export class EmployeeComponent implements OnInit   {
             //     'error'
             //   )
         });
-    }
+    }*/
 
         //Para guardar
 
@@ -223,26 +225,32 @@ export class EmployeeComponent implements OnInit   {
         console.log(this.employeeForm);
 
         if(this.login.authUser !== undefined){
-            this.employeeForm.usuarioCreacion=this.login.authUser.email;
+            if(this.employeeForm.id === null){
+
+                this.employeeForm.usuarioCreacion=this.login.authUser.email;    
+            }else{
+                this.employeeForm.usuarioModificacion =this.login.authUser.email;
+            }
+            
         }
 
         this.isValid = this.validate(this.employeeForm);
 
         if (this.isValid) {
 
-        delete this.employeeForm.foto;
-
         delete this.employeeForm.celular;
+        delete this.employeeForm.foto;
+        
 
+        if(this.file !==null && this.file.name !==null){
         this.employeeForm.foto = this.file.name;
-           
+        }   
+
         this.employeeService.saveOrUpdate(this.employeeForm).subscribe(res => {
             // if (res.responseCode == OK) {
                 this.loadEmployee();
-                this.employeeForm = new EmployeeModel();
-                this.employeeForm.foto = 'assets/images/avatar.png';
-                this.toastr.success('Transacción satisfactoria', 'Gestión de Empleados');
-
+                this.clean();
+                this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
         },(error)=>{
             console.log(error);
 
@@ -263,7 +271,6 @@ export class EmployeeComponent implements OnInit   {
             this.messageEmail= undefined;
         }
     }
-
 
     }
 
@@ -362,6 +369,8 @@ export class EmployeeComponent implements OnInit   {
         clean(){
 
             this.employeeForm = new EmployeeModel();
+            this.areas = null;
+            this.cargos = null;
 
             this.deleteFormHide = false;
 
@@ -424,8 +433,18 @@ export class EmployeeComponent implements OnInit   {
 
             if(this.visible === true){
                 this.icon = "fa fa-caret-down";
+                this.employeeForm = model;
+                this.employeeForm.clienteId = this.employeeForm.cliente.id;
+                this.employeeForm.areaId = this.employeeForm.area.id;
+                this.employeeForm.cargoId = this.employeeForm.cargo.id;
+                this.fotoEmpresa = this.employeeForm.cliente.imagenEmpresa;
+                this.fotoEmpleado = this.employeeForm.foto;
+                this.identificador = 1;
+
+            this.filterChargeAndAreaToEnterprise(this.employeeForm.clienteId);
 
                 this.deleteFormHide = false;
+                console.log(model);
             }else{
                 this.icon= "fa fa-caret-left";
             }
@@ -436,8 +455,19 @@ export class EmployeeComponent implements OnInit   {
 
             }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
                 this.employeeForm = model;
+
+                this.employeeForm.clienteId = this.employeeForm.cliente.id;
+                this.employeeForm.areaId = this.employeeForm.area.id;
+                this.employeeForm.cargoId = this.employeeForm.cargo.id;
+                this.fotoEmpresa = this.employeeForm.cliente.imagenEmpresa;
+                this.fotoEmpleado = this.employeeForm.foto;
+                this.identificador = 1;
                 this.stateExpand = 3;
+
                 this.deleteFormHide = true;
+
+                this.filterChargeAndAreaToEnterprise(this.employeeForm.clienteId);
+                console.log(model);
             }
 
                }
