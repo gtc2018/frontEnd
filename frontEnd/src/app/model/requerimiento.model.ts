@@ -39,4 +39,5 @@ export class RequerimientoModel extends ParentEntity{
   public usuarioCreacion: string;
   public fechaModificacion: string;
   public usuarioModificacion: string; 
+  public documento: string;
 }
