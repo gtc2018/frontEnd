@@ -8,6 +8,7 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CreateRequestComponent } from './create-request/create-request.component';
 import { FormsModule } from '@angular/forms';
+import { FilterRequerimiento } from './request.filter';
 
 @NgModule({
     imports: [CommonModule,
@@ -22,6 +23,7 @@ import { FormsModule } from '@angular/forms';
     //       ],
 
     declarations: [RequestComponent,
-        CreateRequestComponent]
+        CreateRequestComponent,
+    FilterRequerimiento] 
 })
 export class RequestModule {}

@@ -9,116 +9,155 @@
                     </h2>
 
                 </div>
-
-                <div class="col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
-
-                        <div class="btn btn-primary hand pull-right"
-            routerLink="create"
-             (click)="creationPage()">
-                 <i class="fa fa-plus"
-                 aria-hidden="true">
-                 </i>
-                 &nbsp; Crear nuevo
-            </div>
-
+        </div>
+        <hr>
+        <div style="text-align:left">
+            <button type="button" class="btn-sm btn-primary mb-2" (click)="creationPage()" routerLink="create" blueColored>
+                <span class="fa fa-plus"></span> Nuevo Requerimiento
+                <b>
+                    <span class="{{icon}}"></span>
+                </b>
+            </button>
         </div>
 
+        <div class="card mb-3">
+            <div class="card-header center-sc">
+                <div class="row">
+
+                    <div class=" col-auto">
+                        Tabla de Requerimientos
+                    </div>
+
+                    <div class="btn-group row col-auto pull-right " style="">
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+                        <div class="col-auto pull-right ">
+                            <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                        </div>
+
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+                        <div class="col-auto pull-right ">
+                            <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                        </div>
+
+
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+
+                    </div>
+                </div>
             </div>
-            <hr>
-            <br>
+            <div class="card-body table-responsive">
+                <table class="table table-hover table-striped table-bordered table-sm">
+                    <thead>
+                        <tr>
+                            <th>ID_RQM</th>
+                            <th>Descripción RQM</th>
+                            <th>Cliente</th>
+                            <th>Proyecto</th>
+                            <th>Estado RQM</th>
+                            <th>Versión</th>
+                            <th>Fase RQM</th>
+                            <th>Fecha Inicio DS</th>
+                            <th>Fecha PE DS</th>
+                            <th>Fecha RE DS</th>
+                            <th>Acciones</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.numeroRq" placeholder="Buscar por ID_RQM">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion" placeholder="Buscar por Descripción RQM">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.clienteId" placeholder="Buscar por Cliente">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.proyectoId" placeholder="Buscar por Proyecto">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.estado" placeholder="Buscar por Estado RQM">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.version" placeholder="Buscar por Versión">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.fase" placeholder="Buscar por Fase RQM">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.fechaInicio" placeholder="Buscar por Fecha Inicio DS">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.fechaPlaneadaEntrega" placeholder="Buscar por Fecha PE DS">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.fechaEntrega" placeholder="Buscar por Fecha RE DS">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let r of requests">
 
-<div class="row" >
+                            <td>
+                                <span [innerHTML]="r.cotizacion.codigoRequerimiento"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.descripcion"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.cliente.descripcion"></span>
+                          </td>
+                            <td>
+                                <span [innerHTML]="r.proyecto.nombre"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.estado.descripcion"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.version"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.fase.descripcion"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.fechaInicio"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.fechaPlaneadaEntrega"></span>
+                            </td>
+                            <td>
+                                <span [innerHTML]="r.fechaEntrega"></span>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn btn-default">
+                                        <i (click)="edit(p)"
+                                        class="fa fa-pencil-square-o fa-lg hand"
+                                        aria-hidden="true"
+                                        title="Editar">
+                                        </i>
+                                    </a>
+                                    <a class="btn btn-default">
+                                        <i (click)="delete(p)"
+                                        class="fa fa-trash-o fa-lg hand"
+                                        aria-hidden="true" title="Eliminar">
+                                        </i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <!-- <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-
-            <div class="btn btn-primary hand"
-            routerLink="create"
-             (click)="creationPage()">
-                 <i class="fa fa-plus"
-                 aria-hidden="true">
-                 </i>
-                 &nbsp; Crear nuevo
             </div>
+           
 
-    </div> -->
-
-            <!-- <div class="btn-group center-sc row col-xs-6 offset-sm-5 col-sm-4 offset-md-6 col-md-3 offset-lg-6 col-lg-3 pull-right"
-            style="padding-top:10px"> -->
-            <div class="btn-group col-xs-12 col-sm-12 col-md-12 col-lg-12 pull-right "
-            style="padding-top:10px; justify-content: flex-end">
-
-
-                    <button class="btn btn-outline-success btn-md pull-right"
-                    placement="top"
-                    ngbTooltip="Exportar en excel"
-                     > <i class="fa fa-file-excel-o"></i>
-                     Excel </button>
-
-                    <button class="btn btn-outline-danger btn-md pull-right"
-                    placement="top"
-                    ngbTooltip="Exportar en PDF">
-                             PDF
-                    <i class="fa fa-file-pdf-o"></i> </button>
-
-
-            </div>
-
-        </div>
-
-<div class="row center-sc"   >
-
-    <div class="row  col-auto "
-    style="padding-top:10px">
-
-        <div class=" col-auto ">
-
-                <select #selectCl name="quotation.select"
-                 class="form-control-sm">
-                    <option value=undefined
-                     disabled
-                      selected> Fecha Inicio DS</option>
-                </select>
-
-       </div>
-
-       <div class=" col-auto">
-
-        <input type="date">
-
-        </div>
-
-    </div>
-
-    <div class=" row  col-auto"
-    style="padding-top:10px">
-
-            <div class="  col-auto">
-
-                    <select #selectCl name="quotation.select"
-                     class="form-control-sm">
-                        <option value=undefined
-                         disabled
-                          selected> Fecha Inicio DS</option>
-                    </select>
-
-           </div>
-
-           <div class=" col-auto">
-
-            <input type="date">
-
-            </div>
-
-    </div>
-
-        </div>
-
-<br>
-
-<ng2-smart-table [settings]="settings" [source]="data" ></ng2-smart-table>
-
-
-</div>
-</div>
-</div>
-
+   

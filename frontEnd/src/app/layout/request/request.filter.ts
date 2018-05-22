@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 
-import { request } from '../../model/request';
+import { RequerimientoModel } from '../../model/requerimiento.model';
 
 @Pipe({
     name: 'generalFilter',
@@ -16,7 +16,7 @@ export class FilterRequerimiento implements PipeTransform {
     // filter items array, items which match and return true will be kept, false will be filtered out
     return items.filter((item) => this.applyFilter(item, filter));
   }
-  /**
+  /** 
    * Perform the filtering.
    *
    * @param {Book} book The book to compare to the filter.

@@ -16,7 +16,7 @@ export class RequerimientoModel extends ParentEntity{
   public cliente: EnterpriseModel;
   public proyecto: ProyectoModel;
   public cotizacion: CotizacionModel;
-  public fase:FaseModel;
+  public fase:FaseModel; 
   public estado:EstadoModel;
 
   public numeroCasoPrueba: Number;
@@ -27,13 +27,14 @@ export class RequerimientoModel extends ParentEntity{
   public descripcion: String;
   public version: String;
   public centroCosto: String;
-  public Observacion: String;
+  public observacion: String;
   public gestorTecnico: String;
   public gestorProyecto: String;
   public fechaInicio: String;
   public fechaPlaneadaEntrega: String;
   public fechaEntrega: String;
-  public email: String;
+  public emailTecnico: String;
+  public emailProyecto: String;
   public fechaCreacion: String;
   public usuarioCreacion: String;
   public fechaModificacion: String;
