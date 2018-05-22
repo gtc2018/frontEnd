@@ -144,7 +144,11 @@ export class PorcentajePorFaseComponent implements OnInit {
         console.log(this.login.authUser);
 
         if(this.login.authUser !== undefined){
-            this.porcentajePorFaseForm.usuarioCreacion = this.login.authUser.email.toString();
+            if(this.porcentajePorFaseForm.id === null){
+                this.porcentajePorFaseForm.usuarioCreacion = this.login.authUser.email.toString();
+            }else {
+                this.porcentajePorFaseForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
         }
 
         console.log(this.porcentajePorFaseForm);

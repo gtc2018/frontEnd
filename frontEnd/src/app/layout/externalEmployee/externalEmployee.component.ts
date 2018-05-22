@@ -187,7 +187,11 @@ export class ExternalEmployeeComponent implements OnInit   {
 
 
         if(this.login.authUser !== undefined){
-            this.externalEmployeeForm.usuarioCreacion=this.login.authUser.usuarioId;
+            if(this.externalEmployeeForm.id === null){
+                this.externalEmployeeForm.usuarioCreacion=this.login.authUser.usuarioId;
+            }else{
+                this.externalEmployeeForm.usuarioModificacion =this.login.authUser.usuarioId;
+            }
         }
 
         this.isValid = this.validate(this.externalEmployeeForm);

@@ -126,7 +126,16 @@ export class AreaComponent implements OnInit {
         console.log(this.login.authUser);
 
         if(this.login.authUser !== undefined){
-            this.areaForm.usuarioCreacion = this.login.authUser.email.toString();
+
+            if(this.areaForm.id === null){
+
+                this.areaForm.usuarioCreacion = this.login.authUser.email.toString();
+
+            }else{
+
+                this.areaForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
+            
         }
 
         console.log(this.areaForm);

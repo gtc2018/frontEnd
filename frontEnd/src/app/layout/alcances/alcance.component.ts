@@ -44,6 +44,7 @@ export class AlcanceComponent implements OnInit {
     imageSrc: string = 'assets/images/avatar.png';
 
     stateExpand: number = 1;
+    identificador: Number = 0;
 
     user: any;
     items: any;
@@ -88,7 +89,7 @@ export class AlcanceComponent implements OnInit {
 
     //Funciones --------------------------------------------
 
-    //Cargar Cargos
+    //Cargar Alcances
 
     private loadAlcances(): void {
         this.alcanceService.getAlcances().subscribe(res => {
@@ -105,10 +106,13 @@ export class AlcanceComponent implements OnInit {
     save():void{
 
         if(this.login.authUser !== undefined){
+            if(this.alcanceForm.id === null){
             this.alcanceForm.usuarioCreacion = this.login.authUser.email.toString();
+        }else{
+            this.alcanceForm.usuarioModificacion = this.login.authUser.email.toString();
+        }
         }
 
-        console.log(this.alcanceForm);
         this.isValid = this.validate(this.alcanceForm);
 
         if (this.isValid) {

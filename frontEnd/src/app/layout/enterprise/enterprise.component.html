@@ -480,7 +480,12 @@
                                     <img [src]="e.imagenEmpresa" class="" width="35" height="40">
                                 </td>
                                 <td >
-                                    <input *ngIf="this.editar" type="checkbox" [(ngModel)]="e.estado" name="{{e.id}}" #check (change)="changeState(e)">
+                                    <!--<input *ngIf="this.editar" type="checkbox" [(ngModel)]="e.estado" name="{{e.id}}" #check (change)="changeState(e)">-->
+                                    <mat-checkbox
+                                 name="{{e.id}}"
+                                 [(ngModel)]="e.estado"
+                                 (change)="changeState(e)">
+                                 </mat-checkbox>
                                 </td>
                                 <td>
                                     <div class="btn-group">
