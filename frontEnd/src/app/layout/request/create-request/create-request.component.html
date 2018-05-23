@@ -189,7 +189,7 @@
                                                 <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}">{{nameUpload}}</span>
                                         </div>
                                         <div class="col-auto">
-                                                <input type='file' (change)="handleInputChange($event)" style="display: none;" [(ngModel)]="requestForm.archivo" name="archivo">
+                                                <input type='file' (change)="handleInputChange($event)" style="display: none;">
                                         </div>
                                 </label>
                         </div>
@@ -403,7 +403,7 @@
                type="button"
                routerLink="../"
                class="btn btn-danger hand"
-               value="Cancelar" />
+               value="Volver" />
         </div>
     </div>
     <br><br>

@@ -26,6 +26,8 @@ import { AuthService } from '../../../shared/guard/auth.service';
 import swal from 'sweetalert2';
 import { FaseModel } from '../../../model/fase';
 
+import { Location } from '@angular/common';
+
 @Component({
   selector: 'app-create-request',
   templateUrl: './create-request.component.html',
@@ -50,6 +52,7 @@ export class CreateRequestComponent implements OnInit {
     iconUpload: string = "fa-upload";
     nameUpload: string = "Subir Documento";
     private codigoRQM: String;
+    documentTemp: string ="";
     private totalHallazgo: number;
     emailRegex: RegExp;
 
@@ -83,7 +86,8 @@ export class CreateRequestComponent implements OnInit {
       private toastr: ToastrService,
       private login:AuthService,
       private menu: LoginService,
-      private faseService: FaseService){
+      private faseService: FaseService,
+    private _location: Location){
 
         this.requestForm = new RequerimientoModel();
 
@@ -247,63 +251,62 @@ private loadEstados(): void {
 
     save():void{
 
- 
-        
-      console.log(this.requestForm);
+        console.log(this.requestForm);
 
-      
-
-
-      if(this.login.authUser !== undefined){
-          this.requestForm.usuarioCreacion=this.login.authUser.usuarioId;
-      }
-
-      this.isValid = this.validate(this.requestForm);
-      this.formatoFechas();
-      this.isValidFechas = this.validarFechas();
-
-
-
-      
-      
-      if (this.isValid && this.isValidFechas) {
-
-          this.requestService.saveOrUpdate(this.requestForm).subscribe(res => {
-              
-          this.requestForm = new RequerimientoModel();
-          this.codigoRQM="";
-          this.requestForm.numeroHallazgoBloqueante=0;    
-          this.requestForm.numeroHallazgoFuncional=0;
-          this.requestForm.numeroHallazgoPresentacion=0;
-          this.totalHallazgo=0;
-          
-          this.toastr.success('Transacción satisfactoria', 'Gestión de Requerimientos');
-
-      },(error)=>{ //Controlando posible error
-
-          console.log(error);
-
-          this.toastr.error(error.error.message,"Error en la transacción");
-          
-      });
-
-      } else {
-            
-            if (!this.isValidFechas){
-                this.message= this.message + ' por favor revise las fechas';
-                
+        if(this.login.authUser !== undefined){
+            if(this.requestForm.id === null){
+                this.requestForm.usuarioCreacion=this.login.authUser.usuarioId;
             }else{
-                console.log(this.messageEmail);
-                if(!this.messageEmail){
-                this.message= 'Los campos con * son obligatorios!';
-           
+                this.requestForm.usuarioModificacion =this.login.authUser.usuarioId;
+            }
+        }
+
+        this.isValid = this.validate(this.requestForm);
+        this.formatoFechas();
+        this.isValidFechas = this.validarFechas();
+      
+        if (this.isValid && this.isValidFechas) {
+
+            if(this.file !==null && this.file.name !==null){
+                this.requestForm.archivo = this.file.name;
+            }
+
+            this.requestService.saveOrUpdate(this.requestForm).subscribe(res => {
+                this.requestForm = new RequerimientoModel();
+                this.codigoRQM="";
+                this.requestForm.numeroHallazgoBloqueante=0;    
+                this.requestForm.numeroHallazgoFuncional=0;
+                this.requestForm.numeroHallazgoPresentacion=0;
+                this.totalHallazgo=0;
+                this.nameUpload = "Subir Documento";
+
+        
+                this.toastr.success('Transacción satisfactoria', 'Gestión de Requerimientos');
+
+                this._location.back();
+                
+
+            },(error)=>{ //Controlando posible error
+                console.log(error);
+
+                this.toastr.error(error.error.message,"Error en la transacción");
+            });
+
+        } else {
+                if (!this.isValidFechas){
+                    this.message= this.message + ' por favor revise las fechas';
+                    
                 }else{
-                    this.message= this.messageEmail;
-                    this.messageEmail= undefined;
+                    console.log(this.messageEmail);
+                    if(!this.messageEmail){
+                    this.message= 'Los campos con * son obligatorios!';
+            
+                    }else{
+                        this.message= this.messageEmail;
+                        this.messageEmail= undefined;
+                    }
                 }
-            //}
-      }
-  }
+        }
 }
 
 
@@ -432,7 +435,7 @@ handleDrop(e) {
 handleInputChange(e){
     this.file = <File>e.target.files[0];
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-console.log(file.name);
+    console.log(file.name);
     this.nameUpload=file.name;
 
 var pattern = /word-*|excel-*|pdf-*|officedocument-*/;
@@ -457,11 +460,9 @@ reader.readAsDataURL(file);
 
 _handleReaderLoaded(e) {
     var reader = e.target;
-
-    console.log(reader.result);
-    //this.externalEmployeeForm.fotoEmpleado = reader.result;
-    //this.imagenTemp =  reader.result;
-    //this.externalEmployeeForm.imagen = this.imagenTemp.split(/,(.+)/)[1];
+    //this.requestForm.archivo = reader.result;
+    this.documentTemp =  reader.result;
+    this.requestForm.documento = this.documentTemp.split(/,(.+)/)[1];
 }
 
 
