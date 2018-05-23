@@ -1,9 +1,11 @@
 import { ParentEntity } from './parentEntity.model';
+import { EnterpriseModel } from './enterprise';
 
 export class ProyectoModel extends ParentEntity{
 
   public proyectoId: string;
   public clienteId: string;
+  public cliente: EnterpriseModel;
   public nombre: string;
   public descripcion: string;
   public tipo: string;
@@ -12,5 +14,8 @@ export class ProyectoModel extends ParentEntity{
   public usuarioCreacion: string;
   public fechaModificacion: string;
   public usuarioModificacion: string;
+  
+  public docBits: string;
+  public documento :string;
 
 }

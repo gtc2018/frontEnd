@@ -74,6 +74,8 @@ export class LoginComponent {
 
                     localStorage.email = res.empleado.email;
 
+                    localStorage.userId = res.usuarioId;
+
                     return this.router.navigate(['/dashboard']);
 
                 } else {

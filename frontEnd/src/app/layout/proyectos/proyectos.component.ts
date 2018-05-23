@@ -26,7 +26,7 @@ export class ProyectosComponent implements OnInit {
     //Variables
 
     fotoEmpresa: string;
-    fotoDoc: string;
+    // fotoDoc: string;
 
     private message: string = "";
     icon: string = "fa fa-caret-left";
@@ -37,13 +37,12 @@ export class ProyectosComponent implements OnInit {
     nameUpload: string = "Subir Documento";
 
     // Para mostrar el maestro detalle de proyecto
-    updateForm: boolean = false;
+    // updateForm: boolean = false;
     //Mostrar el crear o no
     visible: boolean = false;
 
+    //Para la validación
     private isValid: boolean = true;
-
-    filterEn: any[];
 
     /**
      * Manejo del formulario en la misma pantalla de la tabla
@@ -53,7 +52,6 @@ export class ProyectosComponent implements OnInit {
      */
     stateExpand: number = 1;
 
-
     private proyectos: ProyectoModel[];//Tabla
     private proyecto: ProyectoModel;//Form
 
@@ -62,11 +60,10 @@ export class ProyectosComponent implements OnInit {
 
     private employees: EmployeeModel[];
 
-    private employeeToProject: EmployeeToProject;
-    private employeesToProject = [];
+    private docTemp:string="";
 
-    private employeesToEnterpriseEnable = [];
-
+    //Documentacion
+    file:File=null;
 
     //Métodos y funciones
 
@@ -82,9 +79,7 @@ export class ProyectosComponent implements OnInit {
 
         this.enterprise = new EnterpriseModel();
 
-        this.fotoDoc = "assets/images/Upload.png";
-
-        this.employeeToProject = new EmployeeToProject();
+        this.proyecto.cliente = new EnterpriseModel();
 
     }
 
@@ -136,9 +131,11 @@ export class ProyectosComponent implements OnInit {
 
             this.stateExpand = 2;
 
-            this.employeesToProject = [];
+            this.proyecto.cliente = new EnterpriseModel();
 
-            this.updateForm = false;
+            // this.employeesToProject = [];
+
+            // this.updateForm = false;
 
             // this.deleteFormHide = false;
 
@@ -158,9 +155,9 @@ export class ProyectosComponent implements OnInit {
 
             this.stateExpand = 2
 
-            this.employeesToProject = [];
+            // this.employeesToProject = [];
 
-            this.updateForm = false;
+            // this.updateForm = false;
 
             // this.stateExpand = true;
         } else
@@ -179,9 +176,9 @@ export class ProyectosComponent implements OnInit {
                 }
                 this.stateExpand = 1
 
-                this.updateForm = false;
+                // this.updateForm = false;
 
-                this.employeesToProject = [];
+                // this.employeesToProject = [];
             }
     }
 
@@ -215,163 +212,8 @@ export class ProyectosComponent implements OnInit {
 
         this.fotoEmpresa = filterEn[0].imagenEmpresa;
 
-
         this.proyecto.clienteId = id;
 
-
-        this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
-
-            console.log(res);
-
-            this.employees = res;
-
-            console.log(this.proyecto.id);
-
-            if (this.proyecto.id !== undefined) {
-
-                console.log("filtro propio del proyecto");
-                this.asociarProyectoService.getAllForProject(this.proyecto.id.toString()).subscribe((response) => {
-
-                    this.employeesToProject = response;
-
-                    console.log(this.employeesToProject);
-
-                    this.employees.length;
-
-                    for (let i = 0; i < this.employees.length; i++) {
-
-                        if (this.employees[i] !== undefined) {
-
-                            for (let emTp of this.employeesToProject) {
-
-                                if (this.employees[i].id.toString() === emTp.empleadoId.toString()) {
-
-                                    console.log(this.employees[i].toString(), "a eliminar");
-
-                                    this.employees.splice(i, 1);
-
-                                    this.forMasterReturn();
-
-                                    return
-
-                                }
-
-                            }
-
-                        }
-
-                    }
-
-
-                }, (error) => {
-                    console.log(error);
-                });
-
-
-
-            } else {
-
-                this.employeesToEnterpriseEnable = this.employees
-            }
-
-        }, (error) => {
-
-            console.log(error);
-
-            this.toastr.error("Error actualizar los datos");
-
-        });
-
-    }
-
-//For each necesario para que funcione el filtrod e empleados a seleccionar
-    forMasterReturn() {
-
-        for (let i = 0; i < this.employees.length; i++) {
-
-            if (this.employees[i] !== undefined) {
-
-                console.log(this.employees[i].id, i, "foreach employees");
-
-                for (let emTp of this.employeesToProject) {
-
-                    console.log(emTp.empleadoId, "foreach employees to proyect");
-
-                    if (this.employees[i].id.toString() === emTp.empleadoId.toString()) {
-
-                        console.log(this.employees[i].id.toString(), "Los demás");
-
-                        this.employees.splice(i, 1);
-
-                        this.forMasterReturn();
-
-                        return
-
-
-                    }
-
-                }
-
-            }
-
-        }
-    }
-
-
-
-
-
-
-    //Eliminar un usuario asociado a la empresa
-
-    deleteEmployeeToEnterprise(model, index) {
-
-        this.employeesToProject.splice(index, 1);
-
-        this.employees.push(model);
-
-        console.log(this.employeesToProject);
-
-    }
-
-    //Al seleccionar un usuario
-
-    setNewUser(id: string): void {
-        console.log(id);
-
-        var indexDelete;
-
-        var modelToPush;
-
-        var filter = this.employees.filter(value => value.id === parseInt(id));
-
-        [].forEach.call(this.employees, function (data, index) {
-
-            if (data.id.toString() === id) {
-
-                indexDelete = index;
-
-            }
-
-        }
-
-        )
-
-        this.employeeToProject.nombreEmpleado = filter[0].nombres;
-
-        this.employeeToProject.apellidoEmpleado = filter[0].apellidos;
-
-        this.employeeToProject.fotoEmpleado = filter[0].foto;
-
-        this.employeeToProject.empleadoId = filter[0].id.toString();
-
-        this.employeeToProject.proyectoId = this.proyecto.id.toString();
-
-        this.employees.splice(indexDelete, 1);
-
-        this.employeesToProject.push(this.employeeToProject);
-
-        this.employeeToProject = new EmployeeToProject();
     }
 
     //Para cargar empresas
@@ -394,52 +236,13 @@ export class ProyectosComponent implements OnInit {
 
     //Para guardar
 
-    
-
     save() {
+
+        this.proyecto.clienteId = this.proyecto.cliente.id.toString();
 
         console.log(this.proyecto);
 
-        console.log(this.employeesToProject);
-        
-        //Si involucró a empleados en la transacción
-          if (this.stateExpand === 3){
-
-            for(let emPr of this.employeesToProject){
-
-                if(emPr.id === undefined){
-
-                    emPr.usuarioCreacion = localStorage.email;
-                    emPr.fechaCreacion = this.formatDate(new Date());
-
-                }else{
-
-                    emPr.usuarioModificacion = localStorage.email;
-                    emPr.fechaModificacion = this.formatDate(new Date());
-
-                }
-            }
-
-            console.log(this.employeesToProject);
-
-        this.asociarProyectoService.saveOrUpdateEmployeesToProject(this.proyecto.id, this.employeesToProject).subscribe(res => {
-            // if (res.responseCode == OK) {
-            console.log(res);
-            // this.loadProyectos();
-
-            // this.proyecto = new ProyectoModel();
-
-            this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
-
-            this.updateForm = false;
-
-        }, (error) => {
-            console.log(error);
-
-            this.toastr.error(error.error.message, "Error al guardar los empleados asociados al proyecto");
-
-        });
-    }
+        // console.log(this.employeesToProject);
 
             if(localStorage.email ===undefined){
                 this.proyecto.usuarioCreacion=localStorage.email;
@@ -449,19 +252,23 @@ export class ProyectosComponent implements OnInit {
 
             if (this.isValid) {
 
+                if(this.file !==null && this.file.name !==null){
+                    this.proyecto.documento = this.file.name;
+                    }
+
             this.proyectoService.saveOrUpdate(this.proyecto).subscribe(res => {
                 // if (res.responseCode == OK) {
                     console.log(res);
                     this.loadProyectos();
 
+                    this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
+
                     this.proyecto = new ProyectoModel();
 
-                    this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
-                // } else {
-                //     this.message = res.message;
-                //     this.isValid = false;
-                //     console.log(this.message);
-                // }
+                    this.proyecto.cliente = new EnterpriseModel();
+
+                    
+                    
             },(error)=>{
                 console.log(error);
 
@@ -511,15 +318,15 @@ export class ProyectosComponent implements OnInit {
 
             this.proyecto = model;
             this.stateExpand = 3;
-            this.updateForm = true;
-            this.setNew(model.cliente.id);
+            // this.updateForm = true;
+             this.setNew(model.cliente.id);
 
         } else if (this.stateExpand === 2 || this.stateExpand === 3) {
             this.proyecto = model;
             this.stateExpand = 3;
-            this.updateForm = true;
+            // this.updateForm = true;
             this.fotoEmpresa = imagen;
-            this.setNew(model.cliente.id);
+             this.setNew(model.cliente.id);
             // this.deleteFormHide = true;
         }
 
@@ -574,21 +381,9 @@ export class ProyectosComponent implements OnInit {
         console.log(model);
     }
 
-    loadEmployeesToProject(id) {
-
-        this.asociarProyectoService.getAllForProject(id).subscribe((response) => {
-
-            this.employeesToProject = response;
-
-            console.log(this.employeesToProject);
-
-        }, (error) => {
-            console.log(error);
-        });
-    }
-
-
     handleInputChange(e) {
+
+        this.file = <File>e.target.files[0];
 
         var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
         console.log(file);
@@ -616,18 +411,277 @@ export class ProyectosComponent implements OnInit {
 
         this.nameUpload = file.name;
 
-        // reader.onload = this._handleReaderLoaded.bind(this);
+        reader.onload = this._handleReaderLoaded.bind(this);
         reader.readAsDataURL(file);
     }
 
 
-    //   _handleReaderLoaded(e) {
-    //         var reader = e.target;
+      _handleReaderLoaded(e) {
+        var reader = e.target;
 
-    //        console.log(reader.result);
-    //         this.fotoDoc = reader.result;
-    //      }
+        console.log(reader.result);
+        this.proyecto.documento = reader.result;
+        this.docTemp =  reader.result;
+        this.proyecto.docBits = this.docTemp.split(/,(.+)/)[1];
+         }
 
+
+    // ---involucrados--------------------------------------------------------------------------------------------------
+
+    // private employeeToProject: EmployeeToProject;
+    // private employeesToProject = [];
+
+    // private employeesToEnterpriseEnable = [];
+
+        // this.fotoDoc = "assets/images/Upload.png";
+
+        // this.employeeToProject = new EmployeeToProject();
+
+    //Eliminar un usuario asociado a la empresa
+
+    // deleteEmployeeToEnterprise(model, index) {
+
+    //     this.employeesToProject.splice(index, 1);
+
+    //     this.employees.push(model);
+
+    //     console.log(this.employeesToProject);
+
+    // }
+
+    //Al seleccionar una empresa
+    // this.proyectoService.getAllEmployeesToEmpresaId(id).subscribe(res => {
+
+        //     console.log(res);
+
+        //     this.employees = res;
+
+        //     console.log(this.proyecto.id);
+
+        //     if (this.proyecto.id !== undefined) {
+
+        //         console.log("filtro propio del proyecto");
+        //         this.asociarProyectoService.getAllForProject(this.proyecto.id.toString()).subscribe((response) => {
+
+        //             this.employeesToProject = response;
+
+        //             console.log(this.employeesToProject);
+
+        //             this.employees.length;
+
+        //             for (let i = 0; i < this.employees.length; i++) {
+
+        //                 if (this.employees[i] !== undefined) {
+
+        //                     for (let emTp of this.employeesToProject) {
+
+        //                         if (this.employees[i].id.toString() === emTp.empleadoId.toString()) {
+
+        //                             console.log(this.employees[i].toString(), "a eliminar");
+
+        //                             this.employees.splice(i, 1);
+
+        //                             this.forMasterReturn();
+
+        //                             return
+
+        //                         }
+
+        //                     }
+
+        //                 }
+
+        //             }
+
+
+        //         }, (error) => {
+        //             console.log(error);
+        //         });
+
+
+
+        //     } else {
+
+        //         this.employeesToEnterpriseEnable = this.employees
+        //     }
+
+        // }, (error) => {
+
+        //     console.log(error);
+
+        //     this.toastr.error("Error actualizar los datos");
+
+        // });
+
+
+    //For each necesario para que funcione el filtrod e empleados a seleccionar
+    // forMasterReturn() {
+
+    //     for (let i = 0; i < this.employees.length; i++) {
+
+    //         if (this.employees[i] !== undefined) {
+
+    //             console.log(this.employees[i].id, i, "foreach employees");
+
+    //             for (let emTp of this.employeesToProject) {
+
+    //                 console.log(emTp.empleadoId, "foreach employees to proyect");
+
+    //                 if (this.employees[i].id.toString() === emTp.empleadoId.toString()) {
+
+    //                     console.log(this.employees[i].id.toString(), "Los demás");
+
+    //                     this.employees.splice(i, 1);
+
+    //                     this.forMasterReturn();
+
+    //                     return
+
+
+    //                 }
+
+    //             }
+
+    //         }
+
+    //     }
+    // }
+
+        //Al seleccionar un usuario
+
+    // setNewUser(id: string): void {
+    //     console.log(id);
+
+    //     var indexDelete;
+
+    //     var modelToPush;
+
+    //     var filter = this.employees.filter(value => value.id === parseInt(id));
+
+    //     [].forEach.call(this.employees, function (data, index) {
+
+    //         if (data.id.toString() === id) {
+
+    //             indexDelete = index;
+
+    //         }
+
+    //     }
+
+    //     )
+
+    //     this.employeeToProject.nombreEmpleado = filter[0].nombres;
+
+    //     this.employeeToProject.apellidoEmpleado = filter[0].apellidos;
+
+    //     this.employeeToProject.fotoEmpleado = filter[0].foto;
+
+    //     this.employeeToProject.empleadoId = filter[0].id.toString();
+
+    //     this.employeeToProject.proyectoId = this.proyecto.id.toString();
+
+    //     this.employees.splice(indexDelete, 1);
+
+    //     this.employeesToProject.push(this.employeeToProject);
+
+    //     this.employeeToProject = new EmployeeToProject();
+    // }
+
+    //Cargar empleados asociados al proyecto
+    // loadEmployeesToProject(id) {
+
+    //     this.asociarProyectoService.getAllForProject(id).subscribe((response) => {
+
+    //         this.employeesToProject = response;
+
+    //         console.log(this.employeesToProject);
+
+    //     }, (error) => {
+    //         console.log(error);
+    //     });
+    // }
+
+
+    //Si involucró a empleados en la transacción
+        //   if (this.stateExpand === 3){
+
+        //     for(let emPr of this.employeesToProject){
+
+        //         if(emPr.id === undefined){
+
+        //             emPr.usuarioCreacion = localStorage.email;
+        //             emPr.fechaCreacion = this.formatDate(new Date());
+
+        //         }else{
+
+        //             emPr.usuarioModificacion = localStorage.email;
+        //             emPr.fechaModificacion = this.formatDate(new Date());
+
+        //         }
+        //     }
+
+        //     console.log(this.employeesToProject);
+
+        // this.asociarProyectoService.saveOrUpdateEmployeesToProject(this.proyecto.id, this.employeesToProject).subscribe(res => {
+        //     // if (res.responseCode == OK) {
+        //     console.log(res);
+        //     // this.loadProyectos();
+
+        //     // this.proyecto = new ProyectoModel();
+
+        //     this.toastr.success('Transacción satisfactoria', 'Gestión de Proyectos');
+
+        // //     this.updateForm = false;
+
+        //     this.proyecto = new ProyectoModel();
+
+        // }, (error) => {
+        //     console.log(error);
+
+        //     this.toastr.error(error.error.message, "Error al guardar los empleados asociados al proyecto");
+
+        // });
+    // }
+
+    //Al seleccionar un usuario
+
+    // setNewUser(id: string): void {
+    //     console.log(id);
+
+    //     var indexDelete;
+
+    //     var modelToPush;
+
+    //     var filter = this.employees.filter(value => value.id === parseInt(id));
+
+    //     [].forEach.call(this.employees, function (data, index) {
+
+    //         if (data.id.toString() === id) {
+
+    //             indexDelete = index;
+
+    //         }
+
+    //     }
+
+    //     )
+
+    //     this.employeeToProject.nombreEmpleado = filter[0].nombres;
+
+    //     this.employeeToProject.apellidoEmpleado = filter[0].apellidos;
+
+    //     this.employeeToProject.fotoEmpleado = filter[0].foto;
+
+    //     this.employeeToProject.empleadoId = filter[0].id.toString();
+
+    //     this.employeeToProject.proyectoId = this.proyecto.id.toString();
+
+    //     this.employees.splice(indexDelete, 1);
+
+    //     this.employeesToProject.push(this.employeeToProject);
+
+    //     this.employeeToProject = new EmployeeToProject();
+    // }
 
 
 

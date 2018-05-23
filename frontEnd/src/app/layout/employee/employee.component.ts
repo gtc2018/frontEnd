@@ -240,7 +240,6 @@ export class EmployeeComponent implements OnInit   {
 
         delete this.employeeForm.celular;
         delete this.employeeForm.foto;
-        
 
         if(this.file !==null && this.file.name !==null){
         this.employeeForm.foto = this.file.name;

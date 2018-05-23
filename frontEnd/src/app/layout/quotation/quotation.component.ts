@@ -13,6 +13,7 @@ import { routerTransition } from '../../router.animations';
     <i (click)="upload()"
      class="fa fa-pencil-square-o fa-lg hand"
      aria-hidden="true"
+     [routerLink]="['edit', rowData.id]"
      title="Editar" >
      </i>
     </a>
@@ -41,9 +42,12 @@ styleUrls: ['./quotation.scss']
       this.renderValue = this.value.toString().toUpperCase();
     }
 
+    constructor(private route:Router) {
+    }
+
     upload() {
         console.log("Para actualizar");
-       this.edit.emit(this.rowData);
+        this.edit.emit(this.rowData);
     }
 
     delete(){
@@ -117,8 +121,10 @@ export class QuotationComponent implements OnInit {
             renderComponent: ButtonViewComponent,
         onComponentInitFunction(instance) {
           instance.edit.subscribe(row => {
-            alert(`${row.name} edit!`)
-            console.log(row,'List');
+
+            // alert(`${row.name} edit!`)
+            console.log(row.id);
+            
           });
           instance.deleteEvent.subscribe(row => {
             alert(`${row.name} delete!`)
@@ -182,9 +188,9 @@ export class QuotationComponent implements OnInit {
           console.log("nuevo registro");
       }
 
-  constructor(private router:Router) {
+  constructor(private route:Router) {
 
-    console.log(router);
+    console.log(route);
 
     this.quotation = [
         {

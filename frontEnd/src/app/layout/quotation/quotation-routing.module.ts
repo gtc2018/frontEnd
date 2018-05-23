@@ -9,6 +9,9 @@ const routes: Routes = [
     },
     {
         path:'create', component: CreateQuotationComponent
+    },
+    {
+        path:'edit/:id', component: CreateQuotationComponent
     }
 ];
 

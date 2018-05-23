@@ -201,7 +201,7 @@
                                     <div class="col-auto">
 
                                         <label class=" col-form-label-sm ">*Empresa</label>
-                                        <select #selectEn [(ngModel)]="proyecto.clienteId" (change)="setNew(selectEn.value)" name="enterprise" class="form-control-sm input-underline">
+                                        <select #selectEn [(ngModel)]="proyecto.cliente.id" (change)="setNew(selectEn.value)" name="enterprise" class="form-control-sm input-underline">
                                             <option value=undefined disabled selected>Seleccione una empresa</option>
                                             <option *ngFor="let e of enterprises" [value]="e.id">
                                                 {{e.descripcion}}
@@ -223,7 +223,7 @@
                                                     </div>
                                                 </label>
 
-                                        </div>
+                                    </div>
 
                                     <div *ngIf="updateForm"  class="col-auto">
 

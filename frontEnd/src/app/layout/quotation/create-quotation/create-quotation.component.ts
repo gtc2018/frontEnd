@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ButtonViewComponent } from '../quotation.component';
 import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalQComponent } from '../modal-q/modal-q.component';
 import { CreateDetailComponent } from '../modal-q/template/create-detail/create-detail';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-quotation',
@@ -11,62 +12,65 @@ import { CreateDetailComponent } from '../modal-q/template/create-detail/create-
 })
 export class CreateQuotationComponent implements OnInit {
 
+    //
+    @Input() value: string | number;
+
     //Para la tabla
 
-    settings = {
+    // settings = {
 
-        actions:false,
-        columns: {
-            process: {
-            title: 'Proceso',
-            filter:false
-          },
-          component: {
-            title: 'Componente',
-            filter:false
-          },
-          description: {
-            title: 'Descripción',
-            filter:false
-          },
-          analysis: {
-            title: 'H.Analisis',
-            filter:false
-          },
-          design: {
-            title: 'H.Diseño',
-            filter:false
-          },
-          development: {
-            title: 'H.Desarrollo',
-            filter:false
-          },
-          test: {
-            title: 'H.Pruebas',
-            filter:false
-          },
-          documentation: {
-            title: 'H.Documentación',
-            filter:false
-          },
-          total: {
-            title: 'Total',
-            filter:false
-          },action:{
-            title:'Acciones',
-            type:'custom',
-            filter:false,
-            renderComponent: ButtonViewComponent,
-        onComponentInitFunction(instance) {
-          instance.save.subscribe(row => {
-            alert(`${row.name} saved!`)
-            console.log(row,'Create');
-          });
-        }
-          }
+    //     actions:false,
+    //     columns: {
+    //         process: {
+    //         title: 'Proceso',
+    //         filter:false
+    //       },
+    //       component: {
+    //         title: 'Componente',
+    //         filter:false
+    //       },
+    //       description: {
+    //         title: 'Descripción',
+    //         filter:false
+    //       },
+    //       analysis: {
+    //         title: 'H.Analisis',
+    //         filter:false
+    //       },
+    //       design: {
+    //         title: 'H.Diseño',
+    //         filter:false
+    //       },
+    //       development: {
+    //         title: 'H.Desarrollo',
+    //         filter:false
+    //       },
+    //       test: {
+    //         title: 'H.Pruebas',
+    //         filter:false
+    //       },
+    //       documentation: {
+    //         title: 'H.Documentación',
+    //         filter:false
+    //       },
+    //       total: {
+    //         title: 'Total',
+    //         filter:false
+    //       },action:{
+    //         title:'Acciones',
+    //         type:'custom',
+    //         filter:false,
+    //         renderComponent: ButtonViewComponent,
+    //     onComponentInitFunction(instance) {
+    //       instance.save.subscribe(row => {
+    //         alert(`${row.name} saved!`)
+    //         console.log(row,'Create');
+    //       });
+    //     }
+    //       }
 
-        }
-      };
+    //     }
+    //   };
 
 
       quotation = [
@@ -118,6 +122,8 @@ export class CreateQuotationComponent implements OnInit {
     //Funciones
 
   ngOnInit() {
+
+    console.log(this.value);
   }
 
   system() {
@@ -206,7 +212,10 @@ private getDismissReason(reason: any): string {
     }
 }
 
-constructor(private modalService: NgbModal) {
+constructor(private modalService: NgbModal,
+    private route: ActivatedRoute) {
+
+        console.log(route.snapshot.params.id);
 
     this.toolInit= [
         {id:1,name:"Angular",value:1},
