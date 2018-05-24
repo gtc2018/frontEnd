@@ -89,6 +89,7 @@ export class CargoComponent implements OnInit {
 
     // Se inicia con estos metodos
     ngOnInit() {
+        this.getItems();
         this.loadEnterprises();
         this.loadCargos(); 
     }    
@@ -149,6 +150,7 @@ export class CargoComponent implements OnInit {
                     this.cargoForm = new CargoModel();
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Cargos');
                     this.loadCargos();
+                    this.clean();
 
             },(error)=>{
                 console.log(error);
@@ -228,5 +230,48 @@ export class CargoComponent implements OnInit {
         this.cargoForm = new CargoModel();
         this.deleteFormHide = false;
         this.visible = false;
+    }
+
+    //Permisos
+    private getItems(): void {
+
+        this.permiso = new PermisoModel();
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+            console.log("======================= PERMISOS Empleados: ==============");
+
+            console.log(this.menus = res);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Empleados") {
+                    this.items = menu;
+                    console.log(this.items);
+
+                    if (this.items.crear === 1) {
+                        this.crear = true;
+                    }
+
+                    if (this.items.editar === 1) {
+                        this.editar = true;
+                    }
+
+                    if (this.items.eliminar === 1) {
+                        this.eliminar = true;
+                    }
+
+                    if (this.items.leer === 1) {
+                        this.leer = true;
+                    }
+
+                }
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
     }
 }

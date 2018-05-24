@@ -5,10 +5,13 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
+import { filter } from 'rxjs/operators/filter';
 
 
 import { OK } from '../../messages/httpstatus';
 import swal from 'sweetalert2';
+import { PermisoModel } from '../../model/permiso.model';
+import { LoginService } from '../../login/servicios/login.service';
 
 
 @Component({
@@ -16,18 +19,28 @@ import swal from 'sweetalert2';
     templateUrl: './fase.component.html',
     styleUrls: ['./fase.component.scss'],
     animations: [routerTransition()],
-    providers: [FaseService]
+    providers: [FaseService, LoginService]
 })
 export class FaseComponent implements OnInit {
 
     private isValid: boolean = true;
     private message: string = "";
     private fase: FaseModel;
+    private permiso: PermisoModel;
     private fases: Array<FaseModel>;
     grupos = [];
     contador: number = 0;
+    filter: FaseModel = new FaseModel();
+
+    user: any;
+    items: any;
+    menus: any;
 
     visible = false;
+    crear = false;
+    editar = false;
+    eliminar = false;
+    leer = false;
 
     toggleDivCreateMenus() {
         this.visible = !this.visible;
@@ -36,12 +49,15 @@ export class FaseComponent implements OnInit {
     constructor(
         private router: Router,
         private toastr: ToastrService,
-        private faseService: FaseService
+        private faseService: FaseService,
+        private menu: LoginService,
+        private menup: LoginService
     ) {
         this.fase = new FaseModel();
     }
 
     ngOnInit() {
+        this.getItems();
         this.loadFases();
 
     }
@@ -138,5 +154,48 @@ export class FaseComponent implements OnInit {
         }
         return isValid;
 
+    }
+
+    //Permisos
+    private getItems(): void {
+
+        this.permiso = new PermisoModel();
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+            console.log("======================= PERMISOS Empleados: ==============");
+
+            console.log(this.menus = res);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Empleados") {
+                    this.items = menu;
+                    console.log(this.items);
+
+                    if (this.items.crear === 1) {
+                        this.crear = true;
+                    }
+
+                    if (this.items.editar === 1) {
+                        this.editar = true;
+                    }
+
+                    if (this.items.eliminar === 1) {
+                        this.eliminar = true;
+                    }
+
+                    if (this.items.leer === 1) {
+                        this.leer = true;
+                    }
+
+                }
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
     }
 }

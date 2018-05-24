@@ -37,7 +37,8 @@ const routes: Routes = [
             { path: 'alcances', loadChildren: './alcances/alcance.module#AlcanceModule' },
             { path: 'estados', loadChildren: './estados/estado.module#EstadoModule' },
             { path: 'herramientas', loadChildren: './herramientas/herramienta.module#HerramientaModule' },
-            { path: 'sistemas', loadChildren: './sistemas/sistema.module#SistemaModule' }
+            { path: 'sistemas', loadChildren: './sistemas/sistema.module#SistemaModule' },
+            { path: 'tareas', loadChildren: './tareas/tarea.module#TareaModule' }
         ]
     }
 ];

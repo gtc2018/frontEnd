@@ -18,6 +18,7 @@ import { AuthService } from '../../shared/guard/auth.service';
 
 import swal from 'sweetalert2';
 import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
+import { filter } from 'rxjs/operators/filter'; 
 
 @Component({
     selector: 'app-estado',  
@@ -83,6 +84,7 @@ export class EstadoComponent implements OnInit {
 
     // Se inicia con estos metodos
     ngOnInit() {
+        this.getItems();
         this.loadEstados(); 
     }    
 
@@ -120,6 +122,7 @@ export class EstadoComponent implements OnInit {
                     this.estadoForm = new EstadoModel();
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Estados');
                     this.loadEstados();
+                    this.clean();
 
             },(error)=>{
 
@@ -192,5 +195,48 @@ export class EstadoComponent implements OnInit {
         this.estadoForm = new EstadoModel();
         this.deleteFormHide = false;
         this.visible = false;
+    }
+
+    //Permisos
+    private getItems(): void {
+
+        this.permiso = new PermisoModel();
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+            console.log("======================= PERMISOS Empleados: ==============");
+
+            console.log(this.menus = res);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Empleados") {
+                    this.items = menu;
+                    console.log(this.items);
+
+                    if (this.items.crear === 1) {
+                        this.crear = true;
+                    }
+
+                    if (this.items.editar === 1) {
+                        this.editar = true;
+                    }
+
+                    if (this.items.eliminar === 1) {
+                        this.eliminar = true;
+                    }
+
+                    if (this.items.leer === 1) {
+                        this.leer = true;
+                    }
+
+                }
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
     }
 }

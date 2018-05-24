@@ -138,7 +138,7 @@ export class QuotationComponent implements OnInit {
         {
         id:1,
         quotation:"COT00001",
-        client:"Bancoomeva",
+        client:"Anggelo",
          project:"Core Tarjeta",
          coderqm:"RQM05191",
          state:"Generada",

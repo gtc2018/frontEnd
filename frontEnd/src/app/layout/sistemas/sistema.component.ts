@@ -81,6 +81,7 @@ export class SistemaComponent implements OnInit {
 
     // Se inicia con estos metodos
     ngOnInit() {
+        this.clean();
         this.loadSistemas(); 
     }    
 
@@ -118,6 +119,7 @@ export class SistemaComponent implements OnInit {
                     this.sistemaForm = new SistemaModel();
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Sistemas');
                     this.loadSistemas();
+                    this.clean();
 
             },(error)=>{
 
@@ -188,5 +190,48 @@ export class SistemaComponent implements OnInit {
         this.sistemaForm = new SistemaModel();
         this.deleteFormHide = false;
         this.visible = false;
+    }
+
+    //Permisos
+    private getItems(): void {
+
+        this.permiso = new PermisoModel();
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+            console.log("======================= PERMISOS Empleados: ==============");
+
+            console.log(this.menus = res);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Empleados") {
+                    this.items = menu;
+                    console.log(this.items);
+
+                    if (this.items.crear === 1) {
+                        this.crear = true;
+                    }
+
+                    if (this.items.editar === 1) {
+                        this.editar = true;
+                    }
+
+                    if (this.items.eliminar === 1) {
+                        this.eliminar = true;
+                    }
+
+                    if (this.items.leer === 1) {
+                        this.leer = true;
+                    }
+
+                }
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
     }
 }

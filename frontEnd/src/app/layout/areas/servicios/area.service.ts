@@ -27,7 +27,8 @@ export class AreaService {
 
   //SERVICIO CONSULTAR UN ROL BY ID
   public getAreaById(c): Observable<AreaModel>{
-    return this.Http.post<AreaModel>("http://localhost:8080/getAreaById", c);   
+    this.area.id = c;
+    return this.Http.post<AreaModel>("http://localhost:8080/getFindByAreaId", JSON.stringify(this.area));   
   }
  
   //SERVICIO CONSULTAR UN ROL BY ID
