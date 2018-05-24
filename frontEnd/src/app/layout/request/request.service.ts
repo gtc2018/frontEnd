@@ -13,7 +13,7 @@ import { EstadoModel } from './../../model/estado.model';
 
 @Injectable()
 export class RequestService {
-  
+  request: RequerimientoModel = new RequerimientoModel;
   proyecto: ProyectoModel = new ProyectoModel;
   estadoList: EstadoModel[];
  
@@ -42,4 +42,16 @@ export class RequestService {
   public getEstados(): Observable<EstadoModel[]>{
     return this.http.get<EstadoModel[]>("http://localhost:8080/getAllEstados");      
   } 
+
+
+  public delete(request: RequerimientoModel): Observable<RestResponse> {
+
+    return this.http.post<RestResponse>("http://localhost:8080/deleteRequerimiento", JSON.stringify(request) );
+
+  }
+
+  public cargarRequerimiento(id): Observable<RequerimientoModel>{
+    this.request.id=id;
+    return this.http.post<RequerimientoModel>("http://localhost:8080/getRequerimiento", JSON.stringify(this.request));
+  }
 }

@@ -261,7 +261,7 @@ export class ExternalEmployeeComponent implements OnInit   {
                     // if (res.responseCode == OK) {
                     this.loadEmployee();//actualiza los datos que se visualizan en la tabla donde se muestran todos los empleados
 
-                    this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empleados');
+                    this.toastr.success('Registro eliminado satisfactoriamente', 'Gestión de Empleados');
 
             
                     this.externalEmployeeForm = new ExternalEmployeeModel();

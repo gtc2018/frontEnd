@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbModal, ModalDismissReasons, NgbActiveModal, NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
 
 import { routerTransition } from '../../../router.animations';
@@ -17,6 +17,7 @@ import { EnterpriseService } from '../../enterprise/enterprise.service';
 import { ProyectosService } from '../../proyectos/proyectos.service';
 import { FaseService } from '../../fases/servicios/fase.service';
 import { EstadoService } from '../../estados/servicios/estado.service';
+import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DefaultEditor } from 'ng2-smart-table';
 import { OK } from '../../../messages/httpstatus';
@@ -27,8 +28,10 @@ import swal from 'sweetalert2';
 import { FaseModel } from '../../../model/fase';
 
 import { Location } from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 @Component({
+    
   selector: 'app-create-request',
   templateUrl: './create-request.component.html',
 //   styleUrls: ['./create-request.component.scss']
@@ -36,6 +39,7 @@ import { Location } from '@angular/common';
 })
 export class CreateRequestComponent implements OnInit {
 
+    test: NgbDateStruct;
     messageEmail: string; 
     message: string;
 
@@ -51,14 +55,21 @@ export class CreateRequestComponent implements OnInit {
     styleIconUpload: string = "";
     iconUpload: string = "fa-upload";
     nameUpload: string = "Subir Documento";
-    private codigoRQM: String;
     documentTemp: string ="";
-    private totalHallazgo: number;
+    ruta: string ="../"
+    codigoRQM: String;
+    editarRequest: any;
+    totalHallazgo: number;
     emailRegex: RegExp;
 
+    visible: boolean = false;
     dragging: boolean = false;
+    disabledEnterprise: boolean = false;
+    disabledProyecto: boolean = false;
+    disabledCotizacion: boolean = false;
 
     file: File = null;
+    fechaInicio; NgbDateStruct;
     
     filterPr: ProyectoModel[];
     private isValid: boolean = true;
@@ -73,54 +84,86 @@ export class CreateRequestComponent implements OnInit {
     
     private cotizacion: CotizacionModel[];
     private cotizaciones: CotizacionModel[];
+
+    testt: NgbDateParserFormatter;
     
  
 
     //Funciones
 
     constructor(
-      private requestService: RequestService, 
-      private enterpriseService: EnterpriseService,
-      private proyectoService: ProyectosService,
-      private estadoService: EstadoService,
-      private toastr: ToastrService,
-      private login:AuthService,
-      private menu: LoginService,
-      private faseService: FaseService,
-    private _location: Location){
+        private requestService: RequestService, 
+        private enterpriseService: EnterpriseService,
+        private proyectoService: ProyectosService,
+        private estadoService: EstadoService,
+        private toastr: ToastrService,
+        private login:AuthService,
+        private menu: LoginService,
+        private faseService: FaseService,
+        private _location: Location,
+        private route: ActivatedRoute){
 
-        this.requestForm = new RequerimientoModel();
+            console.log(route.snapshot.params.id);
+            if(this.login.authUser !== undefined){
 
-    if(this.login.authUser !== undefined){
+                console.log(this.login.authUser.usuarioId); 
+            }
 
-        console.log(this.login.authUser.usuarioId); 
+            //this.loadEnterprises();
+            
 
-    }
+            if(route.snapshot.params.id){
+                this.editarRequest=route.snapshot.params.id;
+                this.requestForm = new RequerimientoModel();
+                this.requestForm.cliente = new EnterpriseModel();
+                this.requestForm.proyecto = new ProyectoModel();
+                this.requestForm.cotizacion = new CotizacionModel();
+                this.enterprises = [];
+                this.proyectos = [];
+                this.cotizaciones = [];
+                this.cotizacion = [];
+                this.disabledEnterprise = true;
+                this.disabledProyecto= true;
+                this.disabledCotizacion= true;
+                this.fechaInicio ={
+                    "year": 2018,
+                    "month":  1,
+                    "day": 1,
+                };
+                 
 
-        this.requestForm.numeroHallazgoBloqueante=0;
-    
-        this.requestForm.numeroHallazgoFuncional=0;
-    
-        this.requestForm.numeroHallazgoPresentacion=0;
+            }else{
+                this.requestForm = new RequerimientoModel();
+                this.requestForm.cliente = new EnterpriseModel();
 
-        this.totalHallazgo = 0;
+                this.requestForm.numeroHallazgoBloqueante=0;
+            
+                this.requestForm.numeroHallazgoFuncional=0;
+            
+                this.requestForm.numeroHallazgoPresentacion=0;
+        
+                this.totalHallazgo = 0;
 
-        //this.file.name="";
+            }
 
   }
 
     ngOnInit(){
-      this.loadEnterprises();
-      this.loadFases();
-      this.loadEstados();
+
+        if(this.editarRequest){
+            this.cargarRequest();             
+        }
+
+        this.loadFases();
+        this.loadEstados();
     }
+    
 
     
 
     private loadEnterprises(): void {
       this.enterpriseService.getEnterprises().subscribe(res => {
           this.enterprises = res;
-          console.log(this.enterprises);
       },(error)=>{
           console.log(error);
 
@@ -137,7 +180,6 @@ export class CreateRequestComponent implements OnInit {
   private loadFases(): void {
     this.faseService.getFases().subscribe(res => {
         this.fases = res;
-        console.log(this.enterprises);
     },(error)=>{
         console.log(error);
 
@@ -242,10 +284,9 @@ private loadEstados(): void {
         this.codigoRQM="";
         this.cotizacion = id;
         this.cotizacion = this.cotizaciones.filter(value => value.id === parseInt(id));
-        console.log("REQUERIMIENTOOOOO");
-        console.log(this.cotizacion);
         this.codigoRQM =this.cotizacion[0].codigoRequerimiento;
     }
+
 
 
 
@@ -308,6 +349,100 @@ private loadEstados(): void {
                 }
         }
 }
+
+delete(model){
+
+    if(this.login.authUser !== undefined){
+
+        model.usuarioCreacion=this.login.authUser.usuarioId;
+    }
+
+    swal({
+        title: 'Esta seguro?',
+        text: "El registro eliminado no podrá ser recuperado",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        
+       if(result.value){
+
+            this.requestService.delete(model).subscribe(res=>{
+
+                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Requerimientos');
+
+                this._location.back();
+                
+
+            },(error)=>{  console.log(error);
+                    swal(
+                        'Error al eliminar el registro',
+                        error.error.message,
+                        'error'
+                    )
+                }
+            )
+        }
+    })
+}
+
+    public cargarRequest(){
+        
+
+        this.requestService.cargarRequerimiento(this.editarRequest).subscribe(res => {
+            
+            this.requestForm = res;
+            this.ruta="../../"
+            this.visible = true;
+            this.requestForm.clienteId = this.requestForm.cliente.id;
+            this.requestForm.proyectoId = this.requestForm.proyecto.id;
+            this.requestForm.cotizacionId = this.requestForm.cotizacion.id;
+            this.requestForm.faseId = this.requestForm.fase.id;
+            this.requestForm.estadoId = this.requestForm.estado.id;
+            this.enterprises.push(this.requestForm.cliente);
+            this.proyectos.push(this.requestForm.proyecto);
+            this.cotizaciones.push(this.requestForm.cotizacion);
+            this.getRequest(this.requestForm.cotizacionId);
+            this.totalHallazgos();
+            this.nameUpload = this.requestForm.archivo.split("REQUERIMIENTOS")[1];
+            console.log(this.requestForm);
+            
+
+            //this.requestForm.fechaInicio  = JSON.stringify(this.formatoCalendario(this.requestForm.fechaInicio));
+            //this.fechaInicio=this.testt.parse(this.requestForm.fechaInicio);
+            //this.test = this.fechaInicio;
+
+        },(error)=>{ //Controlando posible error
+            console.log(error);
+
+            this.toastr.error(error.error.message,"Error en la transacción");
+        });
+
+    }
+
+
+    
+public totalHallazgos(){
+
+    if(!this.requestForm.numeroHallazgoBloqueante){
+        this.requestForm.numeroHallazgoBloqueante=0;
+    } 
+    
+    if(!this.requestForm.numeroHallazgoFuncional){
+        this.requestForm.numeroHallazgoFuncional=0;
+    } 
+
+    if(!this.requestForm.numeroHallazgoPresentacion){
+        this.requestForm.numeroHallazgoPresentacion=0;
+    } 
+    
+
+    this.totalHallazgo = parseInt(this.requestForm.numeroHallazgoBloqueante+"") + parseInt(this.requestForm.numeroHallazgoFuncional+"") + parseInt(this.requestForm.numeroHallazgoPresentacion+"");
+}
+
 
 
   public validate(requestForm: RequerimientoModel): boolean {
@@ -381,12 +516,25 @@ private loadEstados(): void {
   }
 
 public formatoFecha(fecha): string {
+    console.log(fecha);
     let fechaString ="";
     fechaString = fecha['year']+"-"+fecha['month']+"-"+fecha['day']+" 00:00:00"
     return fechaString;
 }
 
+public formatoCalendario(fecha){
+    this.fechaInicio={
+        "year": 2018,
+        "month":  5,
+        "day": 2,
+    };
+    console.log("FORMATOCALENDARIO");
+    console.log(this.fechaInicio);
+    console.log(JSON.stringify(this.fechaInicio));
+}
+
 public formatoFechas(){
+
     if(this.requestForm.fechaInicio){
         this.requestForm.fechaInicio=this.formatoFecha(this.requestForm.fechaInicio);
      }
@@ -396,24 +544,6 @@ public formatoFechas(){
      if(this.requestForm.fechaPlaneadaEntrega){
         this.requestForm.fechaPlaneadaEntrega=this.formatoFecha(this.requestForm.fechaPlaneadaEntrega);
      }
-}
-
-public totalHallazgos(){
-
-    if(!this.requestForm.numeroHallazgoBloqueante){
-        this.requestForm.numeroHallazgoBloqueante=0;
-    } 
-    
-    if(!this.requestForm.numeroHallazgoFuncional){
-        this.requestForm.numeroHallazgoFuncional=0;
-    } 
-
-    if(!this.requestForm.numeroHallazgoPresentacion){
-        this.requestForm.numeroHallazgoPresentacion=0;
-    } 
-    
-
-    this.totalHallazgo = this.requestForm.numeroHallazgoBloqueante + this.requestForm.numeroHallazgoFuncional + this.requestForm.numeroHallazgoPresentacion;
 }
 
 

@@ -9,6 +9,9 @@ const routes: Routes = [
     },
     {
         path:'create', component: CreateRequestComponent
+    },
+    {
+        path:'create/:id', component: CreateRequestComponent
     }
 ];
 

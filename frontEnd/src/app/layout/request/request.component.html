@@ -139,14 +139,15 @@
                             <td>
                                 <div class="btn-group">
                                     <a class="btn btn-default">
-                                        <i (click)="edit(p)"
+                                        <i 
+                                        [routerLink]="['create', r.id]"
                                         class="fa fa-pencil-square-o fa-lg hand"
                                         aria-hidden="true"
                                         title="Editar">
                                         </i>
                                     </a>
                                     <a class="btn btn-default">
-                                        <i (click)="delete(p)"
+                                        <i (click)="delete(r)"
                                         class="fa fa-trash-o fa-lg hand"
                                         aria-hidden="true" title="Eliminar">
                                         </i>
