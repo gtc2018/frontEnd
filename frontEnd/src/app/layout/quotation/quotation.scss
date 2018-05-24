@@ -28,6 +28,30 @@
     padding: 5px;
 }
 
+:host /deep/ tr {
+    border-radius: 10px;
+    // background-color: aqua;
+    // font-style: italic;
+    // text-align:right;
+    border: 0.1px solid rgb(224, 222, 222);
+    }
+
+    :host /deep/ td {
+        border-radius: 10px;
+        // background-color: aqua;
+        // font-style: italic;
+        // text-align:right;border: 0.1px solid rgb(224, 222, 222);
+        border: 0.1px solid rgb(224, 222, 222);
+        }
+
+        :host /deep/ th{
+            border-radius: 10px;
+            // background-color: aqua;
+            // font-style: italic;
+            // text-align:right;
+            border: 0.1px solid rgb(224, 222, 222);
+            }
+
 
 
   // nb-card-body {

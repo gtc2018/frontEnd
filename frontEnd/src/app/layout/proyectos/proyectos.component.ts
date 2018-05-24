@@ -62,6 +62,8 @@ export class ProyectosComponent implements OnInit {
 
     private docTemp:string="";
 
+    filter: ProyectoModel = new ProyectoModel();
+
     //Documentacion
     file:File=null;
 

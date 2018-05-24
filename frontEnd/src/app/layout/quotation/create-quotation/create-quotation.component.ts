@@ -4,103 +4,17 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 import { ModalQComponent } from '../modal-q/modal-q.component';
 import { CreateDetailComponent } from '../modal-q/template/create-detail/create-detail';
 import { ActivatedRoute } from '@angular/router';
+import { ProyectosService } from '../../proyectos/proyectos.service';
+import { EnterpriseService } from '../../enterprise/enterprise.service';
+import { QuotationService } from '../quotation.service';
 
 @Component({
   selector: 'app-create-quotation',
   templateUrl: './create-quotation.component.html',
-  styleUrls: ['./create-quotation.component.scss']
+  styleUrls: ['./create-quotation.component.scss'],
+  providers: [ProyectosService, EnterpriseService, QuotationService]
 })
 export class CreateQuotationComponent implements OnInit {
-
-    //
-    @Input() value: string | number;
-
-    //Para la tabla
-
-    // settings = {
-
-    //     actions:false,
-    //     columns: {
-    //         process: {
-    //         title: 'Proceso',
-    //         filter:false
-    //       },
-    //       component: {
-    //         title: 'Componente',
-    //         filter:false
-    //       },
-    //       description: {
-    //         title: 'Descripción',
-    //         filter:false
-    //       },
-    //       analysis: {
-    //         title: 'H.Analisis',
-    //         filter:false
-    //       },
-    //       design: {
-    //         title: 'H.Diseño',
-    //         filter:false
-    //       },
-    //       development: {
-    //         title: 'H.Desarrollo',
-    //         filter:false
-    //       },
-    //       test: {
-    //         title: 'H.Pruebas',
-    //         filter:false
-    //       },
-    //       documentation: {
-    //         title: 'H.Documentación',
-    //         filter:false
-    //       },
-    //       total: {
-    //         title: 'Total',
-    //         filter:false
-    //       },action:{
-    //         title:'Acciones',
-    //         type:'custom',
-    //         filter:false,
-    //         renderComponent: ButtonViewComponent,
-    //     onComponentInitFunction(instance) {
-    //       instance.save.subscribe(row => {
-    //         alert(`${row.name} saved!`)
-    //         console.log(row,'Create');
-    //       });
-    //     }
-    //       }
-
-    //     }
-    //   };
-
-
-      quotation = [
-        {
-        id:1,
-        process:"Conciliación TC",
-        component:"Cargar ACH",
-         description:"Unejemplo",
-         analysis:"5",
-         design:"6",
-         development:"50",
-         test:"40",
-         documentation:"10",
-         total:"111"
-
-        },
-        {
-        id:2,
-        process:"Pagos",
-        component:"Efectivo",
-         description:"Unejemp",
-         analysis:"5",
-         design:"6",
-         development:"10",
-         test:"12",
-         documentation:"9",
-         total:"37"
-        }
-
-    ];
 
     //Variables
 
@@ -122,9 +36,50 @@ export class CreateQuotationComponent implements OnInit {
     //Funciones
 
   ngOnInit() {
-
-    console.log(this.value);
   }
+
+  constructor(private modalService: NgbModal,
+    private quotationService: QuotationService,
+    private enterpriseService: EnterpriseService,
+    private proyectoService: ProyectosService,
+    private route: ActivatedRoute) {
+
+        console.log(route.snapshot.params.id);
+
+    this.toolInit= [
+        {id:1,name:"Angular",value:1},
+        {id:2, name:"ReactJs", value:"1"}
+    ]
+
+    this.systemInit=[
+        {id:1, name:"As400",value:false},
+        {id:2,name:"Mac", value:true},
+        {id:3,name:"Windows", value:true}
+    ]
+
+    //Para agregarlos al xchips
+
+    for (let r of this.systemInit){
+
+        if (r.value === true){
+
+            this.systemItem.push(r);
+
+        }
+
+    }
+
+    for (let r of this.toolInit){
+
+        if (r.value === true){
+
+            this.toolItem.push(r);
+
+        }
+
+    }
+
+}
 
   system() {
     const modalRef = this.modalService.open(ModalQComponent);
@@ -212,45 +167,7 @@ private getDismissReason(reason: any): string {
     }
 }
 
-constructor(private modalService: NgbModal,
-    private route: ActivatedRoute) {
 
-        console.log(route.snapshot.params.id);
-
-    this.toolInit= [
-        {id:1,name:"Angular",value:1},
-        {id:2, name:"ReactJs", value:"1"}
-    ]
-
-    this.systemInit=[
-        {id:1, name:"As400",value:false},
-        {id:2,name:"Mac", value:true},
-        {id:3,name:"Windows", value:true}
-    ]
-
-    //Para agregarlos al xchips
-
-    for (let r of this.systemInit){
-
-        if (r.value === true){
-
-            this.systemItem.push(r);
-
-        }
-
-    }
-
-    for (let r of this.toolInit){
-
-        if (r.value === true){
-
-            this.toolItem.push(r);
-
-        }
-
-    }
-
-}
 
 
 }

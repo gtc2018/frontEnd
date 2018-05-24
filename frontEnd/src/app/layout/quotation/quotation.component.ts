@@ -4,6 +4,11 @@ import { Ng2SmartTableModule, ViewCell } from 'ng2-smart-table';
 import { filter } from 'rxjs/operators/filter';
 import { Router } from '@angular/router';
 import { routerTransition } from '../../router.animations';
+import { ProyectosService } from '../proyectos/proyectos.service';
+import { EnterpriseService } from '../enterprise/enterprise.service';
+import { QuotationService } from './quotation.service';
+import { ToastrService } from 'ngx-toastr';
+import { CotizacionModel } from '../../model/cotizacion.model';
 
 
 @Component({
@@ -62,12 +67,13 @@ styleUrls: ['./quotation.scss']
 @Component({
     templateUrl: './quotation.html',
     styleUrls: ['./quotation.scss'],
-    animations: [routerTransition()]
+    animations: [routerTransition()],
+    providers: [ QuotationService]
 })
 export class QuotationComponent implements OnInit {
     //Variables
 
-    quotation = [];
+    quotations: CotizacionModel[];
 
     settings = {
 
@@ -89,28 +95,28 @@ export class QuotationComponent implements OnInit {
     //     confirmDelete: true
     //   },
         columns: {
-        quotation: {
+        id: {
             title: '# Cotización'
           },
-          client: {
+          clienteId: {
             title: 'Cliente'
           },
-          project: {
+          proyectoId: {
             title: 'Proyecto'
           },
-          coderqm: {
+          codigoRequerimiento: {
             title: 'Codigo RQM'
           },
-          state: {
+          estadoId: {
             title: 'Estado'
           },
-          system: {
+          sistemaId: {
             title: 'Sistema'
           },
-          tool: {
+          herramientaId: {
             title: 'Herramienta'
           },
-          date: {
+          fechaEntrega: {
             title: 'Fecha'
           },
           action:{
@@ -140,37 +146,64 @@ export class QuotationComponent implements OnInit {
         }
       };
 
-      data = [
-        {
-        id:1,
-        quotation:"COT00001",
-        client:"Bancoomeva",
-         project:"Core Tarjeta",
-         coderqm:"RQM05191",
-         state:"Generada",
-         system:"AS400",
-         tool:"RPG",
-         date:"02/01/2018",
-         action:"d"
+    //   data = [
+    //     {
+    //     id:1,
+    //     quotation:"COT00001",
+    //     client:"Bancoomeva",
+    //      project:"Core Tarjeta",
+    //      coderqm:"RQM05191",
+    //      state:"Generada",
+    //      system:"AS400",
+    //      tool:"RPG",
+    //      date:"02/01/2018",
+    //      action:"d"
 
-        },
-        {
-        id:1,
-        quotation:"COT00002",
-        client:"Bancoomeva",
-         project:"Core Tarjeta",
-         coderqm:"RQM03020",
-         state:"Generada",
-         system:"AS400",
-         tool:"RPG",
-         date:"05/01/2018"
-        }
+    //     },
+    //     {
+    //     id:1,
+    //     quotation:"COT00002",
+    //     client:"Bancoomeva",
+    //      project:"Core Tarjeta",
+    //      coderqm:"RQM03020",
+    //      state:"Generada",
+    //      system:"AS400",
+    //      tool:"RPG",
+    //      date:"05/01/2018"
+    //     }
 
-    ];
+    // ];
 
   //Funciones
 
+  constructor(private route:Router,
+   private quotationService: QuotationService,
+   private toastr: ToastrService,) {
+
+    
+
+    console.log(route);
+
+    // this.quotation = [
+    //     {
+    //     id:1,
+    //     quotation:"Bancoomeva",
+    //     client:"Descripcion 1",
+    //      project:"001",
+    //      coderqm:"Libranza",
+    //      state:"Proyectos",
+    //      system:"Analisis",
+    //      tool:"Dudas",
+    //      date:"Fri Jan 12 2018 00:00:00 GMT-0500 (Hora est. Pacífico, Sudamérica)"
+    //     }
+
+    // ];
+
+  }
+
   ngOnInit() {
+
+    this.loadQuotations();
 
     console.log(this);
 
@@ -188,34 +221,50 @@ export class QuotationComponent implements OnInit {
           console.log("nuevo registro");
       }
 
-  constructor(private route:Router) {
 
-    console.log(route);
+    private loadQuotations(): void {
+        this.quotationService.getQuotations().subscribe(res => {
 
-    this.quotation = [
-        {
-        id:1,
-        quotation:"Bancoomeva",
-        client:"Descripcion 1",
-         project:"001",
-         coderqm:"Libranza",
-         state:"Proyectos",
-         system:"Analisis",
-         tool:"Dudas",
-         date:"Fri Jan 12 2018 00:00:00 GMT-0500 (Hora est. Pacífico, Sudamérica)"
-        }
+            this.quotations = res;
 
-    ];
+            for( let quo of this.quotations)
+            {
 
-    `<div class="btn-group">
-         <a class="btn btn-default" >
-         <i (click)="save()"  class="fa fa-pencil" aria-hidden="true"title="Editar" ></i>
-         </a>
-          <a class="btn btn-default">
-           <i (click)="save()" class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
-           </a>
-     </div>`
+              quo.clienteId = quo.cliente.descripcion;
 
-  }
+              quo.proyectoId = quo.proyecto.descripcion;
+
+              quo.estadoId = quo.estado.descripcion;
+
+              quo.sistemaId = quo.sistema.descripcion;
+
+              quo.herramientaId = quo.herramienta.descripcion;
+
+
+            }
+
+            console.log(this.quotations);
+
+        }, (error) => {
+            console.log(error);
+
+            this.toastr.error("Error al cargar los datos");
+            // swal(
+            //     'Error',
+            //     error.error.message,
+            //     'error'
+            //   )
+        });
+}
 
 }
+
+// `<div class="btn-group">
+//          <a class="btn btn-default" >
+//          <i (click)="save()"  class="fa fa-pencil" aria-hidden="true"title="Editar" ></i>
+//          </a>
+//           <a class="btn btn-default">
+//            <i (click)="save()" class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+//            </a>
+//      </div>`
+//

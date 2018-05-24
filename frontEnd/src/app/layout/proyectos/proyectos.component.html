@@ -398,9 +398,20 @@
                             <th>Fecha creación por</th>
                             <th>Acciones</th>
                         </tr>
+                        <tr>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.nombre" placeholder="Buscar por Nombre">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.usuarioCreacion" placeholder="Buscar Usuario Creador">
+                            </th>
+                            <th>
+                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.fechaCreacion" placeholder="Buscar por Fecha de Creacion">
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let p of proyectos">
+                        <tr *ngFor="let p of proyectos| generalFilter:filter">
 
                             <td>
                                 <span [innerHTML]="p.nombre"></span>

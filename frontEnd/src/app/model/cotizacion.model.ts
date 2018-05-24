@@ -17,13 +17,13 @@ export class CotizacionModel extends ParentEntity{
   public estado: EstadoModel;
   public alcance: AlcanceModel;
 
-  public clienteId: Number;
-  public fasesId: Number;
-  public proyectoId: Number;
-  public sistemaId: Number;
-  public herramientaId: Number;
-  public estadoId: Number;
-  public alcanceId: Number;
+  public clienteId: string;
+  public fasesId: string;
+  public proyectoId: string;
+  public sistemaId: string;
+  public herramientaId: string;
+  public estadoId: string;
+  public alcanceId: string;
 
   public codigoRequerimiento: String;
   public descripcionRequerimiento: String;

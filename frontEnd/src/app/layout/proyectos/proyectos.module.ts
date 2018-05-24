@@ -6,6 +6,7 @@ import { ProyectosComponent } from './proyectos.component';
 import { PageHeaderModule } from './../../shared';
 import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FilterProyecto } from './proyectos.filter';
 
 @NgModule({
     imports: [CommonModule,
@@ -13,6 +14,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
           PageHeaderModule,
           FormsModule,
           NgbModule],
-    declarations: [ProyectosComponent]
+          
+    declarations: [ProyectosComponent,
+        FilterProyecto]
 })
 export class ProyectosModule {}
