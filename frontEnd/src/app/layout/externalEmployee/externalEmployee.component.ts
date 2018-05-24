@@ -261,7 +261,7 @@ export class ExternalEmployeeComponent implements OnInit   {
                     // if (res.responseCode == OK) {
                     this.loadEmployee();//actualiza los datos que se visualizan en la tabla donde se muestran todos los empleados
 
-                    this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empleados');
+                    this.toastr.success('Registro eliminado satisfactoriamente', 'Gestión de Empleados');
 
             
                     this.externalEmployeeForm = new ExternalEmployeeModel();
@@ -297,7 +297,7 @@ export class ExternalEmployeeComponent implements OnInit   {
 
     //Metodo upload despliega el formulario y muestra los datos del empleado a actualizar en el formulario
     upload(model){
-
+        
         console.log(model);
 
         console.log(this.stateExpand);
@@ -498,33 +498,26 @@ export class ExternalEmployeeComponent implements OnInit   {
     handleInputChange(e){
         this.file = <File>e.target.files[0];
         var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-    console.log(file.name);
+        console.log(file.name);
 
-    var pattern = /image-*/;
-    var reader = new FileReader();
+        var pattern = /image-*/;
+        var reader = new FileReader();
 
-    console.log(reader);
+        if (!file.type.match(pattern)) {
+            swal(
+                'Error al cargar logo',
+                'Por favor ingrese un formato válido de imagen',
+                'error'
+            );
+            return;
+        }
 
-    if (!file.type.match(pattern)) {
-        swal(
-            'Error al cargar logo',
-            'Por favor ingrese un formato válido de imagen',
-            'error'
-          );
-        return;
-    }
-
-    // this.loaded = false;
-
-    reader.onload = this._handleReaderLoaded.bind(this);
-    reader.readAsDataURL(file);
+        reader.onload = this._handleReaderLoaded.bind(this);
+        reader.readAsDataURL(file);
     }
 
     _handleReaderLoaded(e) {
         var reader = e.target;
-
-        console.log(reader.result);
-        this.externalEmployeeForm.fotoEmpleado = reader.result;
         this.imagenTemp =  reader.result;
         this.externalEmployeeForm.imagen = this.imagenTemp.split(/,(.+)/)[1];
     }
