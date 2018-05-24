@@ -53,7 +53,7 @@
                                                 <input type="number" class="form-control-sm input-underline col-3" name="nombre" id="nombre" placeholder="%" [(ngModel)]="porcentajePorFaseForm.porcentaje" required >                                    
                                             </div>
 
-                                            <div>
+                                            <div *ngIf="crear">
                                                 <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
                                                     value="">
                                                 </button>
@@ -151,7 +151,7 @@
                                                 </td>
     
                                                 <td>
-                                                <div class="btn-group">
+                                                <div class="btn-group" *ngIf="editar">
                                                     <a class="btn btn-default" >
                                                     <i (click)="upload(p)"
                                                         class="fa fa-pencil-square-o fa-lg hand"
@@ -159,7 +159,7 @@
                                                         title="Editar" >
                                                     </i>
                                                     </a>
-                                                    <a class="btn btn-default">
+                                                    <a class="btn btn-default" *ngIf="eliminar">
                                                     <i (click)="delete(p.id)"
                                                         class="fa fa-trash-o fa-lg hand"
                                                         aria-hidden="true"

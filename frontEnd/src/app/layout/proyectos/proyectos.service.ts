@@ -11,12 +11,11 @@ import { EmployeeModel } from '../../model/employee';
 
 
 @Injectable()
-export class ProyectosService {
+export class ProyectosService { 
     enterprise: EnterpriseModel = new EnterpriseModel;
 
     // public validate(proyecto: ProyectoModel): boolean {
     //     let isValid = true;
-
     //     if(!proyecto.nombreContacto){
     //        isValid = false;
     //     }
@@ -41,10 +40,8 @@ export class ProyectosService {
     //     // if(!enterprise.password){
     //     //    isValid = false;
     //     // }
-
     //     return isValid;
     //   }
-
   proyectosList: ProyectoModel[];
 
   private headers = new HttpHeaders({'Content-Type': 'application/json'});
@@ -76,6 +73,14 @@ export class ProyectosService {
   public delete(proyecto: ProyectoModel): Observable<RestResponse> {
     console.log(proyecto);
     return this.Http.post<RestResponse>("http://localhost:8080/deleteProyecto", JSON.stringify(proyecto));
+
+  }
+
+
+  public getProyectoByCliente(id): Observable<ProyectoModel[]> {
+    this.enterprise.id=id;
+    console.log(id);
+    return this.Http.post<ProyectoModel[]>("http://localhost:8080/getProyectoByCliente", JSON.stringify(this.enterprise));
 
   }
   

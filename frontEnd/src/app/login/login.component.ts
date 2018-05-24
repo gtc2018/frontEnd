@@ -76,6 +76,10 @@ export class LoginComponent {
 
                     localStorage.userId = res.usuarioId;
 
+                    localStorage.empleado = res.empleadoId;
+
+                    localStorage.area = res.empleado.area.id;
+
                     return this.router.navigate(['/dashboard']);
 
                 } else {

@@ -86,6 +86,7 @@ export class AreaComponent implements OnInit {
 
     // Se inicia con estos metodos
     ngOnInit() {
+        this.getItems();
         this.loadEnterprises();  
         this.loadAreas(); 
     } 
@@ -147,6 +148,7 @@ export class AreaComponent implements OnInit {
                     this.areaForm = new AreaModel();
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Areas');
                     this.loadAreas();
+                    this.clean();
 
             },(error)=>{
                 console.log(error);
@@ -226,5 +228,48 @@ export class AreaComponent implements OnInit {
         this.areaForm = model;
         this.areaForm.clienteId = this.areaForm.cliente.id;
         this.visible = true;
+    }
+
+    //Permisos
+    private getItems(): void {
+
+        this.permiso = new PermisoModel();
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+            console.log("======================= PERMISOS Empleados: ==============");
+
+            console.log(this.menus = res);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Empleados") {
+                    this.items = menu;
+                    console.log(this.items);
+
+                    if (this.items.crear === 1) {
+                        this.crear = true;
+                    }
+
+                    if (this.items.editar === 1) {
+                        this.editar = true;
+                    }
+
+                    if (this.items.eliminar === 1) {
+                        this.eliminar = true;
+                    }
+
+                    if (this.items.leer === 1) {
+                        this.leer = true;
+                    }
+
+                }
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
     }
 }

@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
                     <h2 class=" page-header">
-                        <i class="fa fa-address-card" style="color:blue"></i> Herramienta
+                        <i class="fa fa-address-card" style="color:blue"></i> Tarea
                     </h2>
                 </div>
             </div>
@@ -30,11 +30,11 @@
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
                                     <form class="form-inline" ngf>
-                                        <div class="form-group">                                  
+                                        <div class="form-group">                                    
 
                                             <div _ngcontent-c7="" class="form-group input-group">
-                                                <label class=" col-form-label-sm ">*Nombre del herramienta :</label>  
-                                                <input type="text" class="form-control-sm input-underline col-6" name="nombre" id="nombre" placeholder="Nombre" [(ngModel)]="herramientaForm.descripcion" required >                                    
+                                                <label class=" col-form-label-sm ">*Nombre de la tarea :</label>  
+                                                <input type="text" class="form-control-sm input-underline col-6" name="nombre" id="nombre" placeholder="Nombre" [(ngModel)]="tareaForm.descripcion" required >                                    
                                             </div>
 
                                             <div *ngIf="crear">
@@ -67,7 +67,7 @@
                                 <div class="row" >
 
                                     <div class=" col-auto">
-                                        Tabla de Herramientas
+                                        Tabla de Tareas
                                     </div>
     
                                     <div class="btn-group row col-auto pull-right ">
@@ -99,36 +99,36 @@
 
                                     <thead>
                                         <tr>      
-                                            <th>Nombre de Herramienta</th>  
+                                            <th>Nombre de Tarea</th>  
                                             <th>Acciones</th>                                
                                         </tr>
                                         <tr>
                                             
                                             <th>
                                                 <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
-                                                    placeholder="Buscar por Cargo">
+                                                    placeholder="Buscar por Tareas">
                                             </th>
                                         </tr>
                                     </thead>                        
 
                                     <tbody>
-                                            <tr *ngFor="let h of herramienta| generalFilter:filter">
+                                            <tr *ngFor="let t of tarea| generalFilter:filter">
                                                 
                                                 <td style="text-align: left">
-                                                    <span [innerHTML]="h.descripcion"></span>
+                                                    <span [innerHTML]="t.descripcion"></span>
                                                 </td>
     
                                                 <td>
                                                 <div class="btn-group" *ngIf="editar">
                                                     <a class="btn btn-default" >
-                                                    <i (click)="upload(c)"
+                                                    <i (click)="upload(t)"
                                                         class="fa fa-pencil-square-o fa-lg hand"
                                                         aria-hidden="true"
                                                         title="Editar" >
                                                     </i>
                                                     </a>
                                                     <a class="btn btn-default" *ngIf="eliminar">
-                                                    <i (click)="delete(c.id)"
+                                                    <i (click)="delete(t.id)"
                                                         class="fa fa-trash-o fa-lg hand"
                                                         aria-hidden="true"
                                                         title="Eliminar">

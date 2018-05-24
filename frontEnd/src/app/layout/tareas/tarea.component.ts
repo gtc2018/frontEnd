@@ -1,39 +1,41 @@
 import { LoginService } from './../../login/servicios/login.service';
 import { BsComponentComponent } from './../bs-component/bs-component.component';
-import { CrearHerramientaService } from './servicios/crear-herramienta.service';
+import { CrearTareaService } from './servicios/crear-tarea.service';
 import { Router } from '@angular/router';
-import { HerramientaModel } from '../../model/herramienta.model';
+import { TareaModel } from '../../model/tarea.model';
 import { PermisoModel } from '../../model/permiso.model';
  
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { HerramientaService } from './servicios/herramienta.service';
+import { TareaService } from './servicios/tarea.service';
 import { OK } from '../../messages/httpstatus';
 import { MenuService } from '../menus/servicios/menu.service';
 import { ItemService } from '../items/servicios/item.service';
 import { ItemsModel } from '../../model/items.model';
 import { FormGroup } from '@angular/forms/src/model';
 import { AuthService } from '../../shared/guard/auth.service';
+import { filter } from 'rxjs/operators/filter';
 
 import swal from 'sweetalert2';
 import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 
+
 @Component({
-    selector: 'app-herramienta',  
-    templateUrl: './herramienta.component.html', 
-    styleUrls: ['./herramienta.component.scss'],
+    selector: 'app-tarea',  
+    templateUrl: './tarea.component.html', 
+    styleUrls: ['./tarea.component.scss'],
     animations: [routerTransition()],
-    providers: [HerramientaService, CrearHerramientaService, LoginService] 
+    providers: [TareaService, CrearTareaService, LoginService] 
 })
-export class HerramientaComponent implements OnInit {
+export class TareaComponent implements OnInit {
 
     // Variables -----------------------------
 
-    herramienta: HerramientaModel[];
-    filter: HerramientaModel = new HerramientaModel();
+    tarea: TareaModel[];
+    filter: TareaModel = new TareaModel();
 
-    herramientaForm: HerramientaModel;
+    tareaForm: TareaModel;
     private permiso: PermisoModel;
 
     message: string;
@@ -63,8 +65,8 @@ export class HerramientaComponent implements OnInit {
 
     // Metodos principales----------------------------------------------------
     constructor(
-        private herramientaService: HerramientaService,
-        private crearHerramientaService: CrearHerramientaService,
+        private tareaService: TareaService,
+        private crearTareaService: CrearTareaService,
         private router: Router,
         private toastr: ToastrService,
         private login: AuthService,
@@ -72,27 +74,26 @@ export class HerramientaComponent implements OnInit {
         private menup: LoginService
     ) {
 
-        this.herramientaForm = new HerramientaModel();
+        this.tareaForm = new TareaModel();
 
         if(this.login.authUser !== undefined){
     
         }
-
     }
 
     // Se inicia con estos metodos
     ngOnInit() {
         this.getItems();
-        this.loadHerramientas(); 
+        this.loadTareas(); 
     }    
 
     //Funciones --------------------------------------------
 
-    //Cargar Herramientas
+    //Cargar Tareas
 
-    private loadHerramientas(): void {
-        this.herramientaService.getHerramientas().subscribe(res => {
-            this.herramienta = res;   
+    private loadTareas(): void {
+        this.tareaService.getTareas().subscribe(res => {
+            this.tarea = res;   
 
             },(error)=>{
 
@@ -100,28 +101,26 @@ export class HerramientaComponent implements OnInit {
             });
     }
 
-    //Guardar o editar Herramienta
+    //Guardar o editar Tarea
 
     save():void{
 
-        console.log(this.login.authUser);
-
         if(this.login.authUser !== undefined){
-            if(this.herramientaForm.id === null){
-                this.herramientaForm.usuarioCreacion = this.login.authUser.email.toString();
+            if(this.tareaForm.id === null){
+                this.tareaForm.usuarioCreacion = this.login.authUser.email.toString();
             }else{
-                this.herramientaForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.tareaForm.usuarioModificacion = this.login.authUser.email.toString();
             }
         }
 
-        this.isValid = this.validate(this.herramientaForm);
+        this.isValid = this.validate(this.tareaForm);
 
         if (this.isValid) {
 
-            this.crearHerramientaService.saveOrUpdate(this.herramientaForm).subscribe(res => {
-                    this.herramientaForm = new HerramientaModel();
-                    this.toastr.success('Transacción satisfactoria', 'Gestión de Herramientas');
-                    this.loadHerramientas();
+            this.crearTareaService.saveOrUpdate(this.tareaForm).subscribe(res => {
+                    this.tareaForm = new TareaModel();
+                    this.toastr.success('Transacción satisfactoria', 'Gestión de Tareas');
+                    this.loadTareas();
                     this.clean();
 
             },(error)=>{
@@ -130,16 +129,16 @@ export class HerramientaComponent implements OnInit {
             });
 
         } else {
-            this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Herramientas');
+            this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Tareas');
             this.message = "Los campos con * son obligatorios.";
         }
     }
 
-     // Eliminar Herramienta
+     // Eliminar Tarea
      delete(id) {
 
         if (id != null) {
-            this.herramientaForm.id = id;
+            this.tareaForm.id = id;
         }
 
         swal({
@@ -154,11 +153,11 @@ export class HerramientaComponent implements OnInit {
 
             if (result.value) {
               
-                this.herramientaForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.tareaForm.usuarioModificacion = this.login.authUser.email.toString();
 
-            this.herramientaService.deleteHerramienta(this.herramientaForm).subscribe(res => {
+            this.tareaService.deleteTarea(this.tareaForm).subscribe(res => {
 
-                this.loadHerramientas();
+                this.loadTareas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
             }, (error) => {
@@ -172,10 +171,10 @@ export class HerramientaComponent implements OnInit {
 
     //Validacion:
 
-    public validate(herramientaForm: HerramientaModel): boolean {
+    public validate(tareaForm: TareaModel): boolean {
         let isValid = true;
 
-        if (!herramientaForm.descripcion) {
+        if (!tareaForm.descripcion) {
             isValid = false;
         }
 
@@ -184,13 +183,13 @@ export class HerramientaComponent implements OnInit {
 
     // Replica el modelo escogido
     upload(model){
-        this.herramientaForm = model; 
+        this.tareaForm = model; 
         this.visible = true;
     }
 
     // Limpia los campos
     clean() {
-        this.herramientaForm = new HerramientaModel();
+        this.tareaForm = new TareaModel();
         this.deleteFormHide = false;
         this.visible = false;
     }
