@@ -244,7 +244,7 @@ export class CargoComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Cargos") {
                     this.items = menu;
                     console.log(this.items);
 

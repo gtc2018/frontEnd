@@ -96,7 +96,7 @@ export class ActivityComponent implements OnInit {
   // Se inicia con estos metodos-------------------------------------
   ngOnInit() {
     this.validarPermisos();
-    this.getItemsEmpresas();
+    this.getItems();
     this.loadRegistroActividades();
     console.log(this);
   }
@@ -139,8 +139,8 @@ export class ActivityComponent implements OnInit {
   // Se valida si es administrador o empleado
   private validarPermisos(): void {
 
-    this.identificador = localStorage.rol;
-    if(this.identificador !== 1){
+    console.log(localStorage.rol);
+    if(localStorage.rol==="1"){
       this.administrador = true;
     }else {
       this.empleado = true;
@@ -149,7 +149,7 @@ export class ActivityComponent implements OnInit {
   }
 
   //
-  private getItemsEmpresas(): void {
+  private getItems(): void {
 
     this.permiso = new PermisoModel();
     // this.login.authUser.rolId;
@@ -160,7 +160,7 @@ export class ActivityComponent implements OnInit {
         console.log(this.menus = res);
         for (let menu of this.menus) {
             //this.items = menu.item;
-            if (menu.menu.descripcion === "Empleados") {
+            if (menu.menu.descripcion === "Actividades") {
                 this.items = menu;
                 console.log(this.items);
 

@@ -74,7 +74,7 @@
                     <label class="col-form-label">Área</label>
                     <input type="text"
                     class="form-control"
-                    placeholder="QA"
+                    placeholder="Area"
                     [(ngModel)]="area.descripcion"
                     name="area"
                     disabled>
@@ -215,8 +215,9 @@
 
                     <input style="margin-right:10px"
                     type="submit"
+                    (click)="saveOrUpdate()"
                     class="btn btn-success"
-                    [value]="submitText"/>
+                    value="Guardar"/>
 
                     <input style="margin-left:10px"
                     type="button"

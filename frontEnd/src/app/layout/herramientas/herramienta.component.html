@@ -106,7 +106,7 @@
                                             
                                             <th>
                                                 <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
-                                                    placeholder="Buscar por Cargo">
+                                                    placeholder="Buscar por Herramienta">
                                             </th>
                                         </tr>
                                     </thead>                        
@@ -121,14 +121,14 @@
                                                 <td>
                                                 <div class="btn-group" *ngIf="editar">
                                                     <a class="btn btn-default" >
-                                                    <i (click)="upload(c)"
+                                                    <i (click)="upload(h)"
                                                         class="fa fa-pencil-square-o fa-lg hand"
                                                         aria-hidden="true"
                                                         title="Editar" >
                                                     </i>
                                                     </a>
                                                     <a class="btn btn-default" *ngIf="eliminar">
-                                                    <i (click)="delete(c.id)"
+                                                    <i (click)="delete(h.id)"
                                                         class="fa fa-trash-o fa-lg hand"
                                                         aria-hidden="true"
                                                         title="Eliminar">

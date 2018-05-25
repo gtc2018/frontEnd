@@ -207,7 +207,7 @@ export class HerramientaComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Herramientas") {
                     this.items = menu;
                     console.log(this.items);
 

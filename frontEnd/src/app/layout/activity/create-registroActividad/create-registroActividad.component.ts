@@ -28,13 +28,14 @@ import { TareaModel } from '../../../model/tarea.model';
 import { AreaService } from '../../areas/servicios/area.service';
 import { AreaModel } from '../../../model/area.model';
 import { RegistroActividadService } from '../servicios/registroActividad.service';
+import { CrearRegistroActividadService } from '../servicios/crear-registroActividad.service';
 
 @Component({
   selector: 'app-create-registroActividad',
   templateUrl: './create-registroActividad.component.html',
   styleUrls: ['./create-registroActividad.component.scss'],
   providers: [ EnterpriseService, ProyectosService, RequestService, FaseService, TareaService, AreaService,
-    RegistroActividadService]
+    RegistroActividadService, CrearRegistroActividadService]
 })
 export class CreateRegistroActividadComponent implements OnInit {
 
@@ -49,6 +50,7 @@ export class CreateRegistroActividadComponent implements OnInit {
     private requests: RequerimientoModel[];
     private registroActividadForm: RegistroActividadModel;
     private area: AreaModel;
+    private isValid: boolean = true;
     submitText:string = "Guardar";
     mes:string;
     dia:string;
@@ -105,13 +107,14 @@ export class CreateRegistroActividadComponent implements OnInit {
     private tareaService: TareaService,
     private areaService: AreaService,
     private registroActividadService: RegistroActividadService,
+    private crearRegistroActividadService: CrearRegistroActividadService,
     private router: Router,
     private toastr: ToastrService,
     private login: AuthService) {
 
         this.registroActividadForm = new RegistroActividadModel();
         this.area = new AreaModel();
-        this.registroActividadForm.areaId = localStorage.area;
+        
 
 
     this.activity = [
@@ -122,35 +125,6 @@ export class CreateRegistroActividadComponent implements OnInit {
     ];
 
     this.respective = this.getRespective(this.viewDate,this.activity);
-
-    /*this.rQ = [
-        {id:1, code:"1003"},
-        {id:2, code:"1004"},
-        {id:3, code:"1005"},
-        {id:4, code:"1006"},
-        {id:5, code:"1007"}
-    ];
-
-    this.cL = [
-        {id:1, name:"Interno"},
-        {id:2, name:"Externo"},
-    ];
-
-    this.pR = [
-        {id:1, name:"Proyecto 1"},
-        {id:2, name:"Proyecto 2"},
-    ];
-
-    this.fA = [
-        {id:1, name:"Fase 1"},
-        {id:2, name:"Fase 2"},
-    ];
-
-    this.tA = [
-        {id:1, name:"Tarea 1"},
-        {id:2, name:"Tarea 2"},
-    ];*/
-
    
   }
 
@@ -158,18 +132,14 @@ export class CreateRegistroActividadComponent implements OnInit {
 
   ngOnInit() {
 
-    this.loadAreaByEmployee();
+    this.loadInic();
     this.loadEnterprises();
     this.loadFases();
     this.loadTareas();
-    //console.log("Primer Corte"+" "+this.varang.substr(0,5));
-    //console.log("Segundo Corte"+" "+this.varang.substr(5,6));
 
 }
 
   // Funciones -------------------------------------------
-
-  //Extraer los datos correspondientes al dia presente
 
 //Para cargar empresas
 
@@ -179,22 +149,18 @@ private loadEnterprises(): void {
     }, (error) => {
         console.log(error);
         this.toastr.error("Error al cargar los datos de Empresa");
-        // swal(
-        //     'Error',
-        //     error.error.message,
-        //     'error'
-        //   )
     });
 }
 
 // Trae el area del empleado en sesion
-private loadAreaByEmployee(): void {
+private loadInic(): void {
+
+    this.registroActividadForm.empleadoId = localStorage.empleado;
+    this.registroActividadForm.areaId = localStorage.area;
+    
      this.areaService.getAreaById(localStorage.area).subscribe(res => {   
       
         this.area = res;
-
-        console.log("LLEGO EL AREA");
-        console.log(this.area);
   
       },(error)=>{
       
@@ -272,31 +238,6 @@ loadRequestToProject(id: any): void {
     setNew(id: any, section:string): void {
         console.log(id);
 
-        /*if( section === "reqL"){
-            this.curRq = this.rQ.filter(value => value.id === parseInt(id));
-            this.activityForm.req = this.curRq[0].id;
-            }
-
-        if( section === "clientL"){
-                this.curCl = this.cL.filter(value => value.id === parseInt(id));
-                this.activityForm.client = this.curCl[0].id;
-             }
-
-        if( section === "projectL"){
-                this.curPr = this.pR.filter(value => value.id === parseInt(id));
-                this.activityForm.project = this.curPr[0].id;
-             }
-
-        if( section === "faseL"){
-                this.curFa = this.cL.filter(value => value.id === parseInt(id));
-                this.activityForm.fase = this.curFa[0].id;
-             }
-
-        if( section === "tareaL"){
-                this.curTa = this.cL.filter(value => value.id === parseInt(id));
-                this.activityForm.tarea = this.curTa[0].id;
-        }*/
-
       }
 
     getRespective(date:Date, forach:any){
@@ -330,6 +271,48 @@ loadRequestToProject(id: any): void {
 
    return ret;
 
+    }
+
+    //Para guardad o editar el registro
+    saveOrUpdate():void{
+
+        if(this.login.authUser !== undefined){
+            if(this.registroActividadForm.id === null){
+            this.registroActividadForm.usuarioCreacion = this.login.authUser.email.toString();
+        }else{
+            this.registroActividadForm.usuarioModificacion = this.login.authUser.email.toString();
+        }
+        }
+
+        this.isValid = this.validate(this.registroActividadForm);
+
+        if(this.isValid){
+
+            
+            this.registroActividadForm.diaTotal = this.registroActividadForm.duracion;
+            
+            console.log(this.registroActividadForm);
+
+            this.crearRegistroActividadService.saveOrUpdate(this.registroActividadForm).subscribe(res => {
+                this.toastr.success('Transacción satisfactoria', 'Gestión de Registro de Actividad');
+                this.clean();
+
+        },(error)=>{
+
+                this.toastr.error(error.error.message,"Error en la transacción");
+        });
+
+        }else{
+
+        }
+
+    }
+
+    ajustarFormatos(){
+
+        this.registroActividadForm.duracion = this.registroActividadForm.duracion + ":00";
+        this.registroActividadForm.horaInicio = this.registroActividadForm.horaInicio + ":00";
+        this.registroActividadForm.horaFin = this.registroActividadForm.horaFin + ":00";
     }
 
     //Al darle guardar
@@ -386,13 +369,7 @@ loadRequestToProject(id: any): void {
   ];
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    // if (isSameMonth(date, this.viewDate)) {
-    //   if (
-    //     (isSameDay(this.viewDate, date) && this.activeDayIsOpen === true) ||
-    //     events.length === 0
-    //   ) {
-    //     this.activeDayIsOpen = true;
-    //   } else {
+      
         this.activeDayIsOpen = true;
          this.viewDate = date;
          this.mes = date.toString().substr(4,3);
@@ -451,6 +428,8 @@ loadRequestToProject(id: any): void {
          }
 
          this.fechaTrabajo = this.año+"-"+this.mes+"-"+this.dia;
+
+         this.registroActividadForm.fechaTrabajo = this.fechaTrabajo;
 
     this.registroActividadService.getRegistreByEmployeeAndDate(localStorage.empleado, this.fechaTrabajo).subscribe(res => {   
       
@@ -523,10 +502,6 @@ loadRequestToProject(id: any): void {
 
         this.registroActividadForm.duracion= this.getDifTime(this.registroActividadForm.horaInicio,time);
 
-        // var initialHour = moment(this.activityForm.hourinitial,"HH: mm");
-
-        // var subtractHours =initialHour.diff(this.horaCero,'hours',true);
-
       }
 
       edit(data) {
@@ -543,7 +518,23 @@ loadRequestToProject(id: any): void {
 
       }
 
-  
+      //Validacion:
+
+    public validate(registroActividadForm: RegistroActividadModel): boolean {
+        let isValid = true;
+
+
+        if (!registroActividadForm.descripcion) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    //Limpiar Campos
+    clean(){
+        this.registroActividadForm = new RegistroActividadModel();
+    }
 
 
 }

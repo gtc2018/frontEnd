@@ -186,6 +186,8 @@ export class AlcanceComponent implements OnInit {
     // Replica el modelo escogido
     upload(model){
         this.alcanceForm = model; 
+        console.log(model);
+        console.log(this.alcanceForm);
         this.visible = true;
     }
 
@@ -208,7 +210,7 @@ export class AlcanceComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Alcances") {
                     this.items = menu;
                     console.log(this.items);
 
