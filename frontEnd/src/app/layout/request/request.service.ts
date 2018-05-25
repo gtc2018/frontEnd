@@ -43,7 +43,12 @@ export class RequestService {
     return this.http.get<EstadoModel[]>("http://localhost:8080/getAllEstados");      
   } 
 
+  public getRequestByProject(id): Observable<RequerimientoModel[]> {
+    this.proyecto.id=id;
+    console.log(id);
+    return this.http.post<RequerimientoModel[]>("http://localhost:8080/getAllRequestToProject", JSON.stringify(this.proyecto));
 
+  }
   public delete(request: RequerimientoModel): Observable<RestResponse> {
 
     return this.http.post<RestResponse>("http://localhost:8080/deleteRequerimiento", JSON.stringify(request) );
