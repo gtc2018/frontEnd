@@ -13,6 +13,11 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../shared/guard/auth.service';
 import swal from 'sweetalert2';
 import { PermisoModel } from '../../model/permiso.model';
+import { CotizacionModel } from '../../model/cotizacion.model';
+import { EnterpriseModel } from '../../model/enterprise';
+import { ProyectoModel } from '../../model/proyectos';
+import { EstadoModel } from '../../model/estado.model';
+import { FaseModel } from '../../model/fase';
 //import {CreateRequestComponent} from './create-request/create-request.component';
 
 @Component({
@@ -51,7 +56,15 @@ export class RequestComponent implements OnInit {
             private requestService: RequestService, 
             private toastr: ToastrService,
             private login:AuthService,
-            private menu: LoginService) {}
+            private menu: LoginService) {
+
+                this.filter.cotizacion = new CotizacionModel();
+                this.filter.cliente = new EnterpriseModel();
+                this.filter.proyecto = new ProyectoModel();
+                this.filter.estado =  new EstadoModel();
+                this.filter.fase = new FaseModel();
+                this.requestForm = new RequerimientoModel();
+            }
 
     ngOnInit() {
         this.loadRequests();
