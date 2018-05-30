@@ -393,6 +393,7 @@ export class EnterpriseComponent implements OnInit {
         if (this.login.authUser !== undefined) {
             if(this.enterprise.id === null){
                 this.enterprise.usuarioCreacion = this.login.authUser.email;
+                this.enterprise.estado = 1;
             }else {
                 this.enterprise.usuarioModificacion = this.login.authUser.email;
             }
@@ -411,7 +412,7 @@ export class EnterpriseComponent implements OnInit {
                 this.loadEnterprises();
                 this.enterprise = new EnterpriseModel();
                 this.enterprise.imagenEmpresa = 'assets/images/logo.png';
-                this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
+                this.toastr.success('Transacción satisfactoria, ya puede agregar los porcentajes por fase en editar', 'Gestión de Empresas');
                 // } else {
                 //     this.message = res.message;
                 //     this.isValid = false;

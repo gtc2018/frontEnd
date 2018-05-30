@@ -237,8 +237,6 @@ export class EmployeeComponent implements OnInit   {
         this.isValid = this.validate(this.employeeForm);
 
         if (this.isValid) {
-
-        delete this.employeeForm.celular;
         delete this.employeeForm.foto;
         
 
@@ -594,6 +592,9 @@ export class EmployeeComponent implements OnInit   {
             isValid = false;
          }
          if(!employeeForm.sueldo){
+            isValid = false;
+         }
+         if(!employeeForm.direccion){
             isValid = false;
          }
          if(!employeeForm.email){

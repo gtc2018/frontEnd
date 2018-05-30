@@ -11,6 +11,7 @@ import { RegistroActividadService } from './servicios/registroActividad.service'
 import { CrearRegistroActividadService } from './servicios/crear-registroActividad.service';
 import { RegistroActividadModel } from '../../model/registroActividad.model';
 import { PermisoModel } from '../../model/permiso.model';
+import swal from 'sweetalert2';
 
 @Component({
     templateUrl: './activity.html',
@@ -29,10 +30,6 @@ export class ActivityComponent implements OnInit {
   menus: any;
   private permiso: PermisoModel;
 
-  crear = false;
-  administrador: boolean = false;
-  empleado: boolean = false;
-
   messageEmail: string;
   activeColor: string = 'green';
   baseColor: string = '#ccc';
@@ -46,6 +43,9 @@ export class ActivityComponent implements OnInit {
 
   emailRegex: RegExp;
 
+  crear = false;
+  administrador: boolean = false;
+  empleado: boolean = false;
   dragging: boolean = false;
   deleteFormHide:boolean = false;
   visible: boolean = false;
@@ -148,7 +148,7 @@ export class ActivityComponent implements OnInit {
 
   }
 
-  //
+  //Se obtienen los permisos del empleado
   private getItems(): void {
 
     this.permiso = new PermisoModel();
@@ -175,6 +175,39 @@ export class ActivityComponent implements OnInit {
         console.log(error);
 
     });
+}
+
+//Eliminar un registro
+delete(id): void{
+
+    if (id != null) {
+      this.registroActividadForm.id = id;
+
+      swal({
+        title: 'Esta seguro?',
+        text: "El registro eliminado no podrá ser recuperado",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+    }).then((result) => {
+
+        if (result.value) {
+
+        this.registroActividadService.deleteRegistroActividad(this.registroActividadForm).subscribe(res => {
+
+            this.loadRegistroActividades();
+
+            this.toastr.success('Registro eliminado satisfactoriamente.');
+        }, (error) => {
+
+        });       
+            
+        }
+    })
+  }
+
 }
   
 }

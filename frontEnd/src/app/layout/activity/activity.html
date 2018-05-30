@@ -3,12 +3,12 @@
             <div [@routerTransition]>
                 <!-- <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header> -->
                 <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    
                         <h2 class=" page-header">
                             <i class="fa fa-fw fa-calendar-o" style="color:blue"></i> Registro de actividades
                         </h2>
     
-                    </div>
+                    
                 </div>
                 <div *ngIf="this.crear" style="text-align:right">
     
@@ -132,11 +132,11 @@
                                     <td>
                                         <div class="btn-group">
                                             <a class="btn btn-default">
-                                                <i (click)="upload(e)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                                <i [routerLink]="['create', r.id]" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
                                                 </i>
                                             </a>
                                             <a class="btn btn-default">
-                                                <i (click)="delete(e)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                                <i (click)="delete(r.id)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
                                                 </i>
                                             </a>
                                         </div>

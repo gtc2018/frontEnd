@@ -36,8 +36,10 @@ export class PorcentajePorFaseComponent implements OnInit {
     enterprises: EnterpriseModel[];
     fases: FaseModel[];
     porcentajePorFase: PorcentajePorFaseModel[];
+    porcentajePorFaseEnter: PorcentajePorFaseModel[];
 
     porcentajePorFaseForm: PorcentajePorFaseModel;
+    porcentajePorFaseRecord = new PorcentajePorFaseModel;
     filter: PorcentajePorFaseModel = new PorcentajePorFaseModel();
     private permiso: PermisoModel;
 
@@ -49,6 +51,11 @@ export class PorcentajePorFaseComponent implements OnInit {
     imageSrc: string = 'assets/images/avatar.png';
 
     stateExpand: number = 1;
+    porcentaje: number = 0;
+    sobrePorcentaje: number = 0;
+    editPorcentaje: number = 0;
+    restPorcentaje: number = 0;
+    nuevaRest: number = 0;
 
     emailRegex: RegExp;
 
@@ -80,6 +87,7 @@ export class PorcentajePorFaseComponent implements OnInit {
     ) {
 
         this.porcentajePorFaseForm = new PorcentajePorFaseModel();
+        this.porcentajePorFaseRecord = new PorcentajePorFaseModel();
 
         if(this.login.authUser !== undefined){
 
@@ -138,11 +146,78 @@ export class PorcentajePorFaseComponent implements OnInit {
             });
     }
 
+    //Calcular el valor del porcentaje de una empresa
+
+  private loadPorcentajePorFaseForInterprise(id): void {
+
+    console.log("PILLATE QUE ENTRE WN " + id);
+
+    this.porcentajePorFaseRecord.id = id;
+
+    this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseRecord).subscribe(res => {   
+      
+      this.porcentajePorFaseEnter = res;
+
+      for(let p of res){
+
+        this.porcentaje = this.porcentaje + p.porcentaje;
+      }
+
+      if(this.porcentaje > 100){
+        this.sobrePorcentaje = 1;
+      }
+
+      if(this.porcentaje === 100){
+          console.log("WN ME PASE DE LA LINEA");
+          this.sobrePorcentaje = 1;
+      }
+      
+      console.log("EL PORCENTAJE ES : " + this.porcentaje);
+
+      this.porcentaje = 0;
+    },(error)=>{
+    console.log(error);
+
+      this.toastr.error("Error al cargar los datos");
+    });
+  }
+
     //Guardar o editar PorcentajePorFase
 
     save():void{
 
-        console.log(this.login.authUser);
+
+        this.porcentajePorFaseRecord.id = this.porcentajePorFaseForm.clienteId;
+        
+        this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseRecord).subscribe(res => {   
+      
+            this.porcentajePorFaseEnter = res;
+            this.porcentaje = 0;
+      
+            for(let p of res){
+      
+              this.porcentaje = this.porcentaje + p.porcentaje;
+            }
+
+            this.porcentaje = this.porcentaje + this.porcentajePorFaseForm.porcentaje;
+
+            if(this.editPorcentaje === 1){
+
+                this.porcentaje = this.porcentaje - this.nuevaRest;
+            }
+             
+      
+            if(this.porcentaje > 100){
+              this.sobrePorcentaje = 1;
+            }
+            this.porcentaje = 0;
+   
+        if(this.sobrePorcentaje === 1){
+            this.toastr.error("El porcentaje asignado a la empresa , esta por encima del 100%");
+            this.sobrePorcentaje = 0;
+        }else{
+
+            console.log(this.login.authUser);
 
         if(this.login.authUser !== undefined){
             if(this.porcentajePorFaseForm.id === null){
@@ -173,6 +248,15 @@ export class PorcentajePorFaseComponent implements OnInit {
             this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Porcentaje Por Fase');
             this.message = "Los campos con * son obligatorios.";
         }
+
+        }
+
+    },(error)=>{
+        console.log(error);
+    
+          this.toastr.error("Error al cargar los datos");
+        });
+        
     }
 
      // Eliminar PorcentajePorFase
@@ -218,6 +302,7 @@ export class PorcentajePorFaseComponent implements OnInit {
         this.porcentajePorFaseForm = new PorcentajePorFaseModel();
         this.deleteFormHide = false;
         this.visible = false;
+        this.editPorcentaje = 0;
     }
 
     //Validacion:
@@ -246,6 +331,29 @@ export class PorcentajePorFaseComponent implements OnInit {
         this.porcentajePorFaseForm.fasesId = this.porcentajePorFaseForm.fases.id;
         this.porcentajePorFaseForm.clienteId = this.porcentajePorFaseForm.cliente.id;
         this.visible = true;
+        this.editPorcentaje = 1;
+        this.nuevaRest = this.porcentajePorFaseForm.porcentaje;
+
+        this.porcentajePorFaseRecord.id = this.porcentajePorFaseForm.clienteId;
+
+        this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseRecord).subscribe(res => {   
+      
+           this.porcentajePorFaseEnter = res;
+
+            for(let p of res){
+
+                this.restPorcentaje = this.restPorcentaje + p.porcentaje;
+            }
+
+            this.restPorcentaje;
+            this.toastr.warning("Tener en cuenta el total de la empresa : "+this.restPorcentaje+ "%");
+            this.restPorcentaje = 0;
+
+            },(error)=>{
+            console.log(error);
+
+            this.toastr.error("Error al cargar los datos");
+            });
     }
 
     //Permisos

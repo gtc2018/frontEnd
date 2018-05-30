@@ -30,47 +30,61 @@
                             <div class="col-lg-12">
                                 <fieldset class="form-group">
                                     <form class="form-inline" ngf>
-                                        <div class="form-group">                                    
+                                        <div class="form-group">
+                                            
+                                            <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                           
-                                            <div _ngcontent-c7="" class="form-group input-group"> 
-                                                <label for="exampleInputName2" class=" col-form-label-sm ">*Empresa :</label>
-                                                <select id="inputState" class="form-control-sm input-underline col-8" [(ngModel)]="porcentajePorFaseForm.clienteId" name="enterprise">
-                                                    <option value="" disabled>Seleccione cliente</option>
-                                                    <option *ngFor="let e of enterprises" [value]="e.id">{{e.descripcion}}</option>
-                                                </select>                                                     
-                                            </div>
-
-                                            <div _ngcontent-c7="" class="form-group input-group"> 
-                                                <label for="exampleInputName1" class=" col-form-label-sm ">*Fase :</label>
-                                                <select id="inputState" class="form-control-sm input-underline col-8" [(ngModel)]="porcentajePorFaseForm.fasesId" name="fase">
-                                                    <option value="" disabled>Seleccione cliente</option>
-                                                    <option *ngFor="let f of fases" [value]="f.id">{{f.descripcion}}</option>
-                                                </select>                                                     
-                                            </div>
-
-                                            <div _ngcontent-c7="" class="form-group input-group">
-                                                <label class=" col-form-label-sm ">*Porcentaje :</label>  
-                                                <input type="number" class="form-control-sm input-underline col-3" name="nombre" id="nombre" placeholder="%" [(ngModel)]="porcentajePorFaseForm.porcentaje" required >                                    
-                                            </div>
-
-                                            <div *ngIf="crear">
-                                                <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
-                                                    value="">
-                                                </button>
-                                            </div>
-                                
-                                            <div *ngIf="visible">
-                                                <hr class="hrv2">
-                                            </div>
-                              
-                                            <div *ngIf="visible" style="text-align:left">
-                                                <div>
-                                                    <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
-                                                        value="">
-                                                        <img [src]="'assets/images/escoba.ico'" width="20" height="20">
-                                                    </button>
+                                                <div class="form-row col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                                                    <div _ngcontent-c7="" class="form-group input-group"> 
+                                                        <label for="exampleInputName2" class=" col-form-label-sm ">*Empresa :</label>
+                                                        <select id="inputState" class="form-control-sm input-underline col-8" [(ngModel)]="porcentajePorFaseForm.clienteId" name="enterprise">
+                                                            <option value="" disabled>Seleccione cliente</option>
+                                                            <option *ngFor="let e of enterprises" [value]="e.id">{{e.descripcion}}</option>
+                                                        </select>
+                                                    </div>                                                         
                                                 </div>
-                                            </div>
+
+                                                <div class="form-row col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                                    <div _ngcontent-c7="" class="form-group input-group"> 
+                                                        <label for="exampleInputName1" class=" col-form-label-sm ">*Fase :</label>
+                                                        <select id="inputState" class="form-control-sm input-underline col-9" [(ngModel)]="porcentajePorFaseForm.fasesId" name="fase">
+                                                            <option value="" disabled>Seleccione Fase</option>
+                                                            <option *ngFor="let f of fases" [value]="f.id">{{f.descripcion}}</option>
+                                                        </select>                                                     
+                                                    </div>
+                                                </div>    
+
+                                                <div class="form-row col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                                    <div _ngcontent-c7="" class="form-group input-group">
+                                                        <label class=" col-form-label-sm ">*Porcentaje :</label>  
+                                                        <input type="number" class="form-control-sm input-underline col-2" name="nombre" id="nombre" placeholder="%" [(ngModel)]="porcentajePorFaseForm.porcentaje" required >                                    
+                                                    </div>
+                                                </div>    
+
+                                                <div class="form-row col-xs-3 col-sm-3 col-md-3 col-lg-3">
+
+                                                    <div *ngIf="crear">
+                                                        <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                                            value="">
+                                                        </button>
+                                                    </div>
+                                        
+                                                    <div *ngIf="visible">
+                                                        <hr class="hrv2">
+                                                    </div>
+                                    
+                                                    <div *ngIf="visible" style="text-align:left">
+                                                        <div>
+                                                            <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                                                value="">
+                                                                <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>    
+
+                                                
+                                            </div>    
                                         </div> 
                                     </form>
                                 </fieldset>
@@ -173,12 +187,6 @@
                                 </table>
                             </div>    
                         </div>
-
-                        <div class="center">
-                            <button type="reset" class="btn btn-primary">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver</button>
-                        </div>
-
                     </form>
                 </div>    
             </div>  

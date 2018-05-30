@@ -41,6 +41,7 @@ export class FaseComponent implements OnInit {
     editar = false;
     eliminar = false;
     leer = false;
+    limpiar: boolean = false;
 
     toggleDivCreateMenus() {
         this.visible = !this.visible;
@@ -72,6 +73,7 @@ export class FaseComponent implements OnInit {
 
     private clearModel(): void {
         this.fase.descripcion = "";
+        this.limpiar = false
     }
 
 
@@ -136,6 +138,7 @@ export class FaseComponent implements OnInit {
         sessionStorage.setItem('fase', JSON.stringify(fase));
         this.fase = JSON.parse(sessionStorage.getItem("fase"));
         this.visible = true;
+        this.limpiar = true;
 
     }
 

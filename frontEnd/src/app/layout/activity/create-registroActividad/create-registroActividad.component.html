@@ -3,15 +3,23 @@
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <!--<div [@routerTransition]>-->
             <div class="row">
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    
+                    <div class="form-row col-xs-10 col-sm-10 col-md-10 col-lg-10">
                         <h2 class=" page-header">
-                            Registro de Actividades
+                            <i class="fa fa-fw fa-calendar-o" style="color:blue"></i> Registro de actividades
                         </h2>
-
-                    </div>
-
+                    </div>   
                 </div>
                 <hr>
+                <div class="card mb-3 ">
+                        <div class=" card-header center-sc" *ngIf="newReg">
+                            Nuevo registro
+                        </div>
+
+                        <div class=" card-header center-sc" *ngIf="edtReg">
+                            Editar registro
+                        </div>
+                </div>
 
           <form  (ngSubmit)="save()" ngNativeValidate>
 
@@ -19,7 +27,9 @@
 
             <div class=" form-row col-xs-6 col-sm-6 col-md-6 col-lg-6">
 
-                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                            <div class="form-row col-xs-9 col-sm-9 col-md-9 col-lg-9">
                             <label class=" col-form-label ">*Cliente</label>
                             <select #selectCl
                 [(ngModel)]="registroActividadForm.clienteId"
@@ -31,9 +41,14 @@
                             {{e.descripcion}}
                         </option>
                         </select>
+                            </div>
+                            <div class="form-row col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                    <label class=" col-form-label "></label>
+                                    <img [src]="fotoEmpresa" width="80" height="60"> 
+                            </div>
                     </div>
 
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " *ngIf="proyecto">
                 <label class=" col-form-label ">*Proyecto</label>
                 <select #selectPr
                 [(ngModel)]="registroActividadForm.proyectoId"
@@ -47,9 +62,19 @@
                         </select>
               </div>
 
+              <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 " *ngIf="proyectolb">
+                <label class="col-form-label">Proyecto</label>
+                <input type="text"
+                class="form-control"
+                placeholder="Proyecto"
+                [(ngModel)]="descProyecto"
+                name="proyecto"
+                disabled>
+              </div>
 
 
-              <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+              <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 " *ngIf="requerimiento">
                 <label class="col-form-label">*ID-REQ</label>
                 <select #selectRq
                 [(ngModel)]="registroActividadForm.requerimientoId"
@@ -61,14 +86,17 @@
                             {{req.descripcion}}
                         </option>
                 </select>
-                <!-- <input type="text"
-                 [(ngModel)]="activityForm.req"
-                 name="req"
-                class="form-control"
-                 placeholder="Nombre del cargo"> -->
               </div>
 
-
+              <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 " *ngIf="requerimientolb">
+                <label class="col-form-label">Requerimiento</label>
+                <input type="text"
+                class="form-control"
+                placeholder="requerimiento"
+                [(ngModel)]="descRequerimiento"
+                name="requerimiento"
+                disabled>
+              </div>
 
               <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                     <label class="col-form-label">Área</label>
@@ -213,15 +241,27 @@
                   <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
 
-                    <input style="margin-right:10px"
+                    <input *ngIf="crear" style="margin-right:10px"
                     type="submit"
                     (click)="saveOrUpdate()"
                     class="btn btn-success"
                     value="Guardar"/>
 
-                    <input style="margin-left:10px"
+                    <input *ngIf="limpiar" style="margin-right:10px"
+                    type="submit"
+                    (click)="clean()"
+                    class="btn btn-warning"
+                    value="Limpiar"/>
+
+                    <input *ngIf="cancelarEdt" style="margin-left:10px"
                     type="button"
-                    routerLink="../"
+                    routerLink="../../"
+                    class="btn btn-danger"
+                    value="Cancelar" />
+
+                    <input *ngIf="cancelarNew" style="margin-left:10px"
+                    type="button"
+                    routerLink="./../"
                     class="btn btn-danger"
                     value="Cancelar" />
                         
@@ -302,7 +342,9 @@
                 </div>-->
                 <div class="card mb-3">
                     <div class="card-header">
-                            <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <label class=" col-form-label center-sc"
+                            style="padding-right:10px">Actividades</label>
+                            <!--<div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
                             <div class="col-auto">
                                 <div class="input-group">
@@ -328,7 +370,7 @@
                             </div>
 
 
-                           </div>
+                           </div>-->
                     </div>
                     <div class="card-body table-responsive">
                         <table class="table table-hover table-striped">
@@ -343,7 +385,7 @@
                                 <th>Hora Inicio</th>
                                 <th>Hora Fin</th>
                                 <th>Duración</th>
-                                <th>Editar</th>
+                                <th>Detalle</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -376,8 +418,8 @@
                                     <span [innerHTML]="reg.duracion" ></span>
                                 </td>
                                 <td>
-                                    <span class="fa fa-pencil icon-table sc-span"
-                                    (click)="edit(act)"
+                                    <span class="fa fa-eye icon-table sc-span center-sc"
+                                    (click)="edit(reg)"
                                     role="button"
                                     aria-hidden="true"
                                     uib-tooltip="Detalles"

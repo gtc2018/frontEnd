@@ -9,6 +9,9 @@ const routes: Routes = [
     },
     {
         path:'create', component: CreateRegistroActividadComponent
+    },
+    {
+        path:'create/:id', component: CreateRegistroActividadComponent
     }
 ];
 

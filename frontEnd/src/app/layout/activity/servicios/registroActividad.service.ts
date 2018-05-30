@@ -24,7 +24,8 @@ export class RegistroActividadService {
 
   //SERVICIO CONSULTAR UN REGISTRO POR ID
   public getRegistroActividadById(s): Observable<RegistroActividadModel>{
-    return this.Http.post<RegistroActividadModel>("http://localhost:8080/getRegistroActividadById", s);   
+    this.registroActividad.id = s;
+    return this.Http.post<RegistroActividadModel>("http://localhost:8080/findByRegistroActividadId", JSON.stringify(this.registroActividad));   
   }
  
   //SERVICIO ACTUALIZAR UN REGISTRO
