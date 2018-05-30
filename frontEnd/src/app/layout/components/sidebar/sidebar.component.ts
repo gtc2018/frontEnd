@@ -18,12 +18,14 @@ export class SidebarComponent implements OnInit {
     hideGroup1: boolean = false;
     hideGroup2: boolean = false;
     hideGroup3: boolean = false;
+    hideGroup4: boolean = false;
 
 
     data = [];
     transacciones = [];
     basicas = [];
     seguridad = [];
+    parametros = [];
     menus: any;
     response: any;
     items: any;
@@ -33,6 +35,7 @@ export class SidebarComponent implements OnInit {
     icon: string = "fa-caret-left";
     iconG2: string = "fa-caret-left";
     iconG3: string = "fa-caret-left";
+    iconG4: string = "fa-caret-left";
 
     eventGroup1() {
 
@@ -75,6 +78,21 @@ export class SidebarComponent implements OnInit {
         } else {
 
             this.iconG3 = "fa fa-caret-left";
+
+        }
+    }
+
+    eventGroup4() {
+
+        this.hideGroup4 = !this.hideGroup4;
+
+        if (this.hideGroup4 === true) {
+
+            this.iconG4 = "fa fa-caret-down";
+
+        } else {
+
+            this.iconG4 = "fa fa-caret-left";
 
         }
     }
@@ -130,6 +148,13 @@ export class SidebarComponent implements OnInit {
                     console.log(" ============Seguridad:=============== ");
                     this.seguridad.push(menu.menu);
                     console.log(this.seguridad);
+
+                }
+
+                if ((menu.menu.grupo === "12") && (menu.menu.parent === "1")) {
+                    console.log(" ============Seguridad:=============== ");
+                    this.parametros.push(menu.menu);
+                    console.log(this.parametros);
 
                 }
 

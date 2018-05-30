@@ -36,10 +36,12 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   filterEnterprise : EnterpriseModel[];
   fases: FaseModel[];
   porcentajePorFase: PorcentajePorFaseModel[];
+  porcentajePorFaseEnter: PorcentajePorFaseModel[];
   
   unaEmpresa: EnterpriseModel;
   porcentajePorFaseForm: PorcentajePorFaseModel;
   porcentajePorFaseModal: PorcentajePorFaseModel;
+  porcentajePorFaseRecord: PorcentajePorFaseModel;
   private permiso: PermisoModel;
 
   filter: PorcentajePorFaseModel = new PorcentajePorFaseModel();
@@ -53,6 +55,12 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   empresa: String;
 
   stateExpand: number = 1;
+  nuevaRest: number = 0;
+  editPorcentaje: number = 0;
+  restPorcentaje: number = 0;
+  porcentaje: number = 0;
+  sobrePorcentaje: number = 0;
+  xmodal: number = 0;
 
   emailRegex: RegExp;
 
@@ -89,6 +97,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
     this.unaEmpresa = new EnterpriseModel();
     this.porcentajePorFaseForm = new PorcentajePorFaseModel();
     this.porcentajePorFaseModal = new PorcentajePorFaseModel();
+    this.porcentajePorFaseRecord= new PorcentajePorFaseModel();
 
     if(this.login.authUser !== undefined){
 
@@ -152,50 +161,124 @@ export class CreateDetailComponent implements OnInit, OnChanges {
 
   private loadPorcentajePorFaseForInterprise(): void {
 
-    this.porcentajePorFaseModal.id = this.empresaId;
+    if(this.editPorcentaje === 2){
+
+      this.porcentajePorFaseModal.id = this.empresaId;
 
     this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseModal).subscribe(res => {   
       
       this.porcentajePorFase = res;
       
-
     },(error)=>{
-    console.log(error);
+      console.log(error);
 
       this.toastr.error("Error al cargar los datos");
     });
+
+    }else{
+
+      this.porcentajePorFaseModal.id = this.empresaId;
+
+    this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseModal).subscribe(res => {   
+      
+      this.porcentajePorFase = res;
+
+      for(let p of res){
+        this.restPorcentaje = this.restPorcentaje + p.porcentaje;
+      }
+
+      this.restPorcentaje;
+      this.toastr.warning("Tener en cuenta el porcentaje total de la empresa : "+this.restPorcentaje+ "%");
+      this.xmodal = this.restPorcentaje;
+      this.restPorcentaje = 0;
+      
+    },(error)=>{
+      console.log(error);
+
+      this.toastr.error("Error al cargar los datos");
+    });
+      
+    }
+
+    
   }
 
   //Guardar o editar PorcentajePorFase
 
   save():void{
 
-    console.log(this.login.authUser);
+    this.porcentajePorFaseRecord.id = this.empresaId;
+        
+        this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseRecord).subscribe(res => {   
+      
+            this.porcentajePorFaseEnter = res;
+            this.porcentaje = 0;
+      
+            for(let p of res){
+      
+              this.porcentaje = this.porcentaje + p.porcentaje;
+            }
 
-    if(this.login.authUser !== undefined){
-        this.porcentajePorFaseForm.usuarioCreacion = this.login.authUser.email.toString();
-    }
+            this.porcentaje = this.porcentaje + this.porcentajePorFaseForm.porcentaje;
 
-    this.porcentajePorFaseForm.clienteId = this.empresaId;
-    this.isValid = this.validate(this.porcentajePorFaseForm);
+            if(this.editPorcentaje === 1){
 
-    if (this.isValid) {
+                this.porcentaje = this.porcentaje - this.nuevaRest;
+                this.editPorcentaje = 0;
+            }
+             
+      
+            if(this.porcentaje > 100){
+              this.sobrePorcentaje = 1;
+            }
+            this.xmodal = this.restPorcentaje;
+            this.porcentaje = 0;
+   
+        if(this.sobrePorcentaje === 1){
+            this.toastr.error("El porcentaje asignado a la empresa , esta por encima del 100%");
+            this.sobrePorcentaje = 0;
+        }else{
 
-      this.crearPorcentajePorFaseService.saveOrUpdate(this.porcentajePorFaseForm).subscribe(res => {
-        this.porcentajePorFaseForm = new PorcentajePorFaseModel();
-        this.toastr.success('Transacción satisfactoria', 'Gestión de Porcentaje Por Fase');
-        this.loadPorcentajePorFaseForInterprise();
+            console.log(this.login.authUser);
 
-      },(error)=>{
+        if(this.login.authUser !== undefined){
+            if(this.porcentajePorFaseForm.id === null){
+                this.porcentajePorFaseForm.usuarioCreacion = this.login.authUser.email.toString();
+            }else {
+                this.porcentajePorFaseForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
+        }
+
+        console.log(this.porcentajePorFaseForm);
+        this.isValid = this.validate(this.porcentajePorFaseForm);
+
+        if (this.isValid) {
+
+            this.crearPorcentajePorFaseService.saveOrUpdate(this.porcentajePorFaseForm).subscribe(res => {
+                    this.porcentajePorFaseForm = new PorcentajePorFaseModel();
+                    this.toastr.success('Transacción satisfactoria', 'Gestión de Porcentaje Por Fase');
+                    this.editPorcentaje = 2;
+                    this.loadPorcentajePorFaseForInterprise();
+                    this.clean();
+
+            },(error)=>{
+                console.log(error);
+
+                    this.toastr.error(error.error.message,"Error en la transacción");
+            });
+
+        } else {
+            this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Porcentaje Por Fase');
+            this.message = "Los campos con * son obligatorios.";
+        }
+
+        }
+
+    },(error)=>{
         console.log(error);
-
-        this.toastr.error(error.error.message,"Error en la transacción");
-      });
-
-    } else {
-        //this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Porcentaje Por Fase');
-        this.message = "Los campos con * son obligatorios.";
-    }
+    
+          this.toastr.error("Error al cargar los datos");
+        });
 }
 
  // Eliminar PorcentajePorFase
@@ -260,10 +343,31 @@ public validate(porcentajePorFaseForm: PorcentajePorFaseModel): boolean {
 
 // Replica el modelo escogido
 upload(model){
-    this.porcentajePorFaseForm = model; 
-    this.porcentajePorFaseForm.clienteId = this.porcentajePorFaseForm.cliente.id;
-    this.porcentajePorFaseForm.fasesId = this.porcentajePorFaseForm.fases.id;
-    this.visible = true;
+  this.porcentajePorFaseForm = model; 
+  this.porcentajePorFaseForm.clienteId = this.porcentajePorFaseForm.cliente.id;
+  this.porcentajePorFaseForm.fasesId = this.porcentajePorFaseForm.fases.id;
+  this.visible = true;
+  this.editPorcentaje = 1;
+  this.nuevaRest = this.porcentajePorFaseForm.porcentaje;
+  this.porcentajePorFaseRecord.id = this.porcentajePorFaseForm.clienteId;
+
+  this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseRecord).subscribe(res => {   
+      
+    this.porcentajePorFaseEnter = res;
+
+    for(let p of res){
+      this.restPorcentaje = this.restPorcentaje + p.porcentaje;
+    }
+
+    this.restPorcentaje;
+    this.toastr.warning("Tener en cuenta el porcentaje total de la empresa : "+this.restPorcentaje+ "%");
+    this.restPorcentaje = 0;
+
+  },(error)=>{
+    console.log(error);
+
+    this.toastr.error("Error al cargar los datos");
+  });
 }
 
 //Limpiar el formulario

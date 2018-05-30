@@ -43,7 +43,19 @@
             </li>
 
         </div>
-
+        
+        <!--Modulo Parametros-->
+        <li (click)="eventGroup4()" class="list-group-item hand">
+            <i class="fa fa-cogs"></i>&nbsp; Parametros
+            <i class="fa fa-fw {{iconG4}}"></i>
+        </li>
+    
+        <!--Contenedor Parametros-->
+        <div *ngIf="hideGroup4">
+            <li *ngFor="let menu of parametros" [routerLink]="[menu.url]" [routerLinkActive]="['router-link-active']" class="list-group-item subitem ">
+                <i class="{{ menu.icono }}"></i>&nbsp; {{ menu.descripcion | translate }}
+            </li>
+        </div>
 
     </ul>
 

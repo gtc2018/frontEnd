@@ -346,7 +346,7 @@ export class PorcentajePorFaseComponent implements OnInit {
             }
 
             this.restPorcentaje;
-            this.toastr.warning("Tener en cuenta el total de la empresa : "+this.restPorcentaje+ "%");
+            this.toastr.warning("Tener en cuenta el porcentaje total de la empresa : "+this.restPorcentaje+ "%");
             this.restPorcentaje = 0;
 
             },(error)=>{
