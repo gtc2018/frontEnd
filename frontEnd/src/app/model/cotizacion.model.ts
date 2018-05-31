@@ -26,7 +26,7 @@ export class CotizacionModel extends ParentEntity{
   public alcanceId: string;
 
   public codigoRequerimiento: String;
-  public descripcion: String; 
+  public descripcionRqm: String; 
   public valorHora: Number;
   public numeroRecurso: Number;
   public fechaSolicitud: String;

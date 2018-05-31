@@ -77,6 +77,48 @@ export class UsuarioComponent implements OnInit {
 
     icon: string = "fa fa-caret-left";
 
+    
+
+    public model: any = { date: { year: 2018, month: 10, day: 9 } };
+
+    constructor(
+        private proyectoService: ProyectosService,
+        private enterpriseService: EnterpriseService,
+        private employeeService: EmployeeService,
+        private usuarioService: UsuarioService,
+        private crearUsuarioService: CrearUsuarioService,
+        private router: Router,
+        private toastr: ToastrService,
+        private login: AuthService
+    )
+
+    
+    {
+
+        this.usuario = new UsuarioModel();
+        this.fotoEmpleado = "assets/images/avatar.png";
+        this.fotoEmpresa = "assets/images/logo.png";
+
+        if (sessionStorage.getItem("usuario")) {
+            this.user = JSON.parse(sessionStorage.getItem("usuario"));
+
+            console.log(this.user);
+
+            this.usuario.usuarioCreacion = this.user.id.toString();
+
+        } else {
+            this.user = new UsuarioModel();
+        }
+        //this.usuario = new UsuarioModel();
+    }
+
+    ngOnInit() {
+        this.loadUsuarios();
+        this.loadEnterprises();
+        this.loadUsers();
+        this.loadEmployee();
+    }
+
     clean(){
 
         this.usuario = new UsuarioModel();
@@ -148,44 +190,6 @@ export class UsuarioComponent implements OnInit {
     //     // other options...
     //     dateFormat: 'dd.mm.yyyy',
     // };
-
-    public model: any = { date: { year: 2018, month: 10, day: 9 } };
-
-    constructor(
-        private proyectoService: ProyectosService,
-        private enterpriseService: EnterpriseService,
-        private employeeService: EmployeeService,
-        private usuarioService: UsuarioService,
-        private crearUsuarioService: CrearUsuarioService,
-        private router: Router,
-        private toastr: ToastrService,
-        private login: AuthService
-    )
-    {
-
-        this.usuario = new UsuarioModel();
-        this.fotoEmpleado = "assets/images/avatar.png";
-        this.fotoEmpresa = "assets/images/logo.png";
-
-        if (sessionStorage.getItem("usuario")) {
-            this.user = JSON.parse(sessionStorage.getItem("usuario"));
-
-            console.log(this.user);
-
-            this.usuario.usuarioCreacion = this.user.id.toString();
-
-        } else {
-            this.user = new UsuarioModel();
-        }
-        //this.usuario = new UsuarioModel();
-    }
-
-    ngOnInit() {
-        this.loadUsuarios();
-        this.loadEnterprises();
-        this.loadUsers();
-        this.loadEmployee();
-    }
 
     loadUsers(){
 
@@ -473,6 +477,8 @@ export class UsuarioComponent implements OnInit {
 
                     this.confirm=undefined;
 
+                    this.deleteFormHide = false;
+
                     // console.log(this.router.url);
 
                     //         } else {
@@ -503,7 +509,7 @@ export class UsuarioComponent implements OnInit {
 
             }
 
-            this.clean();
+            // this.clean();
 
         } else {
             console.log(this.messageEmail);

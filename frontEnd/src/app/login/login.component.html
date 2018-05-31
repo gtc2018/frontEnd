@@ -27,13 +27,13 @@
 
             <p class="field" style="padding-bottom: 4px;">
 
-                    <input type="text" name="email" value="" placeholder="Ingrese su Usuario" ngModel required>
+                    <input type="text" name="email" value="" placeholder="Ingrese su Usuario" ngModel [required]="true">
                     <i class="fa fa-user fa-lg"></i>
 
             </p>
 
             <p class="field">
-					<input id="pswd" type="password" name="password" value="" ngModel placeholder="Ingrese su Clave" required>
+					<input id="pswd" type="password" name="password" value="" ngModel placeholder="Ingrese su Clave" [attr.required]="true">
 					<i class="icon-login fa fa-lock fa-lg"></i>
             </p>
 

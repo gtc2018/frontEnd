@@ -110,12 +110,12 @@ export class QuotationComponent implements OnInit {
           estadoId: {
             title: 'Estado'
           },
-          sistemaId: {
-            title: 'Sistema'
-          },
-          herramientaId: {
-            title: 'Herramienta'
-          },
+          // sistemaId: {
+          //   title: 'Sistema'
+          // },
+          // herramientaId: {
+          //   title: 'Herramienta'
+          // },
           fechaEntrega: {
             title: 'Fecha'
           },
@@ -234,11 +234,11 @@ export class QuotationComponent implements OnInit {
 
               quo.proyectoId = quo.proyecto.descripcion;
 
-              quo.estadoId = quo.estado.descripcion;
+              // quo.estadoId = quo.estado.descripcion;
 
-              quo.sistemaId = quo.sistema.descripcion;
+              // quo.sistemaId = quo.sistema.descripcion;
 
-              quo.herramientaId = quo.herramienta.descripcion;
+              // quo.herramientaId = quo.herramienta.descripcion;
 
 
             }

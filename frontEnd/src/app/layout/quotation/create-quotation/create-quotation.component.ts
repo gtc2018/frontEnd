@@ -1,12 +1,19 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ButtonViewComponent } from '../quotation.component';
-import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons, NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ModalQComponent } from '../modal-q/modal-q.component';
 import { CreateDetailComponent } from '../modal-q/template/create-detail/create-detail';
+
 import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+
 import { ProyectosService } from '../../proyectos/proyectos.service';
 import { EnterpriseService } from '../../enterprise/enterprise.service';
 import { QuotationService } from '../quotation.service';
+import { EnterpriseModel } from '../../../model/enterprise';
+import { ToastrService } from 'ngx-toastr';
+import { ProyectoModel } from '../../../model/proyectos';
+import { CotizacionModel } from '../../../model/cotizacion.model';
 
 @Component({
   selector: 'app-create-quotation',
@@ -19,30 +26,46 @@ export class CreateQuotationComponent implements OnInit {
     //Variables
 
     systemInit: { id: number; name: string; value: boolean; }[];
-    // toolInit: { id: number; name: string; value: boolean; }[];
     toolInit=[];
+    systemItem= [];
+    toolItem= [];
 
-    modelDateDS;
-    modelDateSol;
-    modelDateEnt;
+    modelDateSol: NgbDateStruct;
+    modelDateEnt: NgbDateStruct;
+
+    quotation = new CotizacionModel();
+
+    enterprises: EnterpriseModel[];
+    proyectos: ProyectoModel[];
 
     closeResult: string;
 
-    systemItem= [];
-
-
-    toolItem= [];
+    updating:boolean=false;
 
     //Funciones
 
   ngOnInit() {
+
+    if (this.route.snapshot.params.id){
+        
+      this.uploadEvents();
+
+
+    }else{
+
+        console.log("Estoy Creando");
+    }
+
+    this.loadEnterprises();
   }
 
   constructor(private modalService: NgbModal,
     private quotationService: QuotationService,
     private enterpriseService: EnterpriseService,
     private proyectoService: ProyectosService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private _route: Router,
+    private toastr: ToastrService) {
 
         console.log(route.snapshot.params.id);
 
@@ -167,7 +190,97 @@ private getDismissReason(reason: any): string {
     }
 }
 
+private loadEnterprises():void{
 
+    this.enterpriseService.getEnterprises().subscribe(res=>{
+
+        this.enterprises= res;
+
+        console.log(this.enterprises);
+
+    },(error)=>{
+
+        console.log(error);
+
+        this.toastr.error(error.message,"Error al cargar las Empresas");
+
+    })
+    
+}
+
+private getProyectosByCliente(id: any){    
+
+    this.quotation.clienteId=id;    
+
+    this.proyectoService.getProyectoByCliente(id).subscribe(res => {
+        this.proyectos= res;
+
+        console.log(this.proyectos);
+
+        this.quotation.proyecto = new ProyectoModel();
+        this.quotation.proyectoId = undefined;
+
+        if(this.proyectos.length == 0){
+            this.toastr.warning('No existen proyectos para este cliente');
+        }
+        
+    },(error)=>{
+        console.log(error);
+
+        this.toastr.error("Error al cargar los datos de Proyectos");
+        // swal(
+        //     'Error',
+        //     error.error.message,
+        //     'error'
+        //   )
+    });
+
+    
+}
+
+private save(){
+
+    this.quotationService.saveOrUpdate(this.quotation).subscribe(response=>{
+
+        console.log(response);
+
+
+
+    },(error)=>{
+
+        console.log(error);
+
+    });
+
+     console.log(this.quotation);
+
+}
+
+private AjustDateA(){
+
+    console.log(this.modelDateSol);
+    console.log(this.modelDateEnt);
+    
+}
+
+private AjustDateB(){
+    console.log(this.modelDateSol);
+    console.log(this.modelDateEnt);
+    
+}
+
+
+private uploadEvents(){
+    console.log("Editando");
+
+    this.updating=true;
+}
+
+private cancel(){
+
+     this._route.navigate(['/cotizaciones'])
+
+}
 
 
 }

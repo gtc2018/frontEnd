@@ -412,6 +412,8 @@ export class EnterpriseComponent implements OnInit {
                 this.enterprise = new EnterpriseModel();
                 this.enterprise.imagenEmpresa = 'assets/images/logo.png';
                 this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
+
+                this.deleteFormHide = false;
                 // } else {
                 //     this.message = res.message;
                 //     this.isValid = false;
