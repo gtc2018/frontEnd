@@ -158,6 +158,7 @@ export class HerramientaComponent implements OnInit {
 
             this.herramientaService.deleteHerramienta(this.herramientaForm).subscribe(res => {
 
+                this.clean();
                 this.loadHerramientas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
@@ -207,7 +208,7 @@ export class HerramientaComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Herramientas") {
                     this.items = menu;
                     console.log(this.items);
 

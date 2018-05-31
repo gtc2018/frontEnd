@@ -41,6 +41,7 @@ export class FaseComponent implements OnInit {
     editar = false;
     eliminar = false;
     leer = false;
+    limpiar: boolean = false;
 
     toggleDivCreateMenus() {
         this.visible = !this.visible;
@@ -72,6 +73,7 @@ export class FaseComponent implements OnInit {
 
     private clearModel(): void {
         this.fase.descripcion = "";
+        this.limpiar = false
     }
 
 
@@ -118,6 +120,7 @@ export class FaseComponent implements OnInit {
                 this.faseService.deleteFase(this.fase).subscribe(res => {
                     this.toastr.success('El registro fue eliminado satisfactorio.');
                     this.loadFases();
+                    this.clearModel();
 
                 }, (error) => {
                     this.toastr.error('Falló la eliminacion del registro.');
@@ -136,6 +139,7 @@ export class FaseComponent implements OnInit {
         sessionStorage.setItem('fase', JSON.stringify(fase));
         this.fase = JSON.parse(sessionStorage.getItem("fase"));
         this.visible = true;
+        this.limpiar = true;
 
     }
 
@@ -168,7 +172,7 @@ export class FaseComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Fases") {
                     this.items = menu;
                     console.log(this.items);
 

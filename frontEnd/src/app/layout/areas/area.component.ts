@@ -187,6 +187,7 @@ export class AreaComponent implements OnInit {
 
             this.areaService.deleteArea(this.areaForm).subscribe(res => {
 
+                this.clean();
                 this.loadAreas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
@@ -242,7 +243,7 @@ export class AreaComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Areas") {
                     this.items = menu;
                     console.log(this.items);
 

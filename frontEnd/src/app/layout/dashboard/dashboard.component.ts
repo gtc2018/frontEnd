@@ -1,15 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 
-    /*var _smartsupp = _smartsupp || {};
-    _smartsupp.key = 'ba1035bb4b879e190b818f607ea3fc1fd0cfe7dc';
-    window.smartsupp||(function(d) {
-      var s,c,o=_smartsupp=function(){ o._.push(arguments)};o._=[];
-      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-      c.type='text/javascript';c.charset='utf-8';c.async=true;
-      c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
-    })(document);*/
-
 @Component({
     selector: 'app-dashboard',
     templateUrl: './dashboard.component.html',
@@ -61,10 +52,24 @@ export class DashboardComponent implements OnInit {
         );
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.chatLive();
+    }
 
     public closeAlert(alert: any) {
         const index: number = this.alerts.indexOf(alert);
         this.alerts.splice(index, 1);
+    }
+
+    chatLive(){
+
+    //     var _smartsupp = _smartsupp || {};
+    //     _smartsupp.key = 'ba1035bb4b879e190b818f607ea3fc1fd0cfe7dc';
+    //     (function(d) {
+    //     var s,c,o=_smartsupp=function(){ o._.push(arguments)};o._=[];
+    //     s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+    //     c.type='text/javascript';c.charset='utf-8';c.async=true;
+    //     c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
+    //    })(document);
     }
 }

@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
                     <h2 class=" page-header">
-                        <i class="fa fa-fw fa-users" style="color:blue">Empleados</i>
+                        <i class="fa fa-fw fa-users" style="color:blue"></i>Empleados
                     </h2>
 
                 </div>
@@ -171,8 +171,8 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class="col-form-label-sm">*Tipo de empleado:</label>
                                 <select [(ngModel)]="employeeForm.tipoEmpleado" name="tipoEmpleado" class="form-control-sm input-underline">
-                                    <option value="Interno">Interno</option>
-                                    <option value="Externo">Externo</option>
+                                    <option value="INTERNO">Interno</option>
+                                    <option value="EXTERNO">Externo</option>
                                 </select>
                             </div>
 
@@ -233,7 +233,7 @@
                             </div>
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class=" col-form-label-sm ">Dirección:</label>
+                                <label class=" col-form-label-sm ">*Dirección:</label>
                                 <input type="text" class="form-control-sm input-underline" placeholder="Dirección" [(ngModel)]="employeeForm.direccion" name="direccion">
                             </div>
 

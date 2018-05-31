@@ -159,6 +159,7 @@ export class EstadoComponent implements OnInit {
 
             this.estadoService.deleteEstado(this.estadoForm).subscribe(res => {
 
+                this.clean();
                 this.loadEstados();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
@@ -209,7 +210,7 @@ export class EstadoComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Estados") {
                     this.items = menu;
                     console.log(this.items);
 

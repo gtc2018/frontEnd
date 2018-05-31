@@ -11,6 +11,7 @@ import { RegistroActividadService } from './servicios/registroActividad.service'
 import { CrearRegistroActividadService } from './servicios/crear-registroActividad.service';
 import { RegistroActividadModel } from '../../model/registroActividad.model';
 import { PermisoModel } from '../../model/permiso.model';
+import swal from 'sweetalert2';
 
 @Component({
     templateUrl: './activity.html',
@@ -29,10 +30,6 @@ export class ActivityComponent implements OnInit {
   menus: any;
   private permiso: PermisoModel;
 
-  crear = false;
-  administrador: boolean = false;
-  empleado: boolean = false;
-
   messageEmail: string;
   activeColor: string = 'green';
   baseColor: string = '#ccc';
@@ -46,6 +43,9 @@ export class ActivityComponent implements OnInit {
 
   emailRegex: RegExp;
 
+  crear = false;
+  administrador: boolean = false;
+  empleado: boolean = false;
   dragging: boolean = false;
   deleteFormHide:boolean = false;
   visible: boolean = false;
@@ -96,7 +96,7 @@ export class ActivityComponent implements OnInit {
   // Se inicia con estos metodos-------------------------------------
   ngOnInit() {
     this.validarPermisos();
-    this.getItemsEmpresas();
+    this.getItems();
     this.loadRegistroActividades();
     console.log(this);
   }
@@ -139,8 +139,8 @@ export class ActivityComponent implements OnInit {
   // Se valida si es administrador o empleado
   private validarPermisos(): void {
 
-    this.identificador = localStorage.rol;
-    if(this.identificador !== 1){
+    console.log(localStorage.rol);
+    if(localStorage.rol==="1"){
       this.administrador = true;
     }else {
       this.empleado = true;
@@ -148,8 +148,8 @@ export class ActivityComponent implements OnInit {
 
   }
 
-  //
-  private getItemsEmpresas(): void {
+  //Se obtienen los permisos del empleado
+  private getItems(): void {
 
     this.permiso = new PermisoModel();
     // this.login.authUser.rolId;
@@ -160,7 +160,7 @@ export class ActivityComponent implements OnInit {
         console.log(this.menus = res);
         for (let menu of this.menus) {
             //this.items = menu.item;
-            if (menu.menu.descripcion === "Empleados") {
+            if (menu.menu.descripcion === "Actividades") {
                 this.items = menu;
                 console.log(this.items);
 
@@ -175,6 +175,39 @@ export class ActivityComponent implements OnInit {
         console.log(error);
 
     });
+}
+
+//Eliminar un registro
+delete(id): void{
+
+    if (id != null) {
+      this.registroActividadForm.id = id;
+
+      swal({
+        title: 'Esta seguro?',
+        text: "El registro eliminado no podrá ser recuperado",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+    }).then((result) => {
+
+        if (result.value) {
+
+        this.registroActividadService.deleteRegistroActividad(this.registroActividadForm).subscribe(res => {
+
+            this.loadRegistroActividades();
+
+            this.toastr.success('Registro eliminado satisfactoriamente.');
+        }, (error) => {
+
+        });       
+            
+        }
+    })
+  }
+
 }
   
 }

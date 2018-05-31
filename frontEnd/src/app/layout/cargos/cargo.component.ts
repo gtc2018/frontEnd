@@ -189,6 +189,7 @@ export class CargoComponent implements OnInit {
 
             this.cargoService.deleteCargo(this.cargoForm).subscribe(res => {
 
+                this.clean();
                 this.loadCargos();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
@@ -244,7 +245,7 @@ export class CargoComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Cargos") {
                     this.items = menu;
                     console.log(this.items);
 

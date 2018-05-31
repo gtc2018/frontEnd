@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
                     <h2 class=" page-header">
-                        <i class="fa fa-address-card" style="color:blue"></i> Sistema
+                        <i class="fa fa-desktop" style="color:blue"></i> Sistema
                     </h2>
                 </div>
             </div>
@@ -121,14 +121,14 @@
                                                 <td>
                                                 <div class="btn-group" *ngIf="editar">
                                                     <a class="btn btn-default" >
-                                                    <i (click)="upload(c)"
+                                                    <i (click)="upload(s)"
                                                         class="fa fa-pencil-square-o fa-lg hand"
                                                         aria-hidden="true"
                                                         title="Editar" >
                                                     </i>
                                                     </a>
                                                     <a class="btn btn-default" *ngIf="eliminar">
-                                                    <i (click)="delete(c.id)"
+                                                    <i (click)="delete(s.id)"
                                                         class="fa fa-trash-o fa-lg hand"
                                                         aria-hidden="true"
                                                         title="Eliminar">
@@ -141,12 +141,6 @@
                                 </table>
                             </div>    
                         </div>
-
-                        <div class="center">
-                            <button type="reset" class="btn btn-primary">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Volver</button>
-                        </div>
-
                     </form>
                 </div>    
             </div>  

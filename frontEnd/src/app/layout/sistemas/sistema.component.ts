@@ -81,7 +81,7 @@ export class SistemaComponent implements OnInit {
 
     // Se inicia con estos metodos
     ngOnInit() {
-        this.clean();
+        this.getItems();
         this.loadSistemas(); 
     }    
 
@@ -155,6 +155,7 @@ export class SistemaComponent implements OnInit {
 
             this.sistemaService.deleteSistema(this.sistemaForm).subscribe(res => {
 
+                this.clean();
                 this.loadSistemas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
@@ -204,7 +205,7 @@ export class SistemaComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Empleados") {
+                if (menu.menu.descripcion === "Sistemas") {
                     this.items = menu;
                     console.log(this.items);
 

@@ -93,6 +93,7 @@ export class EmployeeComponent implements OnInit   {
 
     stateExpand: number = 1;
     identificador: number = 0;
+    employeeIden:number = 0;
 
     emailRegex: RegExp;
 
@@ -101,6 +102,7 @@ export class EmployeeComponent implements OnInit   {
     visible: boolean = false;
 
     employeeForm: EmployeeModel;
+    employeeCom: EmployeeModel[];
     employee= [];
 
     filter: EmployeeModel = new EmployeeModel();
@@ -161,7 +163,7 @@ export class EmployeeComponent implements OnInit   {
         private loadEmployee(): void {
             this.employeeService.getAll().subscribe(res => {
                 this.employee = res;
-                console.log(this.employeeForm);
+                console.log(this.employee);
             },(error)=>{
                 console.log(error);
 
@@ -222,54 +224,73 @@ export class EmployeeComponent implements OnInit   {
 
     save():void{
 
-        console.log(this.employeeForm);
 
-        if(this.login.authUser !== undefined){
-            if(this.employeeForm.id === null){
+        this.employeeService.getAll().subscribe(res => {
+            this.employeeCom = res;
 
-                this.employeeForm.usuarioCreacion=this.login.authUser.email;    
-            }else{
-                this.employeeForm.usuarioModificacion =this.login.authUser.email;
+            for(let e of this.employeeCom){
+
+                if (this.employeeForm.email === e.email){
+                    this.employeeIden = 1;
+                }
             }
-            
-        }
 
-        this.isValid = this.validate(this.employeeForm);
+            if(this.employeeIden === 1){
+                this.toastr.error("Ya existe un registro con este email");
+                this.employeeIden = 0;
+            }else{
 
-        if (this.isValid) {
+                if(this.login.authUser !== undefined){
+                    if(this.employeeForm.id === null){
 
         delete this.employeeForm.celular;
         delete this.employeeForm.foto;
+                        this.employeeForm.usuarioCreacion=this.login.authUser.email;    
+                    }else{
+                        this.employeeForm.usuarioModificacion =this.login.authUser.email;
+                    }
+                            
+                }
 
-        if(this.file !==null && this.file.name !==null){
-        this.employeeForm.foto = this.file.name;
-        }   
+                this.isValid = this.validate(this.employeeForm);
 
-        this.employeeService.saveOrUpdate(this.employeeForm).subscribe(res => {
-            // if (res.responseCode == OK) {
-                this.loadEmployee();
-                this.clean();
-                this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
+                if (this.isValid) {
+                delete this.employeeForm.foto;
+                        
+
+                    if(this.file !==null && this.file.name !==null){
+                    this.employeeForm.foto = this.file.name;
+                    }   
+
+                    this.employeeService.saveOrUpdate(this.employeeForm).subscribe(res => {
+                        // if (res.responseCode == OK) {
+                            this.loadEmployee();
+                            this.clean();
+                            this.toastr.success('Transacción satisfactoria', 'Gestión de Empleados');
+                    },(error)=>{
+                        console.log(error);
+
+                        this.toastr.error(error.error.message,"Error en la transacción");
+                    });
+
+                } else {
+                    console.log(this.messageEmail);
+                    if(!this.messageEmail){
+                        this.message= 'Los campos con * son obligatorios!';
+                    }else{
+                        this.message= this.messageEmail;
+                        this.messageEmail= undefined;
+                    }
+                }
+
+            }    
+
         },(error)=>{
             console.log(error);
 
-                this.toastr.error(error.error.message,"Error en la transacción");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
-        });
+            this.toastr.error("Error al cargar los datos");
 
-    } else {
-        console.log(this.messageEmail);
-        if(!this.messageEmail){
-            this.message= 'Los campos con * son obligatorios!';
-        }else{
-            this.message= this.messageEmail;
-            this.messageEmail= undefined;
-        }
-    }
+        });
 
     }
 
@@ -298,7 +319,7 @@ export class EmployeeComponent implements OnInit   {
 
         }, (error) => {
             console.log(error);
-            this.toastr.error("Error al cargar los datos de Empresa");
+            this.toastr.error("Error al cargar los datos de Area");
         });
     }
 
@@ -310,7 +331,7 @@ export class EmployeeComponent implements OnInit   {
 
         }, (error) => {
             console.log(error);
-            this.toastr.error("Error al cargar los datos de Empresa");
+            this.toastr.error("Error al cargar los datos de Cargos");
         });
     }
 
@@ -593,6 +614,9 @@ export class EmployeeComponent implements OnInit   {
             isValid = false;
          }
          if(!employeeForm.sueldo){
+            isValid = false;
+         }
+         if(!employeeForm.direccion){
             isValid = false;
          }
          if(!employeeForm.email){
