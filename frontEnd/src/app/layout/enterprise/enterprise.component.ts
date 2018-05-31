@@ -183,6 +183,7 @@ export class EnterpriseComponent implements OnInit {
 
                 this.enterpriseService.delete(model).subscribe(res=>{
                     // if (res.responseCode == OK) {
+                        this.clean();
                         this.loadEnterprises();
 
                         this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
@@ -269,6 +270,7 @@ export class EnterpriseComponent implements OnInit {
             this.enterprise = new EnterpriseModel();
 
             this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+            this.clean();
 
             this.stateExpand = 2;
 
@@ -281,6 +283,7 @@ export class EnterpriseComponent implements OnInit {
             if (this.visible === true) {
 
                 this.icon = "fa fa-caret-down";
+                this.clean();
 
             } else {
 
@@ -300,6 +303,7 @@ export class EnterpriseComponent implements OnInit {
                 if (this.visible === true) {
 
                     this.icon = "fa fa-caret-down";
+                    this.clean();
 
                 } else {
 
@@ -349,6 +353,7 @@ export class EnterpriseComponent implements OnInit {
 
             this.enterpriseService.delete(model).subscribe(res=>{
                 // if (res.responseCode == OK) {
+                this.clean();
                 this.loadEnterprises();
 
                 this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
@@ -393,7 +398,7 @@ export class EnterpriseComponent implements OnInit {
         if (this.login.authUser !== undefined) {
             if(this.enterprise.id === null){
                 this.enterprise.usuarioCreacion = this.login.authUser.email;
-                this.enterprise.estado = 1;
+                
             }else {
                 this.enterprise.usuarioModificacion = this.login.authUser.email;
             }
@@ -407,8 +412,10 @@ export class EnterpriseComponent implements OnInit {
             if(this.file !==null && this.file.name !==null){
             this.enterprise.imagenEmpresa = this.file.name;
             }
+            this.enterprise.estado = 1;
             this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
                 // if (res.responseCode == OK) {
+                this.clean();
                 this.loadEnterprises();
                 this.enterprise = new EnterpriseModel();
                 this.enterprise.imagenEmpresa = 'assets/images/logo.png';
@@ -468,6 +475,7 @@ export class EnterpriseComponent implements OnInit {
 
         this.enterpriseService.saveOrUpdate(model).subscribe(res => {
             if (res.responseCode == OK) {
+                this.clean();
                 this.loadEnterprises();
                 this.toastr.success('Registro actualizado', 'Gestión de Empresas');
             } else {

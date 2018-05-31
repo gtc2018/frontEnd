@@ -24,7 +24,7 @@ export class EmployeeModel extends ParentEntity{
   public sueldo: string;
   public sexo: string;
   public ciudad: string;
-  public estado: string;
+  public estado: number;
   public foto: string;
   public usuarioCreacion: string;
   public usuarioModificacion: string;

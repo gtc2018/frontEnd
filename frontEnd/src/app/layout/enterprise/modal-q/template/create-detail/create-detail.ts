@@ -207,6 +207,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
 
   save():void{
 
+    this.porcentajePorFaseForm.clienteId = this.empresaId;
     this.porcentajePorFaseRecord.id = this.empresaId;
         
         this.porcentajePorFaseService.getPorcentajePorFaseForEnterprise(this.porcentajePorFaseRecord).subscribe(res => {   
@@ -324,9 +325,6 @@ export class CreateDetailComponent implements OnInit, OnChanges {
 public validate(porcentajePorFaseForm: PorcentajePorFaseModel): boolean {
     let isValid = true;
 
-    if (!porcentajePorFaseForm.clienteId) {
-        isValid = false;
-    }
 
     if (!porcentajePorFaseForm.porcentaje) {
         isValid = false;
