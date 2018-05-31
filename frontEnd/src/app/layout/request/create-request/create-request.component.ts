@@ -152,6 +152,8 @@ export class CreateRequestComponent implements OnInit {
 
         if(this.editarRequest){
             this.cargarRequest();             
+        }else{
+            this.loadEnterprises();
         }
 
         this.loadFases();
