@@ -163,7 +163,7 @@ export class EmployeeComponent implements OnInit   {
         private loadEmployee(): void {
             this.employeeService.getAll().subscribe(res => {
                 this.employee = res;
-                console.log(this.employeeForm);
+                console.log(this.employee);
             },(error)=>{
                 console.log(error);
 
@@ -178,47 +178,46 @@ export class EmployeeComponent implements OnInit   {
 
         //Cambio de estado
 
-    /*changeState(model){
+    changeState(model){
 
-        if(this.login.authUser !== undefined){
+        if (this.login.authUser !== undefined) {
 
-        model.usuarioCreacion=this.login.authUser.email;
-
+            model.usuarioCreacion = this.login.authUser.email;
         }
 
-        if (model.estado === true){
+        if (model.estado === true) {
             model.estado = 1;
-        }else{
+        } else {
             model.estado = 0;
         }
 
         console.log(model);
 
+        model.clienteId = model.cliente.id;
+        model.areaId = model.area.id;
+        model.cargoId = model.cargo.id;
 
         if(this.file !==null && this.file.name !==null){
             this.employeeForm.foto = this.file.name;
-        }
+            } 
+
         this.employeeService.saveOrUpdate(model).subscribe(res => {
+            console.log(res);
             if (res.responseCode == OK) {
                 this.loadEmployee();
                 this.toastr.success('Registro actualizado', 'Gestión de Empleados');
             } else {
                 this.message = res.message;
             }
-            
-        },(error)=>{
+
+        }, (error) => {
             console.log(error);
 
             this.isValid = false;
 
-            this.toastr.error(error.error.message,"Error actualizar los datos");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
+            this.toastr.error("Error actualizar los datos");
         });
-    }*/
+    }
 
         //Para guardar
 
@@ -233,6 +232,12 @@ export class EmployeeComponent implements OnInit   {
                 if (this.employeeForm.email === e.email){
                     this.employeeIden = 1;
                 }
+            }
+
+            if(this.employeeForm.id !== null){
+                this.employeeIden = 0;
+            }else{
+                this.employeeForm.estado = 1;
             }
 
             if(this.employeeIden === 1){
