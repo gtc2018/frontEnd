@@ -13,8 +13,6 @@ import { OK } from './../messages/httpstatus';
 import { LoginService } from './servicios/login.service';
 
 
-
-
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -94,7 +92,7 @@ export class LoginComponent {
 
             },(error) => {
                 console.log(error);
-                this.message = error.error.message;
+                this.message = error.error;
                 this.isValid = false;
 
                     return this.router.navigate(['/login']);
