@@ -284,6 +284,7 @@ export class PorcentajePorFaseComponent implements OnInit {
 
             this.porcentajePorFaseService.deletePorcentajePorFase(this.porcentajePorFaseForm).subscribe(res => {
 
+                this.clean();
                 this.loadPorcentajePorFases();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');

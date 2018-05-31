@@ -155,6 +155,7 @@ export class SistemaComponent implements OnInit {
 
             this.sistemaService.deleteSistema(this.sistemaForm).subscribe(res => {
 
+                this.clean();
                 this.loadSistemas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');

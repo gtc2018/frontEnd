@@ -189,6 +189,7 @@ export class CargoComponent implements OnInit {
 
             this.cargoService.deleteCargo(this.cargoForm).subscribe(res => {
 
+                this.clean();
                 this.loadCargos();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');

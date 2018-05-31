@@ -157,6 +157,7 @@ export class TareaComponent implements OnInit {
 
             this.tareaService.deleteTarea(this.tareaForm).subscribe(res => {
 
+                this.clean();
                 this.loadTareas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');

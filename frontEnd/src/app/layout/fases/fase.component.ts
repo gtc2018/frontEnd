@@ -120,6 +120,7 @@ export class FaseComponent implements OnInit {
                 this.faseService.deleteFase(this.fase).subscribe(res => {
                     this.toastr.success('El registro fue eliminado satisfactorio.');
                     this.loadFases();
+                    this.clearModel();
 
                 }, (error) => {
                     this.toastr.error('Falló la eliminacion del registro.');

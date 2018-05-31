@@ -33,6 +33,7 @@ export class LoginComponent {
     private usuario: UsuarioModel;
     private isValid: boolean = true;
     private message: string = "";
+    private estado: number = 0;
 
     ngOnInit() {
 
@@ -58,7 +59,7 @@ export class LoginComponent {
             this.loginService.loginUsuario(this.login).subscribe(res => {
 
                 if (res) {
-                    //this.user.authUser = new UsuarioModel;
+                        //this.user.authUser = new UsuarioModel;
                     console.log("=========== USUARIO: ===================");
                     console.log(this.usuario = res as UsuarioModel);
 
@@ -81,13 +82,19 @@ export class LoginComponent {
 
                 } else {
 
-                    this.message = "El usuario o contraseña inválida";
+                    this.message = "Usuario o contraseña inválida";
                     this.isValid = false;
 
                     return this.router.navigate(['/login']);
 
                 }
 
+            },(error) => {
+                console.log(error);
+                this.message = error.error.message;
+                this.isValid = false;
+
+                    return this.router.navigate(['/login']);
             });
 
         } else {

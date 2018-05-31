@@ -187,6 +187,7 @@ export class AreaComponent implements OnInit {
 
             this.areaService.deleteArea(this.areaForm).subscribe(res => {
 
+                this.clean();
                 this.loadAreas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');

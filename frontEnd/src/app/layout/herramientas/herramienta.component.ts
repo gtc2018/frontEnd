@@ -158,6 +158,7 @@ export class HerramientaComponent implements OnInit {
 
             this.herramientaService.deleteHerramienta(this.herramientaForm).subscribe(res => {
 
+                this.clean();
                 this.loadHerramientas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');

@@ -77,14 +77,16 @@ export class UsuarioComponent implements OnInit {
 
     icon: string = "fa fa-caret-left";
 
+    // Limpia los campos
     clean(){
 
         this.usuario = new UsuarioModel();
-        this.employees = null;
+        this.employees = undefined;
 
         this.confirm = "";
         this.readonly = false;
         this.primary = true;
+        this.confirm = undefined;
 
         this.deleteFormHide = false;
 
@@ -93,6 +95,7 @@ export class UsuarioComponent implements OnInit {
         this.identificador = 0;
     }
 
+    //Las acciones del boton nuevo usuario
     toggleDivCreateUsers() {
         console.log(this.stateExpand);
 
@@ -100,6 +103,10 @@ export class UsuarioComponent implements OnInit {
 
             this.usuario = new UsuarioModel();
 
+            this.readonly = false;
+            this.primary = true;
+            this.confirm = undefined;
+            this.employees = undefined;
             this.fotoEmpresa = 'assets/images/logo.png';
             this.fotoEmpleado = 'assets/images/avatar.png';
 
@@ -118,6 +125,10 @@ export class UsuarioComponent implements OnInit {
             } else {
 
                 this.icon = "fa fa-caret-left";
+                this.readonly = false;
+                this.primary = true;
+                this.employees = undefined;
+                this.confirm = undefined;
 
             }
 
@@ -136,6 +147,10 @@ export class UsuarioComponent implements OnInit {
                 } else {
 
                     this.icon = "fa fa-caret-left";
+                    this.readonly = false;
+                    this.primary = true;
+                    this.employees = undefined;
+                    this.confirm = undefined;
 
                 }
                 this.stateExpand = 1
@@ -180,6 +195,7 @@ export class UsuarioComponent implements OnInit {
         //this.usuario = new UsuarioModel();
     }
 
+    //Se inicia con los siguientes metodos
     ngOnInit() {
         this.loadUsuarios();
         this.loadEnterprises();
@@ -187,17 +203,13 @@ export class UsuarioComponent implements OnInit {
         this.loadEmployee();
     }
 
+    //Obtener todos los roles
     loadUsers(){
-
         this.usuarioService.getRoles().subscribe(res => {
             console.log(res);
-
             this.rols = res;
-
         })
-
     }
-
 
     //Para eliminar desde el formulario
     deleteForm(model) {
@@ -219,16 +231,11 @@ export class UsuarioComponent implements OnInit {
             if (result.value) {
 
             this.usuarioService.delete(model).subscribe(res => {
-                // if (res.responseCode == OK) {
+
+                this.clean();    
                 this.loadUsuarios();
 
                 this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Usuarios');
-
-                // swal(
-                //     'Deleted!',
-                //     'Your file has been deleted.',
-                //     'success'
-                //   )
 
                 this.usuario = new UsuarioModel();
                 this.fotoEmpleado = "assets/images/avatar.png";
@@ -259,11 +266,6 @@ export class UsuarioComponent implements OnInit {
         }, (error) => {
             console.log(error);
             this.toastr.error("Error al cargar los datos de Empresa");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
         });
     }
 
@@ -276,11 +278,6 @@ export class UsuarioComponent implements OnInit {
             console.log(error);
 
             this.toastr.error("Error al cargar los datos");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
         });
     }
 
@@ -335,6 +332,7 @@ export class UsuarioComponent implements OnInit {
 
     }
 
+    //Se usa para comparar las dos contraseñas
     comparate(model) {
 
         console.log(model);
@@ -381,15 +379,11 @@ export class UsuarioComponent implements OnInit {
 
             this.usuarioService.delete(model).subscribe(res => {
                 // if (res.responseCode == OK) {
+                this.clean();    
                 this.loadUsuarios();
 
                 this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Usuarios');
 
-                // swal(
-                //     'Deleted!',
-                //     'Your file has been deleted.',
-                //     'success'
-                //   )
                 this.usuario = new UsuarioModel();
                 this.fotoEmpleado = "assets/images/avatar.png";
                 this.fotoEmpresa = "assets/images/logo.png";
@@ -420,16 +414,10 @@ export class UsuarioComponent implements OnInit {
             console.log(res);
 
         }, (error) => {
-            // this.isValid = false;
 
             console.log(error);
 
             this.toastr.error(this.message, "Error al cargar los datos");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
             this.usuario = new UsuarioModel();
 
             this.fotoEmpresa = 'assets/images/logo.png';
@@ -453,6 +441,7 @@ export class UsuarioComponent implements OnInit {
 
         }
 
+        this.usuario.estado = "1";
         this.isValid = this.validate(this.usuario);
 
         if (this.isValid) {
@@ -465,20 +454,11 @@ export class UsuarioComponent implements OnInit {
             } else {
 
                 this.crearUsuarioService.saveOrUpdate(this.usuario).subscribe(res => {
-                    // if (res.responseCode == OK) {
-                    // console.log(this.router.navigate(['/usuarios']));
                     this.loadUsuarios();
                     this.usuario = new UsuarioModel();
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Usuarios');
 
                     this.confirm=undefined;
-
-                    // console.log(this.router.url);
-
-                    //         } else {
-                    //             this.message = res.message;
-                    //             this.isValid = false;
-                    //         }
 
                 }, (error) => {
                     console.log(error);
@@ -491,14 +471,7 @@ export class UsuarioComponent implements OnInit {
 
                         this.message = error.message;
                     }
-                    // this.isValid = false;
-
                     this.toastr.error(this.message, "Error en la transacción");
-                    // swal(
-                    //     'Error',
-                    //     error.error.message,
-                    //     'error'
-                    //   )
                 });
 
             }
@@ -548,11 +521,6 @@ export class UsuarioComponent implements OnInit {
             this.isValid = false;
 
             this.toastr.error("Error actualizar los datos");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
         });
     }
 
@@ -588,7 +556,6 @@ export class UsuarioComponent implements OnInit {
 
             this.filtroEmpleado(this.usuario.clienteId);
 
-            //this.employees = this.resEmployee;
 
                 this.deleteFormHide = false;
             } else {
@@ -613,7 +580,6 @@ export class UsuarioComponent implements OnInit {
             this.identificador = 1
             
             this.filtroEmpleado(this.usuario.clienteId);
-            //this.employees = this.resEmployee;
             this.deleteFormHide = true;
 
             
@@ -621,6 +587,7 @@ export class UsuarioComponent implements OnInit {
 
     }
 
+    //Se valida que no este vacio algun campo
     public validate(usuario: UsuarioModel): boolean {
         let isValid = true;
 
@@ -636,25 +603,6 @@ export class UsuarioComponent implements OnInit {
         if (!usuario.email) {
             isValid = false;
         }
-
-        // if (!usuario.apellidos) {
-        //     isValid = false;
-        // }
-        // if (!usuario.email) {
-        //     isValid = false;
-
-        //     this.messageEmail = undefined;
-        // } else {
-        //     this.emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-
-        //     if (this.emailRegex.test(usuario.email)) {
-        //         console.log("correcto");
-        //         this.messageEmail = undefined;
-        //     } else {
-        //         console.log("incorrecto");
-        //         this.messageEmail = "Por favor digite un formato de email válido";
-        //     }
-        // }
         if (!usuario.password) {
             isValid = false;
         }

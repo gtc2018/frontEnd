@@ -159,6 +159,7 @@ export class EstadoComponent implements OnInit {
 
             this.estadoService.deleteEstado(this.estadoForm).subscribe(res => {
 
+                this.clean();
                 this.loadEstados();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');

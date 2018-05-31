@@ -158,6 +158,7 @@ export class AlcanceComponent implements OnInit {
 
             this.alcanceService.deleteAlcance(this.alcanceForm).subscribe(res => {
 
+                this.clean();
                 this.loadAlcances();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
