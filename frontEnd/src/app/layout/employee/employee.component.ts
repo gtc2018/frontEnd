@@ -264,7 +264,7 @@ export class EmployeeComponent implements OnInit   {
                         // if (res.responseCode == OK) {
                             this.loadEmployee();
                             this.clean();
-                            this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
+                            this.toastr.success('Transacción satisfactoria', 'Gestión de Empleados');
                     },(error)=>{
                         console.log(error);
 
@@ -317,7 +317,7 @@ export class EmployeeComponent implements OnInit   {
 
         }, (error) => {
             console.log(error);
-            this.toastr.error("Error al cargar los datos de Empresa");
+            this.toastr.error("Error al cargar los datos de Area");
         });
     }
 
@@ -329,7 +329,7 @@ export class EmployeeComponent implements OnInit   {
 
         }, (error) => {
             console.log(error);
-            this.toastr.error("Error al cargar los datos de Empresa");
+            this.toastr.error("Error al cargar los datos de Cargos");
         });
     }
 

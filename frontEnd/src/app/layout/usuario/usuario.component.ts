@@ -222,7 +222,7 @@ export class UsuarioComponent implements OnInit {
                 // if (res.responseCode == OK) {
                 this.loadUsuarios();
 
-                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
+                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Usuarios');
 
                 // swal(
                 //     'Deleted!',
@@ -383,7 +383,7 @@ export class UsuarioComponent implements OnInit {
                 // if (res.responseCode == OK) {
                 this.loadUsuarios();
 
-                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Empresas');
+                this.toastr.success('Registro eliminado satisfactoriamente', 'Eliminación de Usuarios');
 
                 // swal(
                 //     'Deleted!',
@@ -469,7 +469,7 @@ export class UsuarioComponent implements OnInit {
                     // console.log(this.router.navigate(['/usuarios']));
                     this.loadUsuarios();
                     this.usuario = new UsuarioModel();
-                    this.toastr.success('Transacción satisfactoria', 'Gestión de Empresas');
+                    this.toastr.success('Transacción satisfactoria', 'Gestión de Usuarios');
 
                     this.confirm=undefined;
 

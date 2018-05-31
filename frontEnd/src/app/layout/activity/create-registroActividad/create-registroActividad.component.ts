@@ -66,6 +66,7 @@ export class CreateRegistroActividadComponent implements OnInit {
     extraH:string;
     descProyecto:string;
     descRequerimiento:string;
+    diaTrabajoT:string;
     fotoEmpresa:String = "assets/images/logo.png";
     
 
@@ -77,6 +78,10 @@ export class CreateRegistroActividadComponent implements OnInit {
     identificador: number = 0;
     mjsError: number = 0;
     editarReg:number = 0;
+    diaTotalH:number = 0;
+    diaTotalM:number = 0;
+    sumaH:number = 0;
+    sumaM:number = 0;
 
     activeDayIsOpen: boolean = true;
     proyecto: boolean = true;
@@ -305,15 +310,20 @@ pics(id): void{
 // Se cargan los proyectos segun la empresa seleccionada
 loadProjectToEnterprise(id: any): void {
 
+    //Se limpian los campos de proyecto y requerimiento
     this.registroActividadForm.proyectoId = undefined;
     this.registroActividadForm.requerimientoId = undefined;
 
+    //se carga el logo de la empresa
     this.pics(id);
 
+    //se ejecuta el servicio de traer proyectos por clientes
     this.projectService.getProyectoByCliente(id).subscribe(res => {   
       
         this.projects = res;
+        //Se desactiva el label de proyecto
         this.proyectolb = false;
+        //Se activa la lista desplegable
         this.proyecto = true;
         
       },(error)=>{
@@ -327,8 +337,10 @@ loadProjectToEnterprise(id: any): void {
 // Se cargan los requerimientos segun el proyecto seleccionado
 loadRequestToProject(id: any): void {
 
+    //Se limpia el campo de requerimiento
     this.registroActividadForm.requerimientoId = undefined;
     
+    //Se ejecuta el servicio de traer requerimientos por proyecto
     this.requestService.getRequestByProject(id).subscribe(res => {   
       
         this.requests = res;
@@ -402,31 +414,71 @@ loadRequestToProject(id: any): void {
         //Se asignan los minutos de la hora final
         this.horaF = parseInt(this.extraMin);
 
+        //Se compara la hora de inicio es igual fin
         if(parseInt(this.registroActividadForm.horaInicio) === parseInt(this.registroActividadForm.horaFin)){
             if(this.minutoI>this.horaF){
 
+                //Mensaje de error cuando la hora de inicio es mayor a la inicial
                 this.mjsError = 3
             }
         }else{
+            // Se compara la hora de inicio es mayor a la hora final
             if(parseInt(this.registroActividadForm.horaInicio) > parseInt(this.registroActividadForm.horaFin)){
 
                 this.mjsError = 3
             }
         }
 
+        //Termina el proceso por que la hora inicial es mayor a la final
         if(this.mjsError === 3){
-            this.toastr.error("La hora final no puede ser menor a la inicial");
+            this.toastr.error("La hora final no puede ser menor o igual a la inicial");
             this.mjsError = 0;
             return;
-        }
+        }        
 
+        // Se carga todos los registros con la fecha de trabajo y empleado 
         this.registroActividadService.getRegistreByEmployeeAndDate(this.empleadoSes, this.fechaTrabajo).subscribe(res => {   
-      
+
+            //SE ESTA TRABAJANDO EN ESTA PARTE PARA SUMAR EL DIA TOTAL LABORADO ***********************************************************
+            if(this.registroActividadForm === null){
+                this.diaTotalH = parseInt(this.registroActividadForm.duracion);
+                this.diaTotalM = parseInt(this.registroActividadForm.duracion.toString().substr(3,2));
+            }else{
+             this.diaTotalH = this.diaTotalH - parseInt(this.registroActividadForm.duracion)
+             this.diaTotalM = this.diaTotalM - parseInt(this.registroActividadForm.duracion.toString().substr(3,2))
+            }
+
+            for(let h of res){
+                this.diaTotalH = this.diaTotalH + parseInt(h.duracion);
+                this.diaTotalM = this.diaTotalM + parseInt(h.duracion.toString().substr(3,2));
+            }
+
+            if(this.diaTotalH < 10){
+                this.diaTrabajoT= "0"+ this.diaTotalH.toString();
+                this.diaTotalH = 0
+            }else{
+                this.diaTrabajoT = this.diaTotalH.toString();
+                this.diaTotalH = 0;
+            }
+
+            if(this.diaTotalM < 10){
+                this.diaTrabajoT = this.diaTrabajoT+":0"+this.diaTotalM.toString();
+                this.diaTotalM = 0;
+            }else{
+                this.diaTrabajoT = this.diaTrabajoT+":"+this.diaTotalM.toString();
+                this.diaTotalM = 0
+            }
+
+            console.log("Dia total del trabajo : "+this.diaTrabajoT);
+            //***************************************************************************************************************************** 
+
+            // Se asigna los resultados del servicio a la variable
             this.registroActividadComp = res;
 
+            //Se valida si no hay registros en la trama para verificar si es el primer registro del dia
             if(this.registroActividadComp.length === 0){
-
                 
+                // Le asignamos el usuario de creacion o modificacion
                 if(this.login.authUser !== undefined){
                     if(this.registroActividadForm.id === null){
                         this.registroActividadForm.usuarioCreacion = this.login.authUser.email.toString();
@@ -435,41 +487,52 @@ loadRequestToProject(id: any): void {
                     }
                 }
 
-            this.isValid = this.validate(this.registroActividadForm);
+                //Validamos que los campos no esten vacios
+                this.isValid = this.validate(this.registroActividadForm);
 
-            if(this.isValid){
+                if(this.isValid){
 
-            
-                this.registroActividadForm.diaTotal = this.registroActividadForm.duracion;
-            
-                console.log(this.registroActividadForm);
+                    // Se esta trabajando en el dia total **********************************************
+                    this.registroActividadForm.diaTotal = this.registroActividadForm.duracion;
+                    //********************************************************* 
+                
+                    console.log(this.registroActividadForm);
 
-                this.crearRegistroActividadService.saveOrUpdate(this.registroActividadForm).subscribe(res => {
-                    this.toastr.success('Transacción satisfactoria', 'Gestión de Registro de Actividad');
-                    this.clean();
-                    this.loadEmployeeReg();
-                    this.mjsError = 0;
+                    //Se envia el registro que se debe guardar mediante el servicio
+                    this.crearRegistroActividadService.saveOrUpdate(this.registroActividadForm).subscribe(res => {
+                        this.toastr.success('Transacción satisfactoria', 'Gestión de Registro de Actividad');
+                        this.clean();// Limpio los campos
+                        this.loadEmployeeReg();//Cargo los registros
+                        this.mjsError = 0;//Anulo el mensaje de error
                     
-        },(error)=>{
+                        //En caso que no se pueda guardar el registro
+                    },(error)=>{
 
-                this.toastr.error(error.error.message,"Error en la transacción");
-                return;
-        });
+                            this.toastr.error(error.error.message,"Error en la transacción al guardar");
+                            return;
+                    });
 
-        }
+                }else{
+                    //Si algun campo esta vacio
+                    this.toastr.error("Se deben llenar todos los campos y seleccionar una fecha");
+                    return;
+                }
 
             }else{
             
-                console.log(this.registroActividadComp);
-
+                //Se recorre la trama 
                 for(let h of this.registroActividadComp){
     
+                    //Se extrae la hora final
                     this.extraMin = h.horaFin.toString().substr(3,2);
     
+                    //Se asigna la hora final
                     this.minutoF = parseInt(this.extraMin);
     
+                    //Se extrae la hora de inicio
                     this.extraMin = h.horaInicio.toString().substr(3,2);
     
+                    //se asigna la hora de inicio
                     this.horaI = parseInt(this.extraMin);
     
                     //Si las horas iniciales son iguales
@@ -563,12 +626,15 @@ loadRequestToProject(id: any): void {
     
                 };
     
+                //Se Valida el mensaje de error 1
                 if( this.mjsError === 1 ){
                     this.toastr.error("Ya existe una actividad dentro del rango de la hora");
                     this.mjsError = 0;
                 }else{
+                    //Solo permite guardar si llega con 2
                     if(this.mjsError === 2){
     
+                        //Asigna el usuario de creacion o modificacion
                         if(this.login.authUser !== undefined){
                             if(this.registroActividadForm.id === null){
                                 this.registroActividadForm.usuarioCreacion = this.login.authUser.email.toString();
@@ -577,35 +643,38 @@ loadRequestToProject(id: any): void {
                             }
                         }
         
-                    this.isValid = this.validate(this.registroActividadForm);
-        
-                    if(this.isValid){
-        
+                        this.isValid = this.validate(this.registroActividadForm);
+            
+                        //Valida los campos
+                        if(this.isValid){
+                        
+                            this.registroActividadForm.diaTotal = this.registroActividadForm.duracion;
+                        
+                            console.log(this.registroActividadForm);
+            
+                            this.crearRegistroActividadService.saveOrUpdate(this.registroActividadForm).subscribe(res => {
+                                this.toastr.success('Transacción satisfactoria', 'Gestión de Registro de Actividad');
+                                this.clean();
+                                this.loadEmployeeReg();
+                                this.mjsError = 0;
+                                
+                            },(error)=>{
                     
-                        this.registroActividadForm.diaTotal = this.registroActividadForm.duracion;
-                    
-                        console.log(this.registroActividadForm);
-        
-                        this.crearRegistroActividadService.saveOrUpdate(this.registroActividadForm).subscribe(res => {
-                            this.toastr.success('Transacción satisfactoria', 'Gestión de Registro de Actividad');
-                            this.clean();
-                            this.loadEmployeeReg();
-                            this.mjsError = 0;
-                            
-                },(error)=>{
-        
-                        this.toastr.error(error.error.message,"Error en la transacción");
-                });
-        
-                }
+                                this.toastr.error(error.error.message,"Error en la transacción");
+                            });
+            
+                        }else{
+                            //Si algun campo esta vacio
+                            this.toastr.error("Se deben llenar todos los campos y seleccionar una fecha");
+                            return;
+                        }
+
                     }else{
                             this.toastr.error("Ya existe una actividad dentro del rango de la hora");
                             this.mjsError = 0;
                     }
                 }   
-
             }
-      
           },(error)=>{
           
             this.toastr.error("Error al cargar los datos");
@@ -738,13 +807,15 @@ loadRequestToProject(id: any): void {
              }
          }
 
+         //Se arma la fecha de trabajo
          this.fechaTrabajo = this.año+"-"+this.mes+"-"+this.dia;
 
          this.registroActividadForm.fechaTrabajo = this.fechaTrabajo;
 
-    this.loadEmployeeReg();
+         //Carga los registros del empleado
+         this.loadEmployeeReg();
 
-    this.submitText = "Guardar";
+         this.submitText = "Guardar";
 
     }
       
@@ -849,6 +920,37 @@ loadRequestToProject(id: any): void {
     public validate(registroActividadForm: RegistroActividadModel): boolean {
         let isValid = true;
 
+        if (!registroActividadForm.horaFin) {
+            isValid = false;
+        }
+
+        if (!registroActividadForm.horaInicio) {
+            isValid = false;
+        }
+
+        if (!registroActividadForm.tareaId) {
+            isValid = false;
+        }
+
+        if (!registroActividadForm.faseId) {
+            isValid = false;
+        }
+
+        if (!registroActividadForm.areaId) {
+            isValid = false;
+        }
+
+        if (!registroActividadForm.requerimientoId) {
+            isValid = false;
+        }
+
+        if (!registroActividadForm.proyectoId) {
+            isValid = false;
+        }
+
+        if (!registroActividadForm.clienteId) {
+            isValid = false;
+        }
 
         if (!registroActividadForm.descripcion) {
             isValid = false;
