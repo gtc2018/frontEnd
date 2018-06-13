@@ -6,6 +6,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { RestResponse } from '../../model/restResponse';
 import { EnterpriseModel } from '../../model/enterprise';
 import { CargoModel } from '../../model/cargo.model';
+import { InvolucradoModel } from '../../model/involucrado.model';
 
 
 
@@ -15,6 +16,7 @@ export class EmployeeService {
   EmployeeList: EmployeeModel[];
   employee: EmployeeModel;
   enterprise: EnterpriseModel;
+  involved: InvolucradoModel;
 
 
   constructor(private http: HttpClient) {
@@ -33,6 +35,14 @@ export class EmployeeService {
     return this.http.post<RestResponse>("http://localhost:8080/empleado/create", JSON.stringify(employee));
   }
   */
+
+  //Buscar los involucrados que no pertenecen a un rqm
+ public getEmployeeByRequest(id): Observable<EmployeeModel[]>{
+
+  this.enterprise.id = id;
+
+  return this.http.post<EmployeeModel[]>("http://localhost:8080/getEmployeeByRequest", JSON.stringify(this.enterprise));      
+}
 
  public getEmployeeForEnterprise(id): Observable<EmployeeModel[]>{
 
@@ -55,6 +65,14 @@ export class EmployeeService {
     console.log(employee);
 
     return this.http.post<RestResponse>("http://localhost:8080/deleteEmpleado", JSON.stringify(employee) );
+
+  }
+
+  //Servicio eliminar involucrado
+  public deleteInvolved(involved: InvolucradoModel): Observable<RestResponse> {
+    console.log(involved);
+
+    return this.http.post<RestResponse>("http://localhost:8080/deleteInvolucrado", JSON.stringify(involved) );
 
   }
 

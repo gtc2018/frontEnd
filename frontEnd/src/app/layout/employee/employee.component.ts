@@ -90,6 +90,7 @@ export class EmployeeComponent implements OnInit   {
     imageSrc: string = 'assets/images/avatar.png';
     fotoEmpresa: string = 'assets/images/logo.png';
     fotoEmpleado: string = 'assets/images/avatar.png';
+    imagen: string;
 
     stateExpand: number = 1;
     identificador: number = 0;
@@ -248,8 +249,6 @@ export class EmployeeComponent implements OnInit   {
                 if(this.login.authUser !== undefined){
                     if(this.employeeForm.id === null){
 
-        delete this.employeeForm.celular;
-        delete this.employeeForm.foto;
                         this.employeeForm.usuarioCreacion=this.login.authUser.email;    
                     }else{
                         this.employeeForm.usuarioModificacion =this.login.authUser.email;
@@ -260,7 +259,6 @@ export class EmployeeComponent implements OnInit   {
                 this.isValid = this.validate(this.employeeForm);
 
                 if (this.isValid) {
-                delete this.employeeForm.foto;
                         
 
                     if(this.file !==null && this.file.name !==null){

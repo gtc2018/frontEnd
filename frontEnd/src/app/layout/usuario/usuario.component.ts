@@ -443,7 +443,10 @@ export class UsuarioComponent implements OnInit {
 
         }
 
-        this.usuario.estado = "1";
+        if(this.identificador === 0){
+            this.usuario.estado = "1";
+        };
+        
         this.isValid = this.validate(this.usuario);
 
         if (this.isValid) {
@@ -457,19 +460,13 @@ export class UsuarioComponent implements OnInit {
 
                 this.crearUsuarioService.saveOrUpdate(this.usuario).subscribe(res => {
                     this.loadUsuarios();
+                    this.clean();
                     this.usuario = new UsuarioModel();
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Usuarios');
 
                     this.confirm=undefined;
 
                     this.deleteFormHide = false;
-
-                    // console.log(this.router.url);
-
-                    //         } else {
-                    //             this.message = res.message;
-                    //             this.isValid = false;
-                    //         }
 
                 }, (error) => {
                     console.log(error);

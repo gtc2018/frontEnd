@@ -72,9 +72,15 @@ export class RequestComponent implements OnInit {
     }
 
     creationPage():void{
-        console.log("dsads");
     }
 
+    //Metodo para consultar dentro de un rango de fechas
+    loadRequestsForDate(): void{
+
+        console.log(this.requestForm);
+    }
+
+    //Metodo para cargar los requerimientos
     private loadRequests(): void {
 
         this.requestService.getAll().subscribe(res => { //Utilizando el servicio
