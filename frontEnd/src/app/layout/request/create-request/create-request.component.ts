@@ -456,7 +456,7 @@ delete(model){
                 "day": parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(8,2)),
             }
             this.requestForm.fechaPlaneadaEntrega = this.fechaInicio;
-            this.codigoRQM = this.requestForm.cotizacion.codigoRequerimiento;
+            this.codigoRQM = this.requestForm.cotizacion.codigoRqm;
 
             this.getRequest(this.requestForm.cotizacionId);
             this.totalHallazgos();
@@ -503,7 +503,7 @@ createPorcentaje() {
     // modalRef.componentInstance.seleccionados = 'las herramientas';
     modalRef.componentInstance.template = `create-detail`;
     modalRef.componentInstance.empresaId = this.requestForm.id;
-    modalRef.componentInstance.codigoRQM = this.requestForm.cotizacion.codigoRequerimiento;
+    modalRef.componentInstance.codigoRQM = this.requestForm.cotizacion.codigoRqm;
     
 }
 
