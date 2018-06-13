@@ -107,7 +107,7 @@ export class EmployeeComponent implements OnInit   {
 
     filter: EmployeeModel = new EmployeeModel();
     filterEn: EnterpriseModel[];
-    private isValid: boolean = true;
+    private isValid: boolean = false;
 
         // Funciones---------------------------------------------------------------
 

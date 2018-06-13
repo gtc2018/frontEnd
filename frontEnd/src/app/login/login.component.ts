@@ -12,6 +12,8 @@ import { UsuarioModel } from './../model/usuario/usuario.model';
 import { OK } from './../messages/httpstatus';
 import { LoginService } from './servicios/login.service';
 
+import swal from 'sweetalert2';
+
 
 @Component({
     selector: 'app-login',
@@ -92,6 +94,20 @@ export class LoginComponent {
 
             },(error) => {
                 console.log(error);
+
+                console.log(error.error);
+
+                if(error.error.toString() == "[object ProgressEvent]"){
+
+                    swal(
+                        'Error Interno',
+                        "Al parecer el servidor no esta corriendo",
+                        'error'
+                      )
+
+                }
+
+
                 this.message = error.error;
                 this.isValid = false;
 

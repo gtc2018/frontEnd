@@ -26,9 +26,9 @@
 
             
 
-            <form *ngIf="visible">
+            <form *ngIf="visible"  ngNativeValidate>
 
-                <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                <div *ngIf="!isValid && message !== undefined" role="alert" class="alert alert-danger alert-dismissible">
                     {{message}}
                     <strong></strong>
                 </div>
@@ -52,7 +52,12 @@
 
                             <div>
 
-                                <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                <button style="margin-right:12px"
+                                 type="submit" 
+                                 placement="top"
+                                  ngbTooltip="Guardar" 
+                                  (click)="save()"
+                                  class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
                                     value="">
                                 </button>
 
@@ -71,7 +76,8 @@
 
                             <div>
 
-                                <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                <button 
+                                type="button"  style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
                                     value="">
                                     <img [src]="'assets/images/escoba.ico'" width="20" height="20">
                                 </button>
@@ -160,7 +166,7 @@
                                 <label class=" col-form-label-sm ">*Empresa</label>
                                 <select #selectEm [(ngModel)]="employeeForm.clienteId"
                                     name="enterprise" (change)="filterChargeAndAreaToEnterprise(selectEm.value)"
-                                    class="form-control-sm input-underline">
+                                    class="form-control-sm input-underline" [required]="!isValid">
                                     <option value=undefined selected>Seleccione una Empresa</option>
                                         <option *ngFor="let e of enterprises" [value]="e.id">
                                             {{e.descripcion}}
@@ -170,7 +176,7 @@
                                     
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class="col-form-label-sm">*Tipo de empleado:</label>
-                                <select [(ngModel)]="employeeForm.tipoEmpleado" name="tipoEmpleado" class="form-control-sm input-underline">
+                                <select [(ngModel)]="employeeForm.tipoEmpleado" name="tipoEmpleado" class="form-control-sm input-underline" [required]="!isValid">
                                     <option value="INTERNO">Interno</option>
                                     <option value="EXTERNO">Externo</option>
                                 </select>
@@ -178,17 +184,17 @@
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class=" col-form-label-sm ">*Nombres:</label>
-                                <input type="text" class="form-control-sm input-underline" [(ngModel)]="employeeForm.nombres" name="nombres" placeholder="Nombres">
+                                <input type="text" class="form-control-sm input-underline" [(ngModel)]="employeeForm.nombres" name="nombres" placeholder="Nombres" [required]="!isValid">
                             </div>
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">Teléfono:</label>
-                                <input type="number" class="form-control-sm input-underline" placeholder="Teléfono" [(ngModel)]="employeeForm.telefono" name="telefono">
+                                <input type="number" class="form-control-sm input-underline" placeholder="Teléfono" [(ngModel)]="employeeForm.telefono" name="telefono" >
                             </div>
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">Ciudad:</label>
-                                <select [(ngModel)]="employeeForm.ciudad" name="ciudad" class="form-control-sm input-underline">
+                                <select [(ngModel)]="employeeForm.ciudad" name="ciudad" class="form-control-sm input-underline" >
                                     <option value="Cali">Cali</option>
                                     <option value="Bogota">Bogota</option>
                                     <option value="Medellin">Medellin</option>
@@ -204,7 +210,7 @@
                                 <br>
                                 <select #selectEn [(ngModel)]="employeeForm.areaId"
                                     name="area"
-                                    class="form-control-sm input-underline">
+                                    class="form-control-sm input-underline" [required]="!isValid" >
                                     <option value=undefined selected>Seleccione un area</option>
                                         <option *ngFor="let a of areas" [value]="a.id">
                                             {{a.descripcion}}
@@ -215,7 +221,7 @@
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class="col-form-label-sm">*Tipo de documento:</label>
                                 <br>
-                                <select [(ngModel)]="employeeForm.tipoDocumento" name="tipoDocumento" class="form-control-sm input-underline">
+                                <select [(ngModel)]="employeeForm.tipoDocumento" name="tipoDocumento" class="form-control-sm input-underline" [required]="!isValid">
                                     <option value="NIT">NIT</option>
                                     <option value="CC">CC</option>
                                     <option value="CE">CE</option>
@@ -224,17 +230,17 @@
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">*Apellidos:</label>
-                                <input type="text" class="form-control-sm input-underline" placeholder="Apellidos" [(ngModel)]="employeeForm.apellidos" name="apellidos">
+                                <input type="text" class="form-control-sm input-underline" placeholder="Apellidos" [(ngModel)]="employeeForm.apellidos" name="apellidos" [required]="!isValid">
                             </div>
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class=" col-form-label-sm ">Celular:</label>
-                                <input type="email" class="form-control-sm input-underline" placeholder="Celular" [(ngModel)]="employeeForm.celular" name="celular">
+                                <input type="email" class="form-control-sm input-underline" placeholder="Celular" [(ngModel)]="employeeForm.celular" name="celular" >
                             </div>
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">*Dirección:</label>
-                                <input type="text" class="form-control-sm input-underline" placeholder="Dirección" [(ngModel)]="employeeForm.direccion" name="direccion">
+                                <input type="text" class="form-control-sm input-underline" placeholder="Dirección" [(ngModel)]="employeeForm.direccion" name="direccion" [required]="!isValid">
                             </div>
 
                         </div>
@@ -244,7 +250,7 @@
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                     <label class=" col-form-label-sm ">*Cargos</label>
                                     <br>
-                                    <select [(ngModel)]="employeeForm.cargoId" name="employee" class="form-control-sm input-underline">
+                                    <select [(ngModel)]="employeeForm.cargoId" name="employee" class="form-control-sm input-underline" [required]="!isValid">
                                         <option value=undefined selected>Seleccione un cargo</option>
                                         <option *ngFor="let c of cargos" [value]="c.id">
                                             {{c.descripcion}}
@@ -255,13 +261,13 @@
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">*# Documento:</label>
                                 <input type="number" class="form-control-sm input-underline" placeholder="# Documento" [(ngModel)]="employeeForm.numeroDocumento"
-                                    name="numeroDocumento">
+                                    name="numeroDocumento" [required]="!isValid">
                             </div>
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                                 <label class=" col-form-label-sm ">*Sexo:</label>
                                 <br>
-                                <select [(ngModel)]="employeeForm.sexo" name="sexo" class="form-control-sm input-underline">
+                                <select [(ngModel)]="employeeForm.sexo" name="sexo" class="form-control-sm input-underline" [required]="!isValid">
                                     <option value="M">Masculino</option>
                                     <option value="F">Femenino</option>
                                 </select>
@@ -269,7 +275,7 @@
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                 <label class=" col-form-label-sm ">*Email:</label>
-                                <input type="email" class="form-control-sm input-underline" placeholder="Email" [(ngModel)]="employeeForm.email" name="email">
+                                <input type="email" class="form-control-sm input-underline" placeholder="Email" [(ngModel)]="employeeForm.email" name="email" [required]="!isValid">
                             </div>
 
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
@@ -281,7 +287,7 @@
                             <div class="col-sm-12 col-md-12 col-lg-12">
                                     <label class=" col-form-label-sm ">*Sueldo:</label>
                                     <input #sueldo type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}" [(ngModel)]="employeeForm.sueldo"
-                                        name="sueldo">
+                                        name="sueldo" [required]="!isValid">
                                 </div>
                         </div>
 

@@ -9,6 +9,7 @@ import { EnterpriseService } from '../enterprise/enterprise.service';
 import { QuotationService } from './quotation.service';
 import { ToastrService } from 'ngx-toastr';
 import { CotizacionModel } from '../../model/cotizacion.model';
+import { Response } from '@angular/http';
 
 
 @Component({
@@ -47,7 +48,9 @@ styleUrls: ['./quotation.scss']
       this.renderValue = this.value.toString().toUpperCase();
     }
 
-    constructor(private route:Router) {
+    constructor(private route:Router,
+   private quotationService: QuotationService,
+   private toastr: ToastrService) {
     }
 
     upload() {
@@ -77,7 +80,7 @@ export class QuotationComponent implements OnInit {
 
     settings = {
 
-        actions:false,
+        actions:true,
         // {
         //     columnTitle:"Acciones",
         //     add:false,
@@ -95,7 +98,7 @@ export class QuotationComponent implements OnInit {
     //     confirmDelete: true
     //   },
         columns: {
-        id: {
+        consecutivo: {
             title: '# Cotización'
           },
           clienteId: {
@@ -104,10 +107,10 @@ export class QuotationComponent implements OnInit {
           proyectoId: {
             title: 'Proyecto'
           },
-          codigoRequerimiento: {
+          codigoRqm: {
             title: 'Codigo RQM'
           },
-          estadoId: {
+          estado: {
             title: 'Estado'
           },
           // sistemaId: {
@@ -133,7 +136,20 @@ export class QuotationComponent implements OnInit {
             
           });
           instance.deleteEvent.subscribe(row => {
-            alert(`${row.name} delete!`)
+            // alert(`${row.name} delete!`)
+
+            console.log(instance);
+            instance.quotationService.delete(row.id).subscribe(response=>{
+
+              instance.toastr.success("Registro eliminado exitosamente");
+
+            },(error)=>{
+
+              console.log(error);
+
+              instance.toastr.success("Error al eliminar");
+
+            })
             console.log(row,'List');
           }
 
@@ -232,7 +248,7 @@ export class QuotationComponent implements OnInit {
 
               quo.clienteId = quo.cliente.descripcion;
 
-              quo.proyectoId = quo.proyecto.descripcion;
+              quo.proyectoId = quo.proyecto.nombre;
 
               // quo.estadoId = quo.estado.descripcion;
 

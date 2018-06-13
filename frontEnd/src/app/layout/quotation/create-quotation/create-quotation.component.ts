@@ -14,6 +14,10 @@ import { EnterpriseModel } from '../../../model/enterprise';
 import { ToastrService } from 'ngx-toastr';
 import { ProyectoModel } from '../../../model/proyectos';
 import { CotizacionModel } from '../../../model/cotizacion.model';
+import { SystemsxQuotationModel } from '../../../model/systemsxQuotation';
+
+
+const now = new Date();
 
 @Component({
   selector: 'app-create-quotation',
@@ -23,6 +27,7 @@ import { CotizacionModel } from '../../../model/cotizacion.model';
 })
 export class CreateQuotationComponent implements OnInit {
 
+    systemsxQuotation: SystemsxQuotationModel[];
     //Variables
 
     systemInit: { id: number; name: string; value: boolean; }[];
@@ -32,6 +37,14 @@ export class CreateQuotationComponent implements OnInit {
 
     modelDateSol: NgbDateStruct;
     modelDateEnt: NgbDateStruct;
+    modelDateEntRqm: NgbDateStruct;
+
+    
+    minDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()+1};
+    minDateEntrega: NgbDateStruct;
+    minDateEntregaRqm: NgbDateStruct;
+
+    
 
     quotation = new CotizacionModel();
 
@@ -46,9 +59,15 @@ export class CreateQuotationComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log(this.minDate);
+
     if (this.route.snapshot.params.id){
+
+      var quotationId = this.route.snapshot.params.id;
+
+      this.loadSystemsxQuotation();
         
-      this.uploadEvents();
+      this.uploadEvents(quotationId);
 
 
     }else{
@@ -68,6 +87,8 @@ export class CreateQuotationComponent implements OnInit {
     private toastr: ToastrService) {
 
         console.log(route.snapshot.params.id);
+
+        
 
     this.toolInit= [
         {id:1,name:"Angular",value:1},
@@ -102,6 +123,48 @@ export class CreateQuotationComponent implements OnInit {
 
     }
 
+    this.quotation = new CotizacionModel();
+
+    if(this.quotation.clienteId == undefined){
+
+        this.quotation.clienteId = "";
+    }
+
+    if(this.quotation.proyectoId == undefined){
+
+        this.quotation.proyectoId = "";
+    }
+
+    // console.log(this.quotation.alcance);
+
+
+    this.quotation.proyecto = new ProyectoModel();
+
+    this.quotation.cliente = new EnterpriseModel();
+
+}
+
+//Utils
+public formatoFecha(fecha): string {
+    console.log(fecha);
+    let fechaString ="";
+    fechaString = fecha['year']+"-"+fecha['month']+"-"+fecha['day']+" 00:00:00"
+    return fechaString;
+}
+
+//Utils: Para cargar la fecha en el front
+public ConvertStringToNgbDateStruct(date:string): NgbDateStruct {
+    
+    var fechaToDate = new Date(date);
+
+    var ObjectDate= {year:fechaToDate.getFullYear(), month:fechaToDate.getMonth()+1, day:fechaToDate.getDate()};
+
+    return  ObjectDate;
+}
+
+calculateValueTotal():void{
+
+    this.quotation.valorTotal = this.quotation.valueHour * 148;
 }
 
   system() {
@@ -218,7 +281,7 @@ private getProyectosByCliente(id: any){
         console.log(this.proyectos);
 
         this.quotation.proyecto = new ProyectoModel();
-        this.quotation.proyectoId = undefined;
+        this.quotation.proyectoId = "";
 
         if(this.proyectos.length == 0){
             this.toastr.warning('No existen proyectos para este cliente');
@@ -240,45 +303,163 @@ private getProyectosByCliente(id: any){
 
 private save(){
 
-    this.quotationService.saveOrUpdate(this.quotation).subscribe(response=>{
+    this.quotationService.saveOrUpdate(this.quotation).subscribe(res=>{
 
-        console.log(response);
+        if(!this.updating){
 
+        console.log(res);
 
+        this.toastr.success("Registro creado exitósamente con el consecutivo "+ res.consecutivo);
+
+        }else{
+
+            console.log(res);
+
+            this.toastr.success("Registro actualizado con éxito");
+
+        }
+
+        this._route.navigate(['/cotizaciones'])
 
     },(error)=>{
 
         console.log(error);
 
-    });
+        this.toastr.error("Error al crear la cotización", error.error);
 
-     console.log(this.quotation);
+    });
 
 }
 
 private AjustDateA(){
 
-    console.log(this.modelDateSol);
-    console.log(this.modelDateEnt);
+    console.log(this.quotation.fechaEntrega);
+
+   this.quotation.fechaSolicitud = this.formatoFecha(this.modelDateSol);
+
+   console.log(this.quotation.fechaSolicitud);
+
+   this.quotation.fechaEntrega = null ;
+
+   this.modelDateEnt = null;
+
+   this.minDateEntrega = {year: this.modelDateSol['year'], month: this.modelDateSol['month'], day: this.modelDateSol['day'] + 1}
     
 }
 
-private AjustDateB(){
-    console.log(this.modelDateSol);
-    console.log(this.modelDateEnt);
-    
+private AjustDateB() {
+
+    this.quotation.fechaEntrega = this.formatoFecha(this.modelDateEnt);
+
+   console.log(this.quotation.fechaEntrega);
+
+   this.quotation.fechaEntregaRqm = null;
+
+   this.modelDateEntRqm = null;
+
+   this.minDateEntregaRqm = {year: this.modelDateEnt['year'], month: this.modelDateEnt['month'], day: this.modelDateEnt['day'] + 1}
+
+}
+
+private AjustDateC(){
+
+    this.quotation.fechaEntregaRqm = this.formatoFecha(this.modelDateEntRqm);
+
+   console.log(this.quotation.fechaEntregaRqm);
+
 }
 
 
-private uploadEvents(){
+private uploadEvents(id: number){
     console.log("Editando");
 
     this.updating=true;
+
+    this.quotationService.getQuotation(id).subscribe(response=>{
+
+        this.quotation = response;
+
+        this.quotation.clienteId = this.quotation.cliente.id.toString();
+
+        this.proyectoService.getProyectoByCliente(this.quotation.clienteId).subscribe(res => {
+            this.proyectos= res;
+    
+            console.log(this.proyectos);
+
+            this.quotation.proyectoId = this.quotation.proyecto.id.toString();;
+    
+            if(this.proyectos.length == 0){
+                this.toastr.warning('No existen proyectos para este cliente');
+            }
+
+
+            
+        },(error)=>{
+            console.log(error);
+    
+            this.toastr.error("Error al cargar los datos de Proyectos");
+            // swal(
+            //     'Error',
+            //     error.error.message,
+            //     'error'
+            //   )
+        });
+
+        
+
+        console.log(response);
+
+        if(this.quotation.fechaSolicitud !== null){
+
+            this.modelDateSol = this.ConvertStringToNgbDateStruct(this.quotation.fechaSolicitud);
+
+        }
+
+        if(this.quotation.fechaEntrega !== null){
+
+        this.modelDateEnt = this.ConvertStringToNgbDateStruct(this.quotation.fechaEntrega);
+
+   this.minDateEntrega = {year: this.modelDateSol['year'], month: this.modelDateSol['month'], day: this.modelDateSol['day'] + 1}
+
+        }
+
+        if(this.quotation.fechaEntregaRqm !== null){
+
+            this.modelDateEntRqm = this.ConvertStringToNgbDateStruct(this.quotation.fechaEntregaRqm);
+            
+
+        this.minDateEntregaRqm = {year: this.modelDateEnt['year'], month: this.modelDateEnt['month'], day: this.modelDateEnt['day'] + 1}
+    
+        }
+
+    },(error)=>{
+
+        this.toastr.error("Error al cargar el registro");   
+        
+        this._route.navigate(['/cotizaciones'])
+
+    });
 }
 
 private cancel(){
 
      this._route.navigate(['/cotizaciones'])
+
+}
+
+private loadSystemsxQuotation(){
+
+   this.quotationService.getSystemsxQuotation().subscribe(response=>{
+
+    this.systemsxQuotation = response;
+ 
+
+   },(error)=>{
+
+    console.log(error);
+
+
+   })
 
 }
 

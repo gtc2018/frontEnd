@@ -6,7 +6,15 @@
 </h2>
 
 </div>
-<div *ngIf="updating" class="btn-group center-sc row col-xs-12 col-sm-6 offset-md-3 col-md-3 offset-lg-4 col-lg-3">
+
+<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4 ">
+    <h3 class="" style="font-style: oblique">
+            {{quotation.consecutivo}}
+    </h3>
+    
+</div>
+
+<div *ngIf="updating" class="btn-group center-sc row col-xs-12 col-sm-6 col-md-3 col-lg-3">
 
                 <button class="btn btn-outline-success btn-md"
                 placement="top"
@@ -44,8 +52,9 @@
                 [(ngModel)]="quotation.clienteId"
                 (change)="getProyectosByCliente(selectCl.value)"
                  name="quotation.select"
-                 class="form-control">
-                 <option value=undefined disabled selected>Seleccione una empresa</option>
+                 class="form-control"
+                 required>
+                 <option value="" disabled selected>Seleccione una empresa</option>
                  <option *ngFor="let e of enterprises" [value]="e.id">
                      {{e.descripcion}}
                  </option>
@@ -61,8 +70,9 @@
                     <select #selectPr
                     [(ngModel)]="quotation.proyectoId"
                      name="quotation.proyectoId"
-                     class="form-control">
-                     <option value=undefined disabled selected>Seleccione un proyecto</option>
+                     class="form-control"
+                     [required]="true">
+                     <option value="" disabled selected>Seleccione un proyecto</option>
                      <option *ngFor="let p of proyectos" [value]="p.id">
                         {{p.nombre}}
                     </option>
@@ -78,8 +88,9 @@
                     <span class="input-group-addon">
                             <i class="fa fa-usd" aria-hidden="true"></i>
                     </span>
-                    <input type="text"
+                    <input type="number"
                     name="quotation.valueHour"
+                    (change)="calculateValueTotal()"
                     [(ngModel)]="quotation.valueHour"
                     class="form-control" >
                     </div>
@@ -90,8 +101,9 @@
                     <div class="form-group row">
                     <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Sistemas</label>
                     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <button class="btn btn-primary" (click)="system()">Seleccionar</button>
-                        <tag-input [ngModel]="systemItem"
+                        <button class="btn btn-primary" 
+                        type="button" (click)="system()">Seleccionar</button>
+                        <tag-input [ngModel]="systemsxQuotation"
                          name="systemItem"
                          placeholder="undefined"
                          secondaryPlaceholder="undefined"
@@ -99,7 +111,7 @@
                          disable="true"
                          [hideForm]="true"
                          [identifyBy]="'id'"
-                         [displayBy]="'name'"> </tag-input>
+                         [displayBy]="'sistemaName'"> </tag-input>
                     </div>
                     </div>
             </div>
@@ -108,7 +120,8 @@
                     <div class="form-group row">
                     <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Herramientas</label>
                     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <button class="btn btn-primary" (click)="tools()">Seleccionar</button>
+                        <button class="btn btn-primary"
+                        type="button" (click)="tools()">Seleccionar</button>
                          <tag-input [ngModel]="toolItem"
                          name="toolItem"
                          placeholder="undefined"
@@ -135,9 +148,9 @@
                 <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Código Requerimiento</label>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                     <input type="text"
-                    [(ngModel)]="quotation.codigoRequerimiento"
-                    name="quotation.codigoRequerimiento"
-                    class="form-control">
+                    [(ngModel)]="quotation.codigoRqm"
+                    name="quotation.codigoRqm"
+                    class="form-control" required>
                 </div>
 
             </div>
@@ -177,16 +190,18 @@
                 <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Estado cotización</label>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                 <select #selectEc
-                 name="quotation.state"
-                 class="form-control">
-                 <option value=undefined disabled selected>Seleccione un estado</option>
+                [(ngModel)]="quotation.estado"
+                 name="quotation.estado"
+                 class="form-control"
+                 >
                  <option value="GENERADA">Generada</option>
-                 <option value="CERRADO">Cerrado</option>
-                 <option value="ANULADO">Anulado</option>
+                 <option value="APROBADA">Aprobado</option>
+                 <option value="DESAPROBADA">Desaprobado</option>
+                 <option value="ANULADA">Anulado</option>
                 </select>
                 </div>
                 </div>
-        </div>
+         </div>
 
         <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                 <div class="form-group row">
@@ -199,7 +214,8 @@
                       [(ngModel)]="modelDateSol"
                        ngbDatepicker
                         #a="ngbDatepicker"
-                        (ngModelChange)="AjustDateA()">
+                        (ngModelChange)="AjustDateA()"
+                        [minDate]="minDate" >
 
                   <div class="input-group-addon" (click)="a.toggle()" >
                       <span class="fa fa-calendar"></span>
@@ -220,7 +236,8 @@
                       [(ngModel)]="modelDateEnt"
                        ngbDatepicker
                         #b="ngbDatepicker"
-                        (ngModelChange)="AjustDateB()">
+                        (ngModelChange)="AjustDateB()"
+                        [minDate]="minDateEntrega">
 
                   <div class="input-group-addon" (click)="b.toggle()" >
                       <span class="fa fa-calendar"></span>
@@ -234,10 +251,11 @@
                 <div class="form-group row">
                 <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Alcance Solicitud</label>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                <select #selectAl
-                 name="quotation.project"
+                <select
+                [(ngModel)]="quotation.alcance"
+                 name="quotation.lcance"
                  class="form-control">
-                 <option value=undefined disabled selected>Seleccione un alcance</option>
+                 <option value=null disabled selected>Seleccione un alcance</option>
                  <option value="CRITICO">Crítico</option>
                  <option value="MEDIO">Medio</option>
                  <option value="ALTO">Alto</option>
@@ -349,71 +367,74 @@
         </div>
 
 
-        <div *ngIf="updating" class="offset-xs-4 col-xs-8 offset-sm-4 col-sm-8 offset-md-6 col-md-6 offset-lg-6 col-lg-6" >
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group row">
-                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Horas totales RQM</label>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                            <input type="number"
-                            [(ngModel)]="quotation.horaTotal"
-                            name="quotation.horaTotal"
-                            class="form-control">
-                        </div>
+        <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group row">
-                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Valor Total RQM</label>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 input-group">
+            <div class="form-row">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                <!-- <div class="form-group row"> -->
+                        <label class="">Valor Total RQM</label>
+                        <div class=" input-group">
                                 <span class="input-group-addon">
                                         <i class="fa fa-usd" aria-hidden="true"></i>
                                 </span>
                             <input type="number"
-                            [(ngModel)]="quotation.ValTotalRqm"
-                            name="quotation.ValTotalRqm"
-                            class="form-control">
+                            [(ngModel)]="quotation.valorTotal"
+                            name="quotation.valorTotal"
+                            class="form-control"
+                            disabled>
                         </div>
 
-                    </div>
+                    <!-- </div> -->
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group row">
-                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Fecha aproximada Entrega</label>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-
-                            <input type="text"
-                            class="form-control">
-                        </div>
-
-                </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group row">
-                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Valor Total Acordado</label>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 input-group">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                <!-- <div class="form-group row"> -->
+                        <label >Valor Total Acordado</label>
+                        <div class="input-group">
                                 <span class="input-group-addon">
                                         <i class="fa fa-usd" aria-hidden="true"></i>
                                 </span>
                             <input type="number"
-                            [(ngModel)]="quotation.ValTotalAc"
-                            name="quotation.ValTotalAc"
+                            [(ngModel)]="quotation.valorAcordado"
+                            name="quotation.valorAcordado"
                             class="form-control">
                         </div>
 
+                <!-- </div> -->
                 </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group row">
-                        <label class="col-form-label col-xs-6 col-sm-6 col-md-6 col-lg-6">Horas acordadas</label>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                <!-- <div class="form-group row"> -->
+                        <label >Horas acordadas</label>
                             <input type="number"
-                            [(ngModel)]="quotation.HorasAc"
-                            name="quotation.HorasAc"
+                            [(ngModel)]="quotation.horasAcordadas"
+                            name="quotation.horasAcordadas"
                             class="form-control">
-                        </div>
 
+                <!-- </div> -->
                 </div>
+                
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                <!-- <div class="form-group row"> -->
+                        <label >Fecha Aprox. Entrega</label>
+                              
+                        <div class="input-group">
+                            <input class="form-control"
+                             placeholder="yyyy-mm-dd"
+                                name="modelDateEntRqm" 
+                                [(ngModel)]="modelDateEntRqm"
+                                 ngbDatepicker
+                                  #c="ngbDatepicker"
+                                  (ngModelChange)="AjustDateC()"
+                                  [minDate]="minDateEntregaRqm"
+                                  [placement]="'top-right'" >
+          
+                            <div class="input-group-addon" (click)="c.toggle()" >
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                          </div>
+
+                <!-- </div> -->
+                </div>
+
                 </div>
 
                 <br><br>

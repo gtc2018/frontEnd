@@ -6,6 +6,7 @@ import { RestResponse } from '../../model/restResponse';
 import { ProyectoModel } from '../../model/proyectos';
 import { UsuarioModel } from '../../model/usuario/usuario.model';
 import { CotizacionModel } from '../../model/cotizacion.model';
+import { SystemsxQuotationModel } from '../../model/systemsxQuotation';
 
 
 
@@ -24,11 +25,11 @@ export class QuotationService {
   //SERVICIO CONSULTAR TODOS LOS proyectos
   public getQuotations(): Observable<CotizacionModel[]>{
 
-    return this.Http.get<CotizacionModel[]>("http://localhost:8080/Quotations/getAll");
+    return this.Http.get<CotizacionModel[]>("http://localhost:8080/Quotations");
 
   }
 
-  public getQuotation(id:String): Observable<CotizacionModel>{
+  public getQuotation(id:number): Observable<CotizacionModel>{
 
     return this.Http.get<CotizacionModel>("http://localhost:8080/Quotations/getId/"+id);
 
@@ -43,14 +44,26 @@ export class QuotationService {
 //     return this.Http.post<EmployeeModel[]>("http://localhost:8080/getAllEmployeesToEnterprise", JSON.stringify(this.enterprise) );
 //   }
 
-  public saveOrUpdate(quotation: CotizacionModel): Observable<RestResponse> {
+  public saveOrUpdate(quotation: CotizacionModel): Observable<any> {
     console.log(quotation);
-    return this.Http.post<RestResponse>("http://localhost:8080/Quotations/saveOrUpdate", JSON.stringify(quotation));
+    return this.Http.post<any>("http://localhost:8080/Quotations/saveOrUpdate", JSON.stringify(quotation));
   }
 
-  public delete(id): Observable<RestResponse> {
+  public delete(id:number): Observable<RestResponse> {
     // console.log(proyecto);
-    return this.Http.delete<RestResponse>("http://localhost:8080/Quotations/deleteProyecto", {params:{id:id}});
+    return this.Http.delete<RestResponse>("http://localhost:8080/Quotations/Delete/"+id);
+
+  }
+
+  public getSystemsxQuotation(): Observable<SystemsxQuotationModel[]>{
+
+    return this.Http.get<SystemsxQuotationModel[]>("http://localhost:8080/SystemsXQuotation");
+
+  }
+
+  public getToolsxQuotation(): Observable<SystemsxQuotationModel[]>{
+
+    return this.Http.get<SystemsxQuotationModel[]>("http://localhost:8080/SystemsXQuotation");
 
   }
   

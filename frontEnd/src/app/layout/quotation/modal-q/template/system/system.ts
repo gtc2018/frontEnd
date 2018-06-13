@@ -1,9 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SistemaService } from '../../../servicios/quotation.service';
+import { SistemaModel } from '../../../../../model/sistema.model';
 
 @Component({
   selector: 'system-component',
-  templateUrl: './system.html'
+  templateUrl: './system.html',
+  providers: [SistemaService]
 })
 export class SystemComponent implements OnInit {
      @Input() title;
@@ -14,7 +17,9 @@ export class SystemComponent implements OnInit {
 
  new:boolean=false;
 
- systemForm={};
+ systemList=[];
+
+ systems:SistemaModel[];
 
 //  Funciones
 
@@ -39,9 +44,14 @@ newSystem():void{
   ngOnInit() {
 
     console.log(this.system);
+
+    this.loadSystems();
   }
 
-  constructor(public activeModal: NgbActiveModal){
+  constructor(public activeModal: NgbActiveModal,
+  public sistemaService : SistemaService){
+
+
 
     // console.log(this.array);
 
@@ -52,5 +62,25 @@ newSystem():void{
     // ]
 
   }
+
+  loadSystems(){
+
+    this.sistemaService.getSistemas().subscribe(response=>{
+
+      this.systems = response;
+
+      // this.
+
+
+    },(error)=>{
+
+      console.log(error);
+    });
+
+    
+
+  }
+
+  
 
 }

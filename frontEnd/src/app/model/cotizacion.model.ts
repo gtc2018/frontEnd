@@ -12,32 +12,26 @@ export class CotizacionModel extends ParentEntity{
   public cliente: EnterpriseModel;
   public fases: FaseModel;
   public proyecto: ProyectoModel;
-  public sistema: SistemaModel;
-  public herramienta: HerramientaModel;
-  public estado: EstadoModel;
-  public alcance: AlcanceModel;
 
   public clienteId: string;
-  public fasesId: string;
   public proyectoId: string;
-  public sistemaId: string;
-  public herramientaId: string;
-  public estadoId: string;
-  public alcanceId: string;
 
-  public codigoRequerimiento: String;
-  public descripcionRqm: String; 
-  public valorHora: Number;
-  public numeroRecurso: Number;
-  public fechaSolicitud: String;
-  public fechaEntrega: String;
-  public horasFase: Number;
-  public horasRqm: Number;
-  public valorRqm: Number;
-  public fechaAproxEntrega: String;
-  public valorAcordado: Number;
-  public fechaCreacion: String;
-  public usuarioCreacion: String;
-  public fechaModificacion: String;
-  public usuarioModificacion: String; 
+  public estado:string;
+  public alcance:string;
+
+  public codigoRqm: string;
+  public descripcionRqm: string; 
+  public valueHour: number;
+  public numeroRecursos: number;
+  public fechaSolicitud: string;
+  public fechaEntrega: string;
+  public horasFase: number;
+  public horasTotal: number;
+  public valorTotal: number;
+  public fechaEntregaRqm: string;
+  public valorAcordado: number;
+  public fechaCreacion: string;
+  public usuarioCreacion: string;
+  public fechaModificacion: string;
+  public usuarioModificacion: string; 
 }

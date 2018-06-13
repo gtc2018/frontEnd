@@ -286,7 +286,7 @@ private loadEstados(): void {
         this.codigoRQM="";
         this.cotizacion = id;
         this.cotizacion = this.cotizaciones.filter(value => value.id === parseInt(id));
-        this.codigoRQM =this.cotizacion[0].codigoRequerimiento;
+        this.codigoRQM =this.cotizacion[0].codigoRqm;
     }
 
 
