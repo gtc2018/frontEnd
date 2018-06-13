@@ -1,0 +1,70 @@
+<form>
+
+        <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
+
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
+                <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
+                        <div class="btn btn-info hand"
+                         (click)="newSystem()">
+                             <i class="fa fa-plus"
+                             aria-hidden="true">
+                             </i>
+                             &nbsp; Crear nuevo
+                        </div>
+                        </div>
+
+
+                <hr>
+                        <!-- <br> -->
+                </div>
+
+                    <div *ngIf="new" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                            <div class="form-group row">
+                                <label class="col-form-label col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                                    Sistema:
+                                </label>
+                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Descripcion">
+                                </div>
+                                <button class="btn btn-primary"
+                                 type="button"
+                                 (click)="saveSystem()">
+                                        <i class="fa fa-save"
+                                         aria-hidden="true"
+                                         title="Guardar"
+                                         ></i>
+                                    </button>
+                            </div>
+                            <hr>
+                        <!-- <br> -->
+                    </div>
+
+
+            <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 " *ngFor="let s of system; let i=index" >
+                        <!-- <div class="form-group"> -->
+                        <label class="col-form-label col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <mat-checkbox name="{{s.value}}" [(ngModel)]="s.value">
+                                <span [innerHTML]="s.name"></span>
+                            </mat-checkbox>
+                        </label>
+                        <!-- </div> -->
+                    </div>
+                    <br><br><br>
+
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc" >
+
+                            <input
+                            (click)="saveSystemToQuotation()"
+                            type="submit"
+                            class="btn btn-success"
+                            value="Guardar"/>
+                             <!-- <input style="margin-left:10px"
+                             type="reset"
+                             class="btn btn-danger"
+                             value="Limpiar" /> -->
+                    </div>
+            </div>
+
+        </form>

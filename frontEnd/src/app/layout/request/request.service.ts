@@ -7,6 +7,7 @@ import { RestResponse } from '../../model/restResponse';
 import { CotizacionModel } from '../../model/cotizacion.model';
 import { ProyectoModel } from '../../model/proyectos';
 import { EstadoModel } from './../../model/estado.model';
+import { InvolucradoModel } from '../../model/involucrado.model';
 
 
 
@@ -14,6 +15,7 @@ import { EstadoModel } from './../../model/estado.model';
 @Injectable()
 export class RequestService {
   request: RequerimientoModel = new RequerimientoModel;
+  involved: InvolucradoModel = new InvolucradoModel;
   proyecto: ProyectoModel = new ProyectoModel;
   estadoList: EstadoModel[];
  
@@ -25,10 +27,27 @@ export class RequestService {
     return this.http.get<RequerimientoModel[]>("http://localhost:8080/getAllRequerimiento");      
   }
 
+  //SERVICIO CONSULTAR TODOS LOS Involucrados
+  public getAllInvolved(): Observable<InvolucradoModel[]>{
+    return this.http.get<InvolucradoModel[]>("http://localhost:8080/getAllInvolucrado");      
+  }
+
+  //SERVICIO CONSULTAR TODOS LOS INVOLUCRADOS DE UN REQUERIMIENTO
+  public getInvolvedByRequest(id): Observable<InvolucradoModel[]>{
+    this.involved.id = id;
+    console.log(this.involved);
+    return this.http.post<InvolucradoModel[]>("http://localhost:8080/getInvolvedByRequest",JSON.stringify(this.involved));      
+  }
+
   public saveOrUpdate(request: RequerimientoModel): Observable<RestResponse> {
     console.log("REQUEST");
     console.log(request);
     return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateRequerimiento",JSON.stringify(request));
+  }
+
+  //Servicio para guardar los involucrados
+  public saveOrUpdateInvolved(involved: InvolucradoModel): Observable<RestResponse> {
+    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateInvolucrado",JSON.stringify(involved));
   }
 
     //Este servicio se debe pasara cuando se cree la carpeta de cotizaciones

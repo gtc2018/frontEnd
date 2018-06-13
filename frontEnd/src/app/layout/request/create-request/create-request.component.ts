@@ -30,6 +30,14 @@ import { FaseModel } from '../../../model/fase';
 import { Location } from '@angular/common';
 import {FormsModule} from '@angular/forms';
 
+import { ModalQComponent } from '../modal-q/modal-q.component';
+import { SystemComponent } from '../modal-q/template/system/system';
+import { ToolComponent } from '../modal-q/template/tool/tool';
+import { CreateDetailComponent } from '../modal-q/template/create-detail/create-detail';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TagInputModule } from 'ngx-chips';
+
 @Component({
     
   selector: 'app-create-request',
@@ -58,8 +66,17 @@ export class CreateRequestComponent implements OnInit {
     documentTemp: string ="";
     ruta: string ="../"
     codigoRQM: String;
+    año: string;
+    mes: string;
+    dia: string;
+    antFechI: string;
+    antFechE: string;
+    antFechP: string;
+    
     editarRequest: any;
     totalHallazgo: number;
+    
+
     emailRegex: RegExp;
 
     visible: boolean = false;
@@ -67,6 +84,8 @@ export class CreateRequestComponent implements OnInit {
     disabledEnterprise: boolean = false;
     disabledProyecto: boolean = false;
     disabledCotizacion: boolean = false;
+    newReg: boolean = true;
+    edtReg: boolean = false;
 
     file: File = null;
     fechaInicio; NgbDateStruct;
@@ -94,6 +113,7 @@ export class CreateRequestComponent implements OnInit {
     constructor(
         private requestService: RequestService, 
         private enterpriseService: EnterpriseService,
+        private modalService: NgbModal,
         private proyectoService: ProyectosService,
         private estadoService: EstadoService,
         private toastr: ToastrService,
@@ -289,26 +309,32 @@ private loadEstados(): void {
         this.codigoRQM =this.cotizacion[0].codigoRequerimiento;
     }
 
+gameDate(): void{
+    this.requestForm.fechaInicio = this.antFechI;
+    this.requestForm.fechaEntrega = this.antFechE;
+    this.requestForm.fechaPlaneadaEntrega = this.antFechP;
+}
 
+save():void{
 
+    this.antFechI = this.requestForm.fechaInicio;
+    this.antFechE = this.requestForm.fechaEntrega;
+    this.antFechP = this.requestForm.fechaPlaneadaEntrega;
 
-    save():void{
+    if(this.requestForm.id === null){
+        this.requestForm.usuarioCreacion=localStorage.email;
+    }else{
+        this.requestForm.usuarioModificacion =localStorage.email;
+    }
 
-        console.log(this.requestForm);
+    this.isValid = this.validate(this.requestForm);
 
-        if(this.login.authUser !== undefined){
-            if(this.requestForm.id === null){
-                this.requestForm.usuarioCreacion=this.login.authUser.usuarioId;
-            }else{
-                this.requestForm.usuarioModificacion =this.login.authUser.usuarioId;
-            }
-        }
+    if (this.isValid){
 
-        this.isValid = this.validate(this.requestForm);
         this.formatoFechas();
         this.isValidFechas = this.validarFechas();
       
-        if (this.isValid && this.isValidFechas) {
+        if (this.isValidFechas) {
 
             if(this.file !==null && this.file.name !==null){
                 this.requestForm.archivo = this.file.name;
@@ -322,42 +348,45 @@ private loadEstados(): void {
                 this.requestForm.numeroHallazgoPresentacion=0;
                 this.totalHallazgo=0;
                 this.nameUpload = "Subir Documento";
+                this.gameDate();
 
         
-                this.toastr.success('Transacción satisfactoria', 'Gestión de Requerimientos');
+                this.toastr.success('Transacción satisfactoria, ya puede asignar los involucrados en el boton editar', 'Gestión de Requerimientos');
 
                 this._location.back();
                 
 
             },(error)=>{ //Controlando posible error
-                console.log(error);
 
                 this.toastr.error(error.error.message,"Error en la transacción");
             });
 
         } else {
-                if (!this.isValidFechas){
-                    this.message= this.message + ' por favor revise las fechas';
+            if (!this.isValidFechas){
+            this.toastr.error(this.message + " por favor revise las fechas","Error en la transacción");
+            this.gameDate();
                     
-                }else{
-                    console.log(this.messageEmail);
-                    if(!this.messageEmail){
-                    this.message= 'Los campos con * son obligatorios!';
-            
-                    }else{
-                        this.message= this.messageEmail;
-                        this.messageEmail= undefined;
-                    }
-                }
+            }else{
+                    
+                this.message= this.messageEmail;
+                this.messageEmail= undefined;
+            }
         }
+    }else{
+        if(!this.messageEmail){
+            this.message= 'Los campos con * son obligatorios!';
+            this.gameDate();
+        }else{
+            this.message= this.messageEmail;
+            this.messageEmail= undefined;
+        }
+    }
+        
 }
 
 delete(model){
 
-    if(this.login.authUser !== undefined){
-
-        model.usuarioCreacion=this.login.authUser.usuarioId;
-    }
+        model.usuarioCreacion=localStorage.email;
 
     swal({
         title: 'Esta seguro?',
@@ -399,6 +428,8 @@ delete(model){
             this.requestForm = res;
             this.ruta="../../"
             this.visible = true;
+            this.newReg = false;
+            this.edtReg = true;
             this.requestForm.clienteId = this.requestForm.cliente.id;
             this.requestForm.proyectoId = this.requestForm.proyecto.id;
             this.requestForm.cotizacionId = this.requestForm.cotizacion.id;
@@ -407,11 +438,30 @@ delete(model){
             this.enterprises.push(this.requestForm.cliente);
             this.proyectos.push(this.requestForm.proyecto);
             this.cotizaciones.push(this.requestForm.cotizacion);
+            this.fechaInicio = {
+                "year": parseInt(this.requestForm.fechaInicio.toString().substr(0.4)),
+                "month":  parseInt(this.requestForm.fechaInicio.toString().substr(5,2)),
+                "day": parseInt(this.requestForm.fechaInicio.toString().substr(8,2)),
+            }
+            this.requestForm.fechaInicio = this.fechaInicio;
+            this.fechaInicio = {
+                "year": parseInt(this.requestForm.fechaEntrega.toString().substr(0.4)),
+                "month":  parseInt(this.requestForm.fechaEntrega.toString().substr(5,2)),
+                "day": parseInt(this.requestForm.fechaEntrega.toString().substr(8,2)),
+            }
+            this.requestForm.fechaEntrega = this.fechaInicio;
+            this.fechaInicio = {
+                "year": parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(0.4)),
+                "month":  parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(5,2)),
+                "day": parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(8,2)),
+            }
+            this.requestForm.fechaPlaneadaEntrega = this.fechaInicio;
+            this.codigoRQM = this.requestForm.cotizacion.codigoRequerimiento;
+
             this.getRequest(this.requestForm.cotizacionId);
             this.totalHallazgos();
             this.nameUpload = this.requestForm.archivo.split("REQUERIMIENTOS")[1];
             console.log(this.requestForm);
-            
 
             //this.requestForm.fechaInicio  = JSON.stringify(this.formatoCalendario(this.requestForm.fechaInicio));
             //this.fechaInicio=this.testt.parse(this.requestForm.fechaInicio);
@@ -445,7 +495,17 @@ public totalHallazgos(){
     this.totalHallazgo = parseInt(this.requestForm.numeroHallazgoBloqueante+"") + parseInt(this.requestForm.numeroHallazgoFuncional+"") + parseInt(this.requestForm.numeroHallazgoPresentacion+"");
 }
 
+// Mostrar el modal o no
+createPorcentaje() {
 
+    const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
+    modalRef.componentInstance.title = 'Crear Porcentaje por Fase';
+    // modalRef.componentInstance.seleccionados = 'las herramientas';
+    modalRef.componentInstance.template = `create-detail`;
+    modalRef.componentInstance.empresaId = this.requestForm.id;
+    modalRef.componentInstance.codigoRQM = this.requestForm.cotizacion.codigoRequerimiento;
+    
+}
 
   public validate(requestForm: RequerimientoModel): boolean {
     
@@ -471,6 +531,15 @@ public totalHallazgos(){
         return false;
      }
      if(!requestForm.estadoId){
+        return false;
+     }
+     if(!requestForm.fechaInicio){
+        return false;
+     }
+     if(!requestForm.fechaEntrega){
+        return false;
+     }
+     if(!requestForm.fechaPlaneadaEntrega){
         return false;
      }
      
@@ -505,14 +574,36 @@ public totalHallazgos(){
 
   public validarFechas():boolean{
     let isValidFechas=true;
-    
-        if((this.requestForm.fechaInicio > this.requestForm.fechaPlaneadaEntrega) || (this.requestForm.fechaInicio > this.requestForm.fechaEntrega)){
-            
-            isValidFechas =  false;
 
-            this.message= 'recuerde que la fecha de inicio no puede ser mayor a las fecha planeacion y real de entrega';
-            
+    
+    if( parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) > parseInt(this.requestForm.fechaEntrega.toString().substr(0,4))
+    || parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) > parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(0,4))){
+
+        this.message= 'el año de inicio no puede ser mayor o igual a las de entrega';
+        isValidFechas = false;
+
+    }else if(parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) === parseInt(this.requestForm.fechaEntrega.toString().substr(0,4))
+    || parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) === parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(0,4))){
+
+        if(parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) > parseInt(this.requestForm.fechaEntrega.toString().substr(5,2))
+        || parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) > parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(5,2))){
+
+            this.message= 'el mes de inicio no puede ser mayor o igual a las de entrega';
+            isValidFechas = false;
+
+        }else if(parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) === parseInt(this.requestForm.fechaEntrega.toString().substr(5,2))
+        || parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) === parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(5,2))){
+
+            if(parseInt(this.requestForm.fechaInicio.toString().substr(8,2)) > parseInt(this.requestForm.fechaEntrega.toString().substr(8,2))
+            || parseInt(this.requestForm.fechaInicio.toString().substr(8,2)) > parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(8,2))){
+
+                this.message= 'el dia de inicio no puede ser mayor o igual a las de entrega';
+                isValidFechas = false;
+
+            }
         }
+
+    }
        
     return isValidFechas
   }
@@ -520,7 +611,20 @@ public totalHallazgos(){
 public formatoFecha(fecha): string {
     console.log(fecha);
     let fechaString ="";
-    fechaString = fecha['year']+"-"+fecha['month']+"-"+fecha['day']+" 00:00:00"
+    if(fecha['month'] < 10){
+        this.mes = "0"+fecha['month'];
+    }else{
+        this.mes = fecha['month'];
+
+    }
+    if(fecha['day']< 10){
+        this.dia = "0"+ fecha['day'];
+    }else{
+        this.dia = fecha['day'];
+    }
+
+    fechaString = fecha['year']+"-"+this.mes+"-"+this.dia+" 00:00:00";
+    
     return fechaString;
 }
 
@@ -530,9 +634,6 @@ public formatoCalendario(fecha){
         "month":  5,
         "day": 2,
     };
-    console.log("FORMATOCALENDARIO");
-    console.log(this.fechaInicio);
-    console.log(JSON.stringify(this.fechaInicio));
 }
 
 public formatoFechas(){
