@@ -23,7 +23,7 @@
                     <div _ngcontent-c7="" class="form-group input-group"> 
                       <label for="exampleInputName1" class=" col-form-label-sm ">*Fase :</label>
                       <select id="inputState" class="form-control-sm input-underline col-8" [(ngModel)]="porcentajePorFaseForm.fasesId" name="fase">
-                          <option value="" disabled>Seleccione cliente</option>
+                          <option value="" disabled>Seleccione fase</option>
                           <option *ngFor="let f of fases" [value]="f.id">{{f.descripcion}}</option>
                       </select>                                                     
                     </div>

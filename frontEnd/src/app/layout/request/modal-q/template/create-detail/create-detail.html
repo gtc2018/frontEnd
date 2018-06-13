@@ -21,6 +21,14 @@
                     </div>
 
                     <div _ngcontent-c7="" class="form-group input-group"> 
+                        <label for="exampleInputName1" class=" col-form-label-sm ">*Cliente:</label>
+                        <select #selectEn id="inputState" class="form-control-sm input-underline col-8" [(ngModel)]="cliente" (change)="filtroEmpleado(selectEn.value)" name="cliente">
+                            <option value="" disabled>Seleccione el cliente</option>
+                            <option *ngFor="let c of enterprises" [value]="c.id">{{c.descripcion}}</option>
+                        </select>                                                     
+                      </div>
+
+                    <div _ngcontent-c7="" class="form-group input-group"> 
                       <label for="exampleInputName1" class=" col-form-label-sm ">*Empleado:</label>
                       <select id="inputState" class="form-control-sm input-underline col-8" [(ngModel)]="involucradoForm.empleadoId" name="empleado">
                           <option value="" disabled>Seleccione el empleado</option>

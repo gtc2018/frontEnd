@@ -341,7 +341,7 @@ loadRequestToProject(id: any): void {
     this.registroActividadForm.requerimientoId = undefined;
     
     //Se ejecuta el servicio de traer requerimientos por proyecto
-    this.requestService.getRequestByProject(id).subscribe(res => {   
+    this.requestService.getRequestByProjectAndEmployee(id, localStorage.empleado).subscribe(res => {   
       
         this.requests = res;
         this.requerimientolb = false;

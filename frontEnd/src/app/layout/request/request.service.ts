@@ -62,12 +62,29 @@ export class RequestService {
     return this.http.get<EstadoModel[]>("http://localhost:8080/getAllEstados");      
   } 
 
+  //Obtener requerimientos por proyecto
   public getRequestByProject(id): Observable<RequerimientoModel[]> {
     this.proyecto.id=id;
     console.log(id);
     return this.http.post<RequerimientoModel[]>("http://localhost:8080/getAllRequestToProject", JSON.stringify(this.proyecto));
 
   }
+
+  //Obtener requerimientos por proyecto y usuario
+  public getRequestByProjectAndEmployee(id, id2): Observable<RequerimientoModel[]> {
+    this.request.proyectoId= id;
+    this.request.clienteId = id2;
+    console.log(this.request);
+    return this.http.post<RequerimientoModel[]>("http://localhost:8080/getRequestByProjectAndEmployee", JSON.stringify(this.request));
+
+  }
+
+  //Obtener requerimientos por fechas
+  public getAllRequestToDate(request: RequerimientoModel): Observable<RequerimientoModel[]> {
+    return this.http.post<RequerimientoModel[]>("http://localhost:8080/getAllRequestToDate", JSON.stringify(request));
+
+  }
+
   public delete(request: RequerimientoModel): Observable<RestResponse> {
 
     return this.http.post<RestResponse>("http://localhost:8080/deleteRequerimiento", JSON.stringify(request) );
