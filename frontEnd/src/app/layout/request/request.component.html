@@ -12,7 +12,7 @@
         </div>
         <hr>
         <div style="text-align:left">
-            <button type="button" class="btn-sm btn-primary mb-2" (click)="creationPage()" routerLink="create" blueColored>
+            <button *ngIf="crear" type="button" class="btn-sm btn-primary mb-2" (click)="creationPage()" routerLink="create" blueColored>
                 <span class="fa fa-plus"></span> Nuevo Requerimiento
             </button>
             <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
@@ -233,7 +233,7 @@
                             </td>
                             <td>
                                 <div class="btn-group">
-                                    <a class="btn btn-default">
+                                    <a class="btn btn-default" *ngIf="editar">
                                         <i 
                                         [routerLink]="['create', r.id]"
                                         class="fa fa-pencil-square-o fa-lg hand"
@@ -241,7 +241,7 @@
                                         title="Editar">
                                         </i>
                                     </a>
-                                    <a class="btn btn-default">
+                                    <a class="btn btn-default" *ngIf="eliminar">
                                         <i (click)="delete(r)"
                                         class="fa fa-trash-o fa-lg hand"
                                         aria-hidden="true" title="Eliminar">

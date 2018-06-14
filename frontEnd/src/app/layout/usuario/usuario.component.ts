@@ -15,13 +15,16 @@ import { EnterpriseModel } from '../../model/enterprise';
 import { ProyectosService } from '../proyectos/proyectos.service';
 import { EmployeeModel } from '../../model/employee';
 import { EmployeeService } from '../employee/employee.service';
+import { PermisoModel } from '../../model/permiso.model';
+import { LoginService } from '../../login/servicios/login.service';
+import { MenuService } from '../menus/servicios/menu.service';
 
 @Component({
     selector: 'app-usuario',
     templateUrl: './usuario.component.html',
     styleUrls: ['./usuario.component.scss'],
     animations: [routerTransition()],
-    providers: [UsuarioService, CrearUsuarioService, EnterpriseService, EmployeeService, ProyectosService]
+    providers: [UsuarioService, CrearUsuarioService, EnterpriseService, EmployeeService, ProyectosService, LoginService]
 })
 export class UsuarioComponent implements OnInit {
     rols: any[];
@@ -57,6 +60,7 @@ export class UsuarioComponent implements OnInit {
     user: UsuarioModel;
     private usuarios: Array<UsuarioModel>;
     private usuario: UsuarioModel;
+    private permiso: PermisoModel;
     filter: UsuarioModel = new UsuarioModel;
 
     private message: string = "";
@@ -68,6 +72,14 @@ export class UsuarioComponent implements OnInit {
 
     private employees: EmployeeModel[];
     private resEmployee: EmployeeModel[];
+
+    items: any;
+    menus: any;
+
+    crear = false;
+    editar = false;
+    eliminar = false;
+    leer = false;
 
     //Mostrar el crear o no
 
@@ -89,7 +101,8 @@ export class UsuarioComponent implements OnInit {
         private crearUsuarioService: CrearUsuarioService,
         private router: Router,
         private toastr: ToastrService,
-        private login: AuthService
+        private login: AuthService,
+        private menu: LoginService
     )
 
     
@@ -117,6 +130,7 @@ export class UsuarioComponent implements OnInit {
         this.loadEnterprises();
         this.loadUsers();
         this.loadEmployee();
+        this.getItems();
     }
 
     // Limpia los campos
@@ -616,6 +630,50 @@ export class UsuarioComponent implements OnInit {
         }
 
         return isValid;
+    }
+
+
+    //Permisos
+    private getItems(): void {
+
+        this.permiso = new PermisoModel();
+        // this.login.authUser.rolId;
+        this.permiso.rolId = localStorage.rol;
+        this.menu.loadMenus(this.permiso).subscribe(res => {
+
+            this.menus = res
+            console.log(this.menus);
+            for (let menu of this.menus) {
+                //this.items = menu.item;
+                if (menu.menu.descripcion === "Usuarios") {
+                    this.items = menu;
+                    console.log(this.items);
+
+                    if (menu.crear === 1) {
+                        this.crear = true;
+                    }
+
+                    if (menu.editar === 1) {
+                        this.editar = true;
+                    }
+
+                    if (menu.eliminar === 1) {
+                        this.eliminar = true;
+                    }
+
+                    if (menu.leer === 1) {
+                        this.leer = true;
+                    }
+
+                }
+
+            }
+
+
+        }, (error) => {
+            console.log(error);
+
+        });
     }
 
 }
