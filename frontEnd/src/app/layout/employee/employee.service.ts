@@ -63,6 +63,14 @@ export class EmployeeService {
   return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateEmpleado", employee);
 }
 
+public getEmployeeForRegistre(email, documento): Observable<EmployeeModel[]> {
+
+  this.employee.email = email;
+  this.employee.numeroDocumento = documento;
+
+  return this.http.post<EmployeeModel[]>("http://localhost:8080/getEmployeeForRegistre", JSON.stringify(this.employee));
+}
+
 
   public delete(employee: EmployeeModel): Observable<RestResponse> {
     console.log(employee);
