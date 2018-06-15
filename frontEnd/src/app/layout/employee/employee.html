@@ -187,12 +187,19 @@
                             </div>
 
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class=" col-form-label-sm ">Ciudad:</label>
-                                <select [(ngModel)]="employeeForm.ciudad" name="ciudad" class="form-control-sm input-underline">
-                                    <option value="Cali">Cali</option>
-                                    <option value="Bogota">Bogota</option>
-                                    <option value="Medellin">Medellin</option>
+                                <label class=" col-form-label-sm ">Pais:</label>
+                                <select #selectPa [(ngModel)]="employeeForm.pais" name="pais" class="form-control-sm input-underline col-12"
+                                (change)="filterDeparmentForCountry(selectPa.value)">
+                                    <option value=undefined selected>Seleccione un pais</option>
+                                    <option *ngFor="let p of paises" [value]="p.id">
+                                            {{p.descripcion}}
+                                    </option>
                                 </select>
+                            </div>
+
+                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">*Dirección:</label>
+                                <input type="text" class="form-control-sm input-underline" placeholder="Dirección" [(ngModel)]="employeeForm.direccion" name="direccion">
                             </div>
 
                         </div>
@@ -232,9 +239,22 @@
                                 <input type="email" class="form-control-sm input-underline" placeholder="Celular" [(ngModel)]="employeeForm.celular" name="celular">
                             </div>
 
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">Departamento:</label>
+                                <select #selectDe [(ngModel)]="employeeForm.departamento" name="departamento" class="form-control-sm input-underline col-10"
+                                (change)="filtercityForDeparment(selectDe.value)">
+                                    <option value=undefined selected>Seleccione un departamento</option>
+                                    <option *ngFor="let d of departamentos" [value]="d.id">
+                                            {{d.descripcion}}
+                                    </option>
+                                </select>
+                            </div>
+
                             <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class=" col-form-label-sm ">*Dirección:</label>
-                                <input type="text" class="form-control-sm input-underline" placeholder="Dirección" [(ngModel)]="employeeForm.direccion" name="direccion">
+                                <label class=" col-form-label-sm ">Otros beneficios:</label>
+                                <br>
+                                <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}" [(ngModel)]="employeeForm.otrosBeneficios"
+                                    name="otrosBeneficios">
                             </div>
 
                         </div>
@@ -272,14 +292,20 @@
                                 <input type="email" class="form-control-sm input-underline" placeholder="Email" [(ngModel)]="employeeForm.email" name="email">
                             </div>
 
-                            <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                                <label class=" col-form-label-sm ">Otros beneficios:</label>
-                                <input type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}" [(ngModel)]="employeeForm.otrosBeneficios"
-                                    name="otrosBeneficios">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                <label class=" col-form-label-sm ">Ciudad:</label>
+                                <select [(ngModel)]="employeeForm.ciudad" name="ciudadId" class="form-control-sm input-underline col-10"
+                                >
+                                    <option value=undefined selected>Seleccione una ciudad</option>
+                                    <option *ngFor="let c of ciudades" [value]="c.id">
+                                            {{c.descripcion}}
+                                    </option>
+                                </select>
                             </div>
 
                             <div class="col-sm-12 col-md-12 col-lg-12">
                                     <label class=" col-form-label-sm ">*Sueldo:</label>
+                                    <br>
                                     <input #sueldo type="number" class="form-control-sm input-underline salary" placeholder="{{999999999| currency}}" [(ngModel)]="employeeForm.sueldo"
                                         name="sueldo">
                                 </div>

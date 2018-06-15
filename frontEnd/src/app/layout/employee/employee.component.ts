@@ -19,6 +19,8 @@ import { AreaModel } from '../../model/area.model';
 import { AreaService } from '../areas/servicios/area.service';
 import { CargoService } from '../cargos/servicios/cargo.service';
 import { CargoModel } from '../../model/cargo.model';
+import { DaneService } from '../dane/dane.service';
+import { DaneModel } from '../../model/dane.model';
 
 
 @Component({
@@ -26,11 +28,14 @@ import { CargoModel } from '../../model/cargo.model';
     templateUrl: './employee.html',
     styleUrls: ['./employee.scss'],
     animations: [routerTransition()],
-    providers: [EmployeeService, LoginService, AreaService, CargoService, EnterpriseService]
+    providers: [EmployeeService, LoginService, AreaService, CargoService, DaneService,EnterpriseService]
 })
 export class EmployeeComponent implements OnInit   {
 
     enterprises: EnterpriseModel[];
+    paises: DaneModel[];
+    departamentos: DaneModel[];
+    ciudades: DaneModel[];
     areas: AreaModel[];
     cargos: CargoModel[];
     message: string;
@@ -50,6 +55,7 @@ export class EmployeeComponent implements OnInit   {
     //Metodos principales---------------------
     constructor(private employeeService: EmployeeService,
         private enterpriseService: EnterpriseService,
+        private daneService: DaneService,
         private areaService: AreaService,
         private cargoService: CargoService,
         private router: Router,
@@ -78,6 +84,7 @@ export class EmployeeComponent implements OnInit   {
         this.loadEnterprises();
         this.loadAreas();
         this.loadCargos();
+        this.loadCountry();
     }
 
     //Variables--------------------------------------------
@@ -350,7 +357,13 @@ export class EmployeeComponent implements OnInit   {
             });
 
         }else{
-            console.log("hola");
+
+            if(!this.messageEmail){
+                this.message= 'Los campos con * son obligatorios!';
+            }else{
+                this.message= this.messageEmail;
+                this.messageEmail= undefined;
+            }
         }
 
         
@@ -434,6 +447,40 @@ export class EmployeeComponent implements OnInit   {
             this.enterprises = res;
         }, (error) => {
             this.toastr.error("Error al cargar los datos de Empresa");
+            
+        });
+    }
+
+    //Para cargar paises
+    private loadCountry(): void {
+        this.daneService.getCountry().subscribe(res => {
+            this.paises = res;
+        }, (error) => {
+            this.toastr.error("Error al cargar los datos de Pais");
+            
+        });
+    }
+
+    //Para cargar departamentos por pais
+    private filterDeparmentForCountry(id:any): void {
+
+        this.employeeForm.departamento = undefined;
+
+        this.daneService.getDeparment(id).subscribe(res => {
+            this.departamentos = res;
+        }, (error) => {
+            this.toastr.error("Error al cargar los datos de Departamento");
+            
+        });
+    }
+
+    //Para cargar ciudades por departamento
+    private filtercityForDeparment(id:any): void {
+        console.log(id);
+        this.daneService.getCity(id).subscribe(res => {
+            this.ciudades = res;
+        }, (error) => {
+            this.toastr.error("Error al cargar los datos de Departamento");
             
         });
     }
