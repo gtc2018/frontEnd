@@ -562,7 +562,6 @@ createPorcentaje() {
             console.log("correcto");
             this.messageEmail = undefined;
         } else {
-                
             console.log("incorrecto");
             this.messageEmail = "Por favor digite un formato de email válido para el gestor técnico";
             return false;

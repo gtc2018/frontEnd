@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SistemaService } from '../../../servicios/quotation.service';
 import { SistemaModel } from '../../../../../model/sistema.model';
+import { SystemsxQuotationModel } from '../../../../../model/systemsxQuotation';
+import { SistemaService } from '../../../../sistemas/servicios/sistema.service';
 
 @Component({
   selector: 'system-component',
@@ -9,9 +10,10 @@ import { SistemaModel } from '../../../../../model/sistema.model';
   providers: [SistemaService]
 })
 export class SystemComponent implements OnInit {
-     @Input() title;
+  model: {id:number; name:string; value:number};
+     @Input() title: string;
 
-    @Input() system;
+    @Input() systemsxQuotation: SystemsxQuotationModel[];
 
     // Variables
 
@@ -19,7 +21,7 @@ export class SystemComponent implements OnInit {
 
  systemList=[];
 
- systems:SistemaModel[];
+ systems=[];
 
 //  Funciones
 
@@ -36,23 +38,22 @@ newSystem():void{
 
  saveSystemToQuotation():void{
 
-   this.activeModal.close(this.system);
+  console.log(this.systems);
+
+   this.activeModal.close(this.systems);
 
  }
 
 
   ngOnInit() {
 
-    console.log(this.system);
+    console.log(this.systemsxQuotation);
 
     this.loadSystems();
   }
 
   constructor(public activeModal: NgbActiveModal,
   public sistemaService : SistemaService){
-
-
-
     // console.log(this.array);
 
     // this.system=[
@@ -69,6 +70,10 @@ newSystem():void{
 
       this.systems = response;
 
+      console.log(this.systems);
+
+      this.generateSystemFullArray();
+
       // this.
 
 
@@ -77,7 +82,29 @@ newSystem():void{
       console.log(error);
     });
 
-    
+  }
+
+  generateSystemFullArray():void{
+
+    for(let s of this.systems){
+
+      var filterEn = this.systemsxQuotation.filter(value => value.sistemaName === s.descripcion);
+
+      console.log(filterEn);
+
+      if( filterEn.length !== 0 ){
+
+      s.value=1;
+
+      }else{
+
+        s.value=0;
+
+      }
+
+    }
+
+      console.log(this.systemList,"Generando el system maestro");
 
   }
 

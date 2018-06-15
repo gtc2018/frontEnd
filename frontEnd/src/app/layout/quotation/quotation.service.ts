@@ -66,5 +66,15 @@ export class QuotationService {
     return this.Http.get<SystemsxQuotationModel[]>("http://localhost:8080/SystemsXQuotation");
 
   }
+
+  public saveSystemxQuotation(quotationId, systemsxQuotation: SystemsxQuotationModel[]): Observable<any> {
+
+    return this.Http.post<any>("http://localhost:8080/SystemsXQuotation",
+     systemsxQuotation,
+      {
+        params:{quotationId:quotationId}
+      }
+                              );
+  }
   
 }

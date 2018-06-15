@@ -7,7 +7,7 @@
   <div class="modal-body">
     <p *ngIf="seleccionados !== undefined " >Seleccione {{seleccionados}} que se requieran</p>
 
-    <system-component *ngIf="template ==='system'" [system]="array" ></system-component>
+    <system-component *ngIf="template ==='system'" [systemsxQuotation]="array" ></system-component>
     <tool-component *ngIf="template ==='tool'" [tool]="array" ></tool-component>
     <create-detail-component *ngIf="template ==='create-detail'"></create-detail-component>
   </div>

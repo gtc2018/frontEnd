@@ -28,6 +28,7 @@ const now = new Date();
 export class CreateQuotationComponent implements OnInit {
 
     systemsxQuotation: SystemsxQuotationModel[];
+    systemxQuotation: SystemsxQuotationModel;
     //Variables
 
     systemInit: { id: number; name: string; value: boolean; }[];
@@ -43,7 +44,6 @@ export class CreateQuotationComponent implements OnInit {
     minDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()+1};
     minDateEntrega: NgbDateStruct;
     minDateEntregaRqm: NgbDateStruct;
-
     
 
     quotation = new CotizacionModel();
@@ -142,6 +142,9 @@ export class CreateQuotationComponent implements OnInit {
 
     this.quotation.cliente = new EnterpriseModel();
 
+    
+    this.systemxQuotation = new SystemsxQuotationModel();
+
 }
 
 //Utils
@@ -177,21 +180,39 @@ calculateValueTotal():void{
 
     let instance = modalRef.componentInstance;
 
-    instance.array =  this.systemInit;
+    instance.array =  this.systemsxQuotation;
 
     modalRef.result.then( (result) => {
+
+        console.log(result);
 
         this.systemItem=[];
 
         for (let r of result){
 
-            if (r.value === true){
+            if (r.value === 1 || r.value===true){
 
-                this.systemItem.push(r);
+                this.systemxQuotation = new SystemsxQuotationModel();
+
+                console.log(this.systemxQuotation);
+
+                this.systemxQuotation.cotizacionId = this.quotation.id;
+
+                this.systemxQuotation.sistema = r;
+
+                this.systemxQuotation.sistemaName = r.descripcion;
+
+                this.systemItem.push(this.systemxQuotation);
 
             }
 
         }
+
+        console.log(this.systemItem , "Sistema por cotizazión resultante");
+
+        this.systemsxQuotation = this.systemItem;
+
+        this.saveSystemsxQuotation();
 
       }, (reason) => {
 
@@ -447,20 +468,53 @@ private cancel(){
 
 }
 
+//Para traer todos los sistemas asociados a la cotización
 private loadSystemsxQuotation(){
 
    this.quotationService.getSystemsxQuotation().subscribe(response=>{
 
     this.systemsxQuotation = response;
+
+    console.log(this.systemsxQuotation);
  
 
    },(error)=>{
 
     console.log(error);
 
-
    })
 
+}
+
+//Para traer todas las herramientas asociadas a la cotizacion
+// private loadSystemsxQuotation(){
+
+//     this.quotationService.getSystemsxQuotation().subscribe(response=>{
+ 
+//      this.systemsxQuotation = response;
+ 
+//      console.log(this.systemsxQuotation);
+  
+ 
+//     },(error)=>{
+ 
+//      console.log(error);
+ 
+//     })
+ 
+//  }
+
+saveSystemsxQuotation(){
+
+    this.quotationService.saveSystemxQuotation(this.quotation.id, this.systemsxQuotation).subscribe(res=>{
+
+        this.toastr.success("Transacción satisfactoria");
+
+    },(error)=>{
+
+        this.toastr.error("Error al asociar los sistemas a la cotización");
+
+    })
 }
 
 
