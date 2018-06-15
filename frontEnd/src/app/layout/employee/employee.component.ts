@@ -19,6 +19,8 @@ import { AreaModel } from '../../model/area.model';
 import { AreaService } from '../areas/servicios/area.service';
 import { CargoService } from '../cargos/servicios/cargo.service';
 import { CargoModel } from '../../model/cargo.model';
+import { DaneService } from '../dane/dane.service';
+import { DaneModel } from '../../model/dane.model';
 
 
 @Component({
@@ -26,11 +28,14 @@ import { CargoModel } from '../../model/cargo.model';
     templateUrl: './employee.html',
     styleUrls: ['./employee.scss'],
     animations: [routerTransition()],
-    providers: [EmployeeService, LoginService, AreaService, CargoService, EnterpriseService]
+    providers: [EmployeeService, LoginService, AreaService, CargoService, DaneService,EnterpriseService]
 })
 export class EmployeeComponent implements OnInit   {
 
     enterprises: EnterpriseModel[];
+    paises: DaneModel[];
+    departamentos: DaneModel[];
+    ciudades: DaneModel[];
     areas: AreaModel[];
     cargos: CargoModel[];
     message: string;
@@ -50,6 +55,7 @@ export class EmployeeComponent implements OnInit   {
     //Metodos principales---------------------
     constructor(private employeeService: EmployeeService,
         private enterpriseService: EnterpriseService,
+        private daneService: DaneService,
         private areaService: AreaService,
         private cargoService: CargoService,
         private router: Router,
@@ -78,6 +84,7 @@ export class EmployeeComponent implements OnInit   {
         this.loadEnterprises();
         this.loadAreas();
         this.loadCargos();
+        this.loadCountry();
     }
 
     //Variables--------------------------------------------
@@ -91,10 +98,14 @@ export class EmployeeComponent implements OnInit   {
     fotoEmpresa: string = 'assets/images/logo.png';
     fotoEmpleado: string = 'assets/images/avatar.png';
     imagen: string;
+    email: string;
+    cedula:string;
 
     stateExpand: number = 1;
     identificador: number = 0;
     employeeIden:number = 0;
+    emailIden:number = 0;
+    fotoIden:number = 0;
 
     emailRegex: RegExp;
 
@@ -220,12 +231,144 @@ export class EmployeeComponent implements OnInit   {
         });
     }
 
-        //Para guardar
+    //Metodo de guardar 
+    saveOrUpdate():void{
 
+        if(this.employeeIden === 1){
+
+            if(this.fotoIden === 1){
+
+                if(this.file !==null && this.file.name !==null){
+                    this.employeeForm.foto = this.file.name;
+                }
+
+            }
+
+        }else{
+            if(this.file !==null && this.file.name !==null){
+                this.employeeForm.foto = this.file.name;
+            }
+        }
+
+        this.employeeService.saveOrUpdate(this.employeeForm).subscribe(res => {
+
+            this.loadEmployee();
+            this.clean();
+            this.toastr.success('Transacción satisfactoria', 'Gestión de Empleados');
+
+        },(error)=>{
+
+            this.toastr.error(error.error.message,"Error en la transacción");
+        });
+
+    }
+
+    //Para antes de guardar
     save():void{
 
+        if(this.employeeForm.id === null){
+            this.employeeForm.usuarioCreacion = localStorage.email;
+        }else{
+            this.employeeForm.usuarioModificacion = localStorage.email;
+            this.employeeIden = 1;
+        }
 
-        this.employeeService.getAll().subscribe(res => {
+        this.isValid = this.validate(this.employeeForm);
+
+        if(this.isValid){
+
+            this.employeeService.getEmployeeForRegistre(this.employeeForm.email, this.employeeForm.numeroDocumento).subscribe(res => {
+
+                if(this.employeeIden === 1){
+
+                    if(this.cedula === this.employeeForm.numeroDocumento){
+
+                        if(this.email === this.employeeForm.email){
+                            this.saveOrUpdate();
+                            this.employeeIden = 0;
+                        }else{
+
+                            for(let e of res){
+
+                                if(this.employeeForm.email === e.email){
+                                    this.emailIden = 1;
+                                }
+                            }
+
+                            if(this.emailIden === 1){
+
+                                this.toastr.error("Ya se existe un registro con este email","Gestion de empleados");
+                                this.emailIden = 0;
+
+                            }else{
+
+                                this.saveOrUpdate();
+                            }
+                        }
+
+                    }else{
+                        
+                        for(let e of res){
+
+                            if(this.employeeForm.numeroDocumento === e.numeroDocumento){
+                                this.employeeIden = 3;
+                            }
+                        }
+
+                        if(this.employeeIden === 3){
+
+                            this.toastr.error("Ya se existe un registro con este numero de documento","Gestion de empleados");
+                            this.employeeIden = 1;
+
+                        }else if(this.email === this.employeeForm.email){
+
+                            this.saveOrUpdate();
+                        }else{
+
+                            for(let e of res){
+
+                                if(this.employeeForm.email === e.email){
+                                    this.emailIden = 1;
+                                }
+                            }
+
+                            if(this.emailIden === 1){
+
+                                this.toastr.error("Ya se existe un registro con este email","Gestion de empleados");
+                                this.emailIden = 0;
+
+                            }else{
+
+                                this.saveOrUpdate();
+                            }
+                        }
+                    }
+
+                }else if(res.length === 0){
+
+                    this.saveOrUpdate();
+
+                }else{
+                    this.toastr.error("Ya se existe un registro con este email o numero de documento","Gestion de empleados");
+                }
+
+            }, (error) => {
+                this.toastr.error("Error al cargar los datos de Empleado");            
+            });
+
+        }else{
+
+            if(!this.messageEmail){
+                this.message= 'Los campos con * son obligatorios!';
+            }else{
+                this.message= this.messageEmail;
+                this.messageEmail= undefined;
+            }
+        }
+
+        
+
+        /*this.employeeService.getAll().subscribe(res => {
             this.employeeCom = res;
 
             for(let e of this.employeeCom){
@@ -241,11 +384,8 @@ export class EmployeeComponent implements OnInit   {
                 this.employeeForm.estado = 1;
             }
 
-            if(this.employeeIden === 1){
-                this.toastr.error("Ya existe un registro con este email");
-                this.employeeIden = 0;
-            }else{
-
+            if(this.employeeIden !== 1){
+                
                 if(this.login.authUser !== undefined){
                     if(this.employeeForm.id === null){
 
@@ -286,6 +426,9 @@ export class EmployeeComponent implements OnInit   {
                     }
                 }
 
+            }else{
+                this.toastr.error("Ya existe un registro con este email");
+                this.employeeIden = 0;   
             }    
 
         },(error)=>{
@@ -293,7 +436,7 @@ export class EmployeeComponent implements OnInit   {
 
             this.toastr.error("Error al cargar los datos");
 
-        });
+        });*/
 
     }
 
@@ -302,15 +445,43 @@ export class EmployeeComponent implements OnInit   {
     private loadEnterprises(): void {
         this.enterpriseService.getEnterprises().subscribe(res => {
             this.enterprises = res;
-            console.log(this.enterprises);
         }, (error) => {
-            console.log(error);
             this.toastr.error("Error al cargar los datos de Empresa");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
+            
+        });
+    }
+
+    //Para cargar paises
+    private loadCountry(): void {
+        this.daneService.getCountry().subscribe(res => {
+            this.paises = res;
+        }, (error) => {
+            this.toastr.error("Error al cargar los datos de Pais");
+            
+        });
+    }
+
+    //Para cargar departamentos por pais
+    private filterDeparmentForCountry(id:any): void {
+
+        this.employeeForm.departamento = undefined;
+
+        this.daneService.getDeparment(id).subscribe(res => {
+            this.departamentos = res;
+        }, (error) => {
+            this.toastr.error("Error al cargar los datos de Departamento");
+            
+        });
+    }
+
+    //Para cargar ciudades por departamento
+    private filtercityForDeparment(id:any): void {
+        console.log(id);
+        this.daneService.getCity(id).subscribe(res => {
+            this.ciudades = res;
+        }, (error) => {
+            this.toastr.error("Error al cargar los datos de Departamento");
+            
         });
     }
 
@@ -394,6 +565,11 @@ export class EmployeeComponent implements OnInit   {
             this.employeeForm = new EmployeeModel();
             this.areas = null;
             this.cargos = null;
+            this.employeeIden = 0;
+            this.emailIden = 0;
+            this.fotoIden = 0;
+            this.email = undefined;
+            this.cedula = undefined;
 
             this.deleteFormHide = false;
 
@@ -447,10 +623,6 @@ export class EmployeeComponent implements OnInit   {
 
         upload(model){
 
-            console.log(model);
-
-            console.log(this.stateExpand);
-
             if( this.stateExpand === 1 ){
                 this.visible = !this.visible;
 
@@ -462,12 +634,13 @@ export class EmployeeComponent implements OnInit   {
                 this.employeeForm.cargoId = this.employeeForm.cargo.id;
                 this.fotoEmpresa = this.employeeForm.cliente.imagenEmpresa;
                 this.fotoEmpleado = this.employeeForm.foto;
+                this.email = this.employeeForm.email;
+                this.cedula = this.employeeForm.numeroDocumento;
                 this.identificador = 1;
 
             this.filterChargeAndAreaToEnterprise(this.employeeForm.clienteId);
 
                 this.deleteFormHide = false;
-                console.log(model);
             }else{
                 this.icon= "fa fa-caret-left";
             }
@@ -484,6 +657,8 @@ export class EmployeeComponent implements OnInit   {
                 this.employeeForm.cargoId = this.employeeForm.cargo.id;
                 this.fotoEmpresa = this.employeeForm.cliente.imagenEmpresa;
                 this.fotoEmpleado = this.employeeForm.foto;
+                this.email = this.employeeForm.email;
+                this.cedula = this.employeeForm.numeroDocumento;
                 this.identificador = 1;
                 this.stateExpand = 3;
 
@@ -662,7 +837,7 @@ export class EmployeeComponent implements OnInit   {
         handleInputChange(e){
             this.file = <File>e.target.files[0];
             var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
-        console.log(file);
+            this.fotoIden = 1;
 
         var pattern = /image-*/;
         var reader = new FileReader();

@@ -110,8 +110,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   ngOnInit() {
     this.loadEnterprises();
     this.loadFases();
-    this.loadPorcentajePorFaseForInterprise(); 
-    console.log(this.empresaId);
+    this.loadPorcentajePorFaseForInterprise();
 
   }
 
@@ -126,7 +125,6 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   private loadEnterprises(): void {
     this.enterpriseService.getEnterprises().subscribe(res => {
         this.enterprises = res;
-        console.log(this.enterprises);
 
         for(let enterprise of this.enterprises){
 
@@ -135,7 +133,6 @@ export class CreateDetailComponent implements OnInit, OnChanges {
             this.empresa = enterprise.descripcion;
 
           }
-          console.log(enterprise);
         }
 
     }, (error) => {
@@ -147,14 +144,15 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   //Cargar Fases
 
   private loadFases(): void {
-    this.faseService.getFases().subscribe(res => {
-        this.fases = res;
-        console.log(this.fases);
 
-    }, (error) => {
-        console.log(error);
-        this.toastr.error("Error al cargar los datos de Empresa");
-    });
+
+    this.faseService.getFaseByEnterprise(this.empresaId).subscribe(res => {
+      this.fases = res;
+
+  }, (error) => {
+      this.toastr.error("Error al cargar los datos de Fases");
+  });
+
 }
 
   //Cargar PorcentajePorFase
@@ -260,6 +258,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Porcentaje Por Fase');
                     this.editPorcentaje = 2;
                     this.loadPorcentajePorFaseForInterprise();
+                    this.loadFases();
                     this.clean();
 
             },(error)=>{
@@ -308,6 +307,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
         this.porcentajePorFaseService.deletePorcentajePorFase(this.porcentajePorFaseForm).subscribe(res => {
 
           this.loadPorcentajePorFaseForInterprise();
+          this.loadFases();
 
           this.toastr.success('Registro eliminado satisfactoriamente.');
         }, (error) => {

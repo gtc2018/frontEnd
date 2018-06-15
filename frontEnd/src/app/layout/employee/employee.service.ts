@@ -21,6 +21,7 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {
     this.enterprise = new EnterpriseModel();
+    this.employee = new EmployeeModel();
    }
 
   //SERVICIO CONSULTAR TODOS LOS USUARIOS
@@ -37,11 +38,13 @@ export class EmployeeService {
   */
 
   //Buscar los involucrados que no pertenecen a un rqm
- public getEmployeeByRequest(id): Observable<EmployeeModel[]>{
+ public getEmployeeByRequest(id, id2): Observable<EmployeeModel[]>{
 
-  this.enterprise.id = id;
+  this.employee.areaId = id;
+  this.employee.clienteId = id2  
+  console.log(this.employee);
 
-  return this.http.post<EmployeeModel[]>("http://localhost:8080/getEmployeeByRequest", JSON.stringify(this.enterprise));      
+  return this.http.post<EmployeeModel[]>("http://localhost:8080/getEmployeeByRequest", JSON.stringify(this.employee));      
 }
 
  public getEmployeeForEnterprise(id): Observable<EmployeeModel[]>{
@@ -58,6 +61,14 @@ export class EmployeeService {
   //console.log(employee.imagen);
   const url = '';
   return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateEmpleado", employee);
+}
+
+public getEmployeeForRegistre(email, documento): Observable<EmployeeModel[]> {
+
+  this.employee.email = email;
+  this.employee.numeroDocumento = documento;
+
+  return this.http.post<EmployeeModel[]>("http://localhost:8080/getEmployeeForRegistre", JSON.stringify(this.employee));
 }
 
 

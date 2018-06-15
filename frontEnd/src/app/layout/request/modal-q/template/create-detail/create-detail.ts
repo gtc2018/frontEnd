@@ -32,17 +32,20 @@ import { RequerimientoModel } from '../../../../../model/requerimiento.model';
   selector: 'create-detail-component',
   templateUrl: './create-detail.html',
   animations: [routerTransition()],
-    providers: [PorcentajePorFaseService, CrearPorcentajePorFaseService, EmployeeService, RequestService, EnterpriseService, FaseService, LoginService] 
+    providers: [PorcentajePorFaseService, CrearPorcentajePorFaseService, EmployeeService, 
+      EnterpriseService, RequestService, EnterpriseService, FaseService, LoginService] 
 })
 export class CreateDetailComponent implements OnInit, OnChanges {
 
   // Variables -----------------------------
   employees: EmployeeModel[];
+  enterprises: EnterpriseModel[];
   involucrados: InvolucradoModel[];
   
   private permiso: PermisoModel;
 
   involucradoForm: InvolucradoModel;
+  employeeRequest: EmployeeModel;
   filter: InvolucradoModel = new InvolucradoModel();
 
   message: string;
@@ -52,14 +55,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   icon: string = "fa fa-caret-left";
   imageSrc: string = 'assets/images/avatar.png';
   requerimiento: String;
-
-  stateExpand: number = 1;
-  nuevaRest: number = 0;
-  editPorcentaje: number = 0;
-  restPorcentaje: number = 0;
-  porcentaje: number = 0;
-  sobrePorcentaje: number = 0;
-  xmodal: number = 0;
+  empresa:string;
 
   emailRegex: RegExp;
 
@@ -84,6 +80,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   // Metodos principales----------------------------------------------------
   constructor(
     private employeeService: EmployeeService,
+    private enterpriseService: EnterpriseService,
     private requestService: RequestService,
     private router: Router,
     private toastr: ToastrService,
@@ -101,6 +98,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
 
     this.loadEmployees();
     this.loadInvolveds();
+    this.loadEnterprises();
 
   }
 
@@ -110,17 +108,42 @@ export class CreateDetailComponent implements OnInit, OnChanges {
 
   //Funciones --------------------------------------------
 
+  //Cargar empresa
+private loadEnterprises(): void {
+  this.enterpriseService.getEnterprises().subscribe(res => {
+    this.enterprises = res;
+    console.log(res);
+  }, (error) => {
+      this.toastr.error("Error al cargar los datos de Empresa");
+  });
+}
+
   //Cargar empleados
 private loadEmployees(): void {
-  this.employeeService.getEmployeeByRequest(this.empresaId).subscribe(res => {
+
+  /*this.employeeService.getEmployeeByRequest(this.empresaId).subscribe(res => {
 
   this.employees = res;
 
   },(error)=>{
       this.toastr.error("Error al cargar los datos");
-  });
+  });*/
 }
 
+
+// se filtran los empleados segun la empresa seleccionada
+filtroEmpleado(id: any): void{
+
+  this.empresa = id;
+  this.employeeService.getEmployeeByRequest(this.empresaId, id).subscribe(res => {
+
+    this.employees = res;
+  
+    },(error)=>{
+        this.toastr.error("Error al cargar los datos");
+    });
+
+}
 
 //Cargar Involucrados
 private loadInvolveds(): void {
@@ -165,6 +188,14 @@ save():void{
   }).then((result) => {
 
     if (result.value) {
+
+      this.employeeService.getEmployeeByRequest(this.empresaId, this.empresa).subscribe(res => {
+
+    this.employees = res;
+  
+    },(error)=>{
+        this.toastr.error("Error al cargar los datos");
+    });
 
     this.employeeService.deleteInvolved(model).subscribe(res=>{
             this.loadEmployees();
@@ -212,6 +243,10 @@ upload(model){
 clean() {
 
   this.involucradoForm = new InvolucradoModel;
+  this.enterprises = null;
+  this.employees = null;
+  this.loadEnterprises();
+  this.filtroEmpleado(this.empresa);
   
 }
 

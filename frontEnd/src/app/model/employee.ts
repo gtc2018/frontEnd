@@ -2,12 +2,15 @@ import { ParentEntity } from './parentEntity.model';
 import { EnterpriseModel } from './enterprise';
 import { CargoModel } from './cargo.model';
 import { AreaModel } from './area.model';
+import { DaneModel } from './dane.model';
 
 export class EmployeeModel extends ParentEntity{
 
   public cliente: EnterpriseModel;
   public cargo: CargoModel;
   public area: AreaModel;
+  public pais: number;
+  public departamento: number;
 
   public clienteId: Number;
   public cargoId: Number;
@@ -23,7 +26,7 @@ export class EmployeeModel extends ParentEntity{
   public telefono: string;
   public sueldo: string;
   public sexo: string;
-  public ciudad: string;
+  public ciudad: number;
   public estado: number;
   public foto: string;
   public usuarioCreacion: string;

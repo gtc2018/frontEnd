@@ -578,7 +578,7 @@ createPorcentaje() {
     if( parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) > parseInt(this.requestForm.fechaEntrega.toString().substr(0,4))
     || parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) > parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(0,4))){
 
-        this.message= 'el año de inicio no puede ser mayor o igual a las de entrega';
+        this.message= 'el año de inicio no puede ser mayor a las de entrega';
         isValidFechas = false;
 
     }else if(parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) === parseInt(this.requestForm.fechaEntrega.toString().substr(0,4))
@@ -587,7 +587,7 @@ createPorcentaje() {
         if(parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) > parseInt(this.requestForm.fechaEntrega.toString().substr(5,2))
         || parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) > parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(5,2))){
 
-            this.message= 'el mes de inicio no puede ser mayor o igual a las de entrega';
+            this.message= 'el mes de inicio no puede ser mayor a las de entrega';
             isValidFechas = false;
 
         }else if(parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) === parseInt(this.requestForm.fechaEntrega.toString().substr(5,2))
@@ -596,9 +596,14 @@ createPorcentaje() {
             if(parseInt(this.requestForm.fechaInicio.toString().substr(8,2)) > parseInt(this.requestForm.fechaEntrega.toString().substr(8,2))
             || parseInt(this.requestForm.fechaInicio.toString().substr(8,2)) > parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(8,2))){
 
-                this.message= 'el dia de inicio no puede ser mayor o igual a las de entrega';
+                this.message= 'el dia de inicio no puede ser mayor a las de entrega';
                 isValidFechas = false;
 
+            }else if(parseInt(this.requestForm.fechaInicio.toString().substr(8,2)) === parseInt(this.requestForm.fechaEntrega.toString().substr(8,2))
+            || parseInt(this.requestForm.fechaInicio.toString().substr(8,2)) === parseInt(this.requestForm.fechaPlaneadaEntrega.toString().substr(8,2))){
+
+                this.message= 'el dia de inicio no puede ser igual a las de entrega';
+                isValidFechas = false;
             }
         }
 
@@ -608,7 +613,6 @@ createPorcentaje() {
   }
 
 public formatoFecha(fecha): string {
-    console.log(fecha);
     let fechaString ="";
     if(fecha['month'] < 10){
         this.mes = "0"+fecha['month'];

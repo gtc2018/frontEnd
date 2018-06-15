@@ -38,6 +38,22 @@ export class RequestComponent implements OnInit {
     eliminar = false;
     leer = false;
 
+    mes: string;
+    dia: string;
+    año: string;
+    message: string;
+    antFechI: string;
+    antFechE: string;
+    icon: string = "fa fa-caret-left";
+
+    stateExpand: number = 1;
+    cliente: number = null;
+
+    private isValid: boolean = true;
+    private isValidFechas: boolean = true;
+    filtroFech: boolean = false;
+    visible: boolean = false;
+    deleteFormHide: boolean;
 
     items: any;
     menus: any;
@@ -72,12 +88,6 @@ export class RequestComponent implements OnInit {
     }
 
     creationPage():void{
-    }
-
-    //Metodo para consultar dentro de un rango de fechas
-    loadRequestsForDate(): void{
-
-        console.log(this.requestForm);
     }
 
     //Metodo para cargar los requerimientos
@@ -182,5 +192,197 @@ export class RequestComponent implements OnInit {
         })
     }
 
+    //Se arma la fecha segun el query solicitado
+    public formatoFecha(fecha): string {
+        let fechaString ="";
+        if(fecha['month'] < 10){
+            this.mes = "0"+fecha['month'];
+        }else{
+            this.mes = fecha['month'];
+    
+        }
+        if(fecha['day']< 10){
+            this.dia = "0"+ fecha['day'];
+        }else{
+            this.dia = fecha['day'];
+        }
+    
+        fechaString = fecha['year']+"-"+this.mes+"-"+this.dia;
+        
+        return fechaString;
+    }
+
+    //Cambiamos el formato de las fechas
+    public formatoFechas(){
+
+        if(this.requestForm.fechaInicio){
+            this.requestForm.fechaInicio=this.formatoFecha(this.requestForm.fechaInicio);
+         }
+         if(this.requestForm.fechaEntrega){
+            this.requestForm.fechaEntrega=this.formatoFecha(this.requestForm.fechaEntrega);
+         }
+    }
+
+    //Metodo para consultar dentro de un rango de fechas
+    loadRequestsForDate(): void{
+
+        this.isValid = this.validate(this.requestForm);
+
+        if(this.isValid){
+
+            this.antFechI = this.requestForm.fechaInicio;
+            this.antFechE = this.requestForm.fechaEntrega;
+
+            this.formatoFechas();
+            this.isValidFechas = this.validarFechas();
+
+            if(this.isValidFechas){
+
+                this.requestService.getAllRequestToDate(this.requestForm).subscribe(res => { 
+ 
+                    console.log(res);
+                    if(res.length !== 0){
+                        
+                        this.requests = res;
+                        this.gameDate();
+                        this.filtroFech = true;
+
+                    }else{
+                        this.toastr.error("No existen registros en el rango", "Error en la transacción")
+                        this.gameDate();
+                    }
+                },(error)=>{ 
+
+                    this.toastr.error(error.error.message,"Error en la transacción");
+                    this.gameDate();
+        
+                });
+            }else{
+                this.gameDate();
+                this.toastr.error(this.message,"Error en la transacción");
+                this.message = undefined;
+            }
+
+        }else{
+            this.toastr.error(this.message,"Error en la transacción");
+            this.message = undefined;
+        }
+        
+    }
+
+    // Se valida que los campos no esten vacios
+    public validate(requestForm: RequerimientoModel): boolean {
+    
+        if(!requestForm.clienteId){
+            this.message = "falto escoger por cual fecha filtrar";
+            return false;
+        }
+        if(!requestForm.proyectoId){
+            this.message = "falto escoger por cual fecha filtrar";
+            return false;
+        }
+        if(!requestForm.fechaInicio){
+            this.message = "falto seleccionar una fecha para filtrar";
+            return false;
+        }
+        if(!requestForm.fechaEntrega){
+            this.message = "falto seleccionar una fecha para filtrar";
+            return false;
+        }
+
+        return true;
+    }
+
+    //Se valida que la fecha de inicio no sea mayor a la fin
+    public validarFechas():boolean{
+        let isValidFechas=true;
+    
+        
+        if( parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) > parseInt(this.requestForm.fechaEntrega.toString().substr(0,4))){
+    
+            this.message= 'el año de la primera fecha no puede ser mayor a la segunda';
+            isValidFechas = false;
+    
+        }else if(parseInt(this.requestForm.fechaInicio.toString().substr(0,4)) === parseInt(this.requestForm.fechaEntrega.toString().substr(0,4))){
+    
+            if(parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) > parseInt(this.requestForm.fechaEntrega.toString().substr(5,2))){
+    
+                this.message= 'el mes de la primera fecha no puede ser mayor a la segunda';
+                isValidFechas = false;
+    
+            }else if(parseInt(this.requestForm.fechaInicio.toString().substr(5,2)) === parseInt(this.requestForm.fechaEntrega.toString().substr(5,2))){
+    
+                if(parseInt(this.requestForm.fechaInicio.toString().substr(8,2)) > parseInt(this.requestForm.fechaEntrega.toString().substr(8,2))){
+    
+                    this.message= 'el dia de la primera fecha no puede ser mayor a la segunda';
+                    isValidFechas = false;
+    
+                }
+            }
+        }
+           
+        return isValidFechas
+    }
+
+    //Se regresan las fechas
+    gameDate(): void{
+        this.requestForm.fechaInicio = this.antFechI;
+        this.requestForm.fechaEntrega = this.antFechE;
+    }
+
+    //limpiar todo
+    clean(): void{
+        this.filtroFech = false;
+        this.loadRequests();
+        this.requestForm = new RequerimientoModel;
+    }
+
+    //Mostrar el filtrar o no
+    createHide() {
+
+        if (this.stateExpand === 3) {
+
+            this.stateExpand = 2;
+
+            this.deleteFormHide = false;
+
+        } else if (this.stateExpand === 1) {
+
+            this.visible = !this.visible;
+
+            if (this.visible === true) {
+
+                this.icon = "fa fa-caret-down";
+                this.toastr.warning('La primera fecha se usara para buscar si es igual o mayor a ella y la segunda fecha para buscar si es igual o menor', 'Gestion Requerimientos');
+
+            } else {
+
+                this.icon = "fa fa-caret-left";
+                this.clean();
+
+            }
+
+            this.stateExpand = 2
+
+        } else
+            if (this.stateExpand === 2) {
+
+                this.visible = !this.visible;
+
+
+                if (this.visible === true) {
+
+                    this.icon = "fa fa-caret-down";
+                    this.toastr.warning('La primera fecha se usara para buscar si es igual o mayor a ella y la segunda fecha para buscar si es igual o menor', 'Gestion Requerimientos');
+
+                } else {
+
+                    this.icon = "fa fa-caret-left";
+                    this.clean();
+
+                }
+                this.stateExpand = 1
+            }
+    }
 
 }
