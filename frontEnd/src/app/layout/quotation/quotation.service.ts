@@ -7,6 +7,7 @@ import { ProyectoModel } from '../../model/proyectos';
 import { UsuarioModel } from '../../model/usuario/usuario.model';
 import { CotizacionModel } from '../../model/cotizacion.model';
 import { SystemsxQuotationModel } from '../../model/systemsxQuotation';
+import { ToolsxQuotationModel } from '../../model/toolsxQuotation';
 
 
 
@@ -55,15 +56,18 @@ export class QuotationService {
 
   }
 
-  public getSystemsxQuotation(): Observable<SystemsxQuotationModel[]>{
+  public getSystemsxQuotation(quotationId): Observable<SystemsxQuotationModel[]>{
 
-    return this.Http.get<SystemsxQuotationModel[]>("http://localhost:8080/SystemsXQuotation");
+    return this.Http.get<SystemsxQuotationModel[]>("http://localhost:8080/SystemsXQuotation",{params:{id:quotationId}});
 
   }
 
-  public getToolsxQuotation(): Observable<SystemsxQuotationModel[]>{
+  public getToolsxQuotation(quotationId): Observable<ToolsxQuotationModel[]>{
 
-    return this.Http.get<SystemsxQuotationModel[]>("http://localhost:8080/SystemsXQuotation");
+    return this.Http.get<ToolsxQuotationModel[]>("http://localhost:8080/ToolsXQuotation",
+    {
+      params:{id:quotationId}
+    }                    );
 
   }
 

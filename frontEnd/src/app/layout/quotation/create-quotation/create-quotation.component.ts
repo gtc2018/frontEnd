@@ -15,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ProyectoModel } from '../../../model/proyectos';
 import { CotizacionModel } from '../../../model/cotizacion.model';
 import { SystemsxQuotationModel } from '../../../model/systemsxQuotation';
+import { ToolsxQuotationModel } from '../../../model/toolsxQuotation';
 
 
 const now = new Date();
@@ -27,9 +28,13 @@ const now = new Date();
 })
 export class CreateQuotationComponent implements OnInit {
 
+    //Variables
+
+    toolsxQuotation: ToolsxQuotationModel[];
+    toolxQuotation: ToolsxQuotationModel;
+
     systemsxQuotation: SystemsxQuotationModel[];
     systemxQuotation: SystemsxQuotationModel;
-    //Variables
 
     systemInit: { id: number; name: string; value: boolean; }[];
     toolInit=[];
@@ -64,8 +69,6 @@ export class CreateQuotationComponent implements OnInit {
     if (this.route.snapshot.params.id){
 
       var quotationId = this.route.snapshot.params.id;
-
-      this.loadSystemsxQuotation();
         
       this.uploadEvents(quotationId);
 
@@ -453,6 +456,10 @@ private uploadEvents(id: number){
     
         }
 
+        this.loadSystemsxQuotation();
+
+        this.loadToolsxQuotation();
+
     },(error)=>{
 
         this.toastr.error("Error al cargar el registro");   
@@ -471,11 +478,32 @@ private cancel(){
 //Para traer todos los sistemas asociados a la cotización
 private loadSystemsxQuotation(){
 
-   this.quotationService.getSystemsxQuotation().subscribe(response=>{
+    console.log(this.quotation);
+
+   this.quotationService.getSystemsxQuotation(this.quotation.id).subscribe(response=>{
 
     this.systemsxQuotation = response;
 
     console.log(this.systemsxQuotation);
+
+   },(error)=>{
+
+    console.log(error);
+
+   });
+
+}
+
+//Para traer todas las herramientas asociadas a la cotizacion
+private loadToolsxQuotation(){
+
+    console.log(this.quotation);
+
+   this.quotationService.getToolsxQuotation(this.quotation.id).subscribe(response=>{
+
+    this.toolsxQuotation = response;
+
+    console.log(this.toolsxQuotation);
  
 
    },(error)=>{
@@ -485,24 +513,6 @@ private loadSystemsxQuotation(){
    })
 
 }
-
-//Para traer todas las herramientas asociadas a la cotizacion
-// private loadSystemsxQuotation(){
-
-//     this.quotationService.getSystemsxQuotation().subscribe(response=>{
- 
-//      this.systemsxQuotation = response;
- 
-//      console.log(this.systemsxQuotation);
-  
- 
-//     },(error)=>{
- 
-//      console.log(error);
- 
-//     })
- 
-//  }
 
 saveSystemsxQuotation(){
 
