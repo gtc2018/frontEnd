@@ -91,8 +91,6 @@ export class CreateQuotationComponent implements OnInit {
 
         console.log(route.snapshot.params.id);
 
-        
-
     this.toolInit= [
         {id:1,name:"Angular",value:1},
         {id:2, name:"ReactJs", value:"1"}
@@ -211,7 +209,7 @@ calculateValueTotal():void{
 
         }
 
-        console.log(this.systemItem , "Sistema por cotizazión resultante");
+        console.log(this.systemItem , "Sistema por cotización resultante");
 
         this.systemsxQuotation = this.systemItem;
 
@@ -234,21 +232,39 @@ calculateValueTotal():void{
 
     let instance = modalRef.componentInstance;
 
-    instance.array =  this.toolInit;
+    instance.array =  this.toolsxQuotation;
 
     modalRef.result.then( (result) => {
+
+        console.log(result);
 
         this.toolItem=[];
 
         for (let r of result){
 
-            if (r.value === true){
+            if (r.value === 1 || r.value===true){
 
-                this.toolItem.push(r);
+                this.toolxQuotation = new ToolsxQuotationModel();
+
+                console.log(this.toolxQuotation);
+
+                this.toolxQuotation.cotizacionId = this.quotation.id;
+
+                this.toolxQuotation.herramienta = r;
+
+                this.toolxQuotation.herramientaName = r.descripcion;
+
+                this.toolItem.push(this.toolxQuotation);
 
             }
 
         }
+
+        console.log(this.toolItem , "herramientas por cotización resultante");
+
+        this.toolsxQuotation = this.toolItem;
+
+        this.saveToolsxQuotation();
 
         }, (reason) => {
 
@@ -410,7 +426,7 @@ private uploadEvents(id: number){
     
             console.log(this.proyectos);
 
-            this.quotation.proyectoId = this.quotation.proyecto.id.toString();;
+            this.quotation.proyectoId = this.quotation.proyecto.id.toString();
     
             if(this.proyectos.length == 0){
                 this.toastr.warning('No existen proyectos para este cliente');
@@ -474,7 +490,6 @@ private cancel(){
      this._route.navigate(['/cotizaciones'])
 
 }
-
 //Para traer todos los sistemas asociados a la cotización
 private loadSystemsxQuotation(){
 
@@ -510,7 +525,7 @@ private loadToolsxQuotation(){
 
     console.log(error);
 
-   })
+   });
 
 }
 
@@ -523,6 +538,21 @@ saveSystemsxQuotation(){
     },(error)=>{
 
         this.toastr.error("Error al asociar los sistemas a la cotización");
+
+    })
+}
+
+saveToolsxQuotation(){
+
+    this.quotationService.saveToolsxQuotation(this.quotation.id, this.toolsxQuotation).subscribe(res=>{
+
+        this.toastr.success("Transacción satisfactoria");
+
+    },(error)=>{
+
+        console.log(error);
+
+        this.toastr.error("Error al asociar las herramientas a la cotización");
 
     })
 }

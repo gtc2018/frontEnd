@@ -8,7 +8,7 @@
     <p *ngIf="seleccionados !== undefined " >Seleccione {{seleccionados}} que se requieran</p>
 
     <system-component *ngIf="template ==='system'" [systemsxQuotation]="array" ></system-component>
-    <tool-component *ngIf="template ==='tool'" [tool]="array" ></tool-component>
+    <tool-component *ngIf="template ==='tool'" [toolsxQuotation]="array" ></tool-component>
     <create-detail-component *ngIf="template ==='create-detail'"></create-detail-component>
   </div>
 

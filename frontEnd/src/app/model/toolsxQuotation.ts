@@ -4,7 +4,7 @@ import { HerramientaModel } from './herramienta.model';
 export class ToolsxQuotationModel extends ParentEntity{
 
   public cotizacionId:number;
-  public sistema:HerramientaModel;
+  public herramienta:HerramientaModel;
   public herramientaName:string;
 
 }

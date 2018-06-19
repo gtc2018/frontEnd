@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { SistemaModel } from '../../../../../model/sistema.model';
 import { SystemsxQuotationModel } from '../../../../../model/systemsxQuotation';
 import { SistemaService } from '../../../../sistemas/servicios/sistema.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'system-component',
@@ -23,6 +24,31 @@ export class SystemComponent implements OnInit {
 
  systems=[];
 
+ system : SistemaModel;
+
+
+ ngOnInit() {
+
+  console.log(this.systemsxQuotation);
+
+  this.loadSystems();
+}
+
+constructor(public activeModal: NgbActiveModal,
+public sistemaService : SistemaService,
+private toastr: ToastrService){
+
+  this.system = new SistemaModel();
+  // console.log(this.array);
+
+  // this.system=[
+  //     {id:1, name:"As400",value:false},
+  //     {id:2,name:"Mac", value:true},
+  //     {id:3,name:"Windows", value:true}
+  // ]
+
+}
+
 //  Funciones
 
 newSystem():void{
@@ -34,6 +60,20 @@ newSystem():void{
 
     this.new= !this.new;
 
+    console.log(this.system);
+
+    this.sistemaService.saveOrUpdate(this.system).subscribe(res=>{
+
+      this.toastr.success("Transacción satisfactoria");
+
+      this.loadSystems();
+
+    },(error)=>{
+
+      this.toastr.error("Error al guardar el sistema"); 
+
+    })
+
  };
 
  saveSystemToQuotation():void{
@@ -43,26 +83,6 @@ newSystem():void{
    this.activeModal.close(this.systems);
 
  }
-
-
-  ngOnInit() {
-
-    console.log(this.systemsxQuotation);
-
-    this.loadSystems();
-  }
-
-  constructor(public activeModal: NgbActiveModal,
-  public sistemaService : SistemaService){
-    // console.log(this.array);
-
-    // this.system=[
-    //     {id:1, name:"As400",value:false},
-    //     {id:2,name:"Mac", value:true},
-    //     {id:3,name:"Windows", value:true}
-    // ]
-
-  }
 
   loadSystems(){
 

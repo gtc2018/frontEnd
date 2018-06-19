@@ -18,17 +18,22 @@
                         <!-- <br> -->
                 </div>
 
+                <form (ngSubmit)="saveSystem()" ngNativeValidate>
+
                     <div *ngIf="new" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                             <div class="form-group row">
-                                <label class="col-form-label col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                                    Sistema:
+                                <label class="col-form-label col-auto">
+                                    *Sistema:
                                 </label>
-                                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Descripcion">
+                                <div class="col-auto">
+                                    <input type="text"
+                                     class="form-control"
+                                      placeholder="Nombre"
+                                      [(ngModel)]="system.descripcion"
+                                      name="system.descripcion" required>
                                 </div>
                                 <button class="btn btn-primary"
-                                 type="button"
-                                 (click)="saveSystem()">
+                                 type="submit">
                                         <i class="fa fa-save"
                                          aria-hidden="true"
                                          title="Guardar"
@@ -38,6 +43,8 @@
                             <hr>
                         <!-- <br> -->
                     </div>
+
+                    </form>
 
 
             <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12" >

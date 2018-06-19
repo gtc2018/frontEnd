@@ -80,5 +80,15 @@ export class QuotationService {
       }
                               );
   }
+
+  public saveToolsxQuotation(quotationId, toolsxQuotation: ToolsxQuotationModel[]): Observable<any> {
+
+    return this.Http.post<any>("http://localhost:8080/ToolsXQuotation",
+    toolsxQuotation,
+      {
+        params:{quotationId:quotationId}
+      }
+                              );
+  }
   
 }

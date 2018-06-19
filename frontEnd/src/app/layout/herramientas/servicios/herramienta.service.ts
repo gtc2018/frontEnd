@@ -39,4 +39,10 @@ export class HerramientaService {
     return this.Http.post<HerramientaModel>("http://localhost:8080/deleteHerramienta", JSON.stringify(this.herramienta));   
   }
 
+  public saveOrUpdate(herramienta: HerramientaModel): Observable<any> {
+
+    return this.Http.post<any>("http://localhost:8080/saveOrUpdateHerramienta", JSON.stringify(herramienta));
+
+  }
+
 }

@@ -39,4 +39,10 @@ export class SistemaService {
     return this.Http.post<SistemaModel>("http://localhost:8080/deleteSistema", JSON.stringify(this.sistema));   
   }
 
+  public saveOrUpdate(sistema: SistemaModel): Observable<any> {
+
+    return this.Http.post<any>("http://localhost:8080/saveOrUpdateSistema", JSON.stringify(sistema));
+
+  }
+
 }
