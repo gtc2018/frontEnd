@@ -12,7 +12,7 @@
     <p *ngIf="seleccionados !== undefined " >Seleccione {{seleccionados}} que se requieran</p>
 
     <system-component *ngIf="template ==='system'" [system]="array" ></system-component>
-    <tool-component *ngIf="template ==='tool'" [tool]="array" ></tool-component>
+    <epic-component *ngIf="template ==='epic'" [epicsxRequest]="array" [proyectoId]="proyectoId"></epic-component>
     <create-detail-component *ngIf="template ==='create-detail'" [codigoRQM]="codigoRQM" [empresaId]="empresaId"
      ></create-detail-component>
   </div>

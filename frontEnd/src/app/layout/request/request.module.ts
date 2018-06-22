@@ -16,7 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CalendarModule } from 'angular-calendar';
 import { ModalQComponent } from './modal-q/modal-q.component';
 import { SystemComponent } from './modal-q/template/system/system';
-import { ToolComponent } from './modal-q/template/tool/tool';
+import { EpicComponent } from './modal-q/template/epic/epic';
 import { CreateDetailComponent } from './modal-q/template/create-detail/create-detail';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -36,7 +36,7 @@ import { TagInputModule } from 'ngx-chips';
            entryComponents: [
             ModalQComponent,
             SystemComponent,
-            ToolComponent,
+            EpicComponent,
             CreateDetailComponent
           ],
 
@@ -44,7 +44,7 @@ import { TagInputModule } from 'ngx-chips';
         CreateRequestComponent,
         FilterRequerimiento,
         ModalQComponent,
-        ToolComponent,
+        EpicComponent,
         CreateDetailComponent,
         SystemComponent],
         

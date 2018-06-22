@@ -1,0 +1,350 @@
+<div class="row">
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div [@routerTransition]>
+            <!-- <app-page-header [heading]="'Empleados'" [icon]="'fa-table'"></app-page-header> -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
+                    <h2 class=" page-header">
+                        <i class="fa fa-fw fa-clock-o" style="color:blue"></i>Planeacion
+                    </h2>
+
+                </div>
+            </div>
+
+            <hr>
+
+
+            <div *ngIf="this.crear" style="text-align:left">
+
+                <button type="button" class="btn-sm btn-primary mb-2" (click)="createHide()" blueColored>
+                    <span class="fa fa-plus"></span> Nueva Historia
+                    <b>
+                        <span class="{{icon}}"></span>
+                    </b>
+                </button>
+
+            </div>
+
+            <form *ngIf="visible">
+
+                <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                    {{message}}
+                    <strong></strong>
+                </div>
+
+                <div class="card" >
+
+                    <div class="card-header">
+                        <div class=" row center-sc  col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                            <div>
+                                <hr class="hrv2">
+                            </div>
+
+                            <div>
+
+                                <button style="margin-right:12px" (click)="save()" type="submit" placement="top" ngbTooltip="Guardar" class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                    value="">
+                                </button>
+
+                            </div>
+
+                            <div>
+                                <hr class="hrv">
+                            </div>
+
+                            <div>
+
+                                <button style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                    value="">
+                                    <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                                </button>
+
+                            </div>
+
+                            <div *ngIf="deleteFormHide" style="display: -webkit-box;">
+
+                                <div>
+                                    <hr class="hrv2">
+                                </div>
+
+                                <div>
+
+                                    <button style="margin-right:12px"
+                                    (click)="delete(externalEmployeeForm)"
+                                    type="submit"
+                                    placement="top"
+                                    ngbTooltip="Eliminar"
+                                    class="btn-sm btn-danger fa fa-trash-o fa-lg hand"
+                                    value="">
+                                    </button>
+
+                            </div>
+
+                                <div>
+                                    <hr class="hrv">
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="!deleteFormHide">
+                                <hr class="hrv2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>              
+
+                    <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 center-sc" >
+
+                            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5"  >
+                        
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                            <div class="form-group row">
+                                            <label class=" col-form-label-sm " style="width:30%">   *Cliente</label>
+                                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            <select #selectCl
+                                             [disabled] = "disabledEnterprise"
+                                             [(ngModel)]="planeacionForm.clienteId"
+                                             (change)="getProyectosByCliente(selectCl.value)"
+                                             name="enterprise" 
+                                             class="form-control-sm input-underline"
+                                             style="width:100%">
+                                             
+                                             <option *ngFor="let e of enterprises" [value]="e.id">
+                                                    {{e.descripcion}}
+                                            </option>
+                                            </select>
+                                            </div>
+                                            </div>
+                                    </div>
+                        
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                            <div class="form-group row">
+                                            <label class=" col-form-label-sm " style="width:30%">*Proyecto</label>
+                                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            <select #selectPr
+                                            [disabled] = "disabledProyecto"
+                                            [(ngModel)]="planeacionForm.proyectoId"
+                                            (change)="getRequerimientosByProyecto(selectPr.value)"
+                                             name="project"
+                                             class="form-control-sm input-underline"
+                                             style="width:100%">
+                                             <option *ngFor="let p of proyectos" [value]="p.id">
+                                                {{p.nombre}}
+                                        </option>
+                                            </select>
+                                            </div>
+                                            </div>
+                                    </div>
+                        
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                            <div class="form-group row">
+                                            <label class=" col-form-label-sm " style="width:30%">*Requerimiento</label>
+                                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            <select #selectRq
+                                            [disabled] = "disabledRequerimiento"
+                                            (change)="getEpicasByRequerimiento(selectRq.value)"
+                                            [(ngModel)]="planeacionForm.requerimientoId"
+                                             name="requerimiento"
+                                             class="form-control-sm input-underline"
+                                             style="width:100%">
+                                             <option *ngFor="let r of requerimientos" [value]="r.id">
+                                                {{r.descripcion}}
+                                        </option>
+                                            </select>
+                                            </div>
+                                            </div>
+                                    </div> 
+                                   
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                            <div class="form-group row">
+                                            <label class=" col-form-label-sm " style="width:30%">*Epica</label>
+                                            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                            <select #selectEp
+                                            [disabled] = "disabledEpica"
+                                            [(ngModel)]="planeacionForm.epicaId"
+                                             name="epica"
+                                             class="form-control-sm input-underline"
+                                             style="width:100%">
+                                             <option *ngFor="let r of epicas" [value]="r.id">
+                                                {{r.descripcion}}
+                                        </option>
+                                            </select>
+                                            </div>
+                                            </div>
+                                    </div>
+                            </div>
+                            
+                            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5" >
+ 
+                                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <div class="form-group row">
+                                        <label class=" col-form-label-sm " style="width:30%">*Titulo historia</label>
+                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                                        <input
+                                            name = "tituloHistoria"
+                                            [(ngModel)]="planeacionForm.titulo"
+                                            type="text" 
+                                            class="form-control-sm input-underline" 
+                                            style="width:100%"
+                                            maxlength="45">
+                                        </div>
+                                        </div>
+                                  </div>
+                                  <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                                        <div class="form-group row">
+                                        <label class=" col-form-label-sm " style="width:30%">Descripcion</label>
+                                        </div>
+                                        <textarea
+                                        name="descripcion"
+                                        [(ngModel)]="planeacionForm.descripcion"
+                                        rows="3"
+                                        class="form-control"
+                                        placeholder="Descripcion"
+                                        required
+                                        style="width:100%"
+                                        maxlength="100">
+                                        </textarea>
+                                  </div>
+                                  <br>
+                                  <br>
+                                        
+                                     
+                            </div>
+                        
+                    </div>  
+
+                </div>
+
+
+                  
+
+                <hr>
+            </form>
+
+            <div class="card mb-3 ">
+                <div class=" card-header center-sc">
+
+                    <div class=" col-auto">
+                        Tabla de Historias
+                    </div>
+
+                    <div class="btn-group row col-auto pull-right " style="">
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+                        <div class="col-auto pull-right ">
+                            <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                        </div>
+
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+                        <div class="col-auto pull-right ">
+                            <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                        </div>
+
+
+                        <div>
+                            <hr class="hrv1">
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div class="card-body table-responsive">
+                    <table class="table table-hover table-striped table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Proyecto</th>
+                                <th>Requerimiento</th>
+                                <th>Epica</th>
+                                <th>Historia</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.clienteId" placeholder="Buscar por Nombre">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.proyectoId" placeholder="Buscar por Apellidos">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.requerimientoId"
+                                        placeholder="Buscar por #Documento">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.epicaId" placeholder="Buscar por Telefono">
+                                </th>
+                                <th>
+                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.titulo" placeholder="Buscar por Email">
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            <tr *ngFor="let e of planeaciones| generalFilter:filter">
+                                <td>
+                                    <span [innerHTML]="e.cliente.descripcion">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.proyecto.nombre">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.requerimiento.descripcion">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.epica.descripcion">
+                                    </span>
+                                </td>
+                                <td>
+                                    <span [innerHTML]="e.titulo">
+                                    </span>
+                                </td>
+                               <!-- <td>
+                                    <input *ngIf="this.editar" type="checkbox" [(ngModel)]="e.estado" name="aaa" #check (change)="changeState(e)">
+                                </td>-->
+                                <td>
+                                    <!--<input type="checkbox"
+                                     [(ngModel)]="e.estado"
+                                     name="{{e.id}}"
+                                     #check
+                                     (change)="changeState(e)">-->
+
+                                    <mat-checkbox
+                                    name="{{e.id}}"
+                                    [(ngModel)]="e.estado"
+                                    (change)="changeState(e)">
+                                    </mat-checkbox>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a *ngIf="true" class="btn btn-default">
+                                            <i (click)="upload(e)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
+                                            </i>
+                                        </a>
+                                        <a *ngIf="this.eliminar" class="btn btn-default">
+                                            <i (click)="delete(e)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <br>
+        </div>
+    </div>
+</div>
+<br>
+<br>

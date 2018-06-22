@@ -1,33 +1,56 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import {RequerimientoModel} from '../../model/requerimiento.model';
+import {EpicaModel} from '../../../../../model/epica.model';
+import {EpicsxRequestModel} from '../../../../../model/epicsxRequest';
 import { tap, catchError } from 'rxjs/operators';
-import { RestResponse } from '../../model/restResponse';
-import { CotizacionModel } from '../../model/cotizacion.model';
-import { ProyectoModel } from '../../model/proyectos';
-import { EstadoModel } from './../../model/estado.model';
-import { InvolucradoModel } from '../../model/involucrado.model';
-import { EpicsxRequestModel } from '../../model/epicsxRequest';
-
-
+import { RestResponse } from '../../../../../model/restResponse';
+import { RequerimientoModel } from '../../../../../model/requerimiento.model';
+import { ProyectoModel } from '../../../../../model/proyectos';
 
 
 @Injectable()
-export class RequestService {
-  request: RequerimientoModel = new RequerimientoModel;
-  involved: InvolucradoModel = new InvolucradoModel;
+export class EpicService {
+  request: EpicaModel = new EpicaModel;
+  involved: RequerimientoModel = new RequerimientoModel;
   proyecto: ProyectoModel = new ProyectoModel;
-  estadoList: EstadoModel[];
  
 
   constructor(private http: HttpClient) { }
 
-   //SERVICIO CONSULTAR TODOS LOS Requerimientos
-   public getAll(): Observable<RequerimientoModel[]>{
-    return this.http.get<RequerimientoModel[]>("http://localhost:8080/getAllRequerimiento");      
+  
+   //SERVICIO CONSULTAR TODOS LOS Epicas que pertenecen al proyecto del requerimiento
+   public getEpicas(idProyecto): Observable<EpicaModel[]>{
+    this.proyecto.id=idProyecto;
+    console.log(idProyecto);
+    return this.http.post<EpicaModel[]>("http://localhost:8080/getAllEpicasProyecto", JSON.stringify(this.proyecto));      
   }
 
+  public saveOrUpdate(request: EpicaModel): Observable<RestResponse> {
+    console.log("REQUEST");
+    console.log(request);
+    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateEpica",JSON.stringify(request));
+  }
+
+  public saveEpicsxRequest(requestId, epicsxRequest: EpicsxRequestModel[]): Observable<any> {
+
+    return this.http.post<any>("http://localhost:8080/EpicsXRequest",
+    epicsxRequest,
+      {
+        params:{requestId:requestId}
+      }
+                              );
+  }
+
+  public getEpicasByRequerimiento(id): Observable<EpicaModel[]> {
+    this.request.id=id;
+    console.log(id);
+    return this.http.post<EpicaModel[]>("http://localhost:8080/getAllEpicasRequerimiento", JSON.stringify(this.request));
+
+  }
+
+
+  /*
   //SERVICIO CONSULTAR TODOS LOS Involucrados
   public getAllInvolved(): Observable<InvolucradoModel[]>{
     return this.http.get<InvolucradoModel[]>("http://localhost:8080/getAllInvolucrado");      
@@ -55,7 +78,7 @@ export class RequestService {
   public getCotizacionByProyecto(id): Observable<CotizacionModel[]> {
     this.proyecto.id=id;
     console.log(id);
-    return this.http.post<CotizacionModel[]>("http://localhost:8080/Quotations/getCotizacionByProyecto", JSON.stringify(this.proyecto));
+    return this.http.post<CotizacionModel[]>("http://localhost:8080/getCotizacionByProyecto", JSON.stringify(this.proyecto));
 
   } 
 
@@ -95,24 +118,5 @@ export class RequestService {
   public cargarRequerimiento(id): Observable<RequerimientoModel>{
     this.request.id=id;
     return this.http.post<RequerimientoModel>("http://localhost:8080/getRequerimiento", JSON.stringify(this.request));
-  }
-
-  public getEpicsxRequest(requestId): Observable<EpicsxRequestModel[]>{
-
-    return this.http.get<EpicsxRequestModel[]>("http://localhost:8080/EpicsXRequest",
-    {
-      params:{id:requestId}
-    }                    );
-
-  }
-
-  public saveToolsxQuotation(requestId, epicsxRequest: EpicsxRequestModel[]): Observable<any> {
-
-    return this.http.post<any>("http://localhost:8080/v",
-    epicsxRequest,
-      {
-        params:{requestId:requestId}
-      }
-                              );
-  }
+  }*/
 }
