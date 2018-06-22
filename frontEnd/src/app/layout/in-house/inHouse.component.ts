@@ -1,40 +1,42 @@
 import { LoginService } from './../../login/servicios/login.service';
 import { BsComponentComponent } from './../bs-component/bs-component.component';
-import { CrearAlcanceService } from './servicios/crear-alcance.service';
+import { CrearAreaService } from './servicios/crear-area.service';
 import { Router } from '@angular/router';
-import { AlcanceModel } from '../../model/alcance.model';
+import { AreaModel } from '../../model/area.model';
 import { PermisoModel } from '../../model/permiso.model';
- 
+
 import { ToastrService } from 'ngx-toastr';
 import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
-import { AlcanceService } from './servicios/alcance.service';
+import { AreaService } from './servicios/area.service';
 import { OK } from '../../messages/httpstatus';
 import { MenuService } from '../menus/servicios/menu.service';
 import { ItemService } from '../items/servicios/item.service';
 import { ItemsModel } from '../../model/items.model';
 import { FormGroup } from '@angular/forms/src/model';
 import { AuthService } from '../../shared/guard/auth.service';
+import { EnterpriseModel } from '../../model//enterprise';
+import { EnterpriseService } from '../enterprise/enterprise.service';
 
 import swal from 'sweetalert2';
 import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 
 @Component({
-    selector: 'app-alcance',  
-    templateUrl: './alcance.component.html', 
-    styleUrls: ['./alcance.component.scss'],
+    selector: 'app-area',  
+    templateUrl: './area.component.html', 
+    styleUrls: ['./area.component.scss'],
     animations: [routerTransition()],
-    providers: [AlcanceService, CrearAlcanceService, LoginService] 
+    providers: [AreaService, CrearAreaService, EnterpriseService, LoginService] 
 })
-export class AlcanceComponent implements OnInit {
+export class AreaComponent implements OnInit {
 
     // Variables -----------------------------
 
-    alcance: AlcanceModel[];
-    alcanceCom: AlcanceModel[];
-    filter: AlcanceModel = new AlcanceModel();
+    enterprises: EnterpriseModel[];
+    area: AreaModel[];
 
-    alcanceForm: AlcanceModel;
+    areaForm: AreaModel;
+    filter: AreaModel = new AreaModel();
     private permiso: PermisoModel;
 
     message: string;
@@ -45,37 +47,35 @@ export class AlcanceComponent implements OnInit {
     imageSrc: string = 'assets/images/avatar.png';
 
     stateExpand: number = 1;
-    identificador: Number = 0;
-    alcanceIgual: number = 0;
-
-    user: any;
-    items: any;
-    menus: any;
 
     emailRegex: RegExp;
-
-    crear = false;
-    editar = false;
-    eliminar = false;
-    leer = false;
 
     dragging: boolean = false;
     deleteFormHide:boolean = false;
     visible: boolean = false;
     private isValid: boolean = true;
 
+    user: any;
+    items: any;
+    menus: any;
+
+    crear = false;
+    editar = false;
+    eliminar = false;
+    leer = false;
+
     // Metodos principales----------------------------------------------------
     constructor(
-        private alcanceService: AlcanceService,
-        private crearAlcanceService: CrearAlcanceService,
+        private areaService: AreaService,
+        private enterpriseService: EnterpriseService,
+        private crearAreaService: CrearAreaService,
         private router: Router,
         private toastr: ToastrService,
         private login: AuthService,
         private menu: LoginService,
         private menup: LoginService
     ) {
-
-        this.alcanceForm = new AlcanceModel();
+        this.areaForm = new AreaModel();
 
         if(this.login.authUser !== undefined){
 
@@ -87,83 +87,86 @@ export class AlcanceComponent implements OnInit {
     // Se inicia con estos metodos
     ngOnInit() {
         this.getItems();
-        this.loadAlcances(); 
-    }    
+        this.loadEnterprises();  
+        this.loadAreas(); 
+    } 
 
     //Funciones --------------------------------------------
 
-    //Cargar Alcances
+    //Cargar Empresas
 
-    private loadAlcances(): void {
-        this.alcanceService.getAlcances().subscribe(res => {
-            this.alcance = res;   
+    private loadEnterprises(): void {
+        this.enterpriseService.getEnterprises().subscribe(res => {
+            this.enterprises = res;
+            console.log(this.enterprises);
 
-            },(error)=>{
-
-                this.toastr.error("Error al cargar los datos");
-            });
-    }
-
-    //Para guardar
-    saveOrUpdate():void{
-
-        this.crearAlcanceService.saveOrUpdate(this.alcanceForm).subscribe(res => {
-            this.alcanceForm = new AlcanceModel();
-            this.toastr.success('Transacción satisfactoria', 'Gestión de Alcance');
-            this.loadAlcances();
-            this.clean();
-
-        },(error)=>{
-
-            this.toastr.error(error.error.message,"Error en la transacción");
+        }, (error) => {
+            console.log(error);
+            this.toastr.error("Error al cargar los datos de Empresa");
         });
     }
 
-    //Antes de guardar
+    //Cargar Areas
+
+    private loadAreas(): void {
+        this.areaService.getAreas().subscribe(res => {
+            this.area = res;   
+            console.log("Aqui viene el area" + this.area);
+
+            },(error)=>{
+                console.log(error);
+
+                this.toastr.error("Error al cargar los datos");
+            });
+    }
+
+    //Guardar o editar Area
+
     save():void{
 
-        if(this.alcanceForm.id === null){
-            this.alcanceForm.usuarioCreacion = localStorage.email;
-        }else{
-            this.alcanceForm.usuarioModificacion = localStorage.email;
+        console.log(this.login.authUser);
+
+        if(this.login.authUser !== undefined){
+
+            if(this.areaForm.id === null){
+
+                this.areaForm.usuarioCreacion = this.login.authUser.email.toString();
+
+            }else{
+
+                this.areaForm.usuarioModificacion = this.login.authUser.email.toString();
+            }
+            
         }
 
-        this.isValid = this.validate(this.alcanceForm);
+        console.log(this.areaForm);
+        this.isValid = this.validate(this.areaForm);
 
         if (this.isValid) {
 
-            this.alcanceService.getAlcances().subscribe(res => {
-                this.alcanceCom = res;
-                
-                for(let a of this.alcanceCom){
-                    
-                    if(this.alcanceForm.descripcion.toUpperCase() === a.descripcion.toUpperCase()){
-                        this.alcanceIgual = 1
-                    }
-                }
+            this.crearAreaService.saveOrUpdate(this.areaForm).subscribe(res => {
+                    this.areaForm = new AreaModel();
+                    this.toastr.success('Transacción satisfactoria', 'Gestión de Areas');
+                    this.loadAreas();
+                    this.clean();
 
-                if(this.alcanceIgual !== 1){
-                    this.saveOrUpdate();
-                }else{
-                    this.toastr.error("Ya existe un registro con este nombre");
-                    this.alcanceIgual = 0;
-                }
-    
             },(error)=>{
-                this.toastr.error("Error al cargar los datos");
+                console.log(error);
+
+                    this.toastr.error(error.error.message,"Error en la transacción");
             });
 
         } else {
-            //this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Alcances');
+            this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Roles');
             this.message = "Los campos con * son obligatorios.";
         }
     }
 
-     // Eliminar Cargo
-     delete(id) {
+    // Eliminar Area
+    delete(id) {
 
         if (id != null) {
-            this.alcanceForm.id = id;
+            this.areaForm.id = id;
         }
 
         swal({
@@ -178,15 +181,18 @@ export class AlcanceComponent implements OnInit {
 
             if (result.value) {
               
-                this.alcanceForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.areaForm.usuarioModificacion = this.login.authUser.email.toString();
+            console.log(this.areaForm.id);
 
-            this.alcanceService.deleteAlcance(this.alcanceForm).subscribe(res => {
+
+            this.areaService.deleteArea(this.areaForm).subscribe(res => {
 
                 this.clean();
-                this.loadAlcances();
+                this.loadAreas();
 
                 this.toastr.success('Registro eliminado satisfactoriamente.');
             }, (error) => {
+                console.log(error);
 
             });       
                 
@@ -195,32 +201,34 @@ export class AlcanceComponent implements OnInit {
 
     }
 
+    // Se limpia los campos
+    clean() {
+        this.areaForm = new AreaModel();
+        this.deleteFormHide = false;
+        this.visible = false;
+      }
+
     //Validacion:
 
-    public validate(alcanceForm: AlcanceModel): boolean {
+    public validate(areaForm: AreaModel): boolean {
         let isValid = true;
 
+        if (!areaForm.clienteId) {
+            isValid = false;
+        }
 
-        if (!alcanceForm.descripcion) {
+        if (!areaForm.descripcion) {
             isValid = false;
         }
 
         return isValid;
     }
 
-    // Replica el modelo escogido
-    upload(model){
-        this.alcanceForm = model; 
-        console.log(model);
-        console.log(this.alcanceForm);
+    // Replica el modelo
+    upload(model){        
+        this.areaForm = model;
+        this.areaForm.clienteId = this.areaForm.cliente.id;
         this.visible = true;
-    }
-
-    // Limpia los campos
-    clean() {
-        this.alcanceForm = new AlcanceModel();
-        this.deleteFormHide = false;
-        this.visible = false;
     }
 
     //Permisos
@@ -235,7 +243,7 @@ export class AlcanceComponent implements OnInit {
             console.log(this.menus = res);
             for (let menu of this.menus) {
                 //this.items = menu.item;
-                if (menu.menu.descripcion === "Alcances") {
+                if (menu.menu.descripcion === "Areas") {
                     this.items = menu;
                     console.log(this.items);
 

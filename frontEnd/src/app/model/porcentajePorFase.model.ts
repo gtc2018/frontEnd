@@ -5,7 +5,7 @@ import { FaseModel } from './fase';
 export class PorcentajePorFaseModel extends ParentEntity{
    
   public clienteId: number;
-  public fasesId: Number;
+  public fasesId: number;
   public cliente: EnterpriseModel;
   public fases: FaseModel;
   public porcentaje: number;

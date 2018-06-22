@@ -94,6 +94,7 @@ export class CreateRegistroActividadComponent implements OnInit {
     edtReg:boolean = false;
     cancelarEdt: boolean = false;
     cancelarNew: boolean = true;
+    validarHora: boolean = true;
 
     view: string = 'month';
 
@@ -399,7 +400,80 @@ loadRequestToProject(id: any): void {
 
     }
 
-    //Para guardad o editar el registro
+    //Para guardar
+    saveR():void{
+
+        // Le asignamos el usuario de creacion o modificacion
+        if(this.registroActividadForm.id === null){
+            this.registroActividadForm.usuarioCreacion = this.login.authUser.email.toString();
+        }else{
+            this.registroActividadForm.usuarioModificacion = this.login.authUser.email.toString();
+        }
+
+        this.registroActividadForm.diaTotal = this.registroActividadForm.duracion;
+            
+        this.crearRegistroActividadService.saveOrUpdate(this.registroActividadForm).subscribe(res => {
+            this.toastr.success('Transacción satisfactoria', 'Gestión de Registro de Actividad');
+            this.clean();
+            this.loadEmployeeReg();
+            this.mjsError = 0;
+                                
+        },(error)=>{
+                    
+            this.toastr.error(error.error.message,"Error en la transacción");
+        });
+
+    }
+
+    prueba():void{
+
+        //Validamos que los campos no esten vacios
+        this.isValid = this.validate(this.registroActividadForm);
+
+        if(this.isValid){
+
+            this.validarHora = this.validarHoras(this.registroActividadForm);
+
+            if(this.validarHora){
+
+                this.registroActividadService.getRegistreByEmployeeAndDate(this.empleadoSes, this.fechaTrabajo).subscribe(res => {
+
+                    this.registroActividadComp = res;
+                    if(this.registroActividadComp.length === 0){
+
+                        console.log("PANA QUE FINO QUE GUARDO");
+
+                    }else{
+
+                        this.registroActividadService.getAllRegistreByDate(this.empleadoSes, this.fechaTrabajo,
+                             this.registroActividadForm.horaInicio, this.registroActividadForm.horaFin).subscribe(res => {
+
+                                console.log(res);
+
+                        },(error)=>{
+                            this.toastr.error("Error al cargar los datos para guardar");
+                        });
+
+                    }
+                    
+                },(error)=>{
+                    this.toastr.error("Error al cargar los datos para guardar");
+                });
+
+            }else{
+                this.toastr.error("La hora o minutos de inicio no pueden ser mayor a las finales");    
+            }
+            
+        }else{
+            //Si algun campo esta vacio
+            this.toastr.error("Se deben llenar todos los campos y seleccionar una fecha");
+        }
+    }
+
+    
+
+
+    //Antes de guardar
     saveOrUpdate():void{
 
         //Se extrae los minutos de la hora inicial
@@ -440,7 +514,7 @@ loadRequestToProject(id: any): void {
         this.registroActividadService.getRegistreByEmployeeAndDate(this.empleadoSes, this.fechaTrabajo).subscribe(res => {   
 
             //SE ESTA TRABAJANDO EN ESTA PARTE PARA SUMAR EL DIA TOTAL LABORADO ***********************************************************
-            if(this.registroActividadForm === null){
+            /*if(this.registroActividadForm === null){
                 this.diaTotalH = parseInt(this.registroActividadForm.duracion);
                 this.diaTotalM = parseInt(this.registroActividadForm.duracion.toString().substr(3,2));
             }else{
@@ -467,7 +541,7 @@ loadRequestToProject(id: any): void {
             }else{
                 this.diaTrabajoT = this.diaTrabajoT+":"+this.diaTotalM.toString();
                 this.diaTotalM = 0
-            }
+            }*/
 
             console.log("Dia total del trabajo : "+this.diaTrabajoT);
             //***************************************************************************************************************************** 
@@ -479,14 +553,12 @@ loadRequestToProject(id: any): void {
             if(this.registroActividadComp.length === 0){
                 
                 // Le asignamos el usuario de creacion o modificacion
-                if(this.login.authUser !== undefined){
-                    if(this.registroActividadForm.id === null){
-                        this.registroActividadForm.usuarioCreacion = this.login.authUser.email.toString();
-                    }else{
-                        this.registroActividadForm.usuarioModificacion = this.login.authUser.email.toString();
-                    }
+                if(this.registroActividadForm.id === null){
+                    this.registroActividadForm.usuarioCreacion = this.login.authUser.email.toString();
+                }else{
+                    this.registroActividadForm.usuarioModificacion = this.login.authUser.email.toString();
                 }
-
+                
                 //Validamos que los campos no esten vacios
                 this.isValid = this.validate(this.registroActividadForm);
 
@@ -648,20 +720,7 @@ loadRequestToProject(id: any): void {
                         //Valida los campos
                         if(this.isValid){
                         
-                            this.registroActividadForm.diaTotal = this.registroActividadForm.duracion;
-                        
-                            console.log(this.registroActividadForm);
-            
-                            this.crearRegistroActividadService.saveOrUpdate(this.registroActividadForm).subscribe(res => {
-                                this.toastr.success('Transacción satisfactoria', 'Gestión de Registro de Actividad');
-                                this.clean();
-                                this.loadEmployeeReg();
-                                this.mjsError = 0;
-                                
-                            },(error)=>{
-                    
-                                this.toastr.error(error.error.message,"Error en la transacción");
-                            });
+                            this.saveR();
             
                         }else{
                             //Si algun campo esta vacio
@@ -957,6 +1016,38 @@ loadRequestToProject(id: any): void {
         }
 
         return isValid;
+    }
+
+    //Valida las horas
+    public validarHoras(registroActividadForm: RegistroActividadModel) : boolean{
+        let validarHora = true;
+
+        //Se extrae los minutos de la hora inicial
+        this.extraMin = this.registroActividadForm.horaInicio.toString().substr(3,2);
+
+        //Se asignan los minutos de la hora inicial
+        this.minutoI = parseInt(this.extraMin);
+
+        //Se extrae los minutos de la hora final
+        this.extraMin = this.registroActividadForm.horaFin.toString().substr(3,2);
+
+        //Se asignan los minutos de la hora final
+        this.horaF = parseInt(this.extraMin);
+
+        //Se compara la hora de inicio es igual fin
+        if(parseInt(this.registroActividadForm.horaInicio) === parseInt(this.registroActividadForm.horaFin)){
+            if(this.minutoI>this.horaF){
+                validarHora = false;
+            }
+        }else{
+            // Se compara la hora de inicio es mayor a la hora final
+            if(parseInt(this.registroActividadForm.horaInicio) > parseInt(this.registroActividadForm.horaFin)){
+
+                validarHora = false;
+            }
+        }
+
+        return validarHora
     }
 
     //Limpiar Campos

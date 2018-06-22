@@ -14,6 +14,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PageHeaderModule } from '../../shared/index';
 import { ModalQComponent } from './modal-q/modal-q.component';
 import { SystemComponent } from './modal-q/template/system/system';
+import { DocumentComponent } from './modal-q/template/document/document';
 import { ToolComponent } from './modal-q/template/tool/tool';
 import { CreateDetailComponent } from './modal-q/template/create-detail/create-detail';
 import { BrowserModule } from '@angular/platform-browser';
@@ -34,6 +35,7 @@ import { TagInputModule } from 'ngx-chips';
             CustomRenderComponent,
             ModalQComponent,
             SystemComponent,
+            DocumentComponent,
             ToolComponent,
             CreateDetailComponent,
             SystemComponent
@@ -44,6 +46,7 @@ import { TagInputModule } from 'ngx-chips';
         CreateQuotationComponent,
     ModalQComponent,
     SystemComponent,
+    DocumentComponent,
     ToolComponent,
     CreateDetailComponent,
     SystemComponent],

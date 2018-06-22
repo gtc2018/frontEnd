@@ -264,6 +264,14 @@ calculateValueTotal():void{
     modalRef.componentInstance.template = `create-detail`;
   }
 
+  document() {
+    const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
+    modalRef.componentInstance.title = 'Agregar Documento';
+    // modalRef.componentInstance.seleccionados = 'las herramientas';
+    modalRef.componentInstance.template = `document`;
+    modalRef.componentInstance.cotizacion = this.route.snapshot.params.id;
+  }
+
 private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
         return 'by pressing ESC';

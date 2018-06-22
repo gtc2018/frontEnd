@@ -281,6 +281,18 @@
                                                 <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.crear}}"
                                                     name="crear" unchecked>
                                             </td> -->
+
+                                            <td>
+                                                    <label class=" col-form-label-sm ">
+                                                            <mat-checkbox
+                                                            color="primary"
+                                                            name="{{permiso.leer}}"
+                                                             [(ngModel)]="permiso.leer"
+                                                             (change)="changeState(permiso)">
+                                                            </mat-checkbox>
+                                                    </label>
+                                            </td>
+                                            
                                             <td>
                                                     <label class=" col-form-label-sm ">
                                                             <mat-checkbox
@@ -301,16 +313,7 @@
                                                     name="editar" unchecked>
                                             </td> -->
 
-                                            <td>
-                                                    <label class=" col-form-label-sm ">
-                                                            <mat-checkbox
-                                                            color="primary"
-                                                            name="{{permiso.leer}}"
-                                                             [(ngModel)]="permiso.leer"
-                                                             (change)="changeState(permiso)">
-                                                            </mat-checkbox>
-                                                    </label>
-                                            </td>
+                                            
 
                                             <!-- <td *ngIf="permiso.leer ==='1'">
                                                 <input (click)="update(permiso)" class="ng-tns-c6-1" type="checkbox" value="{{permiso.leer}}"

@@ -1,0 +1,187 @@
+<!--<div class="row">-->
+    <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="row">
+          <div class="col-lg-12">
+
+              <div *ngIf="!isValid" role="alert" class="alert alert-danger alert-dismissible">
+                  {{message}}
+                  <strong></strong>
+              </div>
+
+            <form>
+              <div class="card">
+                  <div class="card-header">
+                      <div class=" row center-sc col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
+                          <div class=" col-auto">
+                              Agregar documento
+                          </div>
+    
+                          <div>
+                              <hr class="hrv2">
+                          </div>
+    
+                          <div>
+    
+                              <button style="margin-right:12px"
+                               type="submit" 
+                               placement="top"
+                                ngbTooltip="Guardar" 
+                                (click)="save()"
+                                class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                                  value="">
+                              </button>
+    
+                          </div>
+    
+                          <div>
+                              <hr class="hrv">
+                          </div>
+                          <div>
+    
+                              <button 
+                              type="button"  style="margin-left:10px;" (click)="clean()" placement="top" ngbTooltip="Limpiar" class="btn-sm btn-warning hand"
+                                  value="">
+                                  <img [src]="'assets/images/escoba.ico'" width="20" height="20">
+                              </button>
+    
+                          </div>
+                          
+                      </div>
+                  </div>
+                  <br>
+                  <div class="row justify-content-around">
+    
+                    <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    
+                      <div class="form-row col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    
+                        <div _ngcontent-c7="" class="form-group input-group">
+                          <label class=" col-form-label-sm ">*Nombre :</label>  
+                          <input type="text" class="form-control-sm input-underline col-4" name="Nombre" id="Nombre" placeholder="Nombre" [(ngModel)]="presupuestoForm.nombre">                                    
+                        </div>
+
+                      </div>
+    
+                      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
+                        <div class="form-group row">
+                          <label class="col-form-label-sm " style="width:24%">*Adjuntos </label>
+                          <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                            <label class="hand" ondragover="return false;" (dragenter)="handleDragEnter()" (dragleave)="handleDragLeave()" (drop)="handleDrop($event)"
+                              placement="top" ngbTooltip="Haga click para cargar o arrastre el documento" >
+                                <div class="col-auto">
+                                  <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}">{{nameUpload}}</span>
+                                </div>
+                                <div class="col-auto">
+                                  <input type='file' (change)="handleInputChange($event)" style="display: none;">
+                                </div>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+    
+                    <div class="form-row col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+                        <div _ngcontent-c7="" class="form-group input-group">
+                            <label class=" col-form-label-sm ">*Descripcion: </label>  
+                            <textarea class="form-control-sm col-8" name="Descripcion" id="Descripcion" placeholder="Descripcion" [(ngModel)]="presupuestoForm.descripcion"></textarea>                                    
+                          </div>
+    
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          
+              <div class="card mb-3">
+                <div class="card-header center-sc">
+                  <div class="row" >
+    
+                    <div class=" col-auto">
+                      Tabla de documentos
+                    </div>
+    
+                    <div class="btn-group row col-auto pull-right ">
+                      <div>
+                        <hr class="hrv1">
+                      </div>
+    
+                      <div class="col-auto pull-right ">
+                        <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                      </div>
+    
+                      <div>
+                        <hr class="hrv1">
+                      </div>
+    
+                      <div class="col-auto pull-right ">
+                        <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                      </div>
+    
+                      <div>
+                        <hr class="hrv1">
+                      </div>
+                    </div>
+                  </div>
+                </div>    
+    
+                <div class="card-body table-responsive">
+                  <table class="table table-hover table-striped table-bordered table-sm">
+                    <thead>
+                      <tr>
+                        <th>Nombre</th>      
+                        <th>descripcion</th>
+                        <th>Acciones</th>                                
+                      </tr>
+                    </thead>                        
+    
+                    <tbody>
+                      <tr *ngFor="let p of propuestas">
+    
+                        <td style="text-align: left">
+                          {{ p.nombre}} 
+                        </td>
+    
+                        <td style="text-align: left">
+                          {{p.descripcion}}
+                        </td>
+    
+                        <td style="text-align: center">
+                          <div class="btn-group" >
+                            <a class="btn btn-default" >
+                              <i (click)="upload(p)"
+                                class="fa fa-pencil-square-o fa-lg hand"
+                                aria-hidden="true"
+                                title="Editar" >
+                              </i>
+                            </a>
+
+                            <a class="btn btn-default">
+                              <i (click)="delete(p.id)"
+                                class="fa fa-trash-o fa-lg hand"
+                                aria-hidden="true"
+                                title="Eliminar">
+                              </i>
+                            </a>
+
+                            <a class="btn btn-default" href="{{p.archivo}}">
+                              <i
+                              class="fa fa-download"
+                              aria-hidden="true"
+                              title="Descargar"
+                              >
+                            </i>
+                            </a>
+    
+                          </div>
+                        </td>                                
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>    
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    <!--</div>-->  
+    

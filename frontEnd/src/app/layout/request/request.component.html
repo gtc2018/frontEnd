@@ -36,7 +36,7 @@
                 <br>    
                 <div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
             
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
                                     
                         <div class="input-group" style="width:100%">
                             <select  name="fecha1" class="form-control-sm input-underline" style="width:40%"
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                             
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                                         
                         <div class="input-group" style="width:100%">
                             <select  name="fecha1" class="form-control-sm input-underline" style="width:40%"
@@ -91,24 +91,26 @@
                                 </div>
                         </div>
                     </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 ">
+                            <!--div style="text-align:center"-->
+        
+                                <button type="button" class="btn-sm btn-primary mb-2" (click)="loadRequestsForDate()" blueColored>
+                                    <span class="fa fa-filter"></span> Filtrar
+                                    <b>
+                                        <span class="{{icon}}"></span>
+                                    </b>
+                                </button>
+        
+                                <button  *ngIf="filtroFech" type="button" class="btn-sm btn-danger mb-2" (click)="clean()" blueColored>
+                                    <span class=""></span> Cancelar
+                                </button>
+                            <!--/div-->    
+                        </div>
                                 
                 </div>
-                <br>
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <div style="text-align:center">
-
-                        <button type="button" class="btn-sm btn-primary mb-2" (click)="loadRequestsForDate()" blueColored>
-                            <span class="fa fa-filter"></span> Filtrar
-                            <b>
-                                <span class="{{icon}}"></span>
-                            </b>
-                        </button>
-
-                        <button  *ngIf="filtroFech" type="button" class="btn-sm btn-danger mb-2" (click)="clean()" blueColored>
-                            <span class=""></span> Cancelar
-                        </button>
-                    </div>    
-                </div>
+                <!--br-->
+                
                 <br>
             </div>    
         </div>

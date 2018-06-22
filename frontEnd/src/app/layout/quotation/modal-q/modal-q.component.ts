@@ -11,6 +11,7 @@ export class ModalQComponent implements OnInit {
     @Input() seleccionados;
     @Input() template;
     @Input() array;
+    @Input() cotizacion;
 
 
 

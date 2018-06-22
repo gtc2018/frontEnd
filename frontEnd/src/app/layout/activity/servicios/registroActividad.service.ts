@@ -61,4 +61,15 @@ export class RegistroActividadService {
     return this.Http.post<RegistroActividadModel[]>("http://localhost:8080/getRegistreByEmployeeAndDate", JSON.stringify(this.registroActividad));      
   }
 
+  // SERVICIO CONSULTAR LOS REGISTROS POR HORAS
+  public getAllRegistreByDate(id, fecha, horaI, horaF): Observable<RegistroActividadModel[]>{
+     
+    this.registroActividad.id = id;
+    this.registroActividad.fechaTrabajo = fecha;
+    this.registroActividad.horaInicio = horaI;
+    this.registroActividad.horaFin = horaF;
+  
+    return this.Http.post<RegistroActividadModel[]>("http://localhost:8080/getAllRegistreByDate", JSON.stringify(this.registroActividad));      
+  }
+
 }

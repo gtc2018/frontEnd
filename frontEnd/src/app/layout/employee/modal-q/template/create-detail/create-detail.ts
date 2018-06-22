@@ -21,7 +21,7 @@ import { EnterpriseService } from '../../../../enterprise/enterprise.service';
 import swal from 'sweetalert2';
 import { EVENT_MANAGER_PLUGINS } from '@angular/platform-browser';
 import { FaseModel } from '../../../../../model/fase';
-import { InHouseService } from '../../../../in-house/inHouse.service';
+import { InHouseService } from '../../../../in-houses/inHouse.service';
 import { InHouseModel } from '../../../../../model/in-house.model';
 
 @Component({
@@ -61,6 +61,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   emailRegex: RegExp;
 
   fechaInicio; NgbDateStruct;
+  fechaHasta; NgbDateStruc;
 
   user: any;
   items: any;
@@ -125,6 +126,11 @@ export class CreateDetailComponent implements OnInit, OnChanges {
 
     this.inHouseService.getInHouseByEmployee(this.empresaId).subscribe(res => {
       this.inHouses = res;
+
+      for(let i of this.inHouses){
+        i.desde = i.desde.substr(0, 10);
+        i.hasta = i.hasta.substr(0, 10);
+      }
 
   }, (error) => {
       this.toastr.error("Error al cargar los datos de InHouse");
@@ -194,8 +200,8 @@ save():void{
   
 
   this.inHouseForm.empleadoId = this.empresaId;
-  this.antFechH = this.ediFecD;
-  this.antFechD = this.ediFecH;
+  this.antFechH = this.ediFecH;
+  this.antFechD = this.ediFecD;
   this.inHouseForm.desde = this.ediFecD;
   this.inHouseForm.hasta = this.ediFecH;
 
@@ -329,6 +335,7 @@ public validarFechas():boolean{
 upload(model){
 
   this.inHouseForm = model;
+  console.log(this.inHouseForm);
   this.inHouseForm.clienteId = this.inHouseForm.cliente.id;
 
   this.fechaInicio = {
@@ -338,12 +345,12 @@ upload(model){
   }
   this.ediFecD = this.fechaInicio;
 
-  this.fechaInicio = {
+  this.fechaHasta = {
     "year": parseInt(this.inHouseForm.hasta.toString().substr(0.4)),
     "month":  parseInt(this.inHouseForm.hasta.toString().substr(5,2)),
     "day": parseInt(this.inHouseForm.hasta.toString().substr(8,2)),
   }
-  this.ediFecH = this.fechaInicio;
+  this.ediFecH = this.fechaHasta;
 
   
 }

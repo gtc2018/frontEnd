@@ -136,6 +136,29 @@
                     </div>
             </div>
 
+            <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                    <div class="form-group row">
+                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3"> Documentos</label>
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                        <button class=" btn btn-primary"
+                        type="button" (click)="document()" >
+                        <i class="fa fa-plus"
+                         aria-hidden="true">
+                         </i> Anexar</button>
+                         <tag-input [ngModel]="toolItem"
+                         name="toolItem"
+                         placeholder="undefined"
+                         secondaryPlaceholder="undefined"
+                         [removable]="false"
+                         disable="true"
+                         [ripple]="false"
+                         [hideForm]="true"
+                         [identifyBy]="'id'"
+                         [displayBy]="'name'"> </tag-input>
+                    </div>
+                    </div>
+            </div>
+
     </div>
 
 

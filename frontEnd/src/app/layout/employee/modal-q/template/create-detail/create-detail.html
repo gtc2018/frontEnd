@@ -75,8 +75,8 @@
 
                   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 ">
                       <div class="form-group row">
-                              <label class=" col-form-label-sm " style="width:25%"  >*Desde </label>
-                              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                              <label class=" col-form-label-sm " >*Desde :</label>
+                              <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6">
                                       <div class="input-group">
                                               <input
                                                       class="form-control-sm input-underline"
@@ -96,14 +96,14 @@
                       </div>
 
                       <div class="form-group row">
-                          <label class=" col-form-label-sm " style="width:25%"  >*Hasta </label>
-                          <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                          <label class=" col-form-label-sm " >*Hasta :</label>
+                          <div class="col-xs-8 col-sm-8 col-md-6 col-lg-6">
                                   <div class="input-group">
                                           <input
                                                   class="form-control-sm input-underline"
                                                   style="width:70%" 
                                                   placeholder="yyyy-mm-dd"
-                                                  name="fechaInicio" 
+                                                  name="FechaHasta" 
                                                   [(ngModel)]="ediFecH"
                                                   ngbDatepicker
                                                   #b="ngbDatepicker"
@@ -179,15 +179,15 @@
                       {{ i.cliente.descripcion}} 
                     </td>
 
-                    <td style="text-align: left">
+                    <td style="text-align: center">
                       {{i.desde}}
                     </td>
 
-                    <td>
+                    <td style="text-align:center">
                       {{i.hasta}}
                     </td>
 
-                    <td>
+                    <td style="text-align:center">
                       <div class="btn-group">
                         <a class="btn btn-default" >
                           <i (click)="upload(i)"

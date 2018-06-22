@@ -30,6 +30,7 @@ export class FaseComponent implements OnInit {
     private fases: Array<FaseModel>;
     grupos = [];
     contador: number = 0;
+    faseIgual:number = 0;
     filter: FaseModel = new FaseModel();
 
     user: any;
@@ -66,6 +67,9 @@ export class FaseComponent implements OnInit {
     private loadFases(): void {
         this.faseService.getFases().subscribe(res => {
             this.fases = res;
+        }, (error) => {
+            this.toastr.error(error.error.message, "Error al cargar fases.");
+
         });
 
     }
@@ -77,20 +81,54 @@ export class FaseComponent implements OnInit {
     }
 
 
-    public saveOrUpdate(fase): void {
-        console.log("==============FASES=================")
-        console.log(fase);
+    //Guardar
+    save():void{
+
+        this.faseService.saveOrUpdate(this.fase).subscribe(res => {
+            this.toastr.success('Transacción realizada satisfactoriamente.');
+            this.loadFases();
+            this.clearModel();
+
+        }, (error) => {
+            this.toastr.error(error.error.message, "Error al guardar o actulizar la fase.");
+
+        });
+    }
+
+    //Antes de guardar
+    public saveOrUpdate(): void {
+
+        if(this.fase.id === null){
+            this.fase.usuarioCreacion = localStorage.email;
+        }else{
+            this.fase.usuarioModificacion = localStorage.email;
+        }
+
+        this.isValid = this.validate(this.fase);
+
         if (this.isValid) {
-            this.faseService.saveOrUpdate(this.fase).subscribe(res => {
-                this.toastr.success('Transacción realizada satisfactoriamente.');
-                this.loadFases();
-                this.clearModel();
+
+            this.faseService.getFases().subscribe(res => {
+                
+                for(let f  of res){
+
+                    if(this.fase.descripcion === f.descripcion){
+                        this.faseIgual = 1
+                    }
+                    
+                }
+
+                if(this.faseIgual !== 1){
+                    this.save();
+                }else{
+                    this.toastr.error("Ya existe un registro con este nombre", "Error gestion de fases.");   
+                    this.faseIgual = 0; 
+                }
 
             }, (error) => {
-                console.log(error);
-                this.toastr.error(error.error.message, "Error al guardar o actulizar la fase.");
-
-            });
+                this.toastr.error(error.error.message, "Error al cargar fases.");
+            }); 
+            
         }else{
             this.message = "Los campos con * son obligatorios.";
         }
@@ -151,7 +189,7 @@ export class FaseComponent implements OnInit {
 
     }
 
-    public validate(enterprise: FaseModel): boolean {
+    public validate(fase: FaseModel): boolean {
         let isValid = true;
         if (!this.fase.descripcion) {
             isValid = false;

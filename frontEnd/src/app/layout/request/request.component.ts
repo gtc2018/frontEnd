@@ -240,7 +240,6 @@ export class RequestComponent implements OnInit {
 
                 this.requestService.getAllRequestToDate(this.requestForm).subscribe(res => { 
  
-                    console.log(res);
                     if(res.length !== 0){
                         
                         this.requests = res;
