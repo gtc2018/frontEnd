@@ -9,6 +9,8 @@ import { EnterpriseModel } from '../../../model/enterprise';
 import { ProyectoModel } from '../../../model/proyectos';
 import { CotizacionModel } from '../../../model/cotizacion.model';
 import { EstadoModel } from '../../../model/estado.model';
+import { EpicaModel } from '../../../model/epica.model';
+import { EpicsxRequestModel } from '../../../model/epicsxRequest';
 
 
 import { LoginService } from './../../../login/servicios/login.service';
@@ -17,6 +19,7 @@ import { EnterpriseService } from '../../enterprise/enterprise.service';
 import { ProyectosService } from '../../proyectos/proyectos.service';
 import { FaseService } from '../../fases/servicios/fase.service';
 import { EstadoService } from '../../estados/servicios/estado.service';
+import { EpicService } from '../modal-q/template/epic/epic.service';
 import { ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DefaultEditor } from 'ng2-smart-table';
@@ -32,7 +35,7 @@ import {FormsModule} from '@angular/forms';
 
 import { ModalQComponent } from '../modal-q/modal-q.component';
 import { SystemComponent } from '../modal-q/template/system/system';
-import { ToolComponent } from '../modal-q/template/tool/tool';
+import { EpicComponent } from '../modal-q/template/epic/epic';
 import { CreateDetailComponent } from '../modal-q/template/create-detail/create-detail';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -43,7 +46,7 @@ import { TagInputModule } from 'ngx-chips';
   selector: 'app-create-request',
   templateUrl: './create-request.component.html',
 //   styleUrls: ['./create-request.component.scss']
-  providers: [RequestService, LoginService, EnterpriseService, ProyectosService, FaseService, EstadoService]
+  providers: [RequestService, LoginService, EnterpriseService, ProyectosService, FaseService, EstadoService, EpicService]
 })
 export class CreateRequestComponent implements OnInit {
 
@@ -91,6 +94,7 @@ export class CreateRequestComponent implements OnInit {
     fechaInicio; NgbDateStruct;
     
     filterPr: ProyectoModel[];
+    
     private isValid: boolean = true;
     private isValidFechas: boolean = true;
     private fases: FaseModel[];
@@ -104,8 +108,12 @@ export class CreateRequestComponent implements OnInit {
     private cotizacion: CotizacionModel[];
     private cotizaciones: CotizacionModel[];
 
-    testt: NgbDateParserFormatter;
     
+    epicInit=[];
+    epicItem=[];
+    epicxRequest: EpicsxRequestModel;
+    epicsxRequest: EpicsxRequestModel[];
+    closeResult: string;
  
 
     //Funciones
@@ -116,6 +124,7 @@ export class CreateRequestComponent implements OnInit {
         private modalService: NgbModal,
         private proyectoService: ProyectosService,
         private estadoService: EstadoService,
+        private epicaService: EpicService,
         private toastr: ToastrService,
         private login:AuthService,
         private menu: LoginService,
@@ -155,6 +164,8 @@ export class CreateRequestComponent implements OnInit {
             }else{
                 this.requestForm = new RequerimientoModel();
                 this.requestForm.cliente = new EnterpriseModel();
+                this.requestForm.proyecto = new ProyectoModel();
+                this.requestForm.cotizacion = new CotizacionModel();
 
                 this.requestForm.numeroHallazgoBloqueante=0;
             
@@ -171,7 +182,9 @@ export class CreateRequestComponent implements OnInit {
     ngOnInit(){
 
         if(this.editarRequest){
-            this.cargarRequest();             
+            this.cargarRequest();
+            
+
         }else{
             this.loadEnterprises();
         }
@@ -461,7 +474,8 @@ delete(model){
             this.getRequest(this.requestForm.cotizacionId);
             this.totalHallazgos();
             this.nameUpload = this.requestForm.archivo.split("REQUERIMIENTOS")[1];
-            console.log(this.requestForm);
+
+            this.loadEpicsxRequest(this.requestForm);
 
             //this.requestForm.fechaInicio  = JSON.stringify(this.formatoCalendario(this.requestForm.fechaInicio));
             //this.fechaInicio=this.testt.parse(this.requestForm.fechaInicio);
@@ -472,6 +486,8 @@ delete(model){
 
             this.toastr.error(error.error.message,"Error en la transacción");
         });
+
+        
 
     }
 
@@ -493,6 +509,129 @@ public totalHallazgos(){
     
 
     this.totalHallazgo = parseInt(this.requestForm.numeroHallazgoBloqueante+"") + parseInt(this.requestForm.numeroHallazgoFuncional+"") + parseInt(this.requestForm.numeroHallazgoPresentacion+"");
+}
+
+epics() {
+
+    if(!this.requestForm.cotizacionId || !this.requestForm.clienteId || !this.requestForm.proyectoId){
+        this.toastr.warning('Por favor escoger Cliente, Proyecto y Cotización');
+    }else{
+
+
+        const modalRef = this.modalService.open(ModalQComponent);
+        modalRef.componentInstance.title = 'Epicas';
+        modalRef.componentInstance.seleccionados = 'las epicas';
+        modalRef.componentInstance.template = `epic`;
+        modalRef.componentInstance.proyectoId = this.requestForm.proyectoId;
+
+
+        let instance = modalRef.componentInstance;
+
+        instance.array =  this.epicsxRequest;
+
+        modalRef.result.then( (result) => {
+
+            console.log(result);
+
+            this.epicItem=[];
+
+            for (let r of result){
+
+                if (r.value === 1 || r.value===true){
+
+                    this.epicxRequest = new EpicsxRequestModel();
+
+                    console.log(this.epicxRequest);
+
+
+                    this.epicxRequest.requerimientoId = this.requestForm.id;
+
+                    this.epicxRequest.epica = r;
+
+                    this.epicxRequest.epicaDescripcion = r.descripcion;
+
+                    this.epicItem.push(this.epicxRequest);
+
+                }
+
+            }
+
+            console.log(this.epicItem , "epicas por requerimiento resultante");
+
+            this.epicsxRequest = this.epicItem;
+
+            this.saveEpicsxRequest();
+
+            }, (reason) => {
+
+                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+                console.log("dissmissed");
+
+
+         });
+
+    }
+    
+
+}
+
+saveEpicsxRequest(){
+
+    this.epicaService.saveEpicsxRequest(this.requestForm.id, this.epicsxRequest).subscribe(res=>{
+
+        this.toastr.success("Transacción satisfactoria");
+
+    },(error)=>{
+
+        console.log(error);
+
+        this.toastr.error("Error al asociar epicas al requerimiento");
+
+    })
+}
+
+private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+        return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+        return 'by clicking on a backdrop';
+    } else {
+        return  `with: ${reason}`;
+    }
+}
+
+//Para traer todas las epicas asociadas al requerimiento
+private loadEpicsxRequest(requestForm){
+
+    this.requestService.getEpicsxRequest(this.requestForm.id).subscribe(response=>{
+
+    this.epicsxRequest = response;
+
+    console.log("EPICSSSSSSSSSSSSSSSSSSSSSSSS"+this.epicsxRequest); 
+    console.log(this.epicsxRequest);
+ 
+
+   },(error)=>{
+
+    console.log(error);
+
+   });
+
+}
+
+saveToolsxQuotation(){
+
+    this.requestService.saveToolsxQuotation(this.requestForm.id, this.epicsxRequest).subscribe(res=>{
+
+        this.toastr.success("Transacción satisfactoria");
+
+    },(error)=>{
+
+        console.log(error);
+
+        this.toastr.error("Error al asociar las herramientas a la cotización");
+
+    })
 }
 
 // Mostrar el modal o no

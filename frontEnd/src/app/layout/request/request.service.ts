@@ -8,6 +8,7 @@ import { CotizacionModel } from '../../model/cotizacion.model';
 import { ProyectoModel } from '../../model/proyectos';
 import { EstadoModel } from './../../model/estado.model';
 import { InvolucradoModel } from '../../model/involucrado.model';
+import { EpicsxRequestModel } from '../../model/epicsxRequest';
 
 
 
@@ -54,7 +55,7 @@ export class RequestService {
   public getCotizacionByProyecto(id): Observable<CotizacionModel[]> {
     this.proyecto.id=id;
     console.log(id);
-    return this.http.post<CotizacionModel[]>("http://localhost:8080/getCotizacionByProyecto", JSON.stringify(this.proyecto));
+    return this.http.post<CotizacionModel[]>("http://localhost:8080/Quotations/getCotizacionByProyecto", JSON.stringify(this.proyecto));
 
   } 
 
@@ -94,5 +95,24 @@ export class RequestService {
   public cargarRequerimiento(id): Observable<RequerimientoModel>{
     this.request.id=id;
     return this.http.post<RequerimientoModel>("http://localhost:8080/getRequerimiento", JSON.stringify(this.request));
+  }
+
+  public getEpicsxRequest(requestId): Observable<EpicsxRequestModel[]>{
+
+    return this.http.get<EpicsxRequestModel[]>("http://localhost:8080/EpicsXRequest",
+    {
+      params:{id:requestId}
+    }                    );
+
+  }
+
+  public saveToolsxQuotation(requestId, epicsxRequest: EpicsxRequestModel[]): Observable<any> {
+
+    return this.http.post<any>("http://localhost:8080/v",
+    epicsxRequest,
+      {
+        params:{requestId:requestId}
+      }
+                              );
   }
 }

@@ -13,6 +13,7 @@ export class ModalQComponent implements OnInit {
     @Input() array;
     @Input() empresaId;
     @Input() codigoRQM;
+    @Input() proyectoId;
 
 
 
