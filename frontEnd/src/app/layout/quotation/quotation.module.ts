@@ -19,6 +19,7 @@ import { CreateDetailComponent } from './modal-q/template/create-detail/create-d
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagInputModule } from 'ngx-chips';
+import { ModalFxdComponent } from './modal-q/template/create-detail/modal-fxd/modal-fxd.component';
 
 @NgModule({
     imports: [CommonModule,
@@ -33,6 +34,7 @@ import { TagInputModule } from 'ngx-chips';
           entryComponents: [
             CustomRenderComponent,
             ModalQComponent,
+            ModalFxdComponent,
             SystemComponent,
             ToolComponent,
             CreateDetailComponent,
@@ -43,6 +45,7 @@ import { TagInputModule } from 'ngx-chips';
         CustomRenderComponent,
         CreateQuotationComponent,
     ModalQComponent,
+    ModalFxdComponent,    
     SystemComponent,
     ToolComponent,
     CreateDetailComponent,

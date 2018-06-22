@@ -11,6 +11,9 @@ export class ModalQComponent implements OnInit {
     @Input() seleccionados;
     @Input() template;
     @Input() array;
+    @Input() quotationId;    
+    @Input() enterpriseId;
+    @Input() detailId;
 
 
 
@@ -19,7 +22,7 @@ export class ModalQComponent implements OnInit {
   }
 
   ngOnInit() {
-      console.log(this.array);
+
   }
 
 }

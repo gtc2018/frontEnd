@@ -47,9 +47,9 @@ export class DetailQuotationService {
 
   }
 
-  public getDetailQuotation(id): Observable<FasesxDetalleCotizacionModel[]>{
+  public getDetailQuotation(id): Observable<DetalleCotizacionModel>{
 
-    return this.Http.get<FasesxDetalleCotizacionModel[]>("http://localhost:8080/DetailQuotation/"+id,
+    return this.Http.get<DetalleCotizacionModel>("http://localhost:8080/DetailQuotation/"+id,
     {
       params:{
         id:id

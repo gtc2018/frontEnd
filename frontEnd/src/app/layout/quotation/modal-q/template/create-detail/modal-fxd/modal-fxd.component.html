@@ -1,0 +1,158 @@
+<div class="modal-header">
+        <h4 class="modal-title">Asociar Fases</h4>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <form (ngSubmit)="save()" ngNativeValidate>
+
+            <div class="row ">
+               
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-row" >
+
+                <div class="col-auto">
+                  <label class="col-form-label-sm">*Fase</label>
+                  <select class="form-control-sm input-underline"
+                   [(ngModel)]="faseId"
+                   name="faseId">
+                          <option value="" disabled>Fases</option>
+                          <option *ngFor="let f of fases" [value]="f.id">{{f.descripcion}}</option>
+                      </select>
+
+                </div>
+
+                <div class="col-auto">
+                    <label class="col-form-label-sm">*Horas:</label>
+                    <input type="number"
+                    class="form-control-sm input-underline"
+                    [(ngModel)]="fasexDetalleCotizacion.horas"
+                    name="fasexDetalleCotizacion.horas" >
+  
+                </div>
+
+                <div class="col-auto">
+                    <button style="margin-right:12px"
+                      type="submit"
+                      placement="top"
+                      ngbTooltip="Guardar"
+                      class="btn-sm btn-success fa fa-floppy-o fa-lg hand"
+                      value="">
+                    </button>
+                  </div>
+  
+                  <div *ngIf="editing" class="col-auto">
+                    <hr class="hrv2">
+                  </div>
+  
+                  <div *ngIf="editing" class="col-auto" 
+                  style="text-align:left">
+                    <div>
+                      <button style="margin-left:10px;"
+                       (click)="clean()"
+                        placement="top"
+                         ngbTooltip="Limpiar"
+                          class="btn-sm btn-warning hand"
+                          value="">
+                          <img [src]="'assets/images/escoba.ico'"
+                           width="20"
+                            height="20">
+                      </button>
+                    </div>
+                  </div>
+
+              </div>
+
+              
+
+            </div>
+
+            <br>
+
+            <div class="card mb-3">
+                <div class="card-header center-sc">
+                  <div class="row" >
+    
+                    <div class=" col-auto">
+                      Tabla de fases por detalle de cotizacion
+                    </div>
+    
+                    <div class="btn-group row col-auto pull-right ">
+                      <div>
+                        <hr class="hrv1">
+                      </div>
+    
+                      <div class="col-auto pull-right ">
+                        <i class="fa fa-file-excel-o fa-lg hand" placement="bottom" ngbTooltip="Exportar Excel" style="color:green"></i>
+                      </div>
+    
+                      <div>
+                        <hr class="hrv1">
+                      </div>
+    
+                      <div class="col-auto pull-right ">
+                        <i class="fa fa-file-pdf-o fa-lg hand" placement="bottom" ngbTooltip="Exportar PDF" style="color:red"></i>
+                      </div>
+    
+                      <div>
+                        <hr class="hrv1">
+                      </div>
+                    </div>
+                  </div>
+                </div>    
+    
+                <div class="card-body table-responsive">
+                  <table class="table table-hover table-striped table-bordered table-sm">
+                    <thead>
+                      <tr>     
+                        <th>Fase</th>  
+                        <th>Horas</th>
+                        <th>Acciones</th>                                
+                      </tr>
+                    </thead>                        
+    
+                    <tbody>
+                      <tr *ngFor="let f of fasesxDetalleCotizacion">
+    
+                        <td>
+                          <span [innerHTML]="f.fase.descripcion"></span>
+                        </td>
+                        <td>
+                            <span [innerHTML]="f.horas"></span>
+                        </td>
+    
+                        <td align="center">
+                          <div class="btn-group">
+                            <a class="btn btn-default" >
+                              <i (click)="edit(f)"
+                                class="fa fa-pencil-square-o fa-lg hand"
+                                aria-hidden="true"
+                                title="Editar" >
+                              </i>
+                            </a>
+    
+                            <a class="btn btn-default">
+                              <i (click)="delete(f.id)"
+                                class="fa fa-trash-o fa-lg hand"
+                                aria-hidden="true"
+                                title="Eliminar">
+                              </i>
+                            </a>
+    
+                          </div>
+                        </td>                                
+                      </tr>
+                    </tbody> 
+                  </table>
+                </div>    
+              </div>
+
+          </form>
+      </div>
+    
+    
+      <div class="modal-footer">
+        <button type="button"
+         class="btn btn-outline-dark"
+         (click)="activeModal.dismiss('Close click')">Close</button>
+      </div>

@@ -47,4 +47,10 @@ export class PorcentajePorFaseService {
     return this.Http.post<PorcentajePorFaseModel>("http://localhost:8080/deletePorcentajePorFase", JSON.stringify(this.porcentajePorFase));   
   }
 
+  public getFasesxEmpresa(id:number, detailId:number): Observable<PorcentajePorFaseModel[]>{
+    return this.Http.get<PorcentajePorFaseModel[]>("http://localhost:8080/PorcentajePorFase/getFasesxEmpresa/"+id+"/"+detailId);      
+  }
+
+  
+
 }

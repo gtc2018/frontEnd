@@ -16,6 +16,9 @@ import { ProyectoModel } from '../../../model/proyectos';
 import { CotizacionModel } from '../../../model/cotizacion.model';
 import { SystemsxQuotationModel } from '../../../model/systemsxQuotation';
 import { ToolsxQuotationModel } from '../../../model/toolsxQuotation';
+import { DetailQuotationService } from './detail-quotation.service';
+import { DetalleCotizacionModel } from '../../../model/detalleCotizacion';
+import swal from 'sweetalert2';
 
 
 const now = new Date();
@@ -24,11 +27,13 @@ const now = new Date();
   selector: 'app-create-quotation',
   templateUrl: './create-quotation.component.html',
   styleUrls: ['./create-quotation.component.scss'],
-  providers: [ProyectosService, EnterpriseService, QuotationService]
+  providers: [ProyectosService, EnterpriseService, QuotationService, DetailQuotationService]
 })
 export class CreateQuotationComponent implements OnInit {
 
     //Variables
+
+    details: DetalleCotizacionModel[];
 
     toolsxQuotation: ToolsxQuotationModel[];
     toolxQuotation: ToolsxQuotationModel;
@@ -60,6 +65,8 @@ export class CreateQuotationComponent implements OnInit {
 
     updating:boolean=false;
 
+    
+
     //Funciones
 
   ngOnInit() {
@@ -85,6 +92,7 @@ export class CreateQuotationComponent implements OnInit {
     private quotationService: QuotationService,
     private enterpriseService: EnterpriseService,
     private proyectoService: ProyectosService,
+    private detailQuotationService: DetailQuotationService,
     private route: ActivatedRoute,
     private _route: Router,
     private toastr: ToastrService) {
@@ -276,11 +284,50 @@ calculateValueTotal():void{
 
   }
 
-  detail() {
+  createDetail() {
     const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
     modalRef.componentInstance.title = 'Crear Detalle';
     // modalRef.componentInstance.seleccionados = 'las herramientas';
     modalRef.componentInstance.template = `create-detail`;
+    modalRef.componentInstance.quotationId = this.quotation.id;
+    // modalRef.componentInstance.enterpriseId = this.quotation.cliente.id;
+
+    // this.loadDetailsQuotation();
+
+    modalRef.result.then( (result) => {
+
+      
+        this.loadDetailsQuotation();
+
+    }, (reason) => {
+
+      var closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.log("dissmissed",closeResult);
+
+    });
+
+  }
+
+  updateDetail(id:number) {
+    const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
+    modalRef.componentInstance.title = 'Actualizar Detalle';
+    modalRef.componentInstance.template = `create-detail`;
+    modalRef.componentInstance.quotationId = this.quotation.id;
+    modalRef.componentInstance.enterpriseId = this.quotation.cliente.id;
+    modalRef.componentInstance.detailId = id;
+
+    modalRef.result.then( (result) => {
+
+      
+        this.loadDetailsQuotation();
+
+    }, (reason) => {
+
+      var closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      console.log("dissmissed",closeResult);
+
+    });
+
   }
 
 private getDismissReason(reason: any): string {
@@ -476,6 +523,8 @@ private uploadEvents(id: number){
 
         this.loadToolsxQuotation();
 
+        this.loadDetailsQuotation();
+
     },(error)=>{
 
         this.toastr.error("Error al cargar el registro");   
@@ -556,6 +605,66 @@ saveToolsxQuotation(){
 
     })
 }
+
+
+loadDetailsQuotation(){
+
+    this.detailQuotationService.getDetailsQuotation(this.quotation.id).subscribe(res=>{
+
+        this.details = res;
+
+        if(this.details.length == 0){
+
+            this.toastr.warning('No existen detalles para esta cotizacion');
+
+        }
+
+    },(error)=>{
+
+        console.log(error);
+
+        this.toastr.error('Error al cargar los detalles de la cotización');
+
+    });
+}
+
+
+deleteDetail(id:number){
+
+    swal({
+        title: 'Esta seguro?',
+        text: "El registro eliminado no podrá ser recuperado",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Aceptar'
+    }).then((result) => {
+
+        if (result.value) {
+          
+            this.detailQuotationService.deleteDetailQuotation(id).subscribe(response=>{
+
+                this.toastr.success("Registro eliminado satisfactoriamente");  
+                
+                this.loadDetailsQuotation();
+        
+            },(error)=>{
+        
+                console.log(error);
+        
+                this.toastr.error("error al eliminar el registro");
+        
+            })
+                            
+        }
+    })
+
+    
+}
+
+
+
 
 
 }
