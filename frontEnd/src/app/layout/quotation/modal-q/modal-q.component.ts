@@ -23,6 +23,8 @@ export class ModalQComponent implements OnInit {
 
   ngOnInit() {
 
+    console.log(this.template);
+
   }
 
 }

@@ -2,6 +2,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-5 ">
 <h2 class=" page-header">
+        <i class="fa fa-fw fa-money" style="color:green"></i>
         Crear Cotización
 </h2>
 
@@ -40,19 +41,19 @@
 
 
 
-<div class="row col-xs-12 col-sm-12 col-md-12 col-lg-12 " >
+<div class="row  justify-content-around" >
 
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 row" >
 
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                <div class="form-group row">
-                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Empresa</label>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                 <div class="form-inline form-row">
+                <label class=" col-3 col-form-label-sm">Empresa</label>
+                <div class="col-9" >
                 <select #selectCl
                 [(ngModel)]="quotation.clienteId"
                 (change)="getProyectosByCliente(selectCl.value)"
                  name="quotation.select"
-                 class="form-control"
+                 class="form-control-sm input-underline"
                  required>
                  <option value="" disabled selected>Seleccione una empresa</option>
                  <option *ngFor="let e of enterprises" [value]="e.id">
@@ -63,14 +64,14 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <div class="form-group row">
-                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Proyecto</label>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pad-top">
+                    <div class="form-inline form-row">
+                    <label class="col-3 col-form-label-sm ">Proyecto</label>
+                    <div class="col-9">
                     <select #selectPr
                     [(ngModel)]="quotation.proyectoId"
                      name="quotation.proyectoId"
-                     class="form-control"
+                     class="form-control-sm input-underline"
                      [required]="true">
                      <option value="" disabled selected>Seleccione un proyecto</option>
                      <option *ngFor="let p of proyectos" [value]="p.id">
@@ -81,28 +82,162 @@
                     </div>
             </div>
 
-            <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <div class="form-group row ">
-                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Valor Hora</label>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 input-group">
-                    <span class="input-group-addon">
+            <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pad-top ">
+                    <div class="form-inline form-row">
+                    <label class="col-3 col-form-label-sm">Valor Hora</label>
+                    <div class="col-9">
+                    <span class="">
                             <i class="fa fa-usd" aria-hidden="true"></i>
                     </span>
                     <input type="number"
                     name="quotation.valueHour"
                     (change)="calculateValueTotal()"
                     [(ngModel)]="quotation.valueHour"
-                    class="form-control" >
+                    class="form-control-sm input-underline medium-numbers" >
                     </div>
                     </div>
             </div>
 
-            <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <div class="form-group row">
-                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Sistemas</label>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <button class="btn btn-primary" 
-                        type="button" (click)="system()">Seleccionar</button>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+
+                    <div class="form-inline form-row">
+                        <label class="col-3 col-form-label-sm">Código RQM</label>
+                        <div class="col-9">
+                            <input type="text"
+                            [(ngModel)]="quotation.codigoRqm"
+                            name="quotation.codigoRqm"
+                            class="form-control-sm input-underline" required>
+                        </div>
+        
+                    </div>
+        
+                 </div>
+        
+                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pad-top"
+                 style="padding-left:30px">
+                                <label class=" col-form-label-sm" >Descripcion RQM</label>
+                                <div class="">
+                                    <textarea [(ngModel)]="quotation.descripcionRqm"
+                                    rows="3"
+                                    name="quotation.descripcionRqm"
+                                    class="form-control">
+        
+                                    </textarea>
+        
+                            </div>
+                 </div>
+
+            
+
+    </div>
+
+
+
+
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 row" >
+         
+
+         <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="form-inline form-row">
+                        <label class="col-4 col-form-label-sm">Recursos Asignados</label>
+                        <div class="col-8">
+                            <input type="number"
+                            [(ngModel)]="quotation.numeroRecursos"
+                            name="quotation.numeroRecursos"
+                            class="short-numbers form-control-sm input-underline">
+                        </div>
+
+                    </div>
+         </div>
+
+         <!-- [(ngModel)]="quotation.state" -->
+         <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pad-top ">
+                <div class="form-inline form-row">
+                <label class="col-4 col-form-label-sm">Estado cotización</label>
+                <div class="col-8">
+                <select #selectEc
+                [(ngModel)]="quotation.estado"
+                 name="quotation.estado"
+                 class="form-control-sm input-underline"
+                 >
+                 <option value="GENERADA">Generada</option>
+                 <option value="APROBADA">Aprobada</option>
+                 <option value="DESAPROBADA">Desaprobada</option>
+                 <option value="ANULADA">Anulada</option>
+                </select>
+                </div>
+                </div>
+         </div>
+
+        <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-inline form-row">
+                <label class="col-4 col-form-label-sm ">Fecha Solicitud</label>
+                <div class="input-group col-8">
+                    <!-- <div class="input-group"> -->
+                  <input class="date-input form-control-sm input-underline"
+                   placeholder="yyyy-mm-dd"
+                      name="modelDateSol" 
+                      [(ngModel)]="modelDateSol"
+                       ngbDatepicker
+                        #a="ngbDatepicker"
+                        (ngModelChange)="AjustDateA()"
+                        [minDate]="minDate" >
+
+                  <div class="input-group-addon" (click)="a.toggle()" >
+                      <span class="fa fa-calendar"></span>
+                  </div>
+                <!-- </div> -->
+              </div>
+        </div>
+        </div>
+
+        <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-inline form-row">
+                <label class="col-4 col-form-label-sm ">Fecha Entrega</label>
+                <div class="input-group col-8">
+                  <input class="date-input form-control-sm input-underline"
+                   placeholder="yyyy-mm-dd"
+                      name="modelDateEnt" 
+                      [(ngModel)]="modelDateEnt"
+                       ngbDatepicker
+                        #b="ngbDatepicker"
+                        (ngModelChange)="AjustDateB()"
+                        [minDate]="minDateEntrega">
+
+                  <div class="input-group-addon" (click)="b.toggle()" >
+                      <span class="fa fa-calendar"></span>
+                  </div>
+              </div>
+        </div>
+        </div>
+
+        <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                <div class="form-inline form-row">
+                <label class="col-4 col-form-label-sm">Alcance Solicitud</label>
+                <div class="col-8">
+                <select
+                [(ngModel)]="quotation.alcance"
+                 name="quotation.lcance"
+                 class="form-control-sm input-underline">
+                 <option value=null disabled selected>Seleccione un alcance</option>
+                 <option value="CRITICO">Crítico</option>
+                 <option value="MEDIO">Medio</option>
+                 <option value="ALTO">Alto</option>
+                </select>
+                </div>
+                </div>
+        </div>
+
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 row" >
+
+            <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pad-top">
+                    <div class="form-group form-row">
+                    <label class="col-form-label-sm ">Sistemas</label>
+                    <button class="btn-sm btn-primary" 
+                    type="button" (click)="system()">Seleccionar</button>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
                         <tag-input [ngModel]="systemsxQuotation"
                          name="systemsxQuotation"
                          placeholder="undefined"
@@ -117,11 +252,11 @@
             </div>
 
             <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                    <div class="form-group row">
-                    <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Herramientas</label>
-                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                        <button class="btn btn-primary"
-                        type="button" (click)="tools()">Seleccionar</button>
+                    <div class="form-group form-row">
+                    <label class="col-form-label-sm">Herramientas</label>
+                    <button class="btn-sm btn-primary"
+                    type="button" (click)="tools()">Seleccionar</button>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                          <tag-input [ngModel]="toolsxQuotation"
                          name="toolsxQuotation"
                          placeholder="undefined"
@@ -136,156 +271,30 @@
                     </div>
             </div>
 
-    </div>
-
-
-
-
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6" >
-         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-
-            <div class="form-group row">
-                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Código Requerimiento</label>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                    <input type="text"
-                    [(ngModel)]="quotation.codigoRqm"
-                    name="quotation.codigoRqm"
-                    class="form-control" required>
-                </div>
-
-            </div>
-
-         </div>
-
-         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group row">
-                        <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">Descripcion Requerimiento</label>
-                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                            <textarea [(ngModel)]="quotation.descripcionRqm"
-                            name="quotation.descripcionRqm"
-                            class="form-control">
-
-                            </textarea>
-                        </div>
-
-                    </div>
-         </div>
-
-         <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <div class="form-group row">
-                        <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Recursos Asignados</label>
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                            <input type="number"
-                            [(ngModel)]="quotation.numeroRecursos"
-                            name="quotation.numeroRecursos"
-                            class="form-control">
-                        </div>
-
-                    </div>
-         </div>
-
-         <!-- [(ngModel)]="quotation.state" -->
-         <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                <div class="form-group row">
-                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Estado cotización</label>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                <select #selectEc
-                [(ngModel)]="quotation.estado"
-                 name="quotation.estado"
-                 class="form-control"
-                 >
-                 <option value="GENERADA">Generada</option>
-                 <option value="APROBADA">Aprobada</option>
-                 <option value="DESAPROBADA">Desaprobada</option>
-                 <option value="ANULADA">Anulada</option>
-                </select>
-                </div>
-                </div>
-         </div>
-
-        <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                <div class="form-group row">
-                <label class=" col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">Fecha Solicitud</label>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 ">
-                    <div class="input-group">
-                  <input class="form-control"
-                   placeholder="yyyy-mm-dd"
-                      name="modelDateSol" 
-                      [(ngModel)]="modelDateSol"
-                       ngbDatepicker
-                        #a="ngbDatepicker"
-                        (ngModelChange)="AjustDateA()"
-                        [minDate]="minDate" >
-
-                  <div class="input-group-addon" (click)="a.toggle()" >
-                      <span class="fa fa-calendar"></span>
-                  </div>
-                </div>
-              </div>
-        </div>
-        </div>
-
-        <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                <div class="form-group row">
-                <label class=" col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">Fecha Entrega</label>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 ">
-                    <div class="input-group">
-                  <input class="form-control"
-                   placeholder="yyyy-mm-dd"
-                      name="modelDateEnt" 
-                      [(ngModel)]="modelDateEnt"
-                       ngbDatepicker
-                        #b="ngbDatepicker"
-                        (ngModelChange)="AjustDateB()"
-                        [minDate]="minDateEntrega">
-
-                  <div class="input-group-addon" (click)="b.toggle()" >
-                      <span class="fa fa-calendar"></span>
-                  </div>
-                </div>
-              </div>
-        </div>
-        </div>
-
-        <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
-                <div class="form-group row">
-                <label class="col-form-label col-xs-3 col-sm-3 col-md-3 col-lg-3">*Alcance Solicitud</label>
-                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
-                <select
-                [(ngModel)]="quotation.alcance"
-                 name="quotation.lcance"
-                 class="form-control">
-                 <option value=null disabled selected>Seleccione un alcance</option>
-                 <option value="CRITICO">Crítico</option>
-                 <option value="MEDIO">Medio</option>
-                 <option value="ALTO">Alto</option>
-                </select>
-                </div>
-                </div>
-        </div>
 
     </div>
 
     <br><br>
-
-    <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
-            <div class="col-xs-4 col-sm-3 col-md-3 col-lg-3">
-                    <div class="btn btn-info hand"
-                     (click)="createDetail()">
+    <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 pad-top-table" >
+            <div style="padding-left:15px">
+                    <button class="btn-sm btn-info hand"
+                     (click)="createDetail()"
+                     type="button">
                          <i class="fa fa-plus"
                          aria-hidden="true">
                          </i>
                          &nbsp; Crear detalle
+                    </button>
                     </div>
-                    </div>
-
-                    <table class="table table-hover table-striped">
+                    
+                    <table class="table table-sm table-hover table-striped"
+                    style="font-size:15px">
                             <thead>
                             <tr>
                                 <th>Componente</th>
                                 <th>Proceso</th>
                                 <th>Descripción</th>
-                                <!-- <th>Total</th> -->
+                                <th>Fases</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
@@ -299,6 +308,13 @@
                                 </td>
                                 <td>
                                     <span [innerHTML]="q.descripcion" ></span>
+                                </td>
+                                <td align="center">
+                                        <button class="btn-sm btn-secondary" 
+                                        type="button" (click)="fasesFromTable(q.id)"> 
+                                        Fases
+                                        <i class="fa fa-eye"
+                                        aria-hidden="true"></i></button>
                                 </td>
                                 
                                 <!-- <td>
@@ -347,76 +363,132 @@
                             </tbody>
                         </table>
 
-        <br><br>
-
         </div>
 
+        <!-- <div class=" row col-12">
+
+        <table class="  center-sc table table-bordered table-sm table-hover table-striped table-responsive">
+            <thead>
+            <tr>
+                <th>Horas totales del RQM</th>
+            </tr>
+            </thead>
+            <tbody>
+                    <tr>
+                            <td>
+                                <span [innerHTML]="quotation.horasTotal"  ></span>
+                            </td>
+                            <td class="hand"
+                            placement="right"
+                            ngbTooltip="Detalles por cada fase"
+                            (click)="ModalFasexQuotation()" >
+                                <i class="fa fa-bars fa-lg"  ></i>
+                            </td>
+                    </tr>
+            </tbody>
+        </table>
+
+    </div> -->
 
         <div *ngIf="updating" class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
 
-            <div class="form-row">
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <div class="form-row justify-content-around">
+                
+                    <div class="col-auto">
+                    <!-- <div class="form-group row"> -->
+                            <label class="col-form-label-sm" >Fecha Aprox. Entrega</label>
+                                  
+                            <div class="input-group">
+                                <input class="form-control-sm input-underline date-input"
+                                 placeholder="yyyy-mm-dd"
+                                    name="modelDateEntRqm" 
+                                    [(ngModel)]="modelDateEntRqm"
+                                     ngbDatepicker
+                                      #c="ngbDatepicker"
+                                      (ngModelChange)="AjustDateC()"
+                                      [minDate]="minDateEntregaRqm"
+                                      [placement]="'top-right'" >
+              
+                                <div class="input-group-addon" (click)="c.toggle()" >
+                                    <span class="fa fa-calendar"></span>
+                                </div>
+                              </div>
+    
+                    <!-- </div> -->
+                    </div>
+
+
+                <div class="col-auto">
                 <!-- <div class="form-group row"> -->
-                        <label class="">Valor Total RQM</label>
-                        <div class=" input-group">
-                                <span class="input-group-addon">
+                        <label class="col-form-label-sm">Valor Total RQM</label>
+                        <div class=" ">
+                                <span class="">
                                         <i class="fa fa-usd" aria-hidden="true"></i>
                                 </span>
                             <input type="number"
                             [(ngModel)]="quotation.valorTotal"
                             name="quotation.valorTotal"
-                            class="form-control"
+                            class="form-control-sm medium-numbers input-underline"
                             disabled>
                         </div>
 
                     <!-- </div> -->
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                <div class="col-auto">
                 <!-- <div class="form-group row"> -->
-                        <label >Valor Total Acordado</label>
-                        <div class="input-group">
-                                <span class="input-group-addon">
+                        <label class="col-form-label-sm" >Valor Total Acordado</label>
+                        <div class="">
+                                <span class="">
                                         <i class="fa fa-usd" aria-hidden="true"></i>
                                 </span>
                             <input type="number"
                             [(ngModel)]="quotation.valorAcordado"
                             name="quotation.valorAcordado"
-                            class="form-control">
+                            class="form-control-sm medium-numbers input-underline">
                         </div>
 
                 <!-- </div> -->
                 </div>
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+
+                <div class="col-auto align-self-end" >
+
+                        <table class="  table table-bordered table-sm table-hover table-striped table-responsive">
+                                <thead>
+                                <tr>
+                                    <th>Horas totales del RQM</th>
+                                    <th><i class="fa fa-eye"  ></i></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                        <tr>
+                                                <td align="center">
+                                                    <span [innerHTML]="quotation.horasTotal"  ></span>
+                                                </td>
+                                                <td class="hand"
+                                                placement="top"
+                                                ngbTooltip="Detalles por cada fase"
+                                                (click)="ModalFasexQuotation()" >
+                                                    <i class="fa fa-bars fa-lg"  ></i>
+                                                </td>
+                                        </tr>
+                                </tbody>
+                            </table>
+
+                </div>
+
+
+                <div class="col-auto">
                 <!-- <div class="form-group row"> -->
-                        <label >Horas acordadas</label>
+                        <label class="col-form-label-sm" >Horas acordadas</label>
+                        <div>
+                        <span class="">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                        </span>
                             <input type="number"
                             [(ngModel)]="quotation.horasAcordadas"
                             name="quotation.horasAcordadas"
-                            class="form-control">
-
-                <!-- </div> -->
-                </div>
-                
-                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
-                <!-- <div class="form-group row"> -->
-                        <label >Fecha Aprox. Entrega</label>
-                              
-                        <div class="input-group">
-                            <input class="form-control"
-                             placeholder="yyyy-mm-dd"
-                                name="modelDateEntRqm" 
-                                [(ngModel)]="modelDateEntRqm"
-                                 ngbDatepicker
-                                  #c="ngbDatepicker"
-                                  (ngModelChange)="AjustDateC()"
-                                  [minDate]="minDateEntregaRqm"
-                                  [placement]="'top-right'" >
-          
-                            <div class="input-group-addon" (click)="c.toggle()" >
-                                <span class="fa fa-calendar"></span>
-                            </div>
-                          </div>
-
+                            class="form-control-sm short-numbers input-underline ">
+                        </div>
                 <!-- </div> -->
                 </div>
 
@@ -438,7 +510,7 @@
                      (click)="cancel()"
                      class="btn btn-danger"
                      value="Cancelar" />
-                    </div>
+                 </div>
 
                     <!-- routerLink="../" -->
 

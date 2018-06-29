@@ -5,10 +5,16 @@
 @import "rtl";
 @import "responsive";
 
-.form-control:disabled, .form-control[readonly] {
+.form-control:disabled, .form-control[readonly],
+.form-control-sm:disabled, .form-control-sm[readonly] {
     // background-color: #d1d4d6;
     // opacity: 1;
     cursor: no-drop;
+}
+
+.form-control-sm:disabled, .form-control[readonly] {
+    background-color: #e9ecef;
+    opacity: 1;
 }
 
 .center-sc{
@@ -91,8 +97,22 @@ input[type=number] { -moz-appearance:textfield; }
 //     border-radius: 0.25rem;
 // }
 
+//Anchura del label
+
 .salary{
     width: 103px;
+}
+
+.medium-numbers{
+    width: 73px;
+}
+
+.short-numbers{
+    width: 53px;
+}
+
+.date-input{
+    width: 90px;
 }
 
 .input-filter{

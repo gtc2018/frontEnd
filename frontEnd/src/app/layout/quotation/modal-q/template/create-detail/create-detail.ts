@@ -77,8 +77,6 @@ export class CreateDetailComponent implements OnInit {
         console.log("dissmissed",closeResult);
 
       });
-
-    console.log("abriría el modal");
   }
 
   private getDismissReason(reason: any): string {

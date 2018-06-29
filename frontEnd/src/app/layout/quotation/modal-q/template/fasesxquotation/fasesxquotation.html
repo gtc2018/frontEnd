@@ -1,0 +1,20 @@
+<section>
+    <table class="table table-sm table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th style="width:75%">Fase</th>
+                <th style="width:25%">Horas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let fxc of fasesxCotizacion" > 
+                <td  >
+                    <span [innerHTML]="fxc.fases" ></span>
+                </td>
+                <td align="center">
+                    <span [innerHTML]="fxc.horas" ></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>

@@ -22,6 +22,8 @@ export class ModalFxdComponent implements OnInit {
 
      @Input() faseId;
 
+     hoursTotal: number;
+
      porcentajePorFase= new PorcentajePorFaseModel();
 
      fasesEnterprise: PorcentajePorFaseModel[];
@@ -39,6 +41,11 @@ export class ModalFxdComponent implements OnInit {
         this.loadFasesxEmpresa();
 
         this.loadFasesxDetailQuotation();
+
+        if(this.faseId == undefined){
+
+            this.faseId = "";
+        }
         
       }
 
@@ -151,6 +158,18 @@ private loadFasesxDetailQuotation(){
             this.toastr.warning("Este detalle no presenta fases asociadas");
 
         }
+
+        ///Para contar el total de horas del detallexFase
+
+        var total = 0;
+
+        for(let fxd of this.fasesxDetalleCotizacion){
+
+            total = total + fxd.horas
+        }
+
+        this.hoursTotal = total
+
 
     },(error)=>{
 

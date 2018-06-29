@@ -47,6 +47,19 @@ export class DetailQuotationService {
 
   }
 
+  //Servicio para consultar todos los registros de las fases x empresa sacado de la tabla Porcentaje por fase
+  public getFasesxCotizacion(id): Observable<FasesxDetalleCotizacionModel[]>{
+    
+    return this.Http.get<FasesxDetalleCotizacionModel[]>("http://localhost:8080/FasesxDetalleCotizacion/getAllFasesxCotizacion",
+    {
+      params:{
+        id:id
+      }
+    }
+  );
+
+  }
+
   public getDetailQuotation(id): Observable<DetalleCotizacionModel>{
 
     return this.Http.get<DetalleCotizacionModel>("http://localhost:8080/DetailQuotation/"+id,

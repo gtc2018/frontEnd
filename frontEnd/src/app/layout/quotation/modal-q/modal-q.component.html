@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 class="modal-title">{{title}}</h4>
+    <h4 class="modal-title center-sc">{{title}}</h4>
     <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
@@ -15,6 +15,10 @@
      [enterpriseId]="enterpriseId"
      [detailId]="detailId">
     </create-detail-component>
+    <fasesxquotation-component 
+    *ngIf="template ==='fasesxquotation'"
+     [quotationId]="quotationId">
+    </fasesxquotation-component>
   </div>
 
 

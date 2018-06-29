@@ -3,20 +3,21 @@
         <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
+</div>
       <div class="modal-body">
           <form (ngSubmit)="save()" ngNativeValidate>
 
-            <div class="row ">
+            <div class="row">
                
-              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-row" >
+              <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-row">
 
                 <div class="col-auto">
                   <label class="col-form-label-sm">*Fase</label>
                   <select class="form-control-sm input-underline"
                    [(ngModel)]="faseId"
-                   name="faseId">
-                          <option value="" disabled>Fases</option>
+                   name="faseId"
+                   required>
+                          <option value="" disabled>Seleccione</option>
                           <option *ngFor="let f of fases" [value]="f.id">{{f.descripcion}}</option>
                       </select>
 
@@ -25,9 +26,10 @@
                 <div class="col-auto">
                     <label class="col-form-label-sm">*Horas:</label>
                     <input type="number"
-                    class="form-control-sm input-underline"
+                    class="short-numbers form-control-sm input-underline"
                     [(ngModel)]="fasexDetalleCotizacion.horas"
-                    name="fasexDetalleCotizacion.horas" >
+                    name="fasexDetalleCotizacion.horas"
+                    required>
   
                 </div>
 
@@ -66,6 +68,10 @@
               
 
             </div>
+
+            
+
+          </form>
 
             <br>
 
@@ -117,7 +123,7 @@
                         <td>
                           <span [innerHTML]="f.fase.descripcion"></span>
                         </td>
-                        <td>
+                        <td align="center">
                             <span [innerHTML]="f.horas"></span>
                         </td>
     
@@ -144,10 +150,19 @@
                       </tr>
                     </tbody> 
                   </table>
-                </div>    
+                </div>  
+                <div class="container row justify-content-end">
+
+                    <div class="center-sc col-auto">
+    
+                      <label class="">Horas totales del detalle:<b style="margin-left:5px">{{hoursTotal}}</b></label>
+    
+                    </div>
+                    
+                  </div>  
               </div>
 
-          </form>
+              
       </div>
     
     

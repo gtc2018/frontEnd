@@ -19,6 +19,8 @@ import { ToolsxQuotationModel } from '../../../model/toolsxQuotation';
 import { DetailQuotationService } from './detail-quotation.service';
 import { DetalleCotizacionModel } from '../../../model/detalleCotizacion';
 import swal from 'sweetalert2';
+import { ModalFxdComponent } from '../modal-q/template/create-detail/modal-fxd/modal-fxd.component';
+import { FasesxQuotationComponent } from '../modal-q/template/fasesxquotation/fasesxquotation';
 
 
 const now = new Date();
@@ -176,7 +178,7 @@ public ConvertStringToNgbDateStruct(date:string): NgbDateStruct {
 
 calculateValueTotal():void{
 
-    this.quotation.valorTotal = this.quotation.valueHour * 148;
+    this.quotation.valorTotal = this.quotation.valueHour * this.quotation.horasTotal;
 }
 
   system() {
@@ -192,6 +194,8 @@ calculateValueTotal():void{
     instance.array =  this.systemsxQuotation;
 
     modalRef.result.then( (result) => {
+
+        this.getTotalToQuotation();
 
         console.log(result);
 
@@ -225,6 +229,8 @@ calculateValueTotal():void{
 
       }, (reason) => {
 
+        this.getTotalToQuotation();
+
         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         console.log("dissmissed");
 
@@ -243,6 +249,8 @@ calculateValueTotal():void{
     instance.array =  this.toolsxQuotation;
 
     modalRef.result.then( (result) => {
+
+        this.getTotalToQuotation();
 
         console.log(result);
 
@@ -275,6 +283,8 @@ calculateValueTotal():void{
         this.saveToolsxQuotation();
 
         }, (reason) => {
+
+            this.getTotalToQuotation();
 
   this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
   console.log("dissmissed");
@@ -321,10 +331,14 @@ calculateValueTotal():void{
       
         this.loadDetailsQuotation();
 
+        this.getTotalToQuotation();
+
     }, (reason) => {
 
       var closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       console.log("dissmissed",closeResult);
+
+      this.getTotalToQuotation();
 
     });
 
@@ -384,7 +398,6 @@ private getProyectosByCliente(id: any){
         //     'error'
         //   )
     });
-
     
 }
 
@@ -663,6 +676,66 @@ deleteDetail(id:number){
     
 }
 
+
+fasesFromTable(id:number){
+
+    const modalRef = this.modalService.open(ModalFxdComponent,{size:"lg",centered: true, backdropClass: 'light-blue-backdrop' },);
+
+    let instance = modalRef.componentInstance;
+
+    modalRef.componentInstance.enterpriseId = this.quotation.clienteId;
+    modalRef.componentInstance.detailId = id;
+    // modalRef.componentInstance.template = `system`;
+
+    // instance.array ;
+
+    modalRef.result.then( (result) => {
+
+        this.getTotalToQuotation();
+
+      }, (reason) => {
+
+        var closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        console.log("dissmissed",closeResult);
+
+        this.getTotalToQuotation();
+
+      });
+
+    console.log("abriría el modal");
+  }
+
+
+  getTotalToQuotation(){
+
+  this.quotationService.getQuotation(this.route.snapshot.params.id).subscribe(response=>{
+
+    this.quotation.horasTotal = response.horasTotal;      
+
+    this.calculateValueTotal()
+    
+  },(error)=>{
+
+    this.toastr.error("Error al traer el valor total de la hora");
+
+  })
+}
+
+ModalFasexQuotation() {
+
+    const modalRef = this.modalService.open(ModalQComponent);
+    
+    let instance = modalRef.componentInstance;
+
+    instance.title = 'Horas de cada fase asignadas a esta cotización';
+
+    instance.template = `fasesxquotation`;
+
+    instance.quotationId =  this.quotation.id;
+
+  }
+
+  
 
 
 
