@@ -12,8 +12,11 @@ export class EnterpriseService {
     emailRegex: RegExp;
 
   enterpriseList: EnterpriseModel[];
+  enterprise: EnterpriseModel;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.enterprise = new EnterpriseModel;
+   }
 
   //SERVICIO CONSULTAR TODOS LOS USUARIOS
   public getEnterprises(): Observable<EnterpriseModel[]>{
@@ -29,6 +32,13 @@ export class EnterpriseService {
   public saveOrUpdate(enterprise: EnterpriseModel): Observable<RestResponse> {
     console.log(enterprise);
     return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdateEmpresa", JSON.stringify(enterprise));
+  }
+
+  public getEnterpriseForRegistre(documento): Observable<EnterpriseModel[]> {
+
+    this.enterprise.numeroDocumento = documento;
+  
+    return this.http.post<EnterpriseModel[]>("http://localhost:8080/getEnterpriseForRegistre", JSON.stringify(this.enterprise));
   }
 
   public delete(enterprise: EnterpriseModel): Observable<RestResponse> {

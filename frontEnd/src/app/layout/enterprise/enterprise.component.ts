@@ -39,6 +39,7 @@ export class EnterpriseComponent implements OnInit {
     user: any;
     menus: any;
     imageTem: string;
+    documento: string;
     private permiso: PermisoModel;
     file: File = null;
 
@@ -51,6 +52,8 @@ export class EnterpriseComponent implements OnInit {
     stateExpand: number = 1;
     deleteFormHide: boolean;
     public empresaId: Number;
+    enterpriseIden: number;
+    fotoIden: number;
 
 
 
@@ -222,6 +225,8 @@ export class EnterpriseComponent implements OnInit {
         this.enterprise.imagenEmpresa = 'assets/images/logo.png';
 
         this.modal = false;
+        this.enterpriseIden = 0;
+        this.fotoIden = 0;
     }
 
     //Para editar
@@ -229,11 +234,7 @@ export class EnterpriseComponent implements OnInit {
     upload(model) {
 
         this.empresa = model;
-
-        console.log(model);
-
-        console.log(this.stateExpand);
-
+        this.documento = this.empresa.numeroDocumento;
         if (this.stateExpand === 1) {
             this.visible = !this.visible;
 
@@ -391,25 +392,90 @@ export class EnterpriseComponent implements OnInit {
         return date ? new Date(Date.UTC(date.year, date.month, date.day)) : null;
     }
 
-    //Para guardar o actualizar
+    saveOrUpdate(): void{
 
-    save(): void {
-
-        if (this.login.authUser !== undefined) {
-            if(this.enterprise.id === null){
-                this.enterprise.usuarioCreacion = this.login.authUser.email;
-                
-            }else {
-                this.enterprise.usuarioModificacion = this.login.authUser.email;
+        if(this.fotoIden === 1){
+             
+            if(this.file !==null && this.file.name !==null){
+                this.enterprise.imagenEmpresa = this.file.name;
             }
-            
         }
 
+        this.enterpriseService.saveOrUpdate(this.enterprise).subscribe(res => {
+
+            this.clean();
+            this.loadEnterprises();
+            this.enterprise = new EnterpriseModel();
+            this.enterprise.imagenEmpresa = 'assets/images/logo.png';
+            this.toastr.success('Transacción satisfactoria, ya puede agregar los porcentajes por fase en editar', 'Gestión de Empresas');
+
+        }, (error) => {
+            console.log(error);
+
+            this.toastr.error(error.error.message, "Error en la transacción");
+        });
+
+    }
+
+//Para antes de guardar
+    save(): void {
+
+        if(this.enterprise.id === null){
+
+            this.enterprise.usuarioCreacion = localStorage.email;
+            this.enterprise.estado = 1
+            if(this.file !==null && this.file.name !==null){
+                this.enterprise.imagenEmpresa = this.file.name;
+            }
+            
+        }else {
+            this.enterprise.usuarioModificacion = localStorage.email;
+            this.enterpriseIden = 1;
+        }
+            
         this.isValid = this.validate(this.enterprise);
 
         if (this.isValid) {
 
-            if(this.file !==null && this.file.name !==null){
+            this.enterpriseService.getEnterpriseForRegistre(this.enterprise.numeroDocumento).subscribe(res => {
+
+                if(this.enterpriseIden === 1){
+
+                    if(this.enterprise.numeroDocumento === this.documento){
+
+                        this.saveOrUpdate();
+                    }else{
+
+                        for(let e of res){
+
+                            if(this.enterprise.numeroDocumento === e.numeroDocumento){
+                                this.enterpriseIden = 2;
+                            }
+                        }
+
+                        if(this.enterpriseIden === 2){
+
+                            this.toastr.error("Ya se existe un registro con este numero de documento","Gestion de empresa");
+                            this.enterpriseIden = 0;
+                        }else{
+
+                            this.saveOrUpdate();
+                        }
+                    }
+
+                }else if(res.length === 0){
+
+                    this.saveOrUpdate();
+
+                }else{
+                    this.toastr.error("Ya se existe un registro con este numero de documento","Gestion de empresa");
+                }
+
+            }, (error) => {
+                this.toastr.error("Error al cargar los datos de la Empresa");            
+            });
+
+            /*if(this.file !==null && this.file.name !==null){
             this.enterprise.imagenEmpresa = this.file.name;
             }
             this.enterprise.estado = 1;
@@ -434,7 +500,7 @@ export class EnterpriseComponent implements OnInit {
                 //     error.error.message,
                 //     'error'
                 //   )
-            });
+            });*/
 
         } else {
             console.log(this.messageEmail);
@@ -627,12 +693,14 @@ export class EnterpriseComponent implements OnInit {
         e.preventDefault();
         this.dragging = false;
         this.handleInputChange(e);
+        this.fotoIden = 1;
     }
 
     handleInputChange(e) {
         this.file = <File>e.target.files[0];
         var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
         console.log(file);
+        this.fotoIden = 1;
 
         var pattern = /image-*/;
         var reader = new FileReader();
@@ -647,7 +715,7 @@ export class EnterpriseComponent implements OnInit {
             return;
         }
 
-        // this.loaded = false;
+        // this.loaded = false;//
 
         reader.onload = this._handleReaderLoaded.bind(this);
         reader.readAsDataURL(file);
@@ -659,6 +727,7 @@ export class EnterpriseComponent implements OnInit {
         this.imageTem = reader.result;
         this.enterprise.imagen = this.imageTem.split(/,(.+)/)[1];
         console.log(this.enterprise.imagen);
+        
     }
 
     system() {
