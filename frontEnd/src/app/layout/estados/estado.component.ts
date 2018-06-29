@@ -74,12 +74,7 @@ export class EstadoComponent implements OnInit {
     ) {
 
         this.estadoForm = new EstadoModel();
-
-        if(this.login.authUser !== undefined){
-
-            console.log(this.login.authUser.usuarioId);
-    
-        }
+        
     }
 
     // Se inicia con estos metodos
@@ -106,12 +101,10 @@ export class EstadoComponent implements OnInit {
 
     save():void{
 
-        if(this.login.authUser !== undefined){
-            if(this.estadoForm.id === null){
-                this.estadoForm.usuarioCreacion = this.login.authUser.email.toString();
-            }else{
-                this.estadoForm.usuarioModificacion = this.login.authUser.email.toString();
-            }
+        if(this.estadoForm.id === null){
+            this.estadoForm.usuarioCreacion = localStorage.email;
+        }else{
+            this.estadoForm.usuarioModificacion = localStorage.email;
         }
 
         this.isValid = this.validate(this.estadoForm);
@@ -154,7 +147,7 @@ export class EstadoComponent implements OnInit {
 
             if (result.value) {
               
-                this.estadoForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.estadoForm.usuarioModificacion = localStorage.email;
 
 
             this.estadoService.deleteEstado(this.estadoForm).subscribe(res => {

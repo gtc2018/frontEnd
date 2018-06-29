@@ -795,13 +795,13 @@ export class EmployeeComponent implements OnInit   {
     }
 
     // Mostrar el modal o no
-    createPorcentaje() {
+    inHouse() {
 
         const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
         modalRef.componentInstance.title = 'Recursos In-House';
         // modalRef.componentInstance.seleccionados = 'las herramientas';
         modalRef.componentInstance.template = `create-detail`;
-        modalRef.componentInstance.empresaId = this.employeeForm.id;
+        modalRef.componentInstance.empleadoId = this.employeeForm.id;
 
         
     }

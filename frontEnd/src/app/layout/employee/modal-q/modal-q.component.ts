@@ -11,7 +11,7 @@ export class ModalQComponent implements OnInit {
     @Input() seleccionados;
     @Input() template;
     @Input() array;
-    @Input() empresaId;
+    @Input() empleadoId;
 
 
 
@@ -21,7 +21,7 @@ export class ModalQComponent implements OnInit {
 
   ngOnInit() {
       console.log(this.array);
-      console.log(this.empresaId);
+      console.log(this.empleadoId);
   }
 
 }

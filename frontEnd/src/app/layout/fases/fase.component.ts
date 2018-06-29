@@ -7,12 +7,10 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { filter } from 'rxjs/operators/filter';
 
-
 import { OK } from '../../messages/httpstatus';
 import swal from 'sweetalert2';
 import { PermisoModel } from '../../model/permiso.model';
 import { LoginService } from '../../login/servicios/login.service';
-
 
 @Component({
     selector: 'app-fase',
@@ -22,6 +20,8 @@ import { LoginService } from '../../login/servicios/login.service';
     providers: [FaseService, LoginService]
 })
 export class FaseComponent implements OnInit {
+
+    // Variables --------------------------------------------------
 
     private isValid: boolean = true;
     private message: string = "";
@@ -44,10 +44,7 @@ export class FaseComponent implements OnInit {
     leer = false;
     limpiar: boolean = false;
 
-    toggleDivCreateMenus() {
-        this.visible = !this.visible;
-    }
-
+    // Metodos principales----------------------------------------------------
     constructor(
         private router: Router,
         private toastr: ToastrService,
@@ -58,10 +55,18 @@ export class FaseComponent implements OnInit {
         this.fase = new FaseModel();
     }
 
+    // Funciones ------------------------------------------------------------------
+
+    //Metodos de inicio
     ngOnInit() {
         this.getItems();
         this.loadFases();
 
+    }
+
+    //cambiar de estado la barra de crear
+    toggleDivCreateMenus() {
+        this.visible = !this.visible;
     }
 
     private loadFases(): void {

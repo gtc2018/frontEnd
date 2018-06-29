@@ -78,7 +78,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   eliminar = false;
   leer = false;
 
-  @Input() empresaId: number;
+  @Input() empleadoId: number;
 
   // Metodos principales----------------------------------------------------
   constructor(
@@ -92,7 +92,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
   ) {
 
     this.inHouseForm = new InHouseModel();
-    this.inHouseForm.empleadoId = this.empresaId;
+    this.inHouseForm.empleadoId = this.empleadoId;
 
   }
 
@@ -124,7 +124,7 @@ export class CreateDetailComponent implements OnInit, OnChanges {
 
   private loadInHouse(): void {
 
-    this.inHouseService.getInHouseByEmployee(this.empresaId).subscribe(res => {
+    this.inHouseService.getInHouseByEmployee(this.empleadoId).subscribe(res => {
       this.inHouses = res;
 
       for(let i of this.inHouses){
@@ -199,7 +199,7 @@ saveOrUpdate():void{
 save():void{
   
 
-  this.inHouseForm.empleadoId = this.empresaId;
+  this.inHouseForm.empleadoId = this.empleadoId;
   this.antFechH = this.ediFecH;
   this.antFechD = this.ediFecD;
   this.inHouseForm.desde = this.ediFecD;
