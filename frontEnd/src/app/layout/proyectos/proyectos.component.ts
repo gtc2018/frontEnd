@@ -42,6 +42,7 @@ export class ProyectosComponent implements OnInit {
     // updateForm: boolean = false;
     //Mostrar el crear o no
     visible: boolean = false;
+    editar: boolean = false;
 
     //Para la validación
     private isValid: boolean = true;
@@ -133,6 +134,7 @@ export class ProyectosComponent implements OnInit {
             this.proyecto = new ProyectoModel();
 
             this.fotoEmpresa = undefined;
+            this.editar = false;
 
             this.stateExpand = 2;
 
@@ -228,7 +230,7 @@ export class ProyectosComponent implements OnInit {
         modalRef.componentInstance.title = 'Documentos';
         // modalRef.componentInstance.seleccionados = 'las herramientas';
         modalRef.componentInstance.template = `create-detail`;
-        //modalRef.componentInstance.empresaId = this.employeeForm.id;
+        modalRef.componentInstance.empresaId = this.proyecto.id;
 
         
     }
@@ -337,10 +339,12 @@ export class ProyectosComponent implements OnInit {
             this.stateExpand = 3;
             // this.updateForm = true;
              this.setNew(model.cliente.id);
+             this.editar= true;
 
         } else if (this.stateExpand === 2 || this.stateExpand === 3) {
             this.proyecto = model;
             this.stateExpand = 3;
+            this.editar= true;
             // this.updateForm = true;
             this.fotoEmpresa = imagen;
              this.setNew(model.cliente.id);

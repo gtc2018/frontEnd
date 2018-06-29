@@ -180,9 +180,9 @@
                                             </div>
                                         </label-->
 
-                                        <label class="col-form-label-sm ">*Documentos </label>
+                                        <label *ngIf="editar" class="col-form-label-sm ">*Documentos </label>
 
-                                        <button type="button" class="btn-sm btn-primary mb-2" (click)="addDocument()" blueColored>
+                                        <button *ngIf="editar" type="button" class="btn-sm btn-primary mb-2" (click)="addDocument()" blueColored>
                                             <span class="fa fa-plus"></span> Anexar
                                         </button>
 

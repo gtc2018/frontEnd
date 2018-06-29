@@ -114,11 +114,11 @@
                                         </tr>
                                         <tr>      
                                             <th>
-                                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
+                                                <input style="text-align:center" class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
                                                     placeholder="Buscar por Empresa">
                                             </th>
                                             <th>
-                                                <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
+                                                <input style="text-align:center" class="form-control-sm input-filter" type="text" [(ngModel)]="filter.descripcion"
                                                     placeholder="Buscar por Area">
                                             </th>
                                         </tr>
@@ -135,7 +135,7 @@
                                                 {{a.descripcion}}
                                             </td>
 
-                                            <td>
+                                            <td style="text-align:center">
                                                 <div class="btn-group">
                                                     <a class="btn btn-default" *ngIf="editar">
                                                     <i (click)="upload(a)"

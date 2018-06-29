@@ -76,12 +76,6 @@ export class AreaComponent implements OnInit {
         private menup: LoginService
     ) {
         this.areaForm = new AreaModel();
-
-        if(this.login.authUser !== undefined){
-
-            console.log(this.login.authUser.usuarioId);
-    
-        }
     }
 
     // Se inicia con estos metodos
@@ -98,10 +92,8 @@ export class AreaComponent implements OnInit {
     private loadEnterprises(): void {
         this.enterpriseService.getEnterprises().subscribe(res => {
             this.enterprises = res;
-            console.log(this.enterprises);
 
         }, (error) => {
-            console.log(error);
             this.toastr.error("Error al cargar los datos de Empresa");
         });
     }
@@ -111,49 +103,36 @@ export class AreaComponent implements OnInit {
     private loadAreas(): void {
         this.areaService.getAreas().subscribe(res => {
             this.area = res;   
-            console.log("Aqui viene el area" + this.area);
 
-            },(error)=>{
-                console.log(error);
-
-                this.toastr.error("Error al cargar los datos");
-            });
+        },(error)=>{
+            this.toastr.error("Error al cargar los datos");
+        });
     }
 
     //Guardar o editar Area
 
     save():void{
 
-        console.log(this.login.authUser);
 
-        if(this.login.authUser !== undefined){
-
-            if(this.areaForm.id === null){
-
-                this.areaForm.usuarioCreacion = this.login.authUser.email.toString();
-
-            }else{
-
-                this.areaForm.usuarioModificacion = this.login.authUser.email.toString();
-            }
-            
+        if(this.areaForm.id === null){
+            this.areaForm.usuarioCreacion = localStorage.email;
+        }else{
+            this.areaForm.usuarioModificacion = localStorage.email;
         }
-
-        console.log(this.areaForm);
+            
         this.isValid = this.validate(this.areaForm);
 
         if (this.isValid) {
 
             this.crearAreaService.saveOrUpdate(this.areaForm).subscribe(res => {
-                    this.areaForm = new AreaModel();
-                    this.toastr.success('Transacción satisfactoria', 'Gestión de Areas');
-                    this.loadAreas();
-                    this.clean();
+
+                this.areaForm = new AreaModel();
+                this.toastr.success('Transacción satisfactoria', 'Gestión de Areas');
+                this.loadAreas();
+                this.clean();
 
             },(error)=>{
-                console.log(error);
-
-                    this.toastr.error(error.error.message,"Error en la transacción");
+                this.toastr.error(error.error.message,"Error en la transacción");
             });
 
         } else {
@@ -181,9 +160,7 @@ export class AreaComponent implements OnInit {
 
             if (result.value) {
               
-                this.areaForm.usuarioModificacion = this.login.authUser.email.toString();
-            console.log(this.areaForm.id);
-
+                this.areaForm.usuarioModificacion = localStorage.email;
 
             this.areaService.deleteArea(this.areaForm).subscribe(res => {
 
@@ -266,7 +243,6 @@ export class AreaComponent implements OnInit {
                 }
 
             }
-
 
         }, (error) => {
             console.log(error);

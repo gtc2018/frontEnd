@@ -76,12 +76,6 @@ export class AlcanceComponent implements OnInit {
     ) {
 
         this.alcanceForm = new AlcanceModel();
-
-        if(this.login.authUser !== undefined){
-
-            console.log(this.login.authUser.usuarioId);
-    
-        }
     }
 
     // Se inicia con estos metodos
@@ -98,10 +92,10 @@ export class AlcanceComponent implements OnInit {
         this.alcanceService.getAlcances().subscribe(res => {
             this.alcance = res;   
 
-            },(error)=>{
+        },(error)=>{
 
-                this.toastr.error("Error al cargar los datos");
-            });
+            this.toastr.error("Error al cargar los datos");
+        });
     }
 
     //Para guardar
@@ -178,7 +172,7 @@ export class AlcanceComponent implements OnInit {
 
             if (result.value) {
               
-                this.alcanceForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.alcanceForm.usuarioModificacion = localStorage.email;
 
             this.alcanceService.deleteAlcance(this.alcanceForm).subscribe(res => {
 
@@ -211,8 +205,6 @@ export class AlcanceComponent implements OnInit {
     // Replica el modelo escogido
     upload(model){
         this.alcanceForm = model; 
-        console.log(model);
-        console.log(this.alcanceForm);
         this.visible = true;
     }
 
@@ -262,7 +254,6 @@ export class AlcanceComponent implements OnInit {
 
         }, (error) => {
             console.log(error);
-
         });
     }
 }

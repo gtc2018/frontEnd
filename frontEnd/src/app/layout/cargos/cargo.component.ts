@@ -77,13 +77,6 @@ export class CargoComponent implements OnInit {
     ) {
 
         this.cargoForm = new CargoModel();
-
-        if(this.login.authUser !== undefined){
-
-            console.log(this.login.authUser.usuarioId);
-    
-        }
-
         this.filter.cliente = new EnterpriseModel();
     }
 
@@ -101,10 +94,8 @@ export class CargoComponent implements OnInit {
     private loadEnterprises(): void {
         this.enterpriseService.getEnterprises().subscribe(res => {
             this.enterprises = res;
-            console.log(this.enterprises);
 
         }, (error) => {
-            console.log(error);
             this.toastr.error("Error al cargar los datos de Empresa");
         });
     }
@@ -114,11 +105,8 @@ export class CargoComponent implements OnInit {
     private loadCargos(): void {
         this.cargoService.getCargos().subscribe(res => {
             this.cargo = res;   
-            console.log("Aqui viene el cargo" + this.cargo);
 
             },(error)=>{
-                console.log(error);
-
                 this.toastr.error("Error al cargar los datos");
             });
     }
@@ -127,35 +115,24 @@ export class CargoComponent implements OnInit {
 
     save():void{
 
-        console.log(this.login.authUser);
-
-        if(this.login.authUser !== undefined){
-            if(this.cargoForm.id === null){
-
-                this.cargoForm.usuarioCreacion = this.login.authUser.email.toString();
-
-            }else{
-
-                this.cargoForm.usuarioModificacion = this.login.authUser.email.toString();
-            }
-            
+        if(this.cargoForm.id === null){
+            this.cargoForm.usuarioCreacion = localStorage.email;
+        }else{
+            this.cargoForm.usuarioModificacion = localStorage.email;
         }
-
-        console.log(this.cargoForm);
+         
         this.isValid = this.validate(this.cargoForm);
 
         if (this.isValid) {
 
             this.crearCargoService.saveOrUpdate(this.cargoForm).subscribe(res => {
-                    this.cargoForm = new CargoModel();
-                    this.toastr.success('Transacción satisfactoria', 'Gestión de Cargos');
-                    this.loadCargos();
-                    this.clean();
+                this.cargoForm = new CargoModel();
+                this.toastr.success('Transacción satisfactoria', 'Gestión de Cargos');
+                this.loadCargos();
+                this.clean();
 
             },(error)=>{
-                console.log(error);
-
-                    this.toastr.error(error.error.message,"Error en la transacción");
+                this.toastr.error(error.error.message,"Error en la transacción");
             });
 
         } else {
@@ -183,8 +160,7 @@ export class CargoComponent implements OnInit {
 
             if (result.value) {
               
-                this.cargoForm.usuarioModificacion = this.login.authUser.email.toString();
-            console.log(this.cargoForm.id);
+                this.cargoForm.usuarioModificacion = localStorage.email;
 
 
             this.cargoService.deleteCargo(this.cargoForm).subscribe(res => {
