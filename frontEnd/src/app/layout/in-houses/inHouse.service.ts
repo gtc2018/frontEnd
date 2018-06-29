@@ -37,10 +37,18 @@ export class InHouseService {
     return this.Http.post<InHouseModel[]>("http://localhost:8080/getInHouseByEmployee",JSON.stringify(this.inHouse));
   }
 
-  //SERVICIO CONSULTA LOS REGISTRO DE UN EMPLEADO INHOUSE
+  //SERVICIO CONSULTA LOS REGISTRO DE LOS EMPLEADOS EN UN RANGO
   public getInHouseByDate(fecha1, fecha2): Observable<InHouseModel[]> {
     this.inHouse.desde = fecha1;
     this.inHouse.hasta = fecha2;
+    return this.Http.post<InHouseModel[]>("http://localhost:8080/getInHouseByDate",JSON.stringify(this.inHouse));
+  }
+
+  //SERVICIO CONSULTA LOS REGISTROS DE UN EMPLEADO EN UN RANGO
+  public getInHouseToDate(fecha1, fecha2, empleado): Observable<InHouseModel[]> {
+    this.inHouse.desde = fecha1;
+    this.inHouse.hasta = fecha2;
+    this.inHouse.empleadoId = empleado;
     return this.Http.post<InHouseModel[]>("http://localhost:8080/getInHouseByDate",JSON.stringify(this.inHouse));
   }
 

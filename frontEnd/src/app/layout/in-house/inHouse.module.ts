@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+/*import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 
@@ -13,4 +13,4 @@ import { FilterArea } from './area.filter';
     declarations: [AreaComponent,
         FilterArea]
 })
-export class AreaModule {}  
+export class AreaModule {}*/  

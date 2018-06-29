@@ -161,24 +161,30 @@
 
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 
-                                        <label class="col-form-label-sm ">Archivo</label>
+                                        <!--label class="col-form-label-sm ">Archivo</label>
                                         <label class="hand" ondragover="return false;" (dragenter)="handleDragEnter()" (dragleave)="handleDragLeave()" (drop)="handleDrop($event)"
                                             placement="top" ngbTooltip="Haga click para cargar o arrastre el documento">
                                             <div class="col-auto">
 
                                                 <!-- <label class="col-form-label-sm"
                                             style="padding-bottom:10px " >Subir documento: </label> -->
-                                                <span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}">{{nameUpload}}</span>
+                                                <!--span class="fa {{iconUpload}} picture-marc {{styleIconUpload}}">{{nameUpload}}</span-->
                                                 <!-- <img [src]="fotoDoc"
                                         class="picture-marc" width="165" height="165"> -->
-                                            </div>
+                                            <!--/div>
                                             <div class="col-auto">
 
 
                                                 <input type='file' (change)="handleInputChange($event)" style="display: none;">
 
                                             </div>
-                                        </label>
+                                        </label-->
+
+                                        <label class="col-form-label-sm ">*Documentos </label>
+
+                                        <button type="button" class="btn-sm btn-primary mb-2" (click)="addDocument()" blueColored>
+                                            <span class="fa fa-plus"></span> Anexar
+                                        </button>
 
                                     </div>
 

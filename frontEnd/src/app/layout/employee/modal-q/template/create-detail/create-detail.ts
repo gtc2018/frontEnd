@@ -220,7 +220,20 @@ save():void{
 
     if (this.isValidFechas){
 
-      this.saveOrUpdate();
+      this.inHouseService.getInHouseToDate(this.inHouseForm.desde, this.inHouseForm.hasta, this.inHouseForm.empleadoId).subscribe(res => { 
+
+        if(res.length === 0){
+          this.saveOrUpdate();
+        }else{
+          this.toastr.warning( "ya existe un registro dentro del rango especificado");
+        }
+
+      },(error)=>{ 
+
+        this.toastr.error(error.error.message,"Error en la transacción");
+        this.gameDate();
+
+      });
 
     }else {
       if (!this.isValidFechas){

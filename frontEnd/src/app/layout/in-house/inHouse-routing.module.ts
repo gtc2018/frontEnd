@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+/*import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AreaComponent } from './area.component';
 
@@ -13,4 +13,4 @@ const routes: Routes = [
     exports: [RouterModule]
 })
 export class AreaRoutingModule {
-}
+}*/

@@ -1,4 +1,4 @@
-import { LoginService } from './../../login/servicios/login.service';
+/*import { LoginService } from './../../login/servicios/login.service';
 import { BsComponentComponent } from './../bs-component/bs-component.component';
 import { CrearAreaService } from './servicios/crear-area.service';
 import { Router } from '@angular/router';
@@ -273,4 +273,4 @@ export class AreaComponent implements OnInit {
 
         });
     }
-}
+}*/

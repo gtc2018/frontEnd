@@ -13,6 +13,8 @@ import { AuthService } from '../../shared/guard/auth.service';
 import { EmployeeModel } from '../../model/employee';
 import { AsociarProyectoService } from './asociarProyecto.service';
 import { EmployeeToProject } from '../../model/employeeToProject';
+import { ModalQComponent } from './modal-q/modal-q.component';
+import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-proyectos',
@@ -73,6 +75,7 @@ export class ProyectosComponent implements OnInit {
         private proyectoService: ProyectosService,
         private asociarProyectoService: AsociarProyectoService,
         private usuarioService: UsuarioService,
+        private modalService : NgbModal,
         private router: Router,
         private toastr: ToastrService,
         private login: AuthService) {
@@ -216,6 +219,18 @@ export class ProyectosComponent implements OnInit {
 
         this.proyecto.clienteId = id;
 
+    }
+
+    // Mostrar el modal 
+    addDocument() {
+
+        const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
+        modalRef.componentInstance.title = 'Documentos';
+        // modalRef.componentInstance.seleccionados = 'las herramientas';
+        modalRef.componentInstance.template = `create-detail`;
+        //modalRef.componentInstance.empresaId = this.employeeForm.id;
+
+        
     }
 
     //Para cargar empresas

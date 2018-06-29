@@ -55,6 +55,9 @@ export class CreateRegistroActividadComponent implements OnInit {
     private area: AreaModel;
     private isValid: boolean = true;
     filterEn:EnterpriseModel[];
+    diaAct: number;
+    mesAct:number;
+    añoAct:number;
 
 
     submitText:string = "Guardar";
@@ -62,6 +65,7 @@ export class CreateRegistroActividadComponent implements OnInit {
     dia:string;
     año:string;
     fechaTrabajo:string;
+    fechaAct: string;
     extraMin:string;
     extraH:string;
     descProyecto:string;
@@ -153,6 +157,22 @@ export class CreateRegistroActividadComponent implements OnInit {
         this.registroActividadForm = new RegistroActividadModel();
         this.registroActividadFormComp = new RegistroActividadModel();
         this.area = new AreaModel();
+        this.diaAct = new Date().getDate();
+        this.mesAct = new Date().getMonth() + 1;
+        this.añoAct = new Date().getFullYear();
+        if(this.mesAct < 10){
+            if(this.diaAct<10){
+                this.fechaAct = this.añoAct+"-0"+this.mesAct+"-0"+this.diaAct;
+            }else{
+                this.fechaAct = this.añoAct+"-0"+this.mesAct+"-"+this.diaAct;
+            }
+        }else{
+            if(this.diaAct<10){
+                this.fechaAct = this.añoAct+"-"+this.mesAct+"-0"+this.diaAct;
+            }else{
+                this.fechaAct = this.añoAct+"-"+this.mesAct+"-"+this.diaAct;
+            }
+        }
         
 
 
@@ -175,13 +195,13 @@ export class CreateRegistroActividadComponent implements OnInit {
     this.loadEnterprises();
     this.loadFases();
     this.loadTareas();
+    console.log(this.fechaAct);
 
 }
 
   // Funciones -------------------------------------------
 
 //Para cargar empresas
-
 private loadEnterprises(): void {
     this.enterpriseService.getEnterprises().subscribe(res => {
         this.enterprises = res;
@@ -192,7 +212,6 @@ private loadEnterprises(): void {
 }
 
 //Para cargar proyectos
-
 private loadProject(): void{
     this.projectService.getProyectos().subscribe(res => {
         this.projects = res;
@@ -203,7 +222,6 @@ private loadProject(): void{
 }
 
 //Para cargar requerimientos
-
 private loadRequest(): void{
     this.requestService.getAll().subscribe(res => {
         this.requests = res;
@@ -326,10 +344,12 @@ loadProjectToEnterprise(id: any): void {
         this.proyectolb = false;
         //Se activa la lista desplegable
         this.proyecto = true;
+
+        if(res.length === 0){
+            this.toastr.warning("No hay proyectos asociados a este cliente");
+        }
         
       },(error)=>{
-      console.log(error);
-      
   
         this.toastr.error("Error al cargar los datos");
       });
@@ -347,10 +367,12 @@ loadRequestToProject(id: any): void {
         this.requests = res;
         this.requerimientolb = false;
         this.requerimiento = true;
+
+        if(this.requests.length === 0){
+            this.toastr.warning("No hay requerimientos disponibles");
+        }
         
       },(error)=>{
-      console.log(error);
-      
   
         this.toastr.error("Error al cargar los datos");
       });
@@ -441,14 +463,18 @@ loadRequestToProject(id: any): void {
                     this.registroActividadComp = res;
                     if(this.registroActividadComp.length === 0){
 
-                        console.log("PANA QUE FINO QUE GUARDO");
+                        this.saveR();
 
                     }else{
 
                         this.registroActividadService.getAllRegistreByDate(this.empleadoSes, this.fechaTrabajo,
                              this.registroActividadForm.horaInicio, this.registroActividadForm.horaFin).subscribe(res => {
 
-                                console.log(res);
+                                if(res.length === 0){
+                                    this.saveR();
+                                }else{
+                                    this.toastr.warning("No se puede guardar el registro ya que existe uno dentro del rango");
+                                }
 
                         },(error)=>{
                             this.toastr.error("Error al cargar los datos para guardar");
@@ -461,12 +487,12 @@ loadRequestToProject(id: any): void {
                 });
 
             }else{
-                this.toastr.error("La hora o minutos de inicio no pueden ser mayor a las finales");    
+                this.toastr.warning("La hora o minutos de inicio no pueden ser mayor a las finales");    
             }
             
         }else{
             //Si algun campo esta vacio
-            this.toastr.error("Se deben llenar todos los campos y seleccionar una fecha");
+            this.toastr.warning("Se deben llenar todos los campos y seleccionar una fecha");
         }
     }
 
@@ -805,7 +831,7 @@ loadRequestToProject(id: any): void {
 
     if(this.route.snapshot.params.id !== undefined){
 
-        this.toastr.error("Al editar registros, no esta disponible esta opcion");
+        this.toastr.warning("Al editar registros, no esta disponible esta opcion");
 
     }else{
 
@@ -965,10 +991,14 @@ loadRequestToProject(id: any): void {
 
         this.crear = true;
         this.limpiar = false;
-        }else{
+        }else if(this.registroActividadForm.fechaTrabajo === this.fechaAct){
 
+            this.crear = true;
+            this.limpiar = false;
+        }else{
             this.crear = false;
             this.limpiar = true;
+
         }
         
 

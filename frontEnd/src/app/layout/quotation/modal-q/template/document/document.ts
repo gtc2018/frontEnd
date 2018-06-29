@@ -44,6 +44,8 @@ export class DocumentComponent implements OnInit {
     this.loadPropuestas();
   }
 
+  //Funciones **************************************************************************************************************************
+  
   //Carga las propuestas anexadas a la cotizacion
   loadPropuestas(){
     this.presupuestoService.getDocumentByQuotation(this.cotizacion).subscribe(res => {
