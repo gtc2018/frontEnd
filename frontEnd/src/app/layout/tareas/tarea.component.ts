@@ -76,9 +76,6 @@ export class TareaComponent implements OnInit {
 
         this.tareaForm = new TareaModel();
 
-        if(this.login.authUser !== undefined){
-    
-        }
     }
 
     // Se inicia con estos metodos
@@ -105,12 +102,10 @@ export class TareaComponent implements OnInit {
 
     save():void{
 
-        if(this.login.authUser !== undefined){
-            if(this.tareaForm.id === null){
-                this.tareaForm.usuarioCreacion = this.login.authUser.email.toString();
-            }else{
-                this.tareaForm.usuarioModificacion = this.login.authUser.email.toString();
-            }
+        if(this.tareaForm.id === null){
+            this.tareaForm.usuarioCreacion = localStorage.email;
+        }else{
+            this.tareaForm.usuarioModificacion = localStorage.email;
         }
 
         this.isValid = this.validate(this.tareaForm);
@@ -153,7 +148,7 @@ export class TareaComponent implements OnInit {
 
             if (result.value) {
               
-                this.tareaForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.tareaForm.usuarioModificacion = localStorage.email;
 
             this.tareaService.deleteTarea(this.tareaForm).subscribe(res => {
 

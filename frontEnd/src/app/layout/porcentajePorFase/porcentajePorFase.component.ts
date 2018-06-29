@@ -196,7 +196,6 @@ export class PorcentajePorFaseComponent implements OnInit {
 
         this.porcentajePorFaseRecord.id = this.porcentajePorFaseForm.clienteId;
        
-
         this.isValid = this.validate(this.porcentajePorFaseForm);
         
         if (this.isValid) {
@@ -241,9 +240,6 @@ export class PorcentajePorFaseComponent implements OnInit {
                     this.toastr.error("Ya se encuentra esta fase asociada a la empresa");
                     this.faseExist = 0;
                 }
-    
-                
-    
             }
     
             },(error)=>{
@@ -274,8 +270,6 @@ export class PorcentajePorFaseComponent implements OnInit {
         }).then((result) => {
 
             if (result.value) {
-              
-
 
             this.porcentajePorFaseService.deletePorcentajePorFase(this.porcentajePorFaseForm).subscribe(res => {
 

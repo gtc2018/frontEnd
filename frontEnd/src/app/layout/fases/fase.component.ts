@@ -69,6 +69,7 @@ export class FaseComponent implements OnInit {
         this.visible = !this.visible;
     }
 
+    //Metodo para cargar las fases
     private loadFases(): void {
         this.faseService.getFases().subscribe(res => {
             this.fases = res;
@@ -79,12 +80,11 @@ export class FaseComponent implements OnInit {
 
     }
 
-
+    //Limpiar el modelo
     private clearModel(): void {
         this.fase.descripcion = "";
         this.limpiar = false
     }
-
 
     //Guardar
     save():void{
@@ -138,10 +138,9 @@ export class FaseComponent implements OnInit {
             this.message = "Los campos con * son obligatorios.";
         }
 
-
-
     }
 
+    //Eliminar
     delete(id) {
 
         if (id != null) {
@@ -177,7 +176,7 @@ export class FaseComponent implements OnInit {
 
     }
 
-
+    //Editar
     public edit(fase: FaseModel): void {
         sessionStorage.setItem('fase', JSON.stringify(fase));
         this.fase = JSON.parse(sessionStorage.getItem("fase"));
