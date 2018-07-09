@@ -80,7 +80,18 @@ export class ModalFxdComponent implements OnInit {
 
     }
 
-    console.log(this.fases);
+    // [].forEach.call(this.fases, function (data, index) {
+
+    //     for(let fxd of this.fasesxDetalleCotizacion){
+
+    //         if (fxd.faseName === this.fases[index].descripcion){
+
+    //              this.fases.splice(index,1);
+
+    //         }      
+
+    //     }
+    // }
 
   },(error)=>{
 

@@ -646,7 +646,7 @@ deleteDetail(id:number){
 
     swal({
         title: 'Esta seguro?',
-        text: "El registro eliminado no podrá ser recuperado",
+        text: "Se eliminarán todas las fases asociadas a este detalle",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -658,9 +658,13 @@ deleteDetail(id:number){
           
             this.detailQuotationService.deleteDetailQuotation(id).subscribe(response=>{
 
-                this.toastr.success("Registro eliminado satisfactoriamente");  
+                this.toastr.success("Registro eliminado en cascada satisfactoriamente");  
+
+                this.uploadEvents(this.route.snapshot.params.id);
                 
                 this.loadDetailsQuotation();
+
+                this.getTotalToQuotation();
         
             },(error)=>{
         
