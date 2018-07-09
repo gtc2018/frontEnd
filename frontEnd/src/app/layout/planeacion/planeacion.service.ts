@@ -16,13 +16,13 @@ export class PlaneacionService {
   //SERVICIO CONSULTAR TODOS LOS USUARIOS
   public getAll(): Observable<PlaneacionModel[]>{
 
-    return this.http.get<PlaneacionModel[]>("http://localhost:8080/getAllPlaneaciones")
+    return this.http.get<PlaneacionModel[]>("http://localhost:8080/Planeacion")
 
   }
 
   public saveOrUpdate(planeacion: PlaneacionModel): Observable<RestResponse> {
     console.log(planeacion);
-    return this.http.post<RestResponse>("http://localhost:8080/saveOrUpdatePlaneacion", planeacion);
+    return this.http.post<RestResponse>("http://localhost:8080/Planeacion", planeacion);
   }
 
  /* public delete(employee: ExternalEmployeeModel): Observable<RestResponse> {
