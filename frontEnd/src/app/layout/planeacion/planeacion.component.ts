@@ -34,47 +34,42 @@ export class PlaneacionComponent implements OnInit   {
 
     //Variables--------------------------------------------
 
-    messageEmail: string; 
-    activeColor: string = 'green';
-    baseColor: string = '#ccc';
-    icon: string = "fa fa-caret-left";
-    imageSrc: string = 'assets/images/avatar.png';
-    imagenTemp: string ="";
-    message: string;
 
-    user: any;
     items: any;
     menus: any;
 
+    icon: string = "fa fa-caret-left";
+    message: string;
+
     stateExpand: number = 1;
 
-    emailRegex: RegExp;
-
-    dragging: boolean = false;
-    deleteFormHide:boolean = false;
-    visible: boolean = false;
     crear = false;
     editar = false;
     eliminar = false;
     leer = false;
+    deleteFormHide:boolean = false;
+    visible: boolean = false;
+    disabledEnterprise: boolean = false;
+    disabledProyecto: boolean = false;
+    disabledRequerimiento: boolean = false;
+    disabledEpica: boolean = false;
     private isValid: boolean = true;
 
-    planeacionForm: PlaneacionModel;
-    planeacion= [];
-    filter: PlaneacionModel = new PlaneacionModel();
-    private enterprises: EnterpriseModel[];
-    private permiso: PermisoModel;
-
-    file: File = null;
-    
-
+    filterPr: ProyectoModel[];
+    filterRq: RequerimientoModel[];
+    planeaciones = [];
     private enterprises2: EnterpriseModel[];
     private proyectos: ProyectoModel[];
-    filterPr: ProyectoModel[];
     private requerimientos: RequerimientoModel[];
-    filterRq: RequerimientoModel[];
     private epicas: EpicaModel[];
-    planeaciones = [];
+    private enterprises: EnterpriseModel[];
+    
+    private planeacionForm: PlaneacionModel;
+    private permiso: PermisoModel;
+
+    filter: PlaneacionModel = new PlaneacionModel();
+
+
     
     //Metodo Constructor      
     constructor(
@@ -113,7 +108,13 @@ export class PlaneacionComponent implements OnInit   {
     }
 
 
+    //Metodo que controla el componente que permite crear historias 
     createHide() {
+
+        this.disabledEnterprise = false;
+        this.disabledProyecto = false;
+        this.disabledRequerimiento = false;
+        this.disabledEpica = false;
 
         console.log(this.stateExpand);
 
@@ -139,7 +140,6 @@ export class PlaneacionComponent implements OnInit   {
 
             this.stateExpand = 2
 
-            // this.stateExpand = true;
         }else
         if( this.stateExpand === 2 ){
 
@@ -159,6 +159,7 @@ export class PlaneacionComponent implements OnInit   {
 
     }
 
+    //Metodo que permite obtenes información sobre los items que aplican sobre la pantalla
     private getItemsPlaneacion(): void {
 
         this.permiso = new PermisoModel();
@@ -169,7 +170,7 @@ export class PlaneacionComponent implements OnInit   {
             console.log(this.menus = res);
 
             for (let menu of this.menus) {
-                    //this.items = menu.item;
+
                 if (menu.menu.descripcion === "Planeacion") {
                     this.items = menu;
                     console.log("===============ITEMS PLANEACION:======================")
@@ -204,6 +205,7 @@ export class PlaneacionComponent implements OnInit   {
         });
     }
 
+    //Metodo que permite cargar todas las planeaciones para ser mostradas en la tabla de la pantalla
     private loadPlaneacion(): void {
 
         this.planeacionService.getAll().subscribe(res => { //Utilizando el servicio
@@ -219,31 +221,26 @@ export class PlaneacionComponent implements OnInit   {
              this.toastr.error("Error al cargar los datos");
  
          });
-     }
+    }
 
+    //Metodo que permite cargar todos lo clientes(Empresas)
     private loadEnterprises(): void {
+        this.enterprises = [];
         this.enterpriseService.getEnterprises().subscribe(res => {
             this.enterprises = res;
         },(error)=>{
             console.log(error);
   
             this.toastr.error("Error al cargar los datos de Empresa");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
         });
     }
 
+    //Metodo que permite obtener todos los proyectos de un cliente
     private getProyectosByCliente(id: any){
 
-
+        this.proyectos = [];
         this.enterprises2 = this.enterprises.filter(value => value.id === parseInt(id));
 
-        
-        
-    
         this.proyectoService.getProyectoByCliente(id).subscribe(res => {
             this.proyectos= res;
 
@@ -265,20 +262,17 @@ export class PlaneacionComponent implements OnInit   {
             console.log(error);
 
             this.toastr.error("Error al cargar los datos de Proyectos");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
+
         });
 
         
     }
     
 
-    
+    //Metodo que permite obtener los requerimientos segun el proyecto
     private getRequerimientosByProyecto(id: any){ 
 
+        this.requerimientos = [];
         this.planeacionForm.requerimiento = new RequerimientoModel();
 
         this.filterPr = this.proyectos.filter(value => value.id === parseInt(id));
@@ -289,6 +283,8 @@ export class PlaneacionComponent implements OnInit   {
 
             this.planeacionForm.requerimiento = new RequerimientoModel();
             this.planeacionForm.requerimientoId = null;
+            this.planeacionForm.epicaId = null;
+            this.epicas = [];
 
             if(this.requerimientos.length == 0){
                 this.toastr.warning('No existen Requerimientos para este proyecto');
@@ -298,20 +294,17 @@ export class PlaneacionComponent implements OnInit   {
             console.log(error);
 
             this.toastr.error("Error al cargar los datos de Requerimientos");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
+
         });
 
         
         
     }
 
+    //Metodo que permite obtener las epicas según el requerimiento
     private getEpicasByRequerimiento(id: any){ 
 
-        
+        this.epicas = [];
         this.planeacionForm.epica = new EpicaModel();
 
         this.filterRq = this.requerimientos.filter(value => value.id === parseInt(id));
@@ -330,11 +323,7 @@ export class PlaneacionComponent implements OnInit   {
             console.log(error);
 
             this.toastr.error("Error al cargar los datos de Epicas");
-            // swal(
-            //     'Error',
-            //     error.error.message,
-            //     'error'
-            //   )
+ 
         });
 
         
@@ -342,12 +331,12 @@ export class PlaneacionComponent implements OnInit   {
     }
 
 
-
+    //Metodo que permite guardar una historia en la planeacion
     save():void{
 
-
+        
         console.log(this.planeacionForm);
-
+        this.deleteFormHide = false;
 
         if(this.login.authUser !== undefined){
             if(this.planeacionForm.id === null){
@@ -378,18 +367,19 @@ export class PlaneacionComponent implements OnInit   {
 
         } else {
 
-            console.log(this.messageEmail);
-             if(!this.messageEmail){
             this.message= 'Los campos con * son obligatorios!';
 
-            }else{
-                this.message= this.messageEmail;
-                this.messageEmail= undefined;
-            }
         }
+
+        this.disabledEnterprise = false;
+        this.disabledProyecto = false;
+        this.disabledRequerimiento = false;
+        this.disabledEpica = false;
+        this.loadEnterprises();
     }
     
     
+    //Metodo que valida los campos requeridos
     public validate(planeacionForm: PlaneacionModel): boolean {
         let isValid = true;
 
@@ -416,6 +406,122 @@ export class PlaneacionComponent implements OnInit   {
         return isValid;
       }
     
+      //Metodo que permite eliminar una historia a la planeacion
+      delete(model){
+
+
+        if(this.login.authUser !== undefined){
+
+            model.usuarioCreacion=this.login.authUser.usuarioId;
+        }
+
+        swal({
+            title: 'Esta seguro?',
+            text: "El registro eliminado no podrá ser recuperado",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+
+            if(result.value){
+
+                this.planeacionService.delete(model).subscribe(res=>{
+                    // if (res.responseCode == OK) {
+                    this.loadPlaneacion();//actualiza los datos que se visualizan en la tabla donde se muestran todos los empleados
+
+                    this.toastr.success('Registro eliminado satisfactoriamente', 'Gestión de Planeación');
+
+            
+                    this.planeacionForm = new PlaneacionModel();
+
+                    this.deleteFormHide= false;
+
+                },(error)=>{  console.log(error);
+                        swal(
+                            'Error al eliminar el registro',
+                            error.error.message,
+                            'error'
+                        )
+                    }
+                )
+            }
+        })
+
+        this.disabledEnterprise = false;
+        this.disabledProyecto = false;
+        this.disabledRequerimiento = false;
+        this.disabledEpica = false;
+
+        this.loadEnterprises();
+    }
+
+    //Metodo que permite actualizar información de una historia en la planeacion
+    upload(model){
+        
+        console.log(model);
+
+        console.log(this.stateExpand);
+
+        if( this.stateExpand === 1 ){
+
+            this.visible = !this.visible;
+
+            if(this.visible === true){
+                this.icon = "fa fa-caret-down";
+
+                this.deleteFormHide = false;
+            }else{
+                this.icon= "fa fa-caret-left";
+            }
+
+            this.disabledEnterprise = true;
+            this.disabledProyecto = true;
+            this.disabledRequerimiento = true;
+            this.disabledEpica = true;
+            this.deleteFormHide = true;
+            this.planeacionForm = model;
+            this.planeacionForm.clienteId = model.cliente.id;
+            this.planeacionForm.proyectoId = model.proyecto.id;
+            this.planeacionForm.requerimientoId = model.requerimiento.id;
+            this.planeacionForm.epicaId = model.epica.id;
+            this.enterprises = [];
+            this.enterprises.push(this.planeacionForm.cliente);
+            this.proyectos = [];
+            this.proyectos.push(this.planeacionForm.proyecto);
+            this.requerimientos = [];
+            this.requerimientos.push(this.planeacionForm.requerimiento);
+            this.epicas = [];
+            this.epicas.push(this.planeacionForm.epica);
+            this.stateExpand = 3;
+
+        }else if( this.stateExpand === 2 || this.stateExpand === 3 ){
+
+                this.disabledEnterprise = true;
+                this.disabledProyecto = true;
+                this.disabledRequerimiento = true;
+                this.disabledEpica = true;
+                this.deleteFormHide = true;
+                this.planeacionForm = model;
+                this.planeacionForm.clienteId = model.cliente.id;
+                this.planeacionForm.proyectoId = model.proyecto.id;
+                this.planeacionForm.requerimientoId = model.requerimiento.id;
+                this.planeacionForm.epicaId = model.epica.id;
+                this.enterprises = [];
+                this.enterprises.push(this.planeacionForm.cliente);
+                this.proyectos = [];
+                this.proyectos.push(this.planeacionForm.proyecto);
+                this.requerimientos = [];
+                this.requerimientos.push(this.planeacionForm.requerimiento);
+                this.epicas = [];
+                this.epicas.push(this.planeacionForm.epica);
+                this.stateExpand = 3;
+                this.deleteFormHide = true;
+        }
+
+    }
 
       
 
