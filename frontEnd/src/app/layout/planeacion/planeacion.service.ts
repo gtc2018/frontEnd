@@ -25,11 +25,10 @@ export class PlaneacionService {
     return this.http.post<RestResponse>("http://localhost:8080/Planeacion", planeacion);
   }
 
- /* public delete(employee: ExternalEmployeeModel): Observable<RestResponse> {
-    console.log(employee);
+ public delete(id): Observable<RestResponse> {
 
-    return this.http.post<RestResponse>("http://localhost:8080/deleteEmpleadoExterno", JSON.stringify(employee) );
+    return this.http.delete<RestResponse>("http://localhost:8080/deletePlaneacion", {params:{"id":id}});
 
-  }*/
+  }
 
 }

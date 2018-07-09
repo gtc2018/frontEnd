@@ -71,7 +71,7 @@
                                 <div>
 
                                     <button style="margin-right:12px"
-                                    (click)="delete(externalEmployeeForm)"
+                                    (click)="delete(planeacionForm)"
                                     type="submit"
                                     placement="top"
                                     ngbTooltip="Eliminar"
@@ -309,22 +309,6 @@
                                     <span [innerHTML]="e.titulo">
                                     </span>
                                 </td>
-                               <!-- <td>
-                                    <input *ngIf="this.editar" type="checkbox" [(ngModel)]="e.estado" name="aaa" #check (change)="changeState(e)">
-                                </td>-->
-                                <!-- <td> 
-                                    <!--<input type="checkbox"
-                                     [(ngModel)]="e.estado"
-                                     name="{{e.id}}"
-                                     #check
-                                     (change)="changeState(e)">-->
-
-                               <!--     <mat-checkbox
-                                    name="{{e.id}}"
-                                    [(ngModel)]="e.estado"
-                                    (change)="changeState(e)">
-                                    </mat-checkbox>
-                                </td>-->
                                 <td>
                                     <div class="btn-group">
                                         <a *ngIf="true" class="btn btn-default">
