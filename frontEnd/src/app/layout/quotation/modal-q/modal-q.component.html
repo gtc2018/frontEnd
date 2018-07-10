@@ -8,17 +8,23 @@
     <p *ngIf="seleccionados !== undefined " >Seleccione {{seleccionados}} que se requieran</p>
 
     <system-component *ngIf="template ==='system'" [systemsxQuotation]="array" ></system-component>
+
     <tool-component *ngIf="template ==='tool'" [toolsxQuotation]="array"  ></tool-component>
+
     <create-detail-component 
     *ngIf="template ==='create-detail'"
      [quotationId]="quotationId"
      [enterpriseId]="enterpriseId"
      [detailId]="detailId">
     </create-detail-component>
+
     <fasesxquotation-component 
     *ngIf="template ==='fasesxquotation'"
      [quotationId]="quotationId">
     </fasesxquotation-component>
+
+    <document-component *ngIf="template ==='document'" [cotizacion]="cotizacion"></document-component>
+    
   </div>
 
 

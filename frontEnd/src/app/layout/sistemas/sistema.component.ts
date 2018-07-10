@@ -74,9 +74,6 @@ export class SistemaComponent implements OnInit {
 
         this.sistemaForm = new SistemaModel();
 
-        if(this.login.authUser !== undefined){
-    
-        }
     }
 
     // Se inicia con estos metodos
@@ -103,12 +100,10 @@ export class SistemaComponent implements OnInit {
 
     save():void{
 
-        if(this.login.authUser !== undefined){
-            if(this.sistemaForm.id === null){
-                this.sistemaForm.usuarioCreacion = this.login.authUser.email.toString();
-            }else{
-                this.sistemaForm.usuarioModificacion = this.login.authUser.email.toString();
-            }
+        if(this.sistemaForm.id === null){
+            this.sistemaForm.usuarioCreacion = localStorage.email;
+        }else{
+            this.sistemaForm.usuarioModificacion = localStorage.email;
         }
 
         this.isValid = this.validate(this.sistemaForm);
@@ -151,7 +146,7 @@ export class SistemaComponent implements OnInit {
 
             if (result.value) {
               
-                this.sistemaForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.sistemaForm.usuarioModificacion = localStorage.email;
 
             this.sistemaService.deleteSistema(this.sistemaForm).subscribe(res => {
 
@@ -224,12 +219,8 @@ export class SistemaComponent implements OnInit {
                     if (this.items.leer === 1) {
                         this.leer = true;
                     }
-
                 }
-
             }
-
-
         }, (error) => {
             console.log(error);
 

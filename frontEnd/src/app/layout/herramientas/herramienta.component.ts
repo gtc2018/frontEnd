@@ -74,10 +74,6 @@ export class HerramientaComponent implements OnInit {
 
         this.herramientaForm = new HerramientaModel();
 
-        if(this.login.authUser !== undefined){
-    
-        }
-
     }
 
     // Se inicia con estos metodos
@@ -104,14 +100,10 @@ export class HerramientaComponent implements OnInit {
 
     save():void{
 
-        console.log(this.login.authUser);
-
-        if(this.login.authUser !== undefined){
-            if(this.herramientaForm.id === null){
-                this.herramientaForm.usuarioCreacion = this.login.authUser.email.toString();
-            }else{
-                this.herramientaForm.usuarioModificacion = this.login.authUser.email.toString();
-            }
+        if(this.herramientaForm.id === null){
+            this.herramientaForm.usuarioCreacion = this.login.authUser.email.toString();
+        }else{
+            this.herramientaForm.usuarioModificacion = this.login.authUser.email.toString();
         }
 
         this.isValid = this.validate(this.herramientaForm);
@@ -154,7 +146,7 @@ export class HerramientaComponent implements OnInit {
 
             if (result.value) {
               
-                this.herramientaForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.herramientaForm.usuarioModificacion = localStorage.email;
 
             this.herramientaService.deleteHerramienta(this.herramientaForm).subscribe(res => {
 

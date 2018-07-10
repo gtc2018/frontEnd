@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbModal, ModalDismissReasons, NgbActiveModal, NgbDateStruct, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 
-
 import { routerTransition } from '../../../router.animations';
 import { ButtonViewComponent } from '../../quotation/quotation.component';
 import { RequerimientoModel } from '../../../model/requerimiento.model';
@@ -11,7 +10,6 @@ import { CotizacionModel } from '../../../model/cotizacion.model';
 import { EstadoModel } from '../../../model/estado.model';
 import { EpicaModel } from '../../../model/epica.model';
 import { EpicsxRequestModel } from '../../../model/epicsxRequest';
-
 
 import { LoginService } from './../../../login/servicios/login.service';
 import { RequestService } from './../request.service';
@@ -638,7 +636,7 @@ saveToolsxQuotation(){
 createPorcentaje() {
 
     const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
-    modalRef.componentInstance.title = 'Crear Porcentaje por Fase';
+    modalRef.componentInstance.title = ' Agregar involucrados';
     // modalRef.componentInstance.seleccionados = 'las herramientas';
     modalRef.componentInstance.template = `create-detail`;
     modalRef.componentInstance.empresaId = this.requestForm.id;

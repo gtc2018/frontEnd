@@ -22,6 +22,12 @@ import { CargoModel } from '../../model/cargo.model';
 import { DaneService } from '../dane/dane.service';
 import { DaneModel } from '../../model/dane.model';
 
+import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalQComponent } from './modal-q/modal-q.component';
+import { SystemComponent } from './modal-q/template/system/system';
+import { ToolComponent } from './modal-q/template/tool/tool';
+import { CreateDetailComponent } from './modal-q/template/create-detail/create-detail';
+
 
 @Component({
     selector: 'app-employee',
@@ -41,6 +47,7 @@ export class EmployeeComponent implements OnInit   {
     message: string;
     imagenTemp: string ="";
     file: File = null;
+    public empresaId: Number;
 
     user: any;
     items: any;
@@ -55,6 +62,7 @@ export class EmployeeComponent implements OnInit   {
     //Metodos principales---------------------
     constructor(private employeeService: EmployeeService,
         private enterpriseService: EnterpriseService,
+        private modalService : NgbModal,
         private daneService: DaneService,
         private areaService: AreaService,
         private cargoService: CargoService,
@@ -112,6 +120,7 @@ export class EmployeeComponent implements OnInit   {
     dragging: boolean = false;
     deleteFormHide:boolean = false;
     visible: boolean = false;
+    modal: boolean = false;
 
     employeeForm: EmployeeModel;
     employeeCom: EmployeeModel[];
@@ -254,7 +263,7 @@ export class EmployeeComponent implements OnInit   {
 
             this.loadEmployee();
             this.clean();
-            this.toastr.success('Transacción satisfactoria', 'Gestión de Empleados');
+            this.toastr.success('Transacción satisfactoria, Ya se encuentra disponible la opcion InHouse', 'Gestión de Empleados');
 
         },(error)=>{
 
@@ -464,7 +473,15 @@ export class EmployeeComponent implements OnInit   {
     //Para cargar departamentos por pais
     private filterDeparmentForCountry(id:any): void {
 
-        this.employeeForm.departamento = undefined;
+        if(this.identificador === 1){
+
+        }else{
+
+            this.employeeForm.departamento = undefined;
+            this.employeeForm.ciudad = undefined;
+        }
+
+        
 
         this.daneService.getDeparment(id).subscribe(res => {
             this.departamentos = res;
@@ -476,11 +493,17 @@ export class EmployeeComponent implements OnInit   {
 
     //Para cargar ciudades por departamento
     private filtercityForDeparment(id:any): void {
-        console.log(id);
+        if(this.identificador === 1){
+
+        }else{
+
+            this.employeeForm.ciudad = undefined;
+        }
+        
         this.daneService.getCity(id).subscribe(res => {
             this.ciudades = res;
         }, (error) => {
-            this.toastr.error("Error al cargar los datos de Departamento");
+            this.toastr.error("Error al cargar los datos de Ciudad");
             
         });
     }
@@ -567,6 +590,7 @@ export class EmployeeComponent implements OnInit   {
             this.cargos = null;
             this.employeeIden = 0;
             this.emailIden = 0;
+            this.modal = false;
             this.fotoIden = 0;
             this.email = undefined;
             this.cedula = undefined;
@@ -637,6 +661,9 @@ export class EmployeeComponent implements OnInit   {
                 this.email = this.employeeForm.email;
                 this.cedula = this.employeeForm.numeroDocumento;
                 this.identificador = 1;
+                this.filterDeparmentForCountry(this.employeeForm.pais);
+                this.filtercityForDeparment(this.employeeForm.departamento);
+                this.modal = true;
 
             this.filterChargeAndAreaToEnterprise(this.employeeForm.clienteId);
 
@@ -661,11 +688,14 @@ export class EmployeeComponent implements OnInit   {
                 this.cedula = this.employeeForm.numeroDocumento;
                 this.identificador = 1;
                 this.stateExpand = 3;
+                this.filterDeparmentForCountry(this.employeeForm.pais);
+                this.filtercityForDeparment(this.employeeForm.departamento);
+                this.modal = true;
 
                 this.deleteFormHide = true;
 
                 this.filterChargeAndAreaToEnterprise(this.employeeForm.clienteId);
-                console.log(model);
+                
             }
 
                }
@@ -673,8 +703,6 @@ export class EmployeeComponent implements OnInit   {
                //Para mostrar el crear o no
 
         createHide() {
-
-            console.log(this.stateExpand);
 
             if( this.stateExpand === 3 ){
 
@@ -685,6 +713,7 @@ export class EmployeeComponent implements OnInit   {
                 this.stateExpand = 2;
 
                 this.deleteFormHide = false;
+                this.clean();
 
             }else if( this.stateExpand === 1 ){
 
@@ -763,6 +792,18 @@ export class EmployeeComponent implements OnInit   {
             console.log(error);
 
         });
+    }
+
+    // Mostrar el modal o no
+    inHouse() {
+
+        const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
+        modalRef.componentInstance.title = 'Recursos In-House';
+        // modalRef.componentInstance.seleccionados = 'las herramientas';
+        modalRef.componentInstance.template = `create-detail`;
+        modalRef.componentInstance.empleadoId = this.employeeForm.id;
+
+        
     }
 
     //Validación de campos

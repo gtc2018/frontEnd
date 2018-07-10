@@ -317,6 +317,8 @@
                                 </div>
                         </div>
 
+                        
+
                         <!-- <div class="center-sc form-group col-xs-12 col-sm-12 col-md-12 col-lg-12"
                       style="padding-top:14px">
 
@@ -345,6 +347,20 @@
                     </div>
 
                     <br>
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+                        <div  style="text-align:center" >
+                            <div class="btn btn-info hand" *ngIf="this.modal"
+                            (click)="inHouse()">
+                                <i class="fa fa-caret-left"
+                                aria-hidden="true">
+                                </i>
+                                &nbsp; Enviar In-House
+                            </div>
+                        </div>    
+                    </div>
+
+                    <br>
+                    
 
                 </div>
 
@@ -427,20 +443,20 @@
                             </tr>
                             <tr>
                                 <th>
-                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.nombres" placeholder="Buscar por Nombre">
+                                    <input style="text-align:center" class="form-control-sm input-filter" type="text" [(ngModel)]="filter.nombres" placeholder="Buscar por Nombre">
                                 </th>
                                 <th>
-                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.apellidos" placeholder="Buscar por Apellidos">
+                                    <input style="text-align:center" class="form-control-sm input-filter" type="text" [(ngModel)]="filter.apellidos" placeholder="Buscar por Apellidos">
                                 </th>
                                 <th>
-                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.numeroDocumento"
+                                    <input style="text-align:center" class="form-control-sm input-filter" type="text" [(ngModel)]="filter.numeroDocumento"
                                         placeholder="Buscar por #Documento">
                                 </th>
                                 <th>
-                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.telefono" placeholder="Buscar por Telefono">
+                                    <input style="text-align:center" class="form-control-sm input-filter" type="text" [(ngModel)]="filter.telefono" placeholder="Buscar por Telefono">
                                 </th>
                                 <th>
-                                    <input class="form-control-sm input-filter" type="text" [(ngModel)]="filter.email" placeholder="Buscar por Email">
+                                    <input style="text-align:center" class="form-control-sm input-filter" type="text" [(ngModel)]="filter.email" placeholder="Buscar por Email">
                                 </th>
                             </tr>
                         </thead>
@@ -479,9 +495,9 @@
                                 <td>
                                     <img [src]="e.foto" class="" width="35" height="40">
                                 </td>
-                                <td>
+                                <td style="text-align:center">
                                     <div class="btn-group">
-                                        <a *ngIf="this.editar" class="btn btn-default">
+                                        <a *ngIf="editar" class="btn btn-default">
                                             <i (click)="upload(e)" class="fa fa-pencil-square-o fa-lg hand" aria-hidden="true" title="Editar">
                                             </i>
                                         </a>

@@ -40,6 +40,7 @@ const routes: Routes = [
             { path: 'sistemas', loadChildren: './sistemas/sistema.module#SistemaModule' },
             { path: 'tareas', loadChildren: './tareas/tarea.module#TareaModule' },
             { path: 'planeacion', loadChildren: './planeacion/planeacion.module#PlaneacionModule' },
+            { path: 'inHouses', loadChildren: './in-houses/inHouse.module#InHouseModule' }
         ]
     }
 ];

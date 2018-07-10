@@ -7,12 +7,10 @@ import { Component, OnInit } from '@angular/core';
 import { routerTransition } from '../../router.animations';
 import { filter } from 'rxjs/operators/filter';
 
-
 import { OK } from '../../messages/httpstatus';
 import swal from 'sweetalert2';
 import { PermisoModel } from '../../model/permiso.model';
 import { LoginService } from '../../login/servicios/login.service';
-
 
 @Component({
     selector: 'app-fase',
@@ -23,6 +21,8 @@ import { LoginService } from '../../login/servicios/login.service';
 })
 export class FaseComponent implements OnInit {
 
+    // Variables --------------------------------------------------
+
     private isValid: boolean = true;
     private message: string = "";
     private fase: FaseModel;
@@ -30,6 +30,7 @@ export class FaseComponent implements OnInit {
     private fases: Array<FaseModel>;
     grupos = [];
     contador: number = 0;
+    faseIgual:number = 0;
     filter: FaseModel = new FaseModel();
 
     user: any;
@@ -43,10 +44,7 @@ export class FaseComponent implements OnInit {
     leer = false;
     limpiar: boolean = false;
 
-    toggleDivCreateMenus() {
-        this.visible = !this.visible;
-    }
-
+    // Metodos principales----------------------------------------------------
     constructor(
         private router: Router,
         private toastr: ToastrService,
@@ -57,48 +55,92 @@ export class FaseComponent implements OnInit {
         this.fase = new FaseModel();
     }
 
+    // Funciones ------------------------------------------------------------------
+
+    //Metodos de inicio
     ngOnInit() {
         this.getItems();
         this.loadFases();
 
     }
 
+    //cambiar de estado la barra de crear
+    toggleDivCreateMenus() {
+        this.visible = !this.visible;
+    }
+
+    //Metodo para cargar las fases
     private loadFases(): void {
         this.faseService.getFases().subscribe(res => {
             this.fases = res;
+        }, (error) => {
+            this.toastr.error(error.error.message, "Error al cargar fases.");
+
         });
 
     }
 
-
+    //Limpiar el modelo
     private clearModel(): void {
         this.fase.descripcion = "";
         this.limpiar = false
     }
 
+    //Guardar
+    save():void{
 
-    public saveOrUpdate(fase): void {
-        console.log("==============FASES=================")
-        console.log(fase);
+        this.faseService.saveOrUpdate(this.fase).subscribe(res => {
+            this.toastr.success('Transacción realizada satisfactoriamente.');
+            this.loadFases();
+            this.clearModel();
+
+        }, (error) => {
+            this.toastr.error(error.error.message, "Error al guardar o actulizar la fase.");
+
+        });
+    }
+
+    //Antes de guardar
+    public saveOrUpdate(): void {
+
+        if(this.fase.id === null){
+            this.fase.usuarioCreacion = localStorage.email;
+        }else{
+            this.fase.usuarioModificacion = localStorage.email;
+        }
+
+        this.isValid = this.validate(this.fase);
+
         if (this.isValid) {
-            this.faseService.saveOrUpdate(this.fase).subscribe(res => {
-                this.toastr.success('Transacción realizada satisfactoriamente.');
-                this.loadFases();
-                this.clearModel();
+
+            this.faseService.getFases().subscribe(res => {
+                
+                for(let f  of res){
+
+                    if(this.fase.descripcion === f.descripcion){
+                        this.faseIgual = 1
+                    }
+                    
+                }
+
+                if(this.faseIgual !== 1){
+                    this.save();
+                }else{
+                    this.toastr.error("Ya existe un registro con este nombre", "Error gestion de fases.");   
+                    this.faseIgual = 0; 
+                }
 
             }, (error) => {
-                console.log(error);
-                this.toastr.error(error.error.message, "Error al guardar o actulizar la fase.");
-
-            });
+                this.toastr.error(error.error.message, "Error al cargar fases.");
+            }); 
+            
         }else{
             this.message = "Los campos con * son obligatorios.";
         }
 
-
-
     }
 
+    //Eliminar
     delete(id) {
 
         if (id != null) {
@@ -134,7 +176,7 @@ export class FaseComponent implements OnInit {
 
     }
 
-
+    //Editar
     public edit(fase: FaseModel): void {
         sessionStorage.setItem('fase', JSON.stringify(fase));
         this.fase = JSON.parse(sessionStorage.getItem("fase"));
@@ -151,7 +193,7 @@ export class FaseComponent implements OnInit {
 
     }
 
-    public validate(enterprise: FaseModel): boolean {
+    public validate(fase: FaseModel): boolean {
         let isValid = true;
         if (!this.fase.descripcion) {
             isValid = false;

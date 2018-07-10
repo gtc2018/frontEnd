@@ -7,6 +7,8 @@ export class ProyectoModel extends ParentEntity{
   public clienteId: string;
   public cliente: EnterpriseModel;
   public nombre: string;
+  public gerente: string;
+  public presupuesto: string;
   public descripcion: string;
   public tipo: string;
   public urlCarpeta: number;

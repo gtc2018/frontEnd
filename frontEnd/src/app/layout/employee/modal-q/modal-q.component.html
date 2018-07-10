@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-9 ">
+        <h4 class="modal-title">
+            <i class="fa fa-handshake-o" style="color:blue"></i> {{title}}
+        </h4>
+    </div>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p *ngIf="seleccionados !== undefined " >Seleccione {{seleccionados}} que se requieran</p>
+
+    <system-component *ngIf="template ==='system'" [system]="array" ></system-component>
+    <tool-component *ngIf="template ==='tool'" [tool]="array" ></tool-component>
+    <create-detail-component *ngIf="template ==='create-detail'" [empleadoId]="empleadoId" ></create-detail-component>
+  </div>
+
+
+  <!--<div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">Close</button>
+  </div>-->

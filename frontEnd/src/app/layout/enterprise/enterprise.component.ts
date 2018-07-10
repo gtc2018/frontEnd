@@ -319,7 +319,7 @@ export class EnterpriseComponent implements OnInit {
     createPorcentaje() {
 
         const modalRef = this.modalService.open(ModalQComponent,{size:"lg"});
-        modalRef.componentInstance.title = 'Crear Porcentaje por Fase';
+        modalRef.componentInstance.title = 'Asignar Porcentaje por Fase';
         // modalRef.componentInstance.seleccionados = 'las herramientas';
         modalRef.componentInstance.template = `create-detail`;
         modalRef.componentInstance.empresaId = this.empresa.id;

@@ -31,6 +31,7 @@ export class AlcanceComponent implements OnInit {
     // Variables -----------------------------
 
     alcance: AlcanceModel[];
+    alcanceCom: AlcanceModel[];
     filter: AlcanceModel = new AlcanceModel();
 
     alcanceForm: AlcanceModel;
@@ -45,6 +46,7 @@ export class AlcanceComponent implements OnInit {
 
     stateExpand: number = 1;
     identificador: Number = 0;
+    alcanceIgual: number = 0;
 
     user: any;
     items: any;
@@ -74,12 +76,6 @@ export class AlcanceComponent implements OnInit {
     ) {
 
         this.alcanceForm = new AlcanceModel();
-
-        if(this.login.authUser !== undefined){
-
-            console.log(this.login.authUser.usuarioId);
-    
-        }
     }
 
     // Se inicia con estos metodos
@@ -96,41 +92,63 @@ export class AlcanceComponent implements OnInit {
         this.alcanceService.getAlcances().subscribe(res => {
             this.alcance = res;   
 
-            },(error)=>{
+        },(error)=>{
 
-                this.toastr.error("Error al cargar los datos");
-            });
+            this.toastr.error("Error al cargar los datos");
+        });
     }
 
-    //Guardar o editar Cargo
+    //Para guardar
+    saveOrUpdate():void{
 
+        this.crearAlcanceService.saveOrUpdate(this.alcanceForm).subscribe(res => {
+            this.alcanceForm = new AlcanceModel();
+            this.toastr.success('Transacción satisfactoria', 'Gestión de Alcance');
+            this.loadAlcances();
+            this.clean();
+
+        },(error)=>{
+
+            this.toastr.error(error.error.message,"Error en la transacción");
+        });
+    }
+
+    //Antes de guardar
     save():void{
 
-        if(this.login.authUser !== undefined){
-            if(this.alcanceForm.id === null){
-            this.alcanceForm.usuarioCreacion = this.login.authUser.email.toString();
+        if(this.alcanceForm.id === null){
+            this.alcanceForm.usuarioCreacion = localStorage.email;
         }else{
-            this.alcanceForm.usuarioModificacion = this.login.authUser.email.toString();
-        }
+            this.alcanceForm.usuarioModificacion = localStorage.email;
         }
 
         this.isValid = this.validate(this.alcanceForm);
 
         if (this.isValid) {
 
-            this.crearAlcanceService.saveOrUpdate(this.alcanceForm).subscribe(res => {
-                    this.alcanceForm = new AlcanceModel();
-                    this.toastr.success('Transacción satisfactoria', 'Gestión de Alcance');
-                    this.loadAlcances();
-                    this.clean();
+            this.alcanceService.getAlcances().subscribe(res => {
+                this.alcanceCom = res;
+                
+                for(let a of this.alcanceCom){
+                    
+                    if(this.alcanceForm.descripcion.toUpperCase() === a.descripcion.toUpperCase()){
+                        this.alcanceIgual = 1
+                    }
+                }
 
+                if(this.alcanceIgual !== 1){
+                    this.saveOrUpdate();
+                }else{
+                    this.toastr.error("Ya existe un registro con este nombre");
+                    this.alcanceIgual = 0;
+                }
+    
             },(error)=>{
-
-                    this.toastr.error(error.error.message,"Error en la transacción");
+                this.toastr.error("Error al cargar los datos");
             });
 
         } else {
-            this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Alcances');
+            //this.toastr.warning('Los campos con * son obligatorios.!', 'Creación de Alcances');
             this.message = "Los campos con * son obligatorios.";
         }
     }
@@ -154,7 +172,7 @@ export class AlcanceComponent implements OnInit {
 
             if (result.value) {
               
-                this.alcanceForm.usuarioModificacion = this.login.authUser.email.toString();
+                this.alcanceForm.usuarioModificacion = localStorage.email;
 
             this.alcanceService.deleteAlcance(this.alcanceForm).subscribe(res => {
 
@@ -187,8 +205,6 @@ export class AlcanceComponent implements OnInit {
     // Replica el modelo escogido
     upload(model){
         this.alcanceForm = model; 
-        console.log(model);
-        console.log(this.alcanceForm);
         this.visible = true;
     }
 
@@ -238,7 +254,6 @@ export class AlcanceComponent implements OnInit {
 
         }, (error) => {
             console.log(error);
-
         });
     }
 }

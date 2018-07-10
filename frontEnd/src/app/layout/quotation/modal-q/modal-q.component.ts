@@ -14,6 +14,7 @@ export class ModalQComponent implements OnInit {
     @Input() quotationId;    
     @Input() enterpriseId;
     @Input() detailId;
+    @Input() cotizacion;
 
 
 
