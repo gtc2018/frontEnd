@@ -27,7 +27,7 @@ export class PlaneacionService {
 
  public delete(id): Observable<RestResponse> {
 
-    return this.http.delete<RestResponse>("http://localhost:8080/deletePlaneacion", {params:{"id":id}});
+    return this.http.delete<RestResponse>("http://localhost:8080/Planeacion/"+id);
 
   }
 

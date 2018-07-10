@@ -356,6 +356,10 @@ export class PlaneacionComponent implements OnInit   {
             this.loadPlaneacion(); //actualiza los datos que se visualizan en la tabla donde se muestran todos los empleados
             this.planeacionForm = new PlaneacionModel();
             this.toastr.success('Transacción satisfactoria', 'Gestión Planeacion');
+        
+        this.proyectos = [];
+        this.requerimientos = [];
+        this.epicas = [];
 
         },(error)=>{ //Controlando posible error
 
@@ -407,13 +411,7 @@ export class PlaneacionComponent implements OnInit   {
       }
     
       //Metodo que permite eliminar una historia a la planeacion
-      delete(model){
-
-
-        if(this.login.authUser !== undefined){
-
-            model.usuarioCreacion=this.login.authUser.usuarioId;
-        }
+      delete(id){
 
         swal({
             title: 'Esta seguro?',
@@ -428,7 +426,7 @@ export class PlaneacionComponent implements OnInit   {
 
             if(result.value){
 
-                this.planeacionService.delete(model).subscribe(res=>{
+                this.planeacionService.delete(id).subscribe(res=>{
                     // if (res.responseCode == OK) {
                     this.loadPlaneacion();//actualiza los datos que se visualizan en la tabla donde se muestran todos los empleados
 
@@ -520,6 +518,28 @@ export class PlaneacionComponent implements OnInit   {
                 this.stateExpand = 3;
                 this.deleteFormHide = true;
         }
+
+    }
+
+    clean() {
+
+        this.planeacionForm = new PlaneacionModel();
+
+        this.deleteFormHide = false;
+
+        this.disabledEnterprise=  false;
+        this.disabledProyecto=  false;
+        this.disabledRequerimiento=  false;
+        this.disabledEpica=  false;
+
+        this.loadPlaneacion();
+        this.getItemsPlaneacion();
+        this.loadEnterprises();
+        this.proyectos = [];
+        this.requerimientos = [];
+        this.epicas = [];
+
+    
 
     }
 

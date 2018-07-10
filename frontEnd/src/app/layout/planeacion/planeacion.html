@@ -71,7 +71,7 @@
                                 <div>
 
                                     <button style="margin-right:12px"
-                                    (click)="delete(planeacionForm)"
+                                    (click)="delete(planeacionForm.id)"
                                     type="submit"
                                     placement="top"
                                     ngbTooltip="Eliminar"
@@ -316,7 +316,7 @@
                                             </i>
                                         </a>
                                         <a *ngIf="this.eliminar" class="btn btn-default">
-                                            <i (click)="delete(e)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
+                                            <i (click)="delete(e.id)" class="fa fa-trash-o fa-lg hand" aria-hidden="true" title="Eliminar">
                                             </i>
                                         </a>
                                     </div>
