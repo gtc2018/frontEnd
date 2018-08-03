@@ -478,6 +478,8 @@ export class UsuarioComponent implements OnInit {
                     this.usuario = new UsuarioModel();
                     this.toastr.success('Transacción satisfactoria', 'Gestión de Usuarios');
 
+                    console.log(res);
+
                     this.confirm=undefined;
 
                     this.deleteFormHide = false;
@@ -603,7 +605,6 @@ export class UsuarioComponent implements OnInit {
             
             this.filtroEmpleado(this.usuario.clienteId);
             this.deleteFormHide = true;
-
             
         }
 

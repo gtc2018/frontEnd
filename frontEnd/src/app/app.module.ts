@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {InlineEditorModule} from '@qontu/ngx-inline-editor';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +31,7 @@ export function createTranslateLoader(http: HttpClient) {
 
 @NgModule({
     imports: [
+        InlineEditorModule,
         CommonModule,
         BrowserModule,
         BrowserAnimationsModule,

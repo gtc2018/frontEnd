@@ -63,7 +63,7 @@ export class ModalFxdComponent implements OnInit {
 
     this.porcentajePorFase.id = this.enterpriseId;
 
-    this.porcentajexFaseService.getFasesxEmpresa(this.enterpriseId,this.detailId)
+    this.porcentajexFaseService.getFasesxEmpresa(this.enterpriseId)
   .subscribe(res=>{
 
     this.fasesEnterprise = res;
@@ -150,9 +150,14 @@ private save(){
 
     },(error)=>{
 
-        console.log("Mala");
+        console.log(error);
 
-        this.toastr.error("Error al guardar el registro");
+        // this.toastr.error(error.error,"Error al guardar el registro");
+
+       swal(                    'Error al guardar',
+                    error.error,
+                    'error'
+                  )
 
     })
 
